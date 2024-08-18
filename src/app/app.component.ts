@@ -7,9 +7,6 @@ import { Subject } from 'rxjs';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'Train-Trips-Planning';
-  aboba: Subject<any> = new Subject();
-}
+export class AppComponent {}
