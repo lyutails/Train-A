@@ -1,0 +1,35 @@
+<form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+  <div class="input-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Enter your email" />
+      <mat-error
+        *ngIf="
+          signInForm.get('email')?.invalid && signInForm.get('email')?.touched
+        "
+      >
+        Please enter a valid email address.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="'password'"
+        formControlName="password"
+        placeholder="Enter your password"
+      />
+      <mat-error
+        *ngIf="
+          signInForm.get('password')?.invalid &&
+          signInForm.get('password')?.touched
+        "
+      >
+        Password must be at least 8 characters long.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <button type="submit" [disabled]="signInForm.invalid">Sign In</button>
+</form>
+
+<a class="sign-up-link" routerLink="/sign-up">Sign Up</a>
