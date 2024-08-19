@@ -30,11 +30,11 @@ export const APP_ROUTES: Routes = [
       ),
   },
   {
-    path: 'sign-up',
-    loadChildren: () =>
-      import('./features/authorization/constants/authorization.routes').then(
-        (m) => m.AUTHORIZATION_ROUTES,
-      ),
+    path: 'signup',
+    loadComponent: () =>
+      import(
+        './features/authorization/features/sign-up/components/sign-up/sign-up.component'
+      ).then((m) => m.SignUpComponent),
   },
   {
     path: 'not-found',

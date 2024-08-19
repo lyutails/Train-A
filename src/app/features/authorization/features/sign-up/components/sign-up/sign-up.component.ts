@@ -1,6 +1,7 @@
 import { MatButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -11,4 +12,10 @@ import { Component } from '@angular/core';
 })
 export class SignUpComponent {
   signUpButtonName = 'Sign Up';
+
+  constructor(private router: Router) {}
+
+  navigateSignIn() {
+    this.router.navigate(['/signin']);
+  }
 }
