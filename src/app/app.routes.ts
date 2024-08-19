@@ -30,13 +30,6 @@ export const APP_ROUTES: Routes = [
       ),
   },
   {
-    path: 'signup',
-    loadComponent: () =>
-      import(
-        './features/authorization/features/sign-up/components/sign-up/sign-up.component'
-      ).then((m) => m.SignUpComponent),
-  },
-  {
     path: 'not-found',
     loadComponent: () =>
       import('./core/not-found/components/not-found/not-found.component').then(

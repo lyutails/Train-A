@@ -1,6 +1,19 @@
 .sign-up {
-  &_wrapper {
-    width: 90vw;
+  &_form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 50vw;
     margin: 0 auto;
+  }
+
+  &_buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
   }
 }
