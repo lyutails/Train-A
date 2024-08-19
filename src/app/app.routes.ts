@@ -30,10 +30,10 @@ export const APP_ROUTES: Routes = [
       ),
   },
   {
-    path: 'profile',
+    path: 'sign-up',
     loadChildren: () =>
-      import('./features/profile/constants/profile.routes').then(
-        (m) => m.PROFILE_ROUTES,
+      import('./features/authorization/constants/authorization.routes').then(
+        (m) => m.AUTHORIZATION_ROUTES,
       ),
   },
   {
