@@ -29,7 +29,13 @@ export const APP_ROUTES: Routes = [
         (m) => m.PROFILE_ROUTES,
       ),
   },
-
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./features/profile/constants/profile.routes').then(
+        (m) => m.PROFILE_ROUTES,
+      ),
+  },
   {
     path: 'not-found',
     loadComponent: () =>
