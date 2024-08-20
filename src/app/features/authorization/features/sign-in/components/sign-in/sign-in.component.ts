@@ -5,6 +5,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { catchError, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+interface AuthResponse {
+  token?: string;
+}
 
 @Component({
   selector: 'TTP-sign-in',
@@ -22,8 +28,14 @@ import { CommonModule } from '@angular/common';
 })
 export class SignInComponent {
   public signInForm: FormGroup;
+  public signInButtonName = 'Sign In';
+  public isSubmitting = false;
+  public errorMessage: string | null = null;
 
-  constructor(private fb: NonNullableFormBuilder) {
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private http: HttpClient,
+  ) {
     this.signInForm = this.fb.group({
       email: this.fb.control('', [Validators.required, Validators.email]),
       password: this.fb.control('', [
@@ -34,11 +46,31 @@ export class SignInComponent {
   }
 
   public onSubmit(): void {
-    if (this.signInForm.valid) {
-      const email = this.signInForm.value.email;
-      const password = this.signInForm.value.password;
-      console.log('Email:', email);
-      console.log('Password:', password);
+    if (this.signInForm.invalid) {
+      return;
     }
+
+    this.isSubmitting = true;
+    this.errorMessage = null;
+
+    const { email, password } = this.signInForm.value;
+
+    this.http
+      .post<AuthResponse>('/api/auth/signin', { email, password })
+      .pipe(
+        catchError(() => {
+          this.errorMessage =
+            'Authentication failed. Please check your credentials.';
+          this.isSubmitting = false;
+          return of(null);
+        }),
+      )
+      .subscribe((response) => {
+        if (response?.token) {
+          localStorage.setItem('authToken', response.token);
+        } else {
+          this.isSubmitting = false;
+        }
+      });
   }
 }

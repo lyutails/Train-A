@@ -25,7 +25,7 @@
   }
 
   &_field {
-    padding: 0;
+    margin-bottom: 10px;
   }
 
   &_title {
@@ -53,5 +53,6 @@
   &_input-error {
     width: max-content;
     font-size: 0.7rem;
+    color: oklch(59.98% 0.236 15.45deg);
   }
 }
