@@ -30,7 +30,6 @@
 
   &_title {
     width: 100%;
-
     font-size: 1.6rem;
     font-weight: 800;
     text-align: center;
@@ -49,4 +48,8 @@
     width: max-content;
     font-size: 0.7rem;
   }
+}
+
+.alert.alert-danger {
+  color: oklch(59.98% 0.236 15.45deg);
 }

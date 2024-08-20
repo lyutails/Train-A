@@ -14,6 +14,15 @@
         type="password"
       />
     </mat-form-field>
+    @if (
+      passwordFormControl.touched &&
+      passwordFormControl.invalid &&
+      passwordFormControl !== repeatPasswordFormControl
+    ) {
+      <div class="alert alert-danger sign-up_input-error">
+        Passwords don't match
+      </div>
+    }
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Repeat Password</mat-label>
       <input
@@ -23,11 +32,13 @@
         type="password"
       />
     </mat-form-field>
-    @if (passwordFormControl.touched && repeatPasswordFormControl.touched) {
-      <div class="alert alert-danger">
-        @if (passwordFormControl !== repeatPasswordFormControl) {
-          <div>Passwords don't match</div>
-        }
+    @if (
+      repeatPasswordFormControl.touched &&
+      repeatPasswordFormControl.invalid &&
+      passwordFormControl !== repeatPasswordFormControl
+    ) {
+      <div class="alert alert-danger sign-up_input-error">
+        Passwords don't match
       </div>
     }
     <div class="sign-up_buttons">
