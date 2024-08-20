@@ -1,0 +1,58 @@
+<div class="profile-container mat-elevation-z8">
+  <h2>Profile</h2>
+
+  <mat-card class="profile-item">
+    <div *ngIf="!isEditingName; else editNameTemplate">
+      <span>{{ user.name }}</span>
+      <button
+        mat-icon-button
+        (click)="startEditing('name')"
+        aria-label="Edit name"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <ng-template #editNameTemplate>
+      <mat-form-field appearance="fill">
+        <mat-label>Edit Name</mat-label>
+        <input matInput [(ngModel)]="editableName" />
+      </mat-form-field>
+      <button mat-icon-button (click)="saveName()" aria-label="Save name">
+        <mat-icon>save</mat-icon>
+      </button>
+    </ng-template>
+  </mat-card>
+
+  <mat-card class="profile-item">
+    <div *ngIf="!isEditingEmail; else editEmailTemplate">
+      <span>{{ user.email }}</span>
+      <button
+        mat-icon-button
+        (click)="startEditing('email')"
+        aria-label="Edit email"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <ng-template #editEmailTemplate>
+      <mat-form-field appearance="fill">
+        <mat-label>Edit Email</mat-label>
+        <input matInput [(ngModel)]="editableEmail" />
+      </mat-form-field>
+      <button mat-icon-button (click)="saveEmail()" aria-label="Save email">
+        <mat-icon>save</mat-icon>
+      </button>
+    </ng-template>
+  </mat-card>
+
+  <div class="action-buttons">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openChangePasswordModal()"
+    >
+      Change Password
+    </button>
+    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+  </div>
+</div>
