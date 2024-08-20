@@ -73,14 +73,25 @@ export class SignInComponent {
     return this.fb.group<SignInForm>({
       email: this.fb.control(
         { value: '', disabled: false },
-        { validators: [Validators.required, Validators.email] },
+        {
+          validators: [
+            Validators.required,
+            Validators.pattern(
+              '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
+            ),
+          ],
+        },
       ),
       password: this.fb.control(
         {
           value: '',
           disabled: false,
         },
-        [Validators.required, Validators.minLength(8)],
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('^S*$'),
+        ],
       ),
     });
   }
