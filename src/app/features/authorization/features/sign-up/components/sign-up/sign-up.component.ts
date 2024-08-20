@@ -81,7 +81,7 @@ export class SignUpComponent implements OnInit {
             validators: [
               Validators.required,
               Validators.pattern(
-                '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
+                '^[a-zA-Zа-яА-Я0-9._%+-]+@[a-zA-Zа-яА-Я0-9.-]+\\.[a-zA-Zа-яА-Я]{2,}$',
               ),
             ],
           },
