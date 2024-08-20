@@ -18,7 +18,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SignUpForm } from '../../sign-up.model';
+import { SignUpForm } from '../../models/sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { matchPassword } from '../../passwords-match.directive';
 import { SignupService } from '../../signup.service';
