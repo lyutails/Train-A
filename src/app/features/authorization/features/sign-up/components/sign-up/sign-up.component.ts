@@ -1,6 +1,6 @@
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   MatFormField,
@@ -30,13 +30,8 @@ export class SignUpComponent {
   signUpButtonName = 'Register';
   signInButtonName = 'Sign In';
   formTitle = 'Sign Up';
-  hide = signal(true);
 
   constructor(private router: Router) {}
-
-  togglePasswordVisibility() {
-    this.hide.set(!this.hide());
-  }
 
   navigateSignIn() {
     this.router.navigate(['/signin']);
