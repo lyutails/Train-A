@@ -1,9 +1,10 @@
-<form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-  <div class="input-container">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" placeholder="Enter your email" />
+<div class="sign-in_wrapper">
+  <h2 class="sign-in_title">Sign in</h2>
+  <form class="sign-in_form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="sign-in_field">
+      <input matInput formControlName="email" placeholder="Email" />
       <mat-error
+        class="sign-in_input-error"
         *ngIf="
           signInForm.get('email')?.invalid && signInForm.get('email')?.touched
         "
@@ -11,15 +12,15 @@
         Please enter a valid email address.
       </mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
+    <mat-form-field appearance="outline" class="sign-in_field">
       <input
         matInput
         [type]="'password'"
         formControlName="password"
-        placeholder="Enter your password"
+        placeholder="Password"
       />
       <mat-error
+        class="sign-in_input-error"
         *ngIf="
           signInForm.get('password')?.invalid &&
           signInForm.get('password')?.touched
@@ -28,8 +29,13 @@
         Password must be at least 8 characters long.
       </mat-error>
     </mat-form-field>
-  </div>
-  <button type="submit" [disabled]="signInForm.invalid">Sign In</button>
-</form>
-
-<a class="sign-up-link" routerLink="/sign-up">Sign Up</a>
+    <div class="sign-in_buttons">
+      <button mat-flat-button type="submit" class="sign-in_button">
+        Sign In
+      </button>
+      <button mat-button routerLink="/signup" class="sign-in_link">
+        Sign Up
+      </button>
+    </div>
+  </form>
+</div>
