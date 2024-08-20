@@ -2,6 +2,7 @@
   <h2 class="sign-in_title">Sign in</h2>
   <form class="sign-in_form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="sign-in_field">
+      <mat-label>Email</mat-label>
       <input matInput formControlName="email" placeholder="Email" />
       @if (
         signInForm.get("email")?.invalid && signInForm.get("email")?.touched
@@ -12,6 +13,7 @@
       }
     </mat-form-field>
     <mat-form-field appearance="outline" class="sign-in_field">
+      <mat-label>Password</mat-label>
       <input
         matInput
         [type]="'password'"
