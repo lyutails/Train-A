@@ -1,8 +1,9 @@
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  MatError,
   MatFormField,
   MatInput,
   MatLabel,
@@ -19,6 +20,8 @@ import {
 } from '@angular/forms';
 import { SignUpForm } from '../../sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
+import { matchPassword } from '../../passwords-match.directive';
+import { SignupService } from '../../signup.service';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -35,6 +38,7 @@ import { ButtonComponent } from '../../../../../../common/button/button.componen
     ReactiveFormsModule,
     FormsModule,
     ButtonComponent,
+    MatError,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
@@ -44,10 +48,12 @@ export class SignUpComponent implements OnInit {
   public signInButtonName = 'Sign In';
   public formTitle = 'Sign Up';
   public signUpForm!: FormGroup<SignUpForm>;
+  @ViewChild('input') inputElement!: ElementRef;
 
   constructor(
     private router: Router,
     private readonly fb: NonNullableFormBuilder,
+    private signup: SignupService,
   ) {}
 
   ngOnInit(): void {
@@ -56,34 +62,69 @@ export class SignUpComponent implements OnInit {
 
   public onSubmit() {
     if (
-      this.signUpForm.valid &&
-      this.passwordFormControl === this.repeatPasswordFormControl
+      this.signUpForm.controls.password.value ===
+      this.signUpForm.value.password?.trim()
+      /* this.signUpForm.value.password?.trim() &&
+      this.signUpForm.value.repeatPassword?.trim() */
     ) {
+      this.register();
       this.signUpForm.reset();
     }
   }
 
   private get signUpFormInstance(): FormGroup<SignUpForm> {
-    return this.fb.group<SignUpForm>({
-      email: this.fb.control(
-        { value: '', disabled: false },
-        { validators: [Validators.required, Validators.email] },
-      ),
-      password: this.fb.control(
-        {
-          value: '',
-          disabled: false,
-        },
-        { validators: [Validators.required, Validators.minLength(8)] },
-      ),
-      repeatPassword: this.fb.control(
-        {
-          value: '',
-          disabled: false,
-        },
-        { validators: [Validators.required, Validators.minLength(8)] },
-      ),
-    });
+    return this.fb.group<SignUpForm>(
+      {
+        email: this.fb.control(
+          { value: '', disabled: false },
+          {
+            validators: [
+              Validators.required,
+              // Validators.email,
+              Validators.pattern(
+                '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$',
+              ),
+              // Validators.pattern('^\\S*$'),
+            ],
+          },
+        ),
+        password: this.fb.control(
+          {
+            value: '',
+            disabled: false,
+          },
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern('^\\S*$'),
+          ],
+        ),
+        repeatPassword: this.fb.control(
+          {
+            value: '',
+            disabled: false,
+          },
+          [
+            Validators.required,
+            Validators.pattern('^\\S*$'),
+            // matchPassword('password', 'repeatPassword'),
+          ],
+        ),
+      },
+      { validators: matchPassword('password', 'repeatPassword') },
+    );
+  }
+
+  register() {
+    this.signup
+      .signup(
+        this.signUpForm.controls.email.value,
+        this.signUpForm.controls.password.value,
+      )
+      .subscribe((data) => {
+        console.log('lalala', data);
+        // return this.redirectToSignIn;
+      });
   }
 
   public get emailFormControl(): FormControl<string> {

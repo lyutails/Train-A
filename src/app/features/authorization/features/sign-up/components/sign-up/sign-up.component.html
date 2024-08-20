@@ -3,8 +3,13 @@
     <p class="sign-up_title">{{ formTitle }}</p>
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Email</mat-label>
-      <input matInput placeholder="email..." formControlName="email" />
+      <input #input matInput placeholder="email..." formControlName="email" />
     </mat-form-field>
+    <!-- @if (signUpForm.controls["email"].hasError("invalidUniqueKey")) {
+      <div class="sign-up_input-error">
+        Account with this email already exists
+      </div>
+    } -->
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Password</mat-label>
       <input
@@ -14,15 +19,6 @@
         type="password"
       />
     </mat-form-field>
-    @if (
-      passwordFormControl.touched &&
-      passwordFormControl.invalid &&
-      passwordFormControl !== repeatPasswordFormControl
-    ) {
-      <div class="alert alert-danger sign-up_input-error">
-        Passwords don't match
-      </div>
-    }
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Repeat Password</mat-label>
       <input
@@ -33,12 +29,13 @@
       />
     </mat-form-field>
     @if (
-      repeatPasswordFormControl.touched &&
-      repeatPasswordFormControl.invalid &&
-      passwordFormControl !== repeatPasswordFormControl
+      signUpForm.controls.repeatPassword.touched &&
+      signUpForm.controls.repeatPassword.invalid
     ) {
-      <div class="alert alert-danger sign-up_input-error">
-        Passwords don't match
+      <div class="sign-up_input-error">
+        @if (signUpForm.controls.repeatPassword.errors?.["passwordMismatch"]) {
+          <div>Passwords don't match</div>
+        }
       </div>
     }
     <div class="sign-up_buttons">

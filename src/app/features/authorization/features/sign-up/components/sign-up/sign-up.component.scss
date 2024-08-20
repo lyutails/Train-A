@@ -47,9 +47,6 @@
   &_input-error {
     width: max-content;
     font-size: 0.7rem;
+    color: oklch(59.98% 0.236 15.45deg);
   }
-}
-
-.alert.alert-danger {
-  color: oklch(59.98% 0.236 15.45deg);
 }

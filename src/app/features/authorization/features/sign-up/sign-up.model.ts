@@ -5,3 +5,7 @@ export interface SignUpForm {
   password: FormControl<string>;
   repeatPassword: FormControl<string>;
 }
+
+export interface SignUpErrors {
+  404: 'invalidUniqueKey';
+}
