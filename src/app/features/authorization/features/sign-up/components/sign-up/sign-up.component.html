@@ -24,15 +24,16 @@
     }
     <div class="sign-up_buttons">
       <TTP-button
-        type="submit"
-        class="sing-up_button"
+        [type]="'submit'"
+        class="sign-up_button"
         [disabled]="!signUpForm.valid"
         >{{ signUpButtonName }}</TTP-button
       >
       <TTP-button
-        type="submit"
-        class="sing-up_button"
+        [type]="'button'"
+        class="sign-up_button"
         (click)="(redirectToSignIn)"
+        [disabled]="false"
         >{{ signInButtonName }}</TTP-button
       >
     </div>
