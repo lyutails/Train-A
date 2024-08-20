@@ -95,7 +95,7 @@ export class SignUpComponent implements OnInit {
   }
 
   public get repeatPasswordFormControl(): FormControl<string> {
-    return this.signUpForm.controls.password;
+    return this.signUpForm.controls.repeatPassword;
   }
 
   public get redirectToSignIn() {

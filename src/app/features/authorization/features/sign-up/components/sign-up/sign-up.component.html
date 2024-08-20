@@ -1,6 +1,6 @@
 <div class="sign-up_wrapper">
-  <p class="sign-up_title">{{ formTitle }}</p>
   <form class="sign-up_form" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+    <p class="sign-up_title">{{ formTitle }}</p>
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Email</mat-label>
       <input matInput placeholder="email..." formControlName="email" />
@@ -23,13 +23,11 @@
         type="password"
       />
     </mat-form-field>
-    @if (
-      passwordFormControl.touched &&
-      repeatPasswordFormControl.touched &&
-      passwordFormControl !== repeatPasswordFormControl
-    ) {
+    @if (passwordFormControl.touched && repeatPasswordFormControl.touched) {
       <div class="alert alert-danger">
-        <div>Passwords don't match</div>
+        @if (passwordFormControl !== repeatPasswordFormControl) {
+          <div>Passwords don't match</div>
+        }
       </div>
     }
     <div class="sign-up_buttons">
