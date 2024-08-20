@@ -11,7 +11,11 @@
     </mat-form-field>
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Repeat Password</mat-label>
-      <input matInput placeholder="repeat password..." />
+      <input
+        matInput
+        placeholder="repeat password..."
+        formControlName="repeatPassword"
+      />
     </mat-form-field>
     @if (
       passwordFormControl.touched &&
