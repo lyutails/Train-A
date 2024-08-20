@@ -11,4 +11,5 @@ import { MatButton } from '@angular/material/button';
 export class ButtonComponent {
   @Input() disabled = false;
   @Input() type: HTMLButtonElement['type'] = 'button';
+  @Input() width = '100px';
 }

@@ -25,13 +25,13 @@
     <div class="sign-up_buttons">
       <TTP-button
         [type]="'submit'"
-        class="sign-up_button"
+        [width]="'100px'"
         [disabled]="!signUpForm.valid"
         >{{ signUpButtonName }}</TTP-button
       >
       <TTP-button
         [type]="'button'"
-        class="sign-up_button"
+        [width]="'100px'"
         (click)="(redirectToSignIn)"
         [disabled]="false"
         >{{ signInButtonName }}</TTP-button
