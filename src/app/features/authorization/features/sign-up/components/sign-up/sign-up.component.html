@@ -1,23 +1,62 @@
-<form class="sign-up_form">
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput placeholder="Placeholder" />
-    <mat-icon matSuffix>email</mat-icon>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
-    <input matInput placeholder="Placeholder" />
-    <mat-icon matSuffix>key</mat-icon>
-  </mat-form-field>
-  <button mat-flat-button type="button" class="sing-up_button">
-    {{ signUpButtonName }}
-  </button>
-  <button
-    mat-flat-button
-    type="button"
-    class="sing-up_button"
-    (click)="navigateSignIn()"
-  >
-    {{ signInButtonName }}
-  </button>
-</form>
+<div class="sign-up_wrapper">
+  <p class="sign-up_title">{{ formTitle }}</p>
+  <form class="sign-up_form">
+    <mat-form-field appearance="outline" class="sign-up_email">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="email..." />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        placeholder="password..."
+        [type]="hide() ? 'password' : 'text'"
+      />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>
+          {{ hide() ? "visibility_off" : "visibility" }}
+        </mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Repeat Password</mat-label>
+      <input
+        matInput
+        placeholder="repeat password..."
+        [type]="hide() ? 'password' : 'text'"
+      />
+      <button
+        type="button"
+        mat-icon-button
+        matSuffix
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+      >
+        <mat-icon>
+          {{ hide() ? "visibility_off" : "visibility" }}
+        </mat-icon>
+      </button>
+    </mat-form-field>
+    <div class="sign-up_buttons">
+      <button mat-flat-button type="button" class="sing-up_button">
+        {{ signUpButtonName }}
+      </button>
+      <button
+        mat-flat-button
+        type="button"
+        class="sign-up_button"
+        (click)="navigateSignIn()"
+      >
+        {{ signInButtonName }}
+      </button>
+    </div>
+  </form>
+</div>
