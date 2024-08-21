@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { ProfileService } from './repositories/profile/services/profile.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ProfileFacade } from './features/profile/services/profile.facade';
 
 @Component({
   selector: 'TTP-root',
@@ -13,12 +13,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class AppComponent {
   test = 'test';
 
-  constructor(private profile: ProfileService) {
-    this.checkName();
+  constructor(private profile: ProfileFacade) {
+    this.logout();
   }
 
-  public checkName() {
-    this.profile.getUserProfile().subscribe({
+  public logout() {
+    this.profile.logout().subscribe({
       next: (response) => {
         console.log(response);
       },

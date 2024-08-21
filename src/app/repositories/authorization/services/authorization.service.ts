@@ -30,4 +30,12 @@ export class AuthorizationService {
   public getTokenFromLocalStorage(): string | null {
     return this.localStorageService.getItem<string>(this.storageKey);
   }
+
+  public deleteTokenFromLocalStorage(): void {
+    this.localStorageService.removeItem(this.storageKey);
+  }
+
+  public get isAuthenticated(): boolean {
+    return !!this.localStorageService.getItem<string>(this.storageKey);
+  }
 }
