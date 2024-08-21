@@ -8,7 +8,7 @@ export interface SignUpForm {
 
 export interface SignUpResponse {
   400: 'Bad Request';
-  200: 'success';
+  200: 'Success';
 }
 
 export interface ErrorMessages {

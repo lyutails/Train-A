@@ -1,6 +1,6 @@
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   MatError,
@@ -20,8 +20,9 @@ import {
 } from '@angular/forms';
 import { SignUpForm } from '../../models/sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
-import { matchPassword } from '../../passwords-match.directive';
+import { matchPassword } from '../validators/passwords-match.directive';
 import { SignupService } from '../../signup.service';
+import { TrimPipe } from '../pipes/trim.pipe';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -39,13 +40,13 @@ import { SignupService } from '../../signup.service';
     FormsModule,
     ButtonComponent,
     MatError,
+    TrimPipe,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })
 export class SignUpComponent implements OnInit {
   public signUpForm!: FormGroup<SignUpForm>;
-  @ViewChild('input') inputElement!: ElementRef;
 
   constructor(
     private router: Router,
@@ -58,15 +59,8 @@ export class SignUpComponent implements OnInit {
   }
 
   public onSubmit() {
-    if (
-      this.signUpForm.controls.password.value ===
-      this.signUpForm.value.password?.trim()
-      /* this.signUpForm.value.password?.trim() &&
-      this.signUpForm.value.repeatPassword?.trim() */
-    ) {
-      this.register();
-      this.signUpForm.reset();
-    }
+    this.register();
+    this.signUpForm.reset();
   }
 
   private get signUpFormInstance(): FormGroup<SignUpForm> {
@@ -110,7 +104,7 @@ export class SignUpComponent implements OnInit {
     );
   }
 
-  register() {
+  private register() {
     this.signup
       .signup(
         this.signUpForm.controls.email.value,

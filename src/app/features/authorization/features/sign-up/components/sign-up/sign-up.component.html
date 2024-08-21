@@ -3,7 +3,13 @@
     <p class="sign-up_title">Sign Up</p>
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Email</mat-label>
-      <input #input matInput placeholder="email..." formControlName="email" />
+      <input
+        #input
+        matInput
+        placeholder="email..."
+        formControlName="email"
+        [value]="signUpForm.controls.email.value | trim"
+      />
     </mat-form-field>
     <!-- @if (signUpForm.controls["email"].hasError("invalidUniqueKey")) {
       <div class="sign-up_input-error">
