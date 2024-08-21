@@ -112,7 +112,9 @@ export class SignUpComponent implements OnInit {
       )
       .subscribe((data) => {
         console.log('lalala', data);
-        this.signUpForm.controls.email.setErrors({ [data]: true });
+        if (data === 'invalidUniqueKey') {
+          this.signUpForm.controls.email.setErrors({ [data]: true });
+        }
         // return this.redirectToSignIn;
       });
   }
