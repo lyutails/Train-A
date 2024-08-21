@@ -21,7 +21,6 @@ export class SignupService {
   signup(email: string, password: string) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: 'my-auth-token',
     });
     const url = '/api/signup/';
     return this.httpClient
