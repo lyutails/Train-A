@@ -23,6 +23,7 @@
         placeholder="password..."
         formControlName="password"
         type="password"
+        [value]="signUpForm.controls.password.value | trim"
       />
     </mat-form-field>
     <mat-form-field appearance="outline" class="sign-up_field">
@@ -32,6 +33,7 @@
         placeholder="repeat password..."
         formControlName="repeatPassword"
         type="password"
+        [value]="signUpForm.controls.repeatPassword.value | trim"
       />
     </mat-form-field>
     @if (
