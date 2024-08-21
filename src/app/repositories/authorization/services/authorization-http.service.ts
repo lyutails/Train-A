@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserInfo } from '../../../features/authorization/models/user-info.model';
+import { TokenModel } from '../models/token.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class AuthorizationHttpService {
     return this.httpClient.post<void>('signup', userInfo);
   }
 
-  public signIn(userInfo: UserInfo): Observable<string> {
-    return this.httpClient.post<string>('signin', userInfo);
+  public signIn(userInfo: UserInfo): Observable<TokenModel> {
+    return this.httpClient.post<TokenModel>('signin', userInfo);
   }
 }

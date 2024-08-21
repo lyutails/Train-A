@@ -16,7 +16,7 @@ import { SignUpForm } from '../../models/sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { matchPassword } from '../../validators/passwords-match.directive';
 import { TrimPipe } from '../../pipes/trim.pipe';
-import { AuthorizationService } from '../../../../../../repositories/authorization/features/authorization.service';
+import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
