@@ -29,7 +29,6 @@ export const APP_ROUTES: Routes = [
         (m) => m.PROFILE_ROUTES,
       ),
   },
-
   {
     path: 'not-found',
     loadComponent: () =>
