@@ -5,15 +5,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { catchError, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
-
-interface AuthResponse {
-  token?: string;
-}
+import { AuthorizationService } from '../../../../../../repositories/authorization/features/authorization.service';
+import { UserInfo } from '../../../../models/user-info.model';
 
 @Component({
   selector: 'TTP-sign-in',
@@ -41,6 +38,7 @@ export class SignInComponent {
     private readonly fb: NonNullableFormBuilder,
     private readonly http: HttpClient,
     private router: Router,
+    private readonly authorizationService: AuthorizationService,
   ) {
     this.signInForm = this.signInFormInstance;
   }
@@ -52,37 +50,22 @@ export class SignInComponent {
 
     this.isSubmitting = true;
     this.clearErrorMessages();
-
-    const { email, password } = this.signInForm.value;
-
-    if (email === 'admin@admin.com' && password === 'my-password') {
-      const fakeToken = 'fake-jwt-token';
-      localStorage.setItem('authToken', fakeToken);
-      this.isSubmitting = false;
-      this.router.navigate(['/']);
-      return;
-    }
-
-    this.http
-      .post<AuthResponse>('/api/auth/signin', { email, password })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.handleAuthError(error);
-          this.isSubmitting = false;
-          return of(null);
-        }),
-      )
-      .subscribe((response) => {
-        if (response?.token) {
-          localStorage.setItem('authToken', response.token);
-          this.router.navigate(['/']);
-        } else {
-          this.isSubmitting = false;
-        }
-      });
+    this.authorizationService.signIn(this.userInfo).subscribe({
+      next: (token) => {
+        this.authorizationService.saveTokenToLocalStorage(token);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.handleAuthError(error);
+        this.isSubmitting = false;
+      },
+      complete: () => {
+        this.router.navigate(['/']);
+      },
+    });
   }
 
   private handleAuthError(error: HttpErrorResponse): void {
+    //TODO The errors does not appear in the form
     if (error.status === 404) {
       this.emailErrorMessage = 'User is not found';
       this.passwordErrorMessage = null;
@@ -125,5 +108,12 @@ export class SignInComponent {
 
   public get redirectToSignUp() {
     return this.router.navigate(['/auth/signup']);
+  }
+
+  public get userInfo(): UserInfo {
+    return {
+      email: this.signInForm.controls.email.value,
+      password: this.signInForm.controls.password.value,
+    };
   }
 }

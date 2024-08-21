@@ -10,6 +10,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { StorageModule } from './core/storage/storage.module';
 import { storageKeyPrefix } from './core/storage/tokens/local-storage-key.token';
+import { authorizationInterceptor } from './repositories/authorization/interceptors/authorization-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +27,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimationsAsync(),
     importProvidersFrom(MatNativeDateModule),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([authorizationInterceptor])),
     importProvidersFrom(StorageModule.forRoot({ config: { prefix: storageKeyPrefix } })),
   ],
 };
