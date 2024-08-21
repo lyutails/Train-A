@@ -1,9 +1,28 @@
+$light-blue: oklch(91.69% 0.0396 269.9781deg);
+$deep-blue: oklch(49.71% 0.165 259.85deg);
+
 html,
 body {
   height: 100%;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient($light-blue, $deep-blue);
+  border-radius: 20px;
+  outline: 1px solid transparent;
 }
