@@ -44,16 +44,16 @@
     <div class="sign-up_buttons">
       <TTP-button
         [type]="'submit'"
-        [width]="'100px'"
+        [width]="'10vw'"
         [disabled]="!signUpForm.valid"
         [buttonText]="'Register'"
       ></TTP-button>
       <TTP-button
         [type]="'button'"
-        [width]="'100px'"
+        [width]="'10vw'"
+        (click)="(redirectToSignIn)"
         [disabled]="false"
         [buttonText]="'Sign In'"
-        (click)="(redirectToSignIn)"
       ></TTP-button>
     </div>
   </form>
