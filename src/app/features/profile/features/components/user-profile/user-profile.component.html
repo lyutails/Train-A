@@ -15,9 +15,29 @@
     <ng-template #editNameTemplate>
       <mat-form-field appearance="fill">
         <mat-label>Edit Name</mat-label>
-        <input matInput [(ngModel)]="editableName" />
+        <input matInput [formControl]="editableNameControl" />
+        <mat-error
+          *ngIf="profileForm?.get('editableName')?.hasError('required')"
+        >
+          Name is required
+        </mat-error>
+        <mat-error
+          *ngIf="profileForm?.get('editableName')?.hasError('minlength')"
+        >
+          Name must be at least 3 characters long
+        </mat-error>
+        <mat-error
+          *ngIf="profileForm?.get('editableName')?.hasError('maxlength')"
+        >
+          Name cannot exceed 50 characters
+        </mat-error>
       </mat-form-field>
-      <button mat-icon-button (click)="saveName()" aria-label="Save name">
+      <button
+        mat-icon-button
+        (click)="saveName()"
+        aria-label="Save name"
+        [disabled]="!profileForm?.get('editableName')?.valid"
+      >
         <mat-icon>save</mat-icon>
       </button>
     </ng-template>
@@ -37,9 +57,22 @@
     <ng-template #editEmailTemplate>
       <mat-form-field appearance="fill">
         <mat-label>Edit Email</mat-label>
-        <input matInput [(ngModel)]="editableEmail" />
+        <input matInput [formControl]="editableEmailControl" />
+        <mat-error
+          *ngIf="profileForm?.get('editableEmail')?.hasError('required')"
+        >
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('email')">
+          Invalid email format
+        </mat-error>
       </mat-form-field>
-      <button mat-icon-button (click)="saveEmail()" aria-label="Save email">
+      <button
+        mat-icon-button
+        (click)="saveEmail()"
+        aria-label="Save email"
+        [disabled]="!profileForm?.get('editableEmail')?.valid"
+      >
         <mat-icon>save</mat-icon>
       </button>
     </ng-template>
