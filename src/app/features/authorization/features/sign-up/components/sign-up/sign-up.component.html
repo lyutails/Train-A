@@ -43,15 +43,15 @@
         [type]="'submit'"
         [width]="'100px'"
         [disabled]="!signUpForm.valid"
-        >{{ signUpButtonName }}</TTP-button
-      >
+        [buttonText]="'Register'"
+      ></TTP-button>
       <TTP-button
         [type]="'button'"
         [width]="'100px'"
         (click)="(redirectToSignIn)"
         [disabled]="false"
-        >{{ signInButtonName }}</TTP-button
-      >
+        [buttonText]="'Sign In'"
+      ></TTP-button>
     </div>
   </form>
 </div>

@@ -5,7 +5,6 @@ import { startServer } from '@planess/train-a-backend';
 
 startServer().then(() =>
   bootstrapApplication(AppComponent, appConfig).catch((err) =>
-     
     console.error(err),
   ),
 );

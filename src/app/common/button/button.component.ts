@@ -12,4 +12,5 @@ export class ButtonComponent {
   @Input() disabled = false;
   @Input() type: HTMLButtonElement['type'] = 'button';
   @Input() width = '100px';
+  @Input() public buttonText = '';
 }

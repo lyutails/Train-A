@@ -44,8 +44,6 @@ import { SignupService } from '../../signup.service';
   styleUrl: './sign-up.component.scss',
 })
 export class SignUpComponent implements OnInit {
-  public signUpButtonName = 'Register';
-  public signInButtonName = 'Sign In';
   public formTitle = 'Sign Up';
   public signUpForm!: FormGroup<SignUpForm>;
   @ViewChild('input') inputElement!: ElementRef;
