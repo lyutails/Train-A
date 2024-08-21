@@ -11,6 +11,7 @@ import { ButtonComponent } from '../../../../../../common/button/button.componen
 import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
 import { TrimPipe } from '../../../sign-up/pipes/trim.pipe';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'TTP-sign-in',
@@ -27,6 +28,7 @@ import { TrimPipe } from '../../../sign-up/pipes/trim.pipe';
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SignInComponent {
   public signInForm: FormGroup<SignInForm>;

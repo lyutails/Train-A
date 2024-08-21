@@ -1,5 +1,5 @@
 <div class="sign-in_wrapper">
-  <h2 class="sign-in_title">Sign in</h2>
+  <p class="sign-in_title">Sign in</p>
   <form class="sign-in_form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="sign-in_field">
       <mat-label>Email</mat-label>
@@ -32,14 +32,7 @@
         [buttonText]="'Sign In'"
       >
       </TTP-button>
-      <TTP-button
-        class="sign-in_link"
-        [type]="'button'"
-        [width]="'100px'"
-        (click)="(redirectToSignUp)"
-        [buttonText]="'Sign Up'"
-      >
-      </TTP-button>
+      <button mat-button (click)="(redirectToSignUp)">Sign Up</button>
     </div>
   </form>
 </div>
