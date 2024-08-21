@@ -9,6 +9,7 @@ import { catchError, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
 import { Router } from '@angular/router';
+import { ButtonComponent } from '../../../../../../common/button/button.component';
 
 interface AuthResponse {
   token?: string;
@@ -24,6 +25,7 @@ interface AuthResponse {
     MatFormFieldModule,
     MatButtonModule,
     MatInputModule,
+    ButtonComponent,
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
@@ -125,5 +127,9 @@ export class SignInComponent {
         ],
       ),
     });
+  }
+
+  public get redirectToSignUp() {
+    return this.router.navigate(['/auth/signup']);
   }
 }

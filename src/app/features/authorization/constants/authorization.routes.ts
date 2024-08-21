@@ -8,4 +8,11 @@ export const AUTHORIZATION_ROUTES: Routes = [
         (m) => m.SignInComponent,
       ),
   },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('../features/sign-up/components/sign-up/sign-up.component').then(
+        (m) => m.SignUpComponent,
+      ),
+  },
 ];
