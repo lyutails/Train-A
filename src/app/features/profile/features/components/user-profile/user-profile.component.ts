@@ -38,7 +38,7 @@ import { ChangePasswordDialogComponent } from '../change-password-dialog/change-
   styleUrl: './user-profile.component.scss',
 })
 export class UserProfileComponent implements OnInit {
-  user = { name: 'John Doe', email: 'john.doe@example.com' }; // Пример данных пользователя
+  user = { name: 'John Doe', email: 'john.doe@example.com' };
 
   profileForm: FormGroup | undefined;
   isEditingName = false;
@@ -47,9 +47,7 @@ export class UserProfileComponent implements OnInit {
     private http: HttpClient,
     private router: Router,
     private dialog: MatDialog,
-  ) {
-    this.getUserInfo();
-  }
+  ) {}
 
   ngOnInit() {
     this.profileForm = new FormGroup({
@@ -65,23 +63,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  getUserInfo() {
-    // this.http.get('/api/profile').subscribe({
-    //   next: (data) => {
-    //     this.user = data as User;
-    //     this.editableName = this.user.name;
-    //     this.editableEmail = this.user.email;
-    //   },
-    //   error: (error: { status: number }) => {
-    //     if (error.status === 401) {
-    //       // this.router.navigate(['/login']);
-    //     }
-    //   },
-    //   complete: () => {
-    //     console.log('User info retrieval completed.');
-    //   },
-    // });
-  }
   get editableNameControl(): FormControl {
     return this.profileForm?.get('editableName') as FormControl;
   }
@@ -103,17 +84,6 @@ export class UserProfileComponent implements OnInit {
       this.user.name = this.profileForm.get('editableName')?.value.trim();
       this.isEditingName = false;
     }
-    // this.http
-    //   .put('/api/profile', { name: this.editableName, email: this.user.email })
-    //   .subscribe({
-    //     next: () => {
-    //       this.user.name = this.editableName;
-    //       this.isEditingName = false;
-    //     },
-    //     error: (error) => {
-    //       console.error('Error updating name', error);
-    //     },
-    //   });
   }
 
   saveEmail() {
@@ -121,17 +91,6 @@ export class UserProfileComponent implements OnInit {
       this.user.email = this.profileForm.get('editableEmail')?.value.trim();
       this.isEditingEmail = false;
     }
-    // this.http
-    //   .put('/api/profile', { name: this.user.name, email: this.editableEmail })
-    //   .subscribe({
-    //     next: () => {
-    //       this.user.email = this.editableEmail;
-    //       this.isEditingEmail = false;
-    //     },
-    //     error: (error) => {
-    //       console.error('Error updating email', error);
-    //     },
-    //   });
   }
 
   openChangePasswordModal() {
@@ -142,28 +101,8 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
-  // savePassword() {
-  //   this.http.put('/api/profile/password', { password: this.newPassword })
-  //     .subscribe({
-  //       next: () => {
-  //         this.closeChangePasswordModal();
-  //       },
-  //       error: (error: any) => {
-  //         console.error('Error changing password', error);
-  //       }
-  //     });
-  // }
 
-  // Выход из системы
   logout() {
-    // this.http.delete('/api/logout').subscribe({
-    //   next: () => {
-    //     localStorage.removeItem('authToken');
-    //     this.router.navigate(['/']);
-    //   },
-    //   error: (error) => {
-    //     console.error('Logout failed', error);
-    //   },
-    // });
+    console.log('logout');
   }
 }
