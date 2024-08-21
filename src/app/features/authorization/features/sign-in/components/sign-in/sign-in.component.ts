@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, of } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
 import { Router } from '@angular/router';
 
@@ -32,11 +32,12 @@ export class SignInComponent {
   public signInForm: FormGroup<SignInForm>;
   public signInButtonName = 'Sign In';
   public isSubmitting = false;
-  public errorMessage: string | null = null;
+  public emailErrorMessage: string | null = null;
+  public passwordErrorMessage: string | null = null;
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private http: HttpClient,
+    private readonly fb: NonNullableFormBuilder,
+    private readonly http: HttpClient,
     private router: Router,
   ) {
     this.signInForm = this.signInFormInstance;
@@ -48,7 +49,7 @@ export class SignInComponent {
     }
 
     this.isSubmitting = true;
-    this.errorMessage = null;
+    this.clearErrorMessages();
 
     const { email, password } = this.signInForm.value;
 
@@ -63,9 +64,8 @@ export class SignInComponent {
     this.http
       .post<AuthResponse>('/api/auth/signin', { email, password })
       .pipe(
-        catchError(() => {
-          this.errorMessage =
-            'Authentication failed. Please check your credentials.';
+        catchError((error: HttpErrorResponse) => {
+          this.handleAuthError(error);
           this.isSubmitting = false;
           return of(null);
         }),
@@ -78,6 +78,26 @@ export class SignInComponent {
           this.isSubmitting = false;
         }
       });
+  }
+
+  private handleAuthError(error: HttpErrorResponse): void {
+    if (error.status === 404) {
+      this.emailErrorMessage = 'User is not found';
+      this.passwordErrorMessage = null;
+    } else if (error.status === 400) {
+      this.emailErrorMessage = 'Incorrect email or password';
+      this.passwordErrorMessage = 'Incorrect email or password';
+    } else if (error.status === 422) {
+      this.emailErrorMessage = 'Invalid email format';
+    } else {
+      this.emailErrorMessage = 'Authentication failed';
+      this.passwordErrorMessage = 'Authentication failed';
+    }
+  }
+
+  private clearErrorMessages(): void {
+    this.emailErrorMessage = null;
+    this.passwordErrorMessage = null;
   }
 
   private get signInFormInstance(): FormGroup<SignInForm> {

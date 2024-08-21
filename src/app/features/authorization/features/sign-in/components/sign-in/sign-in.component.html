@@ -4,11 +4,9 @@
     <mat-form-field appearance="outline" class="sign-in_field">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" placeholder="Email" />
-      @if (
-        signInForm.get("email")?.invalid && signInForm.get("email")?.touched
-      ) {
+      @if (emailErrorMessage) {
         <mat-error class="sign-in_input-error">
-          Please enter a valid email address.
+          {{ emailErrorMessage }}
         </mat-error>
       }
     </mat-form-field>
@@ -20,12 +18,9 @@
         formControlName="password"
         placeholder="Password"
       />
-      @if (
-        signInForm.get("password")?.invalid &&
-        signInForm.get("password")?.touched
-      ) {
+      @if (passwordErrorMessage) {
         <mat-error class="sign-in_input-error">
-          Password must be at least 8 characters long.
+          {{ passwordErrorMessage }}
         </mat-error>
       }
     </mat-form-field>
@@ -38,7 +33,7 @@
       >
         {{ signInButtonName }}
       </button>
-      <button mat-button routerLink="/signup" class="sign-in_link">
+      <button mat-button routerLink="/auth/signup" class="sign-in_link">
         Sign Up
       </button>
     </div>
