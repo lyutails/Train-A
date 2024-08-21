@@ -1,7 +1,7 @@
 import { LoadingService } from './../../../../../../common/services/loading/loading.service';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -16,10 +16,10 @@ import {
 import { SignUpForm } from '../../models/sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { matchPassword } from '../../validators/passwords-match.directive';
-import { TrimPipe } from '../../pipes/trim.pipe';
 import { AuthorizationService } from '../../../../../../repositories/authorization/features/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -44,6 +44,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class SignUpComponent implements OnInit {
   public signUpForm!: FormGroup<SignUpForm>;
+  emailValue = signal('');
+  currentEmailInputValue = signal('');
 
   constructor(
     private router: Router,
@@ -54,11 +56,19 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit(): void {
     this.signUpForm = this.signUpFormInstance;
+    this.signUpForm.controls.email.valueChanges.subscribe((data) => this.currentEmailInputValue.set(data));
   }
 
   public onSubmit() {
     this.register();
   }
+
+  isEqualToLastEmail = computed(() => {
+    if (this.emailValue() !== '' && this.emailValue() !== this.currentEmailInputValue()) {
+      return true;
+    }
+    return false;
+  });
 
   private get signUpFormInstance(): FormGroup<SignUpForm> {
     return this.fb.group<SignUpForm>(
@@ -99,6 +109,7 @@ export class SignUpComponent implements OnInit {
       error: ({ error }: HttpErrorResponse) => {
         if (error.reason === 'invalidUniqueKey') {
           this.signUpForm.controls['email'].setErrors({ invalidUniqueKey: true });
+          this.emailValue.set(this.signUpForm.controls.email.value);
         }
       },
     });
