@@ -1,0 +1,58 @@
+.sign-in {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 300px;
+    margin: 100px auto;
+    padding: 30px;
+
+    border: 1px solid rgb(0 0 0 / 20%);
+    border-radius: 10px;
+  }
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  &_field {
+    margin-bottom: 10px;
+  }
+
+  &_title {
+    width: 100%;
+    margin: 0 auto;
+
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  &_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 220px;
+    margin-top: 20px;
+  }
+
+  &_button {
+    width: 100px;
+  }
+
+  &_input-error {
+    width: max-content;
+    font-size: 0.7rem;
+    color: oklch(59.98% 0.236 15.45deg);
+  }
+}
