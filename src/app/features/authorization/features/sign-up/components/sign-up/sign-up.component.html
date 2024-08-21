@@ -9,6 +9,7 @@
         placeholder="email..."
         formControlName="email"
         [value]="signUpForm.controls.email.value | trim"
+        [disabled]="true"
       />
     </mat-form-field>
     @if (signUpForm.controls['email'].hasError('invalidUniqueKey')) {
@@ -41,20 +42,33 @@
         }
       </div>
     }
-    <div class="sign-up_buttons">
-      <TTP-button
-        [type]="'submit'"
-        [width]="'10vw'"
-        [disabled]="!signUpForm.valid"
-        [buttonText]="'Register'"
-      ></TTP-button>
-      <TTP-button
-        [type]="'button'"
-        [width]="'10vw'"
-        (click)="(redirectToSignIn)"
-        [disabled]="false"
-        [buttonText]="'Sign In'"
-      ></TTP-button>
-    </div>
+    @if (loadingService.spinnerCounter$ | async) {
+      <div class="sign-up_buttons">
+        <TTP-button [type]="'submit'" [width]="'10vw'" [disabled]="true" [buttonText]="'Register'"></TTP-button>
+        <TTP-button
+          [type]="'button'"
+          [width]="'10vw'"
+          (click)="(redirectToSignIn)"
+          [disabled]="true"
+          [buttonText]="'Sign In'"
+        ></TTP-button>
+      </div>
+    } @else {
+      <div class="sign-up_buttons">
+        <TTP-button
+          [type]="'submit'"
+          [width]="'10vw'"
+          [disabled]="!signUpForm.controls['email'].hasError('invalidUniqueKey') && !signUpForm.valid"
+          [buttonText]="'Register'"
+        ></TTP-button>
+        <TTP-button
+          [type]="'button'"
+          [width]="'10vw'"
+          (click)="(redirectToSignIn)"
+          [disabled]="false"
+          [buttonText]="'Sign In'"
+        ></TTP-button>
+      </div>
+    }
   </form>
 </div>

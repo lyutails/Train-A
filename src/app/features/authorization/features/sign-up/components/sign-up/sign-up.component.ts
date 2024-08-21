@@ -1,3 +1,4 @@
+import { LoadingService } from './../../../../../../common/services/loading/loading.service';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -48,6 +49,7 @@ export class SignUpComponent implements OnInit {
     private router: Router,
     private readonly fb: NonNullableFormBuilder,
     private readonly authorizationService: AuthorizationService,
+    public loadingService: LoadingService,
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +58,6 @@ export class SignUpComponent implements OnInit {
 
   public onSubmit() {
     this.register();
-    this.signUpForm.reset();
   }
 
   private get signUpFormInstance(): FormGroup<SignUpForm> {
