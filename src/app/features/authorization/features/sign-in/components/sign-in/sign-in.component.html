@@ -3,22 +3,27 @@
   <form class="sign-in_form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline" class="sign-in_field">
       <mat-label>Email</mat-label>
-      <input matInput formControlName="email" placeholder="Email" />
-      @if (emailErrorMessage) {
-        <mat-error class="sign-in_input-error">
-          {{ emailErrorMessage }}
-        </mat-error>
-      }
+      <input
+        matInput
+        formControlName="email"
+        placeholder="Email"
+        formControlName="email"
+        [value]="signInForm.controls.email.value | trim"
+      />
     </mat-form-field>
     <mat-form-field appearance="outline" class="sign-in_field">
       <mat-label>Password</mat-label>
-      <input matInput [type]="'password'" formControlName="password" placeholder="Password" />
-      @if (passwordErrorMessage) {
-        <mat-error class="sign-in_input-error">
-          {{ passwordErrorMessage }}
-        </mat-error>
-      }
+      <input
+        matInput
+        [type]="'password'"
+        formControlName="password"
+        placeholder="Password"
+        [value]="signInForm.controls.password.value | trim"
+      />
     </mat-form-field>
+    @if (signInForm.controls['email'].hasError('alreadyLoggedIn')) {
+      <mat-error class="sign-in_input-error"> Incorrect email or password </mat-error>
+    }
     <div class="sign-in_buttons">
       <TTP-button
         [type]="'submit'"
