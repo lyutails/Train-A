@@ -11,11 +11,11 @@
         [value]="signUpForm.controls.email.value | trim"
       />
     </mat-form-field>
-    <!-- @if (signUpForm.controls["email"].hasError("invalidUniqueKey")) {
+    @if (signUpForm.controls["email"].hasError("invalidUniqueKey")) {
       <div class="sign-up_input-error">
         Account with this email already exists
       </div>
-    } -->
+    }
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Password</mat-label>
       <input

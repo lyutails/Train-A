@@ -13,8 +13,7 @@ import { ErrorMessages, SignUpResponse } from './models/sign-up.model';
 export class SignupService {
   isSubmit = true;
   errorMessage = '';
-  msg = '';
-  ms1g = '';
+  errorReason = '';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -36,17 +35,15 @@ export class SignupService {
           console.log('error', status);
           console.log('error', statusText);
           if (checkErrorsMsgs(error)) {
-            this.msg = error.message;
-            this.ms1g = error.reason;
+            this.errorMessage = error.message;
+            this.errorReason = error.reason;
+            return of(this.errorReason);
           }
-          return of('Account with this email already exists');
+          return of(error.status);
         }),
       );
   }
 }
-/* message: 'User already exists', reason: 'invalidUniqueKey' */
-/* status: 400;
-statusText: 'Bad Request'; */
 
 function checkErrorsMsgs(error: unknown): error is ErrorMessages {
   return (
