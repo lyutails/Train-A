@@ -10,3 +10,8 @@ export interface SignUpResponse {
   400: 'Bad Request';
   200: 'success';
 }
+
+export interface ErrorMessages {
+  message: string;
+  reason: string;
+}

@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, of } from 'rxjs';
-import { SignUpResponse } from './models/sign-up.model';
+import { ErrorMessages, SignUpResponse } from './models/sign-up.model';
 
 @Injectable({
   providedIn: 'root',
@@ -48,12 +48,7 @@ export class SignupService {
 /* status: 400;
 statusText: 'Bad Request'; */
 
-interface err {
-  message: string;
-  reason: string;
-}
-
-function checkErrorsMsgs(error: unknown): error is err {
+function checkErrorsMsgs(error: unknown): error is ErrorMessages {
   return (
     typeof error === 'object' &&
     error !== null &&
