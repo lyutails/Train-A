@@ -19,7 +19,7 @@ export class ProfileHttpService {
   }
 
   public updatePassword(newPassword: string): Observable<void> {
-    return this.httpClient.put<void>('profile', newPassword);
+    return this.httpClient.put<void>('profile/password', newPassword);
   }
 
   public logout(): Observable<void> {
