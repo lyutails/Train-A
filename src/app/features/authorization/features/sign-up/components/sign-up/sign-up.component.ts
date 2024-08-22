@@ -20,6 +20,7 @@ import { AuthorizationService } from '../../../../../../repositories/authorizati
 import { UserInfo } from '../../../../models/user-info.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
+import { LoadingButtonComponent } from '../../../../../../common/loading-button/loading-button.component';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -38,6 +39,7 @@ import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
     ButtonComponent,
     MatError,
     TrimPipe,
+    LoadingButtonComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
