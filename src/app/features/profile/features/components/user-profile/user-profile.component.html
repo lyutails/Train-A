@@ -1,13 +1,14 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_container">
     <p class="profile_title">Profile</p>
+    <div class="profile_admin">display here Admin if logged in as Admin</div>
     <TTP-button [type]="'button'" [width]="'30vw'" [buttonText]="'Change Password'"></TTP-button>
-    <form [formGroup]="profileForm" #editNameTemplate class="profile_form">
+    <form [formGroup]="profileForm" class="profile_form">
       <div class="profile_item">
         <div>Name</div>
         <div class="profile_field">
           <mat-form-field appearance="outline" class="profile_field">
-            <input matInput formControlName="name" [value]="userCredentials.name | trim" #inputName />
+            <input matInput formControlName="name" [value]="userCredentials.name | trim" />
             @if (profileForm.controls['name'].hasError('required')) {
               <mat-error>Name is required</mat-error>
             }

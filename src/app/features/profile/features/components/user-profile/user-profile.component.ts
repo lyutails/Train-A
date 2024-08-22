@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { ProfileForm } from './models/sign-up.model';
@@ -49,14 +49,13 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public profileForm!: FormGroup<ProfileForm>;
   userCredentials: UserCredentials = { name: '', email: '' };
   editIconColour = 'oklch(49.71% 0.165 259.85deg)';
+  isNameBeingEdited = false;
   @ViewChild('inputName')
   inputName!: HTMLInputElement;
 
   constructor(
-    private dialog: MatDialog,
     private fb: NonNullableFormBuilder,
     private router: Router,
-    private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -67,9 +66,24 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.userCredentials = { name: '', email: 'lalala@lalala.com' };
+    // const localStorageCredentials = localStorage.getItem('credentials');
+    // this.userCredentials.name = localStorageCredentials ? JSON.parse(localStorageCredentials)! : '';
+    this.userCredentials = { name: 'lalala@lalala.com', email: 'lalala@lalala.com' };
+    if (this.isNameBeingEdited === false) {
+      const { email } = this.userCredentials;
+      this.userCredentials = { name: `${email?.trim().replace(/@(.*)$/, '')}`, email: `${email}` };
+    }
+    // this.userCredentials = { name: '', email: 'lalala@lalala.com' };
     this.cdr.detectChanges();
   }
+
+  /* setName(value: string) {
+    this.profileForm.controls.name.value = value;
+  }
+
+  setEmail(value: string) {
+    this.profileForm.controls.name.value = value;
+  } */
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
     return this.fb.group<ProfileForm>({
