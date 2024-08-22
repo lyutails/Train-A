@@ -27,12 +27,19 @@
     <div class="sign-in_buttons">
       <TTP-button
         [type]="'submit'"
-        [width]="'100px'"
+        [width]="'10vw'"
         [disabled]="signInForm.invalid || isSubmitting"
         [buttonText]="'Sign In'"
       >
       </TTP-button>
-      <button mat-button (click)="(redirectToSignUp)">Sign Up</button>
+      <TTP-button
+        class="sign-in_link"
+        [type]="'button'"
+        [width]="'10vw'"
+        (click)="(redirectToSignUp)"
+        [buttonText]="'Sign Up'"
+      >
+      </TTP-button>
     </div>
   </form>
 </div>
