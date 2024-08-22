@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
-import { TrimPipe } from '../../../sign-up/pipes/trim.pipe';
 import { ViewEncapsulation } from '@angular/core';
+import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
 
 @Component({
   selector: 'TTP-sign-in',

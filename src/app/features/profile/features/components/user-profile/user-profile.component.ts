@@ -1,13 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -38,7 +32,7 @@ import { ChangePasswordDialogComponent } from '../change-password-dialog/change-
   styleUrl: './user-profile.component.scss',
 })
 export class UserProfileComponent implements OnInit {
-  user = { name: 'John Doe', email: 'john.doe@example.com' };
+  user = { name: '', email: 'john.doe@example.com' };
 
   profileForm: FormGroup | undefined;
   isEditingName = false;
@@ -56,10 +50,7 @@ export class UserProfileComponent implements OnInit {
         Validators.minLength(3),
         Validators.maxLength(50),
       ]),
-      editableEmail: new FormControl(this.user.email, [
-        Validators.required,
-        Validators.email,
-      ]),
+      editableEmail: new FormControl(this.user.email, [Validators.required, Validators.email]),
     });
   }
 
