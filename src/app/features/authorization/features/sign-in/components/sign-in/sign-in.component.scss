@@ -57,22 +57,22 @@
   input.ng-invalid.ng-touched {
     border: 1px solid oklch(59.98% 0.236 15.45deg);
   }
+}
 
-  @media screen and (width >= 300px) and (width <= 639.98px) {
-    .sign-in {
-      &_wrapper {
-        width: 90vw;
-      }
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .sign-in {
+    &_wrapper {
+      width: 90vw;
+    }
 
-      &_field {
-        width: 100%;
-        padding: 0;
-      }
+    &_field {
+      width: 100%;
+      padding: 0;
+    }
 
-      &_buttons {
-        width: 100%;
-        margin-top: 20px;
-      }
+    &_buttons {
+      width: 100%;
+      margin-top: 20px;
     }
   }
 }
