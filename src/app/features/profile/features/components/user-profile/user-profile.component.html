@@ -1,68 +1,66 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_container">
     <h2>Profile</h2>
-    <mat-card class="profile_item" appearance="outlined">
-      <div *ngIf="!isEditingName; else editNameTemplate">
-        <span>{{ user.name }}</span>
+    <!-- <div *ngIf="!isEditingName; else editNameTemplate"> -->
+    <form [formGroup]="profileForm" #editNameTemplate>
+      <div *ngIf="!isEditingName" matTooltip="Please fill in your name">
+        <span>{{ userCredentials.name }}</span>
         <button mat-icon-button (click)="startEditing('name')" aria-label="Edit name">
           <mat-icon>edit</mat-icon>
         </button>
       </div>
-      <ng-template #editNameTemplate>
-        <mat-form-field appearance="fill">
-          <mat-label>Edit Name</mat-label>
-          <input matInput [formControl]="editableNameControl" />
-          @if (profileForm?.get('editableName')?.hasError('required')) {
-            <mat-error> Name is required </mat-error>
-          }
-          @if (profileForm?.get('editableName')?.hasError('minlength')) {
-            <mat-error> Name must be at least 3 characters long </mat-error>
-          }
-          @if (profileForm?.get('editableName')?.hasError('maxlength')) {
-            <mat-error *ngIf="profileForm?.get('editableName')?.hasError('maxlength')">
-              Name cannot exceed 50 characters
-            </mat-error>
-          }
-        </mat-form-field>
-        <button
-          mat-icon-button
-          (click)="saveName()"
-          aria-label="Save name"
-          [disabled]="!profileForm?.get('editableName')?.valid"
-        >
-          <mat-icon>save</mat-icon>
-        </button>
-      </ng-template>
-    </mat-card>
-
-    <mat-card class="profile-item">
-      <div *ngIf="!isEditingEmail; else editEmailTemplate">
-        <span>{{ user.email }}</span>
-        <button mat-icon-button (click)="startEditing('email')" aria-label="Edit email">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </div>
-      <ng-template #editEmailTemplate>
-        <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline" class="profile_field">
+        <mat-label>Edit Name</mat-label>
+        <input matInput formControlName="name" />
+        @if (profileForm.controls['name'].hasError('required')) {
+          <mat-error> Name is required </mat-error>
+        }
+        @if (profileForm.controls['name'].hasError('minlength')) {
+          <mat-error> Name must be at least 3 characters long </mat-error>
+        }
+        @if (profileForm.controls['name'].hasError('maxlength')) {
+          <mat-error> Name cannot exceed 50 characters </mat-error>
+        }
+      </mat-form-field>
+      <button
+        mat-icon-button
+        (click)="saveName()"
+        aria-label="Save name"
+        [disabled]="!profileForm.controls['name'].valid"
+      >
+        <mat-icon>save</mat-icon>
+      </button>
+      <div>
+        <!-- <div *ngIf="!isEditingEmail; else editEmailTemplate"> -->
+        <div *ngIf="!isEditingEmail">
+          <span>{{ userCredentials.email }}</span>
+          <button mat-icon-button (click)="startEditing('email')" aria-label="Edit email">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <mat-form-field appearance="outline" class="profile_field">
           <mat-label>Edit Email</mat-label>
-          <input matInput [formControl]="editableEmailControl" />
-          <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('required')"> Email is required </mat-error>
-          <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('email')"> Invalid email format </mat-error>
+          <input matInput formControlName="email" appearance="outline" />
+          @if (profileForm.controls['email'].hasError('required')) {
+            <mat-error> Email is required </mat-error>
+          }
+          @if (profileForm.controls['email'].hasError('pattern')) {
+            <mat-error>Invalid email format </mat-error>
+          }
         </mat-form-field>
         <button
           mat-icon-button
           (click)="saveEmail()"
           aria-label="Save email"
-          [disabled]="!profileForm?.get('editableEmail')?.valid"
+          [disabled]="!profileForm.controls['email'].valid"
         >
           <mat-icon>save</mat-icon>
         </button>
-      </ng-template>
-    </mat-card>
-
+      </div>
+    </form>
     <div class="action_buttons">
-      <button mat-raised-button color="primary" (click)="openChangePasswordModal()">Change Password</button>
-      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+      <button mat-flat-button (click)="openChangePasswordModal()">Change Password</button>
+      <button mat-flat-button (click)="logout()">Logout</button>
     </div>
   </div>
 </div>

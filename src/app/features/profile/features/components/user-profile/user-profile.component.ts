@@ -1,8 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +16,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { ButtonComponent } from '../../../../../common/button/button.component';
+import { ProfileForm } from './models/sign-up.model';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { UserCredentials } from './models/user-credentials.models';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -26,43 +36,61 @@ import { ChangePasswordDialogComponent } from '../change-password-dialog/change-
     ReactiveFormsModule,
     MatFormField,
     ChangePasswordDialogComponent,
+    ButtonComponent,
+    MatTooltipModule,
   ],
-
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
 export class UserProfileComponent implements OnInit {
-  user = { name: '', email: 'john.doe@example.com' };
-
-  profileForm: FormGroup | undefined;
+  @Input() editable = false;
+  public profileForm!: FormGroup<ProfileForm>;
   isEditingName = false;
   isEditingEmail = false;
+  userCredentials: UserCredentials = { name: '', email: 'john.doe@example.com' };
+
   constructor(
-    private http: HttpClient,
-    private router: Router,
     private dialog: MatDialog,
+    private readonly fb: NonNullableFormBuilder,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.profileForm = new FormGroup({
-      editableName: new FormControl(this.user.name, [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
-      editableEmail: new FormControl(this.user.email, [Validators.required, Validators.email]),
+    this.profileForm = this.profileFormInstance;
+    this.profileForm.controls['name'].disable();
+    this.profileForm.controls['email'].disable();
+  }
+
+  private get profileFormInstance(): FormGroup<ProfileForm> {
+    return this.fb.group<ProfileForm>({
+      name: this.fb.control(
+        {
+          value: '',
+          disabled: false,
+        },
+        [Validators.required, Validators.pattern('^\\S*$')],
+      ),
+      email: this.fb.control(
+        { value: '', disabled: false },
+        {
+          validators: [
+            Validators.required,
+            Validators.pattern('^[a-zA-Zа-яА-Я0-9._%+-]+@[a-zA-Zа-яА-Я0-9.-]+\\.[a-zA-Zа-яА-Я]{2,}$'),
+          ],
+        },
+      ),
     });
   }
 
-  get editableNameControl(): FormControl {
-    return this.profileForm?.get('editableName') as FormControl;
+  public get editNameControl(): FormControl<string> {
+    return this.profileForm.controls.name;
   }
 
-  get editableEmailControl(): FormControl {
-    return this.profileForm?.get('editableEmail') as FormControl;
+  public get editEmailControl(): FormControl<string> {
+    return this.profileForm.controls.email;
   }
 
-  startEditing(field: string) {
+  public startEditing(field: string) {
     if (field === 'name') {
       this.isEditingName = true;
     } else if (field === 'email') {
@@ -70,16 +98,16 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  saveName() {
-    if (this.profileForm?.get('editableName')?.valid) {
-      this.user.name = this.profileForm.get('editableName')?.value.trim();
+  public saveName() {
+    if (this.profileForm?.get('name')?.valid) {
+      this.userCredentials.name = this.profileForm.controls.name.value;
       this.isEditingName = false;
     }
   }
 
-  saveEmail() {
-    if (this.profileForm?.get('editableEmail')?.valid) {
-      this.user.email = this.profileForm.get('editableEmail')?.value.trim();
+  public saveEmail() {
+    if (this.profileForm?.get('email')?.valid) {
+      this.userCredentials.email = this.profileForm.controls.email.value;
       this.isEditingEmail = false;
     }
   }
@@ -94,6 +122,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   logout() {
-    console.log('logout');
+    this.router.navigate(['']);
   }
 }
