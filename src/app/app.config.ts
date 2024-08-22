@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { StorageModule } from './core/storage/storage.module';
 import { storageKeyPrefix } from './core/storage/tokens/local-storage-key.token';
 import { authorizationInterceptor } from './repositories/authorization/interceptors/authorization-interceptor';
+import { loadingInterceptor } from './common/interceptors/loading.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimationsAsync(),
     importProvidersFrom(MatNativeDateModule),
-    provideHttpClient(withInterceptors([authorizationInterceptor])),
+    provideHttpClient(withInterceptors([authorizationInterceptor, loadingInterceptor])),
     importProvidersFrom(StorageModule.forRoot({ config: { prefix: storageKeyPrefix } })),
   ],
 };

@@ -1,6 +1,7 @@
+import { LoadingService } from './../../../../../../common/services/loading/loading.service';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
@@ -15,10 +16,11 @@ import {
 import { SignUpForm } from '../../models/sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { matchPassword } from '../../validators/passwords-match.directive';
-import { TrimPipe } from '../../pipes/trim.pipe';
-import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
+import { LoadingButtonComponent } from '../../../../../../common/loading-button/loading-button.component';
+import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -37,27 +39,38 @@ import { HttpErrorResponse } from '@angular/common/http';
     ButtonComponent,
     MatError,
     TrimPipe,
+    LoadingButtonComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })
 export class SignUpComponent implements OnInit {
   public signUpForm!: FormGroup<SignUpForm>;
+  emailValue = signal('');
+  currentEmailInputValue = signal('');
 
   constructor(
     private router: Router,
     private readonly fb: NonNullableFormBuilder,
     private readonly authorizationService: AuthorizationService,
+    public loadingService: LoadingService,
   ) {}
 
   ngOnInit(): void {
     this.signUpForm = this.signUpFormInstance;
+    this.signUpForm.controls.email.valueChanges.subscribe((data) => this.currentEmailInputValue.set(data));
   }
 
   public onSubmit() {
     this.register();
-    this.signUpForm.reset();
   }
+
+  isEqualToLastEmail = computed(() => {
+    if (this.emailValue() !== '' && this.emailValue() !== this.currentEmailInputValue()) {
+      return true;
+    }
+    return false;
+  });
 
   private get signUpFormInstance(): FormGroup<SignUpForm> {
     return this.fb.group<SignUpForm>(
@@ -98,6 +111,7 @@ export class SignUpComponent implements OnInit {
       error: ({ error }: HttpErrorResponse) => {
         if (error.reason === 'invalidUniqueKey') {
           this.signUpForm.controls['email'].setErrors({ invalidUniqueKey: true });
+          this.emailValue.set(this.signUpForm.controls.email.value);
         }
       },
     });
