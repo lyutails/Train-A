@@ -2,13 +2,7 @@ import { MatButton, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  MatError,
-  MatFormField,
-  MatInput,
-  MatLabel,
-  MatSuffix,
-} from '@angular/material/input';
+import { MatError, MatFormField, MatInput, MatLabel, MatSuffix } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import {
   FormControl,
@@ -20,9 +14,11 @@ import {
 } from '@angular/forms';
 import { SignUpForm } from '../../models/sign-up.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
-import { matchPassword } from '../validators/passwords-match.directive';
-import { SignupService } from '../../signup.service';
-import { TrimPipe } from '../pipes/trim.pipe';
+import { matchPassword } from '../../validators/passwords-match.directive';
+import { TrimPipe } from '../../pipes/trim.pipe';
+import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
+import { UserInfo } from '../../../../models/user-info.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'TTP-sign-up',
@@ -51,7 +47,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     private router: Router,
     private readonly fb: NonNullableFormBuilder,
-    private signup: SignupService,
+    private readonly authorizationService: AuthorizationService,
   ) {}
 
   ngOnInit(): void {
@@ -71,9 +67,7 @@ export class SignUpComponent implements OnInit {
           {
             validators: [
               Validators.required,
-              Validators.pattern(
-                '^[a-zA-Zа-яА-Я0-9._%+-]+@[a-zA-Zа-яА-Я0-9.-]+\\.[a-zA-Zа-яА-Я]{2,}$',
-              ),
+              Validators.pattern('^[a-zA-Zа-яА-Я0-9._%+-]+@[a-zA-Zа-яА-Я0-9.-]+\\.[a-zA-Zа-яА-Я]{2,}$'),
             ],
           },
         ),
@@ -82,22 +76,14 @@ export class SignUpComponent implements OnInit {
             value: '',
             disabled: false,
           },
-          [
-            Validators.required,
-            Validators.minLength(8),
-            Validators.pattern('^\\S*$'),
-          ],
+          [Validators.required, Validators.minLength(8), Validators.pattern('^\\S*$')],
         ),
         repeatPassword: this.fb.control(
           {
             value: '',
             disabled: false,
           },
-          [
-            Validators.required,
-            Validators.pattern('^\\S*$'),
-            // matchPassword('password', 'repeatPassword'),
-          ],
+          [Validators.required, Validators.pattern('^\\S*$')],
         ),
       },
       { validators: matchPassword('password', 'repeatPassword') },
@@ -105,18 +91,16 @@ export class SignUpComponent implements OnInit {
   }
 
   private register() {
-    this.signup
-      .signup(
-        this.signUpForm.controls.email.value,
-        this.signUpForm.controls.password.value,
-      )
-      .subscribe((data) => {
-        console.log('lalala', data);
-        if (data === 'invalidUniqueKey') {
-          this.signUpForm.controls.email.setErrors({ [data]: true });
+    this.authorizationService.signUp(this.userInfo).subscribe({
+      next: () => {
+        this.router.navigate(['auth/signin']);
+      },
+      error: ({ error }: HttpErrorResponse) => {
+        if (error.reason === 'invalidUniqueKey') {
+          this.signUpForm.controls['email'].setErrors({ invalidUniqueKey: true });
         }
-        // return this.redirectToSignIn;
-      });
+      },
+    });
   }
 
   public get emailFormControl(): FormControl<string> {
@@ -131,7 +115,14 @@ export class SignUpComponent implements OnInit {
     return this.signUpForm.controls.repeatPassword;
   }
 
+  public get userInfo(): UserInfo {
+    return {
+      email: this.signUpForm.controls.email.value,
+      password: this.signUpForm.controls.password.value,
+    };
+  }
+
   public get redirectToSignIn() {
-    return this.router.navigate(['/signin']);
+    return this.router.navigate(['auth/signin']);
   }
 }

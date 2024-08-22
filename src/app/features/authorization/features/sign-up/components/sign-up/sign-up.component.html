@@ -11,10 +11,8 @@
         [value]="signUpForm.controls.email.value | trim"
       />
     </mat-form-field>
-    @if (signUpForm.controls["email"].hasError("invalidUniqueKey")) {
-      <div class="sign-up_input-error">
-        Account with this email already exists
-      </div>
+    @if (signUpForm.controls['email'].hasError('invalidUniqueKey')) {
+      <div class="sign-up_input-error">Account with this email already exists</div>
     }
     <mat-form-field appearance="outline" class="sign-up_field">
       <mat-label>Password</mat-label>
@@ -36,12 +34,9 @@
         [value]="signUpForm.controls.repeatPassword.value | trim"
       />
     </mat-form-field>
-    @if (
-      signUpForm.controls.repeatPassword.touched &&
-      signUpForm.controls.repeatPassword.invalid
-    ) {
+    @if (signUpForm.controls.repeatPassword.touched && signUpForm.controls.repeatPassword.invalid) {
       <div class="sign-up_input-error">
-        @if (signUpForm.controls.repeatPassword.errors?.["passwordMismatch"]) {
+        @if (signUpForm.controls.repeatPassword.errors?.['passwordMismatch']) {
           <div>Passwords don't match</div>
         }
       </div>
@@ -56,9 +51,9 @@
       <TTP-button
         [type]="'button'"
         [width]="'100px'"
-        (click)="(redirectToSignIn)"
         [disabled]="false"
         [buttonText]="'Sign In'"
+        (click)="(redirectToSignIn)"
       ></TTP-button>
     </div>
   </form>

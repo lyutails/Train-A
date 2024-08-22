@@ -1,14 +1,5 @@
-import {
-  ApplicationConfig,
-  provideZoneChangeDetection,
-  isDevMode,
-  importProvidersFrom,
-} from '@angular/core';
-import {
-  PreloadAllModules,
-  provideRouter,
-  withPreloading,
-} from '@angular/router';
+import { ApplicationConfig, provideZoneChangeDetection, isDevMode, importProvidersFrom } from '@angular/core';
+import { PreloadAllModules, provideRouter, withPreloading } from '@angular/router';
 
 import { APP_ROUTES } from './app.routes';
 import { provideStore } from '@ngrx/store';
@@ -17,6 +8,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideEffects } from '@ngrx/effects';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
+import { StorageModule } from './core/storage/storage.module';
+import { storageKeyPrefix } from './core/storage/tokens/local-storage-key.token';
+import { authorizationInterceptor } from './repositories/authorization/interceptors/authorization-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,6 +27,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimationsAsync(),
     importProvidersFrom(MatNativeDateModule),
-    provideHttpClient(withInterceptors([])),
+    provideHttpClient(withInterceptors([authorizationInterceptor])),
+    importProvidersFrom(StorageModule.forRoot({ config: { prefix: storageKeyPrefix } })),
   ],
 };

@@ -1,9 +1,3 @@
-<button
-  mat-flat-button
-  [disabled]="disabled"
-  [type]="type"
-  class="button"
-  [style.width]="width"
->
+<button mat-flat-button [disabled]="disabled" [type]="type" class="button" [style.width]="width">
   <ng-content>{{ buttonText }}</ng-content>
 </button>
