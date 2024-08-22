@@ -2,6 +2,7 @@
   <div class="profile_container">
     <h2>Profile</h2>
     <!-- <div *ngIf="!isEditingName; else editNameTemplate"> -->
+    <TTP-button (click)="logout()" [type]="'submit'" [width]="'10vw'" [buttonText]="'Change Password'"></TTP-button>
     <form [formGroup]="profileForm" #editNameTemplate>
       <div *ngIf="!isEditingName" matTooltip="Please fill in your name">
         <span>{{ userCredentials.name }}</span>
@@ -58,9 +59,6 @@
         </button>
       </div>
     </form>
-    <div class="action_buttons">
-      <button mat-flat-button (click)="openChangePasswordModal()">Change Password</button>
-      <button mat-flat-button (click)="logout()">Logout</button>
-    </div>
+    <TTP-button (click)="logout()" [type]="'submit'" [width]="'10vw'" [buttonText]="'Logout'"></TTP-button>
   </div>
 </div>
