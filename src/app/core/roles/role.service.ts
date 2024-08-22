@@ -8,6 +8,7 @@ import { LocalStorageService } from '../storage/services/local-storage.service';
 export class RoleService {
   public userRole$: Observable<string> = new BehaviorSubject<string>('');
   private readonly userRole$$: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  private lsPrefix = 'role';
 
   constructor(private localStorageService: LocalStorageService) {}
 
@@ -17,11 +18,15 @@ export class RoleService {
   }
 
   private saveUserRole(role: string) {
-    this.localStorageService.setItem('role', role);
+    this.localStorageService.setItem(this.lsPrefix, role);
   }
 
   public get isAdminRole(): boolean {
-    const role = this.localStorageService.getItem('role');
+    const role = this.localStorageService.getItem(this.lsPrefix);
     return role === 'manager';
+  }
+
+  public get userRole() {
+    return this.localStorageService.getItem(this.lsPrefix);
   }
 }
