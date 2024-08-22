@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_container">
     <p class="profile_title">Profile</p>
-    <div class="profile_admin">display here Admin if logged in as Admin</div>
+    <div class="profile_admin">display here 'Admin' if logged in as Admin</div>
     <TTP-button [type]="'button'" [width]="'30vw'" [buttonText]="'Change Password'"></TTP-button>
     <form [formGroup]="profileForm" class="profile_form">
       <div class="profile_item">
@@ -19,18 +19,21 @@
               <mat-error>Maximum length is 20 symbols</mat-error>
             }
           </mat-form-field>
-          <button mat-icon-button (click)="editName()" aria-label="Edit name" matTooltip="Edit your name">
-            <mat-icon [style.color]="editIconColour">edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            (click)="saveName()"
-            aria-label="Save name"
-            [disabled]="!profileForm.controls['name'].valid"
-            matTooltip="Save your name"
-          >
-            <mat-icon>save</mat-icon>
-          </button>
+          @if (editSaveName()) {
+            <button mat-icon-button (click)="editName()" aria-label="Edit name" matTooltip="Edit your name">
+              <mat-icon [style.color]="editIconColour">{{ editSaveName() ? 'edit' : 'save' }}</mat-icon>
+            </button>
+          } @else {
+            <button
+              mat-icon-button
+              (click)="saveName()"
+              aria-label="Save name"
+              [disabled]="!profileForm.controls['name'].valid"
+              matTooltip="Save your name"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+          }
         </div>
       </div>
       <div class="profile_item">
@@ -45,18 +48,21 @@
               <mat-error>Invalid email format </mat-error>
             }
           </mat-form-field>
-          <button mat-icon-button (click)="editEmail()" aria-label="Edit email" matTooltip="Edit your name">
-            <mat-icon [style.color]="editIconColour">edit</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            (click)="saveEmail()"
-            aria-label="Save email"
-            [disabled]="!profileForm.controls['email'].valid"
-            matTooltip="Save your name"
-          >
-            <mat-icon>save</mat-icon>
-          </button>
+          @if (editSaveEmail()) {
+            <button mat-icon-button (click)="editEmail()" aria-label="Edit email" matTooltip="Edit your name">
+              <mat-icon [style.color]="editIconColour">{{ editSaveEmail() ? 'edit' : 'save' }}</mat-icon>
+            </button>
+          } @else {
+            <button
+              mat-icon-button
+              (click)="saveEmail()"
+              aria-label="Save email"
+              [disabled]="!profileForm.controls['email'].valid"
+              matTooltip="Save your name"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+          }
         </div>
       </div>
     </form>

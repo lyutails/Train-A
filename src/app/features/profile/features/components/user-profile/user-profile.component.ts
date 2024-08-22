@@ -1,6 +1,5 @@
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -17,10 +16,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
 import { ButtonComponent } from '../../../../../common/button/button.component';
-import { ProfileForm } from './models/sign-up.model';
+import { ProfileForm } from './models/profile.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserCredentials } from './models/user-credentials.models';
 import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
+import { ProfileService } from '../../../../../repositories/profile/services/profile.service';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -47,16 +47,18 @@ import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
 export class UserProfileComponent implements OnInit, AfterViewInit {
   @Input() editable = false;
   public profileForm!: FormGroup<ProfileForm>;
-  userCredentials: UserCredentials = { name: '', email: '' };
+  userCredentials: UserCredentials = { name: '', email: '', password: '' };
   editIconColour = 'oklch(49.71% 0.165 259.85deg)';
   isNameBeingEdited = false;
   @ViewChild('inputName')
   inputName!: HTMLInputElement;
+  editSaveName = signal(true);
+  editSaveEmail = signal(true);
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private router: Router,
     private cdr: ChangeDetectorRef,
+    private profileService: ProfileService,
   ) {}
 
   ngOnInit() {
@@ -68,22 +70,17 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     // const localStorageCredentials = localStorage.getItem('credentials');
     // this.userCredentials.name = localStorageCredentials ? JSON.parse(localStorageCredentials)! : '';
-    this.userCredentials = { name: 'lalala@lalala.com', email: 'lalala@lalala.com' };
+    this.userCredentials = { name: 'lalala@lalala.com', email: 'lalala@lalala.com', password: 'someCoolPassword' };
     if (this.isNameBeingEdited === false) {
       const { email } = this.userCredentials;
-      this.userCredentials = { name: `${email?.trim().replace(/@(.*)$/, '')}`, email: `${email}` };
+      this.userCredentials = {
+        name: `${email?.trim().replace(/@(.*)$/, '')}`,
+        email: `${email}`,
+        password: 'someCoolPassword',
+      };
     }
-    // this.userCredentials = { name: '', email: 'lalala@lalala.com' };
     this.cdr.detectChanges();
   }
-
-  /* setName(value: string) {
-    this.profileForm.controls.name.value = value;
-  }
-
-  setEmail(value: string) {
-    this.profileForm.controls.name.value = value;
-  } */
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
     return this.fb.group<ProfileForm>({
@@ -116,10 +113,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   public editName() {
     this.profileForm.controls['name'].enable();
+    this.editSaveName.set(false);
   }
 
   public editEmail() {
     this.profileForm.controls['email'].enable();
+    this.editSaveEmail.set(false);
   }
 
   public saveName() {
@@ -127,6 +126,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.userCredentials.name = this.profileForm.controls.name.value;
       this.profileForm.controls['name'].disable();
     }
+    this.editSaveName.set(true);
   }
 
   public saveEmail() {
@@ -134,9 +134,14 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
       this.userCredentials.email = this.profileForm.controls.email.value;
       this.profileForm.controls['email'].disable();
     }
+    this.editSaveEmail.set(true);
   }
 
-  /* openChangePasswordModal() {
+  /* private setNameEmailOnServer({ name, email }: UserCredentials) {
+    // PUT /api/profile
+  }
+
+  private changePassword() {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
@@ -145,7 +150,9 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     });
   } */
 
-  logoutAndRedirectToHome() {
-    this.router.navigate(['']);
+  // private setAdmin() {}
+
+  public logoutAndRedirectToHome() {
+    this.profileService.logout();
   }
 }
