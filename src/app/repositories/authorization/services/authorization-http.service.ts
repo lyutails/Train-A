@@ -17,4 +17,8 @@ export class AuthorizationHttpService {
   public signIn(userInfo: UserInfo): Observable<TokenModel> {
     return this.httpClient.post<TokenModel>('signin', userInfo);
   }
+
+  public logout(): Observable<void> {
+    return this.httpClient.delete<void>('logout');
+  }
 }

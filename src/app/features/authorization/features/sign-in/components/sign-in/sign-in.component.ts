@@ -5,12 +5,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
-import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
+import { AuthFacade } from '../../../../../../core/authorization/services/auth.facade';
 
 @Component({
   selector: 'TTP-sign-in',
@@ -36,9 +36,8 @@ export class SignInComponent {
 
   constructor(
     private readonly fb: NonNullableFormBuilder,
-    private readonly http: HttpClient,
     private router: Router,
-    private readonly authorizationService: AuthorizationService,
+    private readonly authFacade: AuthFacade,
   ) {
     this.signInForm = this.signInFormInstance;
   }
@@ -50,9 +49,9 @@ export class SignInComponent {
 
     this.isSubmitting = true;
     this.clearErrorMessages();
-    this.authorizationService.signIn(this.userInfo).subscribe({
+    this.authFacade.signIn(this.userInfo).subscribe({
       next: ({ token }) => {
-        this.authorizationService.saveTokenToLocalStorage(token);
+        this.authFacade.saveUserInfo(token);
       },
       error: (error: HttpErrorResponse) => {
         this.handleAuthError(error);

@@ -9,7 +9,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MatNativeDateModule } from '@angular/material/core';
 import { StorageModule } from './core/storage/storage.module';
-import { storageKeyPrefix } from './core/storage/tokens/local-storage-key.token';
+import { storageKeyPrefix } from './core/storage/tokens/storage-key-prefix';
 import { authorizationInterceptor } from './repositories/authorization/interceptors/authorization-interceptor';
 
 export const appConfig: ApplicationConfig = {
