@@ -22,7 +22,7 @@
           [value]="signInForm.controls.password.value | trim"
           [type]="hide() ? 'password' : 'text'"
         />
-        <button mat-icon-button matSuffix (click)="showHidePassword()">
+        <button mat-icon-button matSuffix (click)="showHidePassword($event)">
           <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>

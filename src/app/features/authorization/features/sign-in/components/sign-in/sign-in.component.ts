@@ -113,7 +113,8 @@ export class SignInComponent {
     };
   }
 
-  public showHidePassword() {
+  public showHidePassword(event: MouseEvent) {
     this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 }
