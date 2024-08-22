@@ -9,7 +9,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
-import { AuthorizationService } from '../../../../../../repositories/authorization/features/authorization.service';
+import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
 
 @Component({
@@ -51,7 +51,7 @@ export class SignInComponent {
     this.isSubmitting = true;
     this.clearErrorMessages();
     this.authorizationService.signIn(this.userInfo).subscribe({
-      next: (token) => {
+      next: ({ token }) => {
         this.authorizationService.saveTokenToLocalStorage(token);
       },
       error: (error: HttpErrorResponse) => {
