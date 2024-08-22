@@ -46,14 +46,15 @@ import { ProfileService } from '../../../../../repositories/profile/services/pro
 })
 export class UserProfileComponent implements OnInit, AfterViewInit {
   @Input() editable = false;
+  @ViewChild('inputName')
+  inputName!: HTMLInputElement;
   public profileForm!: FormGroup<ProfileForm>;
   userCredentials: UserCredentials = { name: '', email: '', password: '' };
   editIconColour = 'oklch(49.71% 0.165 259.85deg)';
   isNameBeingEdited = false;
-  @ViewChild('inputName')
-  inputName!: HTMLInputElement;
   editSaveName = signal(true);
   editSaveEmail = signal(true);
+  public screenWidth!: number;
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -65,6 +66,8 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.profileForm = this.profileFormInstance;
     this.profileForm.controls['name'].disable();
     this.profileForm.controls['email'].disable();
+    this.screenWidth = window.innerWidth;
+    console.log(this.screenWidth);
   }
 
   ngAfterViewInit(): void {

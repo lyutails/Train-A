@@ -1,11 +1,15 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
-  <div class="profile_container">
+  <div class="profile_wrapper">
     <p class="profile_title">Profile</p>
-    <div class="profile_admin">display here 'Admin' if logged in as Admin</div>
-    <TTP-button [type]="'button'" [width]="'30vw'" [buttonText]="'Change Password'"></TTP-button>
+    <div class="profile_admin">'Admin' here if logged in as Admin</div>
+    <TTP-button
+      [type]="'button'"
+      [width]="screenWidth < 600 ? '50vw' : '30vw'"
+      [buttonText]="'Change Password'"
+    ></TTP-button>
     <form [formGroup]="profileForm" class="profile_form">
       <div class="profile_item">
-        <div>Name</div>
+        <div class="profile_input-name">Name</div>
         <div class="profile_field">
           <mat-form-field appearance="outline" class="profile_field">
             <input matInput formControlName="name" [value]="userCredentials.name | trim" />
@@ -37,7 +41,7 @@
         </div>
       </div>
       <div class="profile_item">
-        <div>Email</div>
+        <div class="profile_input-name">Email</div>
         <div class="profile_field">
           <mat-form-field appearance="outline" class="profile_field">
             <input matInput formControlName="email" appearance="outline" [value]="userCredentials.email | trim" />

@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
 
-    width: 50vw;
+    width: 60vw;
     min-width: 220px;
     max-width: 500px;
     padding: 30px;
@@ -28,12 +28,11 @@
   &_field {
     width: 80%;
     margin-bottom: 10px;
-    padding: 0;
   }
 
   &_title {
     width: 100%;
-    margin: 0 auto;
+    margin-bottom: 20px;
 
     font-size: 1.6rem;
     font-weight: 800;
@@ -49,29 +48,29 @@
     margin-top: 20px;
   }
 
-  &_button {
-    width: 100px;
-  }
-
   &_input-error {
     width: max-content;
     font-size: 0.7rem;
     color: oklch(59.98% 0.236 15.45deg);
   }
 
+  input.ng-invalid.ng-touched {
+    border: 1px solid oklch(59.98% 0.236 15.45deg);
+  }
+
   @media screen and (width >= 300px) and (width <= 639.98px) {
-    .sign-up {
+    .sign-in {
       &_wrapper {
-        width: 65dvw;
+        width: 90vw;
       }
 
       &_field {
-        width: 98%;
+        width: 100%;
         padding: 0;
       }
 
       &_buttons {
-        width: 98%;
+        width: 100%;
         margin-top: 20px;
       }
     }

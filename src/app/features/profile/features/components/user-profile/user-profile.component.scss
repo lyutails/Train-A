@@ -1,11 +1,13 @@
+@import '../../../../../../styles';
+
 .profile {
-  &_container {
+  &_wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 
-    width: 50vw;
+    width: 60vw;
     min-width: 220px;
     max-width: 500px;
     margin: 20px auto;
@@ -45,27 +47,33 @@
     padding: 20px;
   }
 
-  &_buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-
-    button {
-      width: 48%;
-    }
-  }
-
-  &_modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-
-    button {
-      margin-left: 10px;
-    }
-  }
-
   &_admin {
     margin-bottom: 20px;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $deep-blue;
+    text-align: center;
+  }
+
+  &_input-name {
+    font-weight: 800;
+  }
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid oklch(59.98% 0.236 15.45deg);
+}
+
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .profile {
+    &_wrapper {
+      width: 90vw;
+    }
+
+    &_item {
+      width: 100%;
+      padding: 0;
+    }
   }
 }
