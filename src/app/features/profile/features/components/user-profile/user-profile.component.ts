@@ -124,6 +124,7 @@ export class UserProfileComponent implements OnInit {
   public saveName() {
     if (this.profileForm?.get('name')?.valid) {
       this.userCredentials.name = this.profileForm.controls.name.value;
+      this.profileForm.controls['name'].disable();
       this.isEditingName = false;
     }
   }
@@ -131,6 +132,7 @@ export class UserProfileComponent implements OnInit {
   public saveEmail() {
     if (this.profileForm?.get('email')?.valid) {
       this.userCredentials.email = this.profileForm.controls.email.value;
+      this.profileForm.controls['email'].disable();
       this.isEditingEmail = false;
     }
   }
@@ -144,7 +146,7 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  logout() {
+  logoutAndRedirectToHome() {
     this.router.navigate(['']);
   }
 }
