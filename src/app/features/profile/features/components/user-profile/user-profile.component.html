@@ -7,12 +7,12 @@
       <div *ngIf="!isEditingName" matTooltip="Please fill in your name">
         <span>{{ userCredentials.name }}</span>
         <button mat-icon-button (click)="startEditing('name')" aria-label="Edit name">
-          <mat-icon>edit</mat-icon>
+          <mat-icon [style.color]="editIconColour">edit</mat-icon>
         </button>
       </div>
       <mat-form-field appearance="outline" class="profile_field">
         <mat-label>Edit Name</mat-label>
-        <input matInput formControlName="name" />
+        <input matInput formControlName="name" [value]="profileForm.controls.name.value | trim" />
         @if (profileForm.controls['name'].hasError('required')) {
           <mat-error> Name is required </mat-error>
         }
@@ -34,14 +34,19 @@
       <div>
         <!-- <div *ngIf="!isEditingEmail; else editEmailTemplate"> -->
         <div *ngIf="!isEditingEmail">
-          <span>{{ userCredentials.email }}</span>
           <button mat-icon-button (click)="startEditing('email')" aria-label="Edit email">
-            <mat-icon>edit</mat-icon>
+            <mat-icon [style.color]="editIconColour">edit</mat-icon>
           </button>
         </div>
         <mat-form-field appearance="outline" class="profile_field">
           <mat-label>Edit Email</mat-label>
-          <input matInput formControlName="email" appearance="outline" />
+          <input
+            matInput
+            formControlName="email"
+            appearance="outline"
+            [value]="userCredentials.email | trim"
+            [(ngModel)]="userCredentials.email"
+          />
           @if (profileForm.controls['email'].hasError('required')) {
             <mat-error> Email is required </mat-error>
           }

@@ -20,6 +20,7 @@ import { ButtonComponent } from '../../../../../common/button/button.component';
 import { ProfileForm } from './models/sign-up.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UserCredentials } from './models/user-credentials.models';
+import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -38,6 +39,7 @@ import { UserCredentials } from './models/user-credentials.models';
     ChangePasswordDialogComponent,
     ButtonComponent,
     MatTooltipModule,
+    TrimPipe,
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -47,7 +49,8 @@ export class UserProfileComponent implements OnInit {
   public profileForm!: FormGroup<ProfileForm>;
   isEditingName = false;
   isEditingEmail = false;
-  userCredentials: UserCredentials = { name: '', email: 'john.doe@example.com' };
+  userCredentials: UserCredentials = { name: '', email: '' };
+  editIconColour = 'oklch(49.71% 0.165 259.85deg)';
 
   constructor(
     private dialog: MatDialog,
@@ -57,8 +60,9 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.profileForm = this.profileFormInstance;
-    this.profileForm.controls['name'].disable();
-    this.profileForm.controls['email'].disable();
+    this.userCredentials = { name: '', email: 'lalala@lalala.com' };
+    /* this.profileForm.controls['name'].disable();
+    this.profileForm.controls['email'].disable(); */
   }
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
@@ -68,7 +72,7 @@ export class UserProfileComponent implements OnInit {
           value: '',
           disabled: false,
         },
-        [Validators.required, Validators.pattern('^\\S*$')],
+        [Validators.required, Validators.pattern('^\\S*$'), Validators.minLength(1), Validators.maxLength(10)],
       ),
       email: this.fb.control(
         { value: '', disabled: false },
