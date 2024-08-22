@@ -1,13 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,6 +9,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { ProfileFacade } from '../../../services/profile.facade';
+import { ProfileInformation } from '../../../../../repositories/profile/services/models/profile-information.model';
+import { ButtonComponent } from '../../../../../common/button/button.component';
+import { ProfileForm } from '../../models/profile-form.model';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -32,43 +29,63 @@ import { ChangePasswordDialogComponent } from '../change-password-dialog/change-
     ReactiveFormsModule,
     MatFormField,
     ChangePasswordDialogComponent,
+    ButtonComponent,
   ],
 
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
 export class UserProfileComponent implements OnInit {
-  user = { name: 'John Doe', email: 'john.doe@example.com' };
-
-  profileForm: FormGroup | undefined;
+  user: ProfileInformation | undefined;
+  profileForm: FormGroup<ProfileForm> | undefined;
   isEditingName = false;
   isEditingEmail = false;
   constructor(
-    private http: HttpClient,
     private router: Router,
     private dialog: MatDialog,
-  ) {}
+    private facade: ProfileFacade,
+  ) {
+    this.getUserInfo();
+  }
 
   ngOnInit() {
-    this.profileForm = new FormGroup({
-      editableName: new FormControl(this.user.name, [
+    this.profileForm = new FormGroup<ProfileForm>({
+      editableName: new FormControl(this.user?.name || ''),
+      editableEmail: new FormControl(this.user?.email || '', [
         Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-      ]),
-      editableEmail: new FormControl(this.user.email, [
-        Validators.required,
-        Validators.email,
+        Validators.pattern('^[a-zA-Zа-яА-Я0-9._%+-]+@[a-zA-Zа-яА-Я0-9.-]+\\.[a-zA-Zа-яА-Я]{2,}$'),
       ]),
     });
   }
 
-  get editableNameControl(): FormControl {
-    return this.profileForm?.get('editableName') as FormControl;
+  getUserInfo() {
+    this.facade.getUserProfile().subscribe({
+      next: (data: ProfileInformation) => {
+        this.user = data;
+        this.profileForm?.setValue({
+          editableName: this.user!.name,
+          editableEmail: this.user!.email,
+        });
+      },
+      error: (error: { status: number }) => {
+        if (error.status === 401) {
+          this.router.navigate(['auth/signin']);
+        }
+      },
+      complete: () => {
+        console.log('User info retrieval completed.');
+      },
+    });
   }
 
-  get editableEmailControl(): FormControl {
-    return this.profileForm?.get('editableEmail') as FormControl;
+  get editableNameControl(): FormControl | null {
+    const control = this.profileForm?.get('editableName');
+    return control instanceof FormControl ? control : null;
+  }
+
+  get editableEmailControl(): FormControl | null {
+    const control = this.profileForm?.get('editableEmail');
+    return control instanceof FormControl ? control : null;
   }
 
   startEditing(field: string) {
@@ -80,29 +97,61 @@ export class UserProfileComponent implements OnInit {
   }
 
   saveName() {
-    if (this.profileForm?.get('editableName')?.valid) {
-      this.user.name = this.profileForm.get('editableName')?.value.trim();
-      this.isEditingName = false;
+    const nameControl = this.profileForm?.get('editableName');
+    if (nameControl && nameControl.valid && this.user) {
+      this.user.name = nameControl.value?.trim() || '';
+      this.facade.updateUserProfile(this.user).subscribe({
+        next: (data: ProfileInformation) => {
+          if (data) {
+            this.user = data;
+            this.profileForm?.setValue({
+              editableName: data.name || '',
+              editableEmail: data.email || '',
+            });
+            this.isEditingName = false;
+          }
+        },
+        error: (error: Error) => {
+          console.error('Error updating name', error);
+        },
+      });
     }
   }
 
   saveEmail() {
-    if (this.profileForm?.get('editableEmail')?.valid) {
-      this.user.email = this.profileForm.get('editableEmail')?.value.trim();
-      this.isEditingEmail = false;
+    const emailControl = this.profileForm?.get('editableEmail');
+    if (emailControl && emailControl.valid && this.user) {
+      this.user.email = emailControl.value?.trim() || '';
+      this.facade.updateUserProfile(this.user).subscribe({
+        next: (data: ProfileInformation) => {
+          if (data) {
+            this.user = data;
+            this.profileForm?.setValue({
+              editableName: data.name || '',
+              editableEmail: data.email || '',
+            });
+            this.isEditingEmail = false;
+          }
+        },
+        error: (error: Error) => {
+          console.error('Error updating email', error);
+        },
+      });
     }
   }
 
   openChangePasswordModal() {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent);
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(result);
-      }
+    dialogRef.afterClosed().subscribe({
+      error: (error: Error) => {
+        console.error('Error changing password', error);
+      },
     });
   }
 
   logout() {
-    console.log('logout');
+    this.facade.logout().subscribe(() => {
+      console.log('logout');
+    });
   }
 }

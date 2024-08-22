@@ -3,89 +3,67 @@
 
   <mat-card class="profile-item">
     <div *ngIf="!isEditingName; else editNameTemplate">
-      <span>{{ user.name }}</span>
-      <button
-        mat-icon-button
-        (click)="startEditing('name')"
-        aria-label="Edit name"
+      <span>{{ user?.name }}</span>
+      <TTP-button width="50" [type]="'submit'" mat-icon-button (click)="startEditing('name')" aria-label="Edit name">
+        <mat-icon>edit</mat-icon></TTP-button
       >
-        <mat-icon>edit</mat-icon>
-      </button>
     </div>
     <ng-template #editNameTemplate>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Edit Name</mat-label>
-        <input matInput [formControl]="editableNameControl" />
-        <mat-error
-          *ngIf="profileForm?.get('editableName')?.hasError('required')"
-        >
-          Name is required
-        </mat-error>
-        <mat-error
-          *ngIf="profileForm?.get('editableName')?.hasError('minlength')"
-        >
+        <input matInput [formControl]="editableNameControl!" />
+        <mat-error *ngIf="profileForm?.get('editableName')?.hasError('required')"> Name is required </mat-error>
+        <mat-error *ngIf="profileForm?.get('editableName')?.hasError('minlength')">
           Name must be at least 3 characters long
         </mat-error>
-        <mat-error
-          *ngIf="profileForm?.get('editableName')?.hasError('maxlength')"
-        >
+        <mat-error *ngIf="profileForm?.get('editableName')?.hasError('maxlength')">
           Name cannot exceed 50 characters
         </mat-error>
       </mat-form-field>
-      <button
+      <TTP-button
+        [type]="'submit'"
+        width="50"
         mat-icon-button
+        [disabled]="!profileForm?.get('editableName')?.valid"
         (click)="saveName()"
         aria-label="Save name"
-        [disabled]="!profileForm?.get('editableName')?.valid"
       >
-        <mat-icon>save</mat-icon>
-      </button>
+        <mat-icon>save</mat-icon></TTP-button
+      >
     </ng-template>
   </mat-card>
 
   <mat-card class="profile-item">
     <div *ngIf="!isEditingEmail; else editEmailTemplate">
-      <span>{{ user.email }}</span>
-      <button
-        mat-icon-button
-        (click)="startEditing('email')"
-        aria-label="Edit email"
+      <span>{{ user?.email }}</span>
+      <TTP-button width="50" [type]="'submit'" mat-icon-button (click)="startEditing('email')" aria-label="Edit email">
+        <mat-icon>edit</mat-icon></TTP-button
       >
-        <mat-icon>edit</mat-icon>
-      </button>
     </div>
     <ng-template #editEmailTemplate>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Edit Email</mat-label>
-        <input matInput [formControl]="editableEmailControl" />
-        <mat-error
-          *ngIf="profileForm?.get('editableEmail')?.hasError('required')"
-        >
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('email')">
-          Invalid email format
-        </mat-error>
+        <input matInput [formControl]="editableEmailControl!" />
+        <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('required')"> Email is required </mat-error>
+        <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('pattern')"> Invalid email format </mat-error>
       </mat-form-field>
-      <button
+      <TTP-button
+        [type]="'submit'"
+        width="50"
         mat-icon-button
         (click)="saveEmail()"
         aria-label="Save email"
         [disabled]="!profileForm?.get('editableEmail')?.valid"
       >
-        <mat-icon>save</mat-icon>
-      </button>
+        <mat-icon>save</mat-icon></TTP-button
+      >
     </ng-template>
   </mat-card>
 
   <div class="action-buttons">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="openChangePasswordModal()"
+    <TTP-button width="300" [type]="'submit'" color="primary" (click)="openChangePasswordModal()">
+      Change Password</TTP-button
     >
-      Change Password
-    </button>
-    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    <TTP-button [type]="'submit'" color="warn" (click)="logout()">Logout</TTP-button>
   </div>
 </div>
