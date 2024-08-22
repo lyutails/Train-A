@@ -3,6 +3,7 @@ import { AuthorizationHttpService } from './authorization-http.service';
 import { UserInfo } from '../../../features/authorization/models/user-info.model';
 import { Observable } from 'rxjs/internal/Observable';
 import { LocalStorageService } from '../../../core/storage/services/local-storage.service';
+import { TokenModel } from '../models/token.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +19,23 @@ export class AuthorizationService {
     return this.authorizationHttpService.signUp(userInfo);
   }
 
-  public signIn(userInfo: UserInfo): Observable<string> {
+  public signIn(userInfo: UserInfo): Observable<TokenModel> {
     return this.authorizationHttpService.signIn(userInfo);
   }
 
   public saveTokenToLocalStorage(token: string): void {
     this.localStorageService.setItem(this.storageKey, token);
+  }
+
+  public getTokenFromLocalStorage(): string | null {
+    return this.localStorageService.getItem<string>(this.storageKey);
+  }
+
+  public deleteTokenFromLocalStorage(): void {
+    this.localStorageService.removeItem(this.storageKey);
+  }
+
+  public get isAuthenticated(): boolean {
+    return !!this.localStorageService.getItem<string>(this.storageKey);
   }
 }

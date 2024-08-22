@@ -20,7 +20,7 @@ import { UserInfo } from '../../../../models/user-info.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
 import { LoadingButtonComponent } from '../../../../../../common/loading-button/loading-button.component';
-import { AuthorizationService } from '../../../../../../repositories/authorization/features/authorization.service';
+import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 
 @Component({
   selector: 'TTP-sign-up',
