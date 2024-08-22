@@ -9,20 +9,18 @@
           <mat-form-field appearance="outline" class="profile_field">
             <input matInput formControlName="name" [value]="userCredentials.name | trim" #inputName />
             @if (profileForm.controls['name'].hasError('required')) {
-              <mat-error> Name is required </mat-error>
+              <mat-error>Name is required</mat-error>
             }
             @if (profileForm.controls['name'].hasError('minlength')) {
-              <mat-error> Name must be at least 3 characters long </mat-error>
+              <mat-error>Name must be at least 2 characters long</mat-error>
             }
             @if (profileForm.controls['name'].hasError('maxlength')) {
-              <mat-error> Name cannot exceed 50 characters </mat-error>
+              <mat-error>Maximum length is 20 symbols</mat-error>
             }
           </mat-form-field>
-          <div *ngIf="!isEditingName">
-            <button mat-icon-button (click)="editName()" aria-label="Edit name" matTooltip="Edit your name">
-              <mat-icon [style.color]="editIconColour">edit</mat-icon>
-            </button>
-          </div>
+          <button mat-icon-button (click)="editName()" aria-label="Edit name" matTooltip="Edit your name">
+            <mat-icon [style.color]="editIconColour">edit</mat-icon>
+          </button>
           <button
             mat-icon-button
             (click)="saveName()"

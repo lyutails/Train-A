@@ -47,8 +47,6 @@ import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
 export class UserProfileComponent implements OnInit {
   @Input() editable = false;
   public profileForm!: FormGroup<ProfileForm>;
-  isEditingName = false;
-  isEditingEmail = false;
   userCredentials: UserCredentials = { name: '', email: '' };
   editIconColour = 'oklch(49.71% 0.165 259.85deg)';
   @ViewChild('inputName')
@@ -83,7 +81,7 @@ export class UserProfileComponent implements OnInit {
           value: '',
           disabled: false,
         },
-        [Validators.required, Validators.pattern('^\\S*$'), Validators.minLength(1), Validators.maxLength(10)],
+        [Validators.required, Validators.pattern('^\\S*$'), Validators.minLength(2), Validators.maxLength(20)],
       ),
       email: this.fb.control(
         { value: '', disabled: false },
@@ -113,19 +111,10 @@ export class UserProfileComponent implements OnInit {
     this.profileForm.controls['email'].enable();
   }
 
-  public startEditing(field: string) {
-    if (field === 'name') {
-      this.isEditingName = true;
-    } else if (field === 'email') {
-      this.isEditingEmail = true;
-    }
-  }
-
   public saveName() {
     if (this.profileForm?.get('name')?.valid) {
       this.userCredentials.name = this.profileForm.controls.name.value;
       this.profileForm.controls['name'].disable();
-      this.isEditingName = false;
     }
   }
 
@@ -133,7 +122,6 @@ export class UserProfileComponent implements OnInit {
     if (this.profileForm?.get('email')?.valid) {
       this.userCredentials.email = this.profileForm.controls.email.value;
       this.profileForm.controls['email'].disable();
-      this.isEditingEmail = false;
     }
   }
 
