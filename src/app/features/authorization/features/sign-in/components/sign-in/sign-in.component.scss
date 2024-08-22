@@ -5,8 +5,9 @@
     align-items: center;
     justify-content: center;
 
-    width: 300px;
-    margin: 100px auto;
+    width: 50vw;
+    min-width: 220px;
+    max-width: 500px;
     padding: 30px;
 
     border: 1px solid rgb(0 0 0 / 20%);
@@ -25,7 +26,9 @@
   }
 
   &_field {
+    width: 80%;
     margin-bottom: 10px;
+    padding: 0;
   }
 
   &_title {
@@ -42,7 +45,7 @@
     align-items: center;
     justify-content: space-between;
 
-    width: 220px;
+    width: 80%;
     margin-top: 20px;
   }
 
@@ -54,5 +57,23 @@
     width: max-content;
     font-size: 0.7rem;
     color: oklch(59.98% 0.236 15.45deg);
+  }
+
+  @media screen and (width >= 300px) and (width <= 639.98px) {
+    .sign-up {
+      &_wrapper {
+        width: 65dvw;
+      }
+
+      &_field {
+        width: 98%;
+        padding: 0;
+      }
+
+      &_buttons {
+        width: 98%;
+        margin-top: 20px;
+      }
+    }
   }
 }
