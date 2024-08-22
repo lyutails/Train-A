@@ -46,8 +46,8 @@ import { AuthorizationService } from '../../../../../../repositories/authorizati
 })
 export class SignUpComponent implements OnInit {
   public signUpForm!: FormGroup<SignUpForm>;
-  emailValue = signal('');
-  currentEmailInputValue = signal('');
+  public emailValue = signal('');
+  public currentEmailInputValue = signal('');
 
   constructor(
     private router: Router,
@@ -65,7 +65,7 @@ export class SignUpComponent implements OnInit {
     this.register();
   }
 
-  isEqualToLastEmail = computed(() => {
+  public isEqualToLastEmail = computed(() => {
     if (this.emailValue() !== '' && this.emailValue() !== this.currentEmailInputValue()) {
       return true;
     }

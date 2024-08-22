@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
@@ -12,6 +12,7 @@ import { AuthorizationService } from '../../../../../../repositories/authorizati
 import { UserInfo } from '../../../../models/user-info.model';
 import { ViewEncapsulation } from '@angular/core';
 import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'TTP-sign-in',
@@ -25,6 +26,8 @@ import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
     MatInputModule,
     ButtonComponent,
     TrimPipe,
+    MatIcon,
+    MatIconButton,
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
@@ -36,6 +39,7 @@ export class SignInComponent {
   public isSubmitting = false;
   public emailErrorMessage: string | null = null;
   public passwordErrorMessage: string | null = null;
+  public hide = signal(true);
 
   constructor(
     private readonly fb: NonNullableFormBuilder,
@@ -107,5 +111,9 @@ export class SignInComponent {
       email: this.signInForm.controls.email.value,
       password: this.signInForm.controls.password.value,
     };
+  }
+
+  public showHidePassword() {
+    this.hide.set(!this.hide());
   }
 }
