@@ -1,52 +1,42 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_container">
     <p class="profile_title">Sign Up</p>
-    <!-- <div *ngIf="!isEditingName; else editNameTemplate"> -->
     <TTP-button [type]="'submit'" [width]="'30vw'" [buttonText]="'Change Password'" (click)="logout()"></TTP-button>
-    <form [formGroup]="profileForm" #editNameTemplate>
-      <div *ngIf="!isEditingName" matTooltip="Please fill in your name">
-        <span>{{ userCredentials.name }}</span>
-        <button mat-icon-button (click)="startEditing('name')" aria-label="Edit name">
-          <mat-icon [style.color]="editIconColour">edit</mat-icon>
-        </button>
-      </div>
-      <mat-form-field appearance="outline" class="profile_field">
-        <mat-label>Edit Name</mat-label>
-        <input matInput formControlName="name" [value]="profileForm.controls.name.value | trim" />
-        @if (profileForm.controls['name'].hasError('required')) {
-          <mat-error> Name is required </mat-error>
-        }
-        @if (profileForm.controls['name'].hasError('minlength')) {
-          <mat-error> Name must be at least 3 characters long </mat-error>
-        }
-        @if (profileForm.controls['name'].hasError('maxlength')) {
-          <mat-error> Name cannot exceed 50 characters </mat-error>
-        }
-      </mat-form-field>
-      <button
-        mat-icon-button
-        (click)="saveName()"
-        aria-label="Save name"
-        [disabled]="!profileForm.controls['name'].valid"
-      >
-        <mat-icon>save</mat-icon>
-      </button>
-      <div>
-        <!-- <div *ngIf="!isEditingEmail; else editEmailTemplate"> -->
-        <div *ngIf="!isEditingEmail">
-          <button mat-icon-button (click)="startEditing('email')" aria-label="Edit email">
+    <form [formGroup]="profileForm" #editNameTemplate class="profile_form">
+      <div class="profile_field">
+        <mat-form-field appearance="outline" class="profile_field" matTooltip="Please fill in your name">
+          <mat-label>Edit Name</mat-label>
+          <input matInput formControlName="name" [value]="profileForm.controls.name.value | trim" #inputName />
+          @if (profileForm.controls['name'].hasError('required')) {
+            <mat-error> Name is required </mat-error>
+          }
+          @if (profileForm.controls['name'].hasError('minlength')) {
+            <mat-error> Name must be at least 3 characters long </mat-error>
+          }
+          @if (profileForm.controls['name'].hasError('maxlength')) {
+            <mat-error> Name cannot exceed 50 characters </mat-error>
+          }
+        </mat-form-field>
+        <div *ngIf="!isEditingName">
+          <span>{{ userCredentials.name }}</span>
+          <button mat-icon-button (click)="editName()" aria-label="Edit name" matTooltip="Edit your name">
             <mat-icon [style.color]="editIconColour">edit</mat-icon>
           </button>
         </div>
+        <button
+          mat-icon-button
+          (click)="saveName()"
+          aria-label="Save name"
+          [disabled]="!profileForm.controls['name'].valid"
+          matTooltip="Save your name"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      <div class="profile_field">
         <mat-form-field appearance="outline" class="profile_field">
           <mat-label>Edit Email</mat-label>
-          <input
-            matInput
-            formControlName="email"
-            appearance="outline"
-            [value]="userCredentials.email | trim"
-            [(ngModel)]="userCredentials.email"
-          />
+          <input matInput formControlName="email" appearance="outline" [value]="userCredentials.email | trim" />
           @if (profileForm.controls['email'].hasError('required')) {
             <mat-error> Email is required </mat-error>
           }
@@ -54,11 +44,15 @@
             <mat-error>Invalid email format </mat-error>
           }
         </mat-form-field>
+        <button mat-icon-button (click)="editEmail()" aria-label="Edit email" matTooltip="Edit your name">
+          <mat-icon [style.color]="editIconColour">edit</mat-icon>
+        </button>
         <button
           mat-icon-button
           (click)="saveEmail()"
           aria-label="Save email"
           [disabled]="!profileForm.controls['email'].valid"
+          matTooltip="Save your name"
         >
           <mat-icon>save</mat-icon>
         </button>

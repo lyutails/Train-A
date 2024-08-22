@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -51,19 +51,30 @@ export class UserProfileComponent implements OnInit {
   isEditingEmail = false;
   userCredentials: UserCredentials = { name: '', email: '' };
   editIconColour = 'oklch(49.71% 0.165 259.85deg)';
+  @ViewChild('inputName')
+  inputName!: HTMLInputElement;
 
   constructor(
     private dialog: MatDialog,
-    private readonly fb: NonNullableFormBuilder,
+    private fb: NonNullableFormBuilder,
     private router: Router,
+    private renderer: Renderer2,
   ) {}
 
   ngOnInit() {
     this.profileForm = this.profileFormInstance;
     this.userCredentials = { name: '', email: 'lalala@lalala.com' };
-    /* this.profileForm.controls['name'].disable();
-    this.profileForm.controls['email'].disable(); */
+    this.profileForm.controls['name'].disable();
+    this.profileForm.controls['email'].disable();
   }
+
+  /*  ngAfterViewInit(): void {
+    if (this.inputName != null) {
+      this.renderer.listen(this.inputName, 'keyup', (event) => {
+        this.inputName.value = this.userCredentials.email;
+      });
+    }
+  } */
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
     return this.fb.group<ProfileForm>({
@@ -86,12 +97,20 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  public get editNameControl(): FormControl<string> {
+  public get nameFormControl(): FormControl<string> {
     return this.profileForm.controls.name;
   }
 
-  public get editEmailControl(): FormControl<string> {
+  public get emailFormControl(): FormControl<string> {
     return this.profileForm.controls.email;
+  }
+
+  public editName() {
+    this.profileForm.controls['name'].enable();
+  }
+
+  public editEmail() {
+    this.profileForm.controls['email'].enable();
   }
 
   public startEditing(field: string) {
