@@ -1,9 +1,8 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_container">
-    <h2>Profile</h2>
+    <p class="profile_title">Sign Up</p>
     <!-- <div *ngIf="!isEditingName; else editNameTemplate"> -->
-    <TTP-button (click)="logout()" [type]="'submit'" [width]="'30vw'" [buttonText]="'Change Password'"></TTP-button>
-
+    <TTP-button [type]="'submit'" [width]="'30vw'" [buttonText]="'Change Password'" (click)="logout()"></TTP-button>
     <form [formGroup]="profileForm" #editNameTemplate>
       <div *ngIf="!isEditingName" matTooltip="Please fill in your name">
         <span>{{ userCredentials.name }}</span>
