@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_container">
     <p class="profile_title">Profile</p>
-    <TTP-button [type]="'submit'" [width]="'30vw'" [buttonText]="'Change Password'"></TTP-button>
+    <TTP-button [type]="'button'" [width]="'30vw'" [buttonText]="'Change Password'"></TTP-button>
     <form [formGroup]="profileForm" #editNameTemplate class="profile_form">
       <div class="profile_item">
         <div>Name</div>
@@ -61,7 +61,7 @@
     </form>
     <TTP-button
       (click)="logoutAndRedirectToHome()"
-      [type]="'submit'"
+      [type]="'button'"
       [width]="'10vw'"
       [buttonText]="'Logout'"
     ></TTP-button>

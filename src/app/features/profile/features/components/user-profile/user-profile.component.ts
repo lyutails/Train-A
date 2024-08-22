@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -44,7 +44,7 @@ import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, AfterViewInit {
   @Input() editable = false;
   public profileForm!: FormGroup<ProfileForm>;
   userCredentials: UserCredentials = { name: '', email: '' };
@@ -57,22 +57,19 @@ export class UserProfileComponent implements OnInit {
     private fb: NonNullableFormBuilder,
     private router: Router,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
     this.profileForm = this.profileFormInstance;
-    this.userCredentials = { name: '', email: 'lalala@lalala.com' };
     this.profileForm.controls['name'].disable();
     this.profileForm.controls['email'].disable();
   }
 
-  /*  ngAfterViewInit(): void {
-    if (this.inputName != null) {
-      this.renderer.listen(this.inputName, 'keyup', (event) => {
-        this.inputName.value = this.userCredentials.email;
-      });
-    }
-  } */
+  ngAfterViewInit(): void {
+    this.userCredentials = { name: '', email: 'lalala@lalala.com' };
+    this.cdr.detectChanges();
+  }
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
     return this.fb.group<ProfileForm>({
@@ -125,14 +122,14 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  openChangePasswordModal() {
+  /* openChangePasswordModal() {
     const dialogRef = this.dialog.open(ChangePasswordDialogComponent);
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log(result);
       }
     });
-  }
+  } */
 
   logoutAndRedirectToHome() {
     this.router.navigate(['']);
