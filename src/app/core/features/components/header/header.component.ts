@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { Router } from '@angular/router';
 import { AuthFacade } from '../../../authorization/services/auth.facade';
+import { RoleService } from '../../../roles/role.service';
 
 @Component({
   selector: 'TTP-header',
@@ -13,10 +14,25 @@ import { AuthFacade } from '../../../authorization/services/auth.facade';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  public userRole = '';
+
   constructor(
     private router: Router,
     private authFacade: AuthFacade,
-  ) {}
+    private roleService: RoleService,
+  ) {
+    this.initializeUserRole();
+  }
+
+  private initializeUserRole(): void {
+    this.roleService.userRole$.subscribe((role) => {
+      this.userRole = role;
+    });
+
+    if (this.authFacade.isAuthenticated) {
+      this.authFacade.getUserRole();
+    }
+  }
 
   public redirectToSignIn() {
     this.router.navigate(['/auth/signin']);
@@ -36,5 +52,9 @@ export class HeaderComponent {
 
   public get isAuthenticated(): boolean {
     return this.authFacade.isAuthenticated;
+  }
+
+  public get isAdminRole(): boolean {
+    return this.roleService.isAdminRole;
   }
 }

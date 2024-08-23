@@ -48,8 +48,8 @@ export class AuthFacade {
     this.saveTokenToLocalStorage(token);
     this.getUserRole();
   }
-
-  private getUserRole(): void {
+  //Here change private to public
+  public getUserRole(): void {
     this.profileService
       .getUserProfile()
       .pipe(
