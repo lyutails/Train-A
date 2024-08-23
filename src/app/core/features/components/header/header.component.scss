@@ -1,3 +1,17 @@
 header {
-  border-bottom: 1px solid rgb(0 0 0 / 20%);
+  background: #d4e9ff;
+  border-bottom: 1px solid rgb(0 92 187 / 50%);
+}
+
+.home-button {
+  .logo-img {
+    width: 38px;
+    margin-right: 8px;
+  }
+
+  span {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #005cbb;
+  }
 }

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { Router } from '@angular/router';
+import { AuthFacade } from '../../../authorization/services/auth.facade';
 
 @Component({
   selector: 'TTP-header',
@@ -12,17 +13,28 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authFacade: AuthFacade,
+  ) {}
 
   public redirectToSignIn() {
-    return this.router.navigate(['/auth/signin']);
+    this.router.navigate(['/auth/signin']);
   }
 
   public redirectToSignUp() {
-    return this.router.navigate(['/auth/signup']);
+    this.router.navigate(['/auth/signup']);
   }
 
   public redirectToHome() {
-    return this.router.navigate(['/']);
+    this.router.navigate(['/']);
+  }
+
+  public redirectToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  public get isAuthenticated(): boolean {
+    return this.authFacade.isAuthenticated;
   }
 }

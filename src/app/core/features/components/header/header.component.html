@@ -1,9 +1,20 @@
 <header>
   <nav class="d-flex justify-content-between align-items-center p-3">
-    <button mat-button (click)="redirectToHome()">Home</button>
-    <div class="auth-buttons">
-      <button mat-button (click)="redirectToSignIn()">Sign In</button>
-      <button mat-button (click)="redirectToSignUp()">Sign Up</button>
+    <div class="home-button" (click)="redirectToHome()" role="button" tabindex="0" (keydown.enter)="redirectToHome()">
+      <img src="train.webp" alt="Logo" class="logo-img" />
+      <span class="mat-button-label">Train Trips Planning</span>
     </div>
+    @if (!isAuthenticated) {
+      <div class="auth-buttons">
+        <button mat-button (click)="redirectToSignIn()">Sign In</button>
+        <button mat-button (click)="redirectToSignUp()">Sign Up</button>
+      </div>
+    }
+    @if (isAuthenticated) {
+      <div class="user-buttons">
+        <button mat-button (click)="redirectToProfile()">Profile</button>
+        <button mat-button>My orders</button>
+      </div>
+    }
   </nav>
 </header>
