@@ -15,6 +15,7 @@ import { ButtonComponent } from '../../../../../common/button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
+import { ProfileService } from '../../../../../repositories/profile/services/profile.service';
 
 @Component({
   selector: 'TTP-password-update',
@@ -42,7 +43,14 @@ export class PasswordUpdateComponent {
   public data = inject<PasswordPopupData>(MAT_DIALOG_DATA);
   public popupPassword = model(this.data.password);
 
+  constructor(public profileService: ProfileService) {}
+
   closePasswordPopup() {
+    this.dialogRef.close();
+  }
+
+  saveAndClosePasswordPopup() {
+    this.profileService.updatePassword('lalala');
     this.dialogRef.close();
   }
 }
