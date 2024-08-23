@@ -1,16 +1,6 @@
 import { ProfileFacade } from './../../../services/profile.facade';
 import { CommonModule } from '@angular/common';
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  inject,
-  Input,
-  model,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { Component, inject, Input, model, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -55,7 +45,7 @@ import { ProfileInformation } from '../../../../../repositories/profile/services
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
-export class UserProfileComponent implements OnInit, AfterViewInit {
+export class UserProfileComponent implements OnInit {
   @Input() editable = false;
   @ViewChild('inputName')
   public inputName!: HTMLInputElement;
@@ -73,7 +63,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private cdr: ChangeDetectorRef,
     private profileFacade: ProfileFacade,
     private router: Router,
   ) {}
@@ -82,6 +71,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.profileForm = this.profileFormInstance;
     this.profileFacade.getUserProfile().subscribe({
       next: (data) => {
+        console.log(data);
         this.userCredentials = data;
         if (!data.name) {
           this.userCredentials.name = '';
@@ -96,12 +86,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.screenWidth = window.innerWidth;
     if (this.userCredentials.role === 'manager') {
       this.admin.set('manager');
-    }
-  }
-
-  ngAfterViewInit() {
-    if (this.userCredentials.role === 'manager') {
-      this.admin.set('manager');
+      console.log(this.admin());
     }
   }
 
