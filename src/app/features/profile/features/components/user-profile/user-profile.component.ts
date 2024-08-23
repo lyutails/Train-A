@@ -71,10 +71,12 @@ export class UserProfileComponent implements OnInit {
     this.profileForm = this.profileFormInstance;
     this.profileFacade.getUserProfile().subscribe({
       next: (data) => {
-        console.log(data);
         this.userCredentials = data;
         if (!data.name) {
           this.userCredentials.name = '';
+        }
+        if (this.userCredentials.role === 'manager') {
+          this.admin.set('manager');
         }
       },
       error: () => {
@@ -84,10 +86,6 @@ export class UserProfileComponent implements OnInit {
     this.profileForm.controls['name'].disable();
     this.profileForm.controls['email'].disable();
     this.screenWidth = window.innerWidth;
-    if (this.userCredentials.role === 'manager') {
-      this.admin.set('manager');
-      console.log(this.admin());
-    }
   }
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
