@@ -55,10 +55,6 @@
     font-size: 0.7rem;
     color: oklch(59.98% 0.236 15.45deg);
   }
-
-  input.ng-invalid.ng-touched {
-    border: 1px solid oklch(59.98% 0.236 15.45deg);
-  }
 }
 
 @media screen and (width >= 300px) and (width <= 639.98px) {
