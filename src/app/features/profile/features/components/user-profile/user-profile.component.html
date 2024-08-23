@@ -6,10 +6,11 @@
       [type]="'button'"
       [width]="screenWidth < 600 ? '50vw' : '30vw'"
       [buttonText]="'Change Password'"
+      (click)="openPasswordModal()"
     ></TTP-button>
     <form [formGroup]="profileForm" class="profile_form">
       <div class="profile_item">
-        <div class="profile_input-name">Name</div>
+        <div class="profile_input-name name">Name</div>
         <div class="profile_field">
           <mat-form-field appearance="outline" class="profile_field">
             <input matInput formControlName="name" [value]="userCredentials.name | trim" />

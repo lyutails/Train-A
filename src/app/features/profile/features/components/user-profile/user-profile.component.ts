@@ -1,5 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  inject,
+  Input,
+  model,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -13,14 +23,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ButtonComponent } from '../../../../../common/button/button.component';
-import { ProfileForm } from './models/profile.model';
+import { ProfileForm } from '../models/profile.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserCredentials } from './models/user-credentials.models';
+import { UserCredentials } from '../models/user-credentials.models';
 import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
 import { ProfileService } from '../../../../../repositories/profile/services/profile.service';
+import { PasswordUpdateComponent } from '../password-update/password-update.component';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -36,7 +46,6 @@ import { ProfileService } from '../../../../../repositories/profile/services/pro
     MatIconModule,
     ReactiveFormsModule,
     MatFormField,
-    ChangePasswordDialogComponent,
     ButtonComponent,
     MatTooltipModule,
     TrimPipe,
@@ -55,6 +64,9 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public editSaveName = signal(true);
   public editSaveEmail = signal(true);
   public screenWidth!: number;
+  public popupPassword = signal('');
+  public passwordValue = model('');
+  public dialog = inject(MatDialog);
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -139,20 +151,27 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.editSaveEmail.set(true);
   }
 
-  /* private setNameEmailOnServer({ name, email }: UserCredentials) {
-    // PUT /api/profile
+  public updateUserProfileOnServer() {
+    // const localStorageCredentials = localStorage.getItem('credentials');
+    // this.userCredentials.name = localStorageCredentials ? JSON.parse(localStorageCredentials)! : '';
+    const name = this.userCredentials.name;
+    const email = this.userCredentials.email;
+    return this.profileService.updateUserProfile({ name, email });
   }
 
-  private changePassword() {
-    const dialogRef = this.dialog.open(ChangePasswordDialogComponent);
+  public openPasswordModal() {
+    const dialogRef = this.dialog.open(PasswordUpdateComponent, {
+      data: { password: this.passwordValue() },
+    });
+
     dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(result);
+      if (result !== undefined) {
+        this.passwordValue.set(result);
       }
     });
-  } */
+  }
 
-  // private setAdmin() {}
+  // private setAdminTitle() {}
 
   public logoutAndRedirectToHome() {
     this.profileService.logout();

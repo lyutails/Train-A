@@ -58,6 +58,10 @@
 
   &_input-name {
     font-weight: 800;
+
+    &.name {
+      margin-top: 15px;
+    }
   }
 }
 
