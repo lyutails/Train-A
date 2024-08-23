@@ -14,7 +14,6 @@ import { ViewEncapsulation } from '@angular/core';
 import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
 import { MatIcon } from '@angular/material/icon';
 
-
 @Component({
   selector: 'TTP-sign-in',
   standalone: true,
@@ -81,9 +80,9 @@ export class SignInComponent {
   }
 
   private signIn() {
-    this.authorizationService.signIn(this.userInfo).subscribe({
+    this.authFacade.signIn(this.userInfo).subscribe({
       next: ({ token }) => {
-        this.authorizationService.saveTokenToLocalStorage(token);
+        this.authFacade.saveUserInfo(token);
         this.router.navigate(['/']);
       },
       error: ({ error }: HttpErrorResponse) => {
