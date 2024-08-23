@@ -1,91 +1,85 @@
-<div class="profile-container mat-elevation-z8">
-  <h2>Profile</h2>
-
-  <mat-card class="profile-item">
-    <div *ngIf="!isEditingName; else editNameTemplate">
-      <span>{{ user.name }}</span>
-      <button
-        mat-icon-button
-        (click)="startEditing('name')"
-        aria-label="Edit name"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    <ng-template #editNameTemplate>
-      <mat-form-field appearance="fill">
-        <mat-label>Edit Name</mat-label>
-        <input matInput [formControl]="editableNameControl" />
-        <mat-error
-          *ngIf="profileForm?.get('editableName')?.hasError('required')"
-        >
-          Name is required
-        </mat-error>
-        <mat-error
-          *ngIf="profileForm?.get('editableName')?.hasError('minlength')"
-        >
-          Name must be at least 3 characters long
-        </mat-error>
-        <mat-error
-          *ngIf="profileForm?.get('editableName')?.hasError('maxlength')"
-        >
-          Name cannot exceed 50 characters
-        </mat-error>
-      </mat-form-field>
-      <button
-        mat-icon-button
-        (click)="saveName()"
-        aria-label="Save name"
-        [disabled]="!profileForm?.get('editableName')?.valid"
-      >
-        <mat-icon>save</mat-icon>
-      </button>
-    </ng-template>
-  </mat-card>
-
-  <mat-card class="profile-item">
-    <div *ngIf="!isEditingEmail; else editEmailTemplate">
-      <span>{{ user.email }}</span>
-      <button
-        mat-icon-button
-        (click)="startEditing('email')"
-        aria-label="Edit email"
-      >
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
-    <ng-template #editEmailTemplate>
-      <mat-form-field appearance="fill">
-        <mat-label>Edit Email</mat-label>
-        <input matInput [formControl]="editableEmailControl" />
-        <mat-error
-          *ngIf="profileForm?.get('editableEmail')?.hasError('required')"
-        >
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="profileForm?.get('editableEmail')?.hasError('email')">
-          Invalid email format
-        </mat-error>
-      </mat-form-field>
-      <button
-        mat-icon-button
-        (click)="saveEmail()"
-        aria-label="Save email"
-        [disabled]="!profileForm?.get('editableEmail')?.valid"
-      >
-        <mat-icon>save</mat-icon>
-      </button>
-    </ng-template>
-  </mat-card>
-
-  <div class="action-buttons">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="openChangePasswordModal()"
-    >
-      Change Password
-    </button>
-    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="profile_wrapper">
+    <p class="profile_title">Profile</p>
+    @if (admin() === 'manager') {
+      <p class="profile_admin">Manager</p>
+    }
+    <TTP-button
+      [type]="'button'"
+      [width]="screenWidth < 600 ? '50vw' : '30vw'"
+      [buttonText]="'Change Password'"
+      (click)="openPasswordModal()"
+    ></TTP-button>
+    <form [formGroup]="profileForm" class="profile_form">
+      <div class="profile_item">
+        <div class="profile_input-name name">Name</div>
+        <div class="profile_field">
+          <mat-form-field appearance="outline" class="profile_field">
+            <input matInput formControlName="name" [value]="userCredentials.name | trim" />
+            @if (profileForm.controls['name'].hasError('required')) {
+              <mat-error>Name is required</mat-error>
+            }
+            @if (profileForm.controls['name'].hasError('minlength')) {
+              <mat-error>Should contain at least 2 characters long</mat-error>
+            }
+            @if (profileForm.controls['name'].hasError('maxlength')) {
+              <mat-error>Maximum length is 20 symbols</mat-error>
+            }
+          </mat-form-field>
+          @if (editSaveName()) {
+            <button mat-icon-button (click)="editName()" aria-label="Edit name" matTooltip="Edit your name">
+              <mat-icon [style.color]="editIconColour">{{ editSaveName() ? 'edit' : 'save' }}</mat-icon>
+            </button>
+          } @else {
+            <button
+              mat-icon-button
+              (click)="saveName()"
+              (click)="updateUserProfileOnServer()"
+              aria-label="Save name"
+              [disabled]="!profileForm.controls['name'].valid"
+              matTooltip="Save your name"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+          }
+        </div>
+      </div>
+      <div class="profile_item">
+        <div class="profile_input-name">Email</div>
+        <div class="profile_field">
+          <mat-form-field appearance="outline" class="profile_field">
+            <input matInput formControlName="email" appearance="outline" [value]="userCredentials.email | trim" />
+            @if (profileForm.controls['email'].hasError('required')) {
+              <mat-error>Email is required</mat-error>
+            }
+            @if (profileForm.controls['email'].hasError('pattern')) {
+              <mat-error>Invalid email format</mat-error>
+            }
+          </mat-form-field>
+          @if (editSaveEmail()) {
+            <button mat-icon-button (click)="editEmail()" aria-label="Edit email" matTooltip="Edit your name">
+              <mat-icon [style.color]="editIconColour">{{ editSaveEmail() ? 'edit' : 'save' }}</mat-icon>
+            </button>
+          } @else {
+            <button
+              mat-icon-button
+              (click)="saveEmail()"
+              (click)="updateUserProfileOnServer()"
+              aria-label="Save email"
+              [disabled]="!profileForm.controls['email'].valid"
+              matTooltip="Save your name"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+          }
+        </div>
+      </div>
+    </form>
+    <TTP-button
+      (click)="logoutAndRedirectToHome()"
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Logout'"
+    ></TTP-button>
   </div>
 </div>

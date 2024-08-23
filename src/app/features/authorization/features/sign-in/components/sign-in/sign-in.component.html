@@ -20,7 +20,11 @@
           formControlName="password"
           placeholder="Password"
           [value]="signInForm.controls.password.value | trim"
+          [type]="hide() ? 'password' : 'text'"
         />
+        <button type="button" mat-icon-button matSuffix (click)="showHidePassword()">
+          <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
       </mat-form-field>
       @if (signInForm.controls['email'].hasError('alreadyLoggedIn')) {
         <mat-error class="sign-in_input-error"> Incorrect email or password </mat-error>

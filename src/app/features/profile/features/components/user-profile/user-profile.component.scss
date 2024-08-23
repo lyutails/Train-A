@@ -1,33 +1,83 @@
-.profile-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
+@import '../../../../../../styles';
 
-  background-color: #fff;
-  border-radius: 8px;
-}
+.profile {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 
-.profile-item {
-  margin-bottom: 20px;
-  padding: 20px;
-}
+    width: 60vw;
+    min-width: 220px;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
 
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+    background-color: #fff;
+    border: 1px solid rgb(0 0 0 / 20%);
+    border-radius: 10px;
+  }
 
-  button {
-    width: 48%;
+  &_form {
+    width: 80%;
+  }
+
+  &_title {
+    width: 100%;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  &_field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  &_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px;
+  }
+
+  &_admin {
+    margin-bottom: 20px;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $deep-blue;
+    text-align: center;
+  }
+
+  &_input-name {
+    font-weight: 800;
+
+    &.name {
+      margin-top: 15px;
+    }
   }
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+input.ng-invalid.ng-touched {
+  border: 1px solid oklch(59.98% 0.236 15.45deg);
+}
 
-  button {
-    margin-left: 10px;
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .profile {
+    &_wrapper {
+      width: 90vw;
+    }
+
+    &_item {
+      width: 100%;
+      padding: 0;
+    }
   }
 }
