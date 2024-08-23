@@ -82,7 +82,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.profileForm = this.profileFormInstance;
     this.profileFacade.getUserProfile().subscribe({
       next: (data) => {
-        console.log('get user', data);
         this.userCredentials = data;
         if (!data.name) {
           this.userCredentials.name = '';
@@ -179,7 +178,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public updateUserProfileOnServer() {
     this.profileFacade.updateUserProfile(this.profileInfo).subscribe({
       next: (data) => {
-        console.log('update', data, this.profileInfo);
         data.name = this.profileInfo.name;
         data.email = this.profileInfo.email;
       },
