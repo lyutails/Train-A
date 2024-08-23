@@ -4,12 +4,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
-import { AuthorizationService } from '../../../../../../repositories/authorization/services/authorization.service';
 import { UserInfo } from '../../../../models/user-info.model';
+import { AuthFacade } from '../../../../../../core/authorization/services/auth.facade';
 import { ViewEncapsulation } from '@angular/core';
 import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
 import { MatIcon } from '@angular/material/icon';
@@ -43,9 +43,8 @@ export class SignInComponent {
 
   constructor(
     private readonly fb: NonNullableFormBuilder,
-    private readonly http: HttpClient,
     private router: Router,
-    private readonly authorizationService: AuthorizationService,
+    private readonly authFacade: AuthFacade,
   ) {
     this.signInForm = this.signInFormInstance;
   }
@@ -81,9 +80,9 @@ export class SignInComponent {
   }
 
   private signIn() {
-    this.authorizationService.signIn(this.userInfo).subscribe({
+    this.authFacade.signIn(this.userInfo).subscribe({
       next: ({ token }) => {
-        this.authorizationService.saveTokenToLocalStorage(token);
+        this.authFacade.saveUserInfo(token);
         this.router.navigate(['/']);
       },
       error: ({ error }: HttpErrorResponse) => {

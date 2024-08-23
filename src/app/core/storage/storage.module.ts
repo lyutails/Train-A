@@ -1,7 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { StorageModuleConfig } from './models/storage-module-config';
 import { windowGlobal } from './tokens/window-global.token';
-import { storageKeyPrefix } from './tokens/local-storage-key.token';
+import { storageKeyPrefix } from './tokens/storage-key-prefix';
 
 @NgModule({})
 export class StorageModule {

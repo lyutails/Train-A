@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { windowGlobal } from '../tokens/window-global.token';
-import { storageKeyPrefix } from '../tokens/local-storage-key.token';
+import { storageKeyPrefix } from '../tokens/storage-key-prefix';
 
 @Injectable({
   providedIn: 'root',

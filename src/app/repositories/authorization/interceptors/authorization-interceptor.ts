@@ -1,10 +1,10 @@
 import { HttpHandlerFn, HttpHeaders, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthorizationService } from '../services/authorization.service';
+import { AuthFacade } from '../../../core/authorization/services/auth.facade';
 
 export const authorizationInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>, next: HttpHandlerFn) => {
-  const authorizationService = inject(AuthorizationService);
-  const token = authorizationService.getTokenFromLocalStorage();
+  const authFacade = inject(AuthFacade);
+  const token = authFacade.getTokenFromLocalStorage();
 
   const url = `/api/${request.url}`;
   const authRequest = request.clone({
