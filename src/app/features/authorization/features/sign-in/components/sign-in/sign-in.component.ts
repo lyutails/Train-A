@@ -1,9 +1,8 @@
-import { Component } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
+import { Component, signal } from '@angular/core';
+import { FormGroup, NonNullableFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SignInForm } from '../../models/sign-in.model';
@@ -11,6 +10,10 @@ import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { UserInfo } from '../../../../models/user-info.model';
 import { AuthFacade } from '../../../../../../core/authorization/services/auth.facade';
+import { ViewEncapsulation } from '@angular/core';
+import { TrimPipe } from '../../../../../../common/pipes/trim-pipe/trim.pipe';
+import { MatIcon } from '@angular/material/icon';
+
 
 @Component({
   selector: 'TTP-sign-in',
@@ -23,9 +26,13 @@ import { AuthFacade } from '../../../../../../core/authorization/services/auth.f
     MatButtonModule,
     MatInputModule,
     ButtonComponent,
+    TrimPipe,
+    MatIcon,
+    MatIconButton,
   ],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class SignInComponent {
   public signInForm: FormGroup<SignInForm>;
@@ -33,6 +40,7 @@ export class SignInComponent {
   public isSubmitting = false;
   public emailErrorMessage: string | null = null;
   public passwordErrorMessage: string | null = null;
+  public hide = signal(true);
 
   constructor(
     private readonly fb: NonNullableFormBuilder,
@@ -48,40 +56,7 @@ export class SignInComponent {
     }
 
     this.isSubmitting = true;
-    this.clearErrorMessages();
-    this.authFacade.signIn(this.userInfo).subscribe({
-      next: ({ token }) => {
-        this.authFacade.saveUserInfo(token);
-      },
-      error: (error: HttpErrorResponse) => {
-        this.handleAuthError(error);
-        this.isSubmitting = false;
-      },
-      complete: () => {
-        this.router.navigate(['/']);
-      },
-    });
-  }
-
-  private handleAuthError(error: HttpErrorResponse): void {
-    //TODO The errors does not appear in the form
-    if (error.status === 404) {
-      this.emailErrorMessage = 'User is not found';
-      this.passwordErrorMessage = null;
-    } else if (error.status === 400) {
-      this.emailErrorMessage = 'Incorrect email or password';
-      this.passwordErrorMessage = 'Incorrect email or password';
-    } else if (error.status === 422) {
-      this.emailErrorMessage = 'Invalid email format';
-    } else {
-      this.emailErrorMessage = 'Authentication failed';
-      this.passwordErrorMessage = 'Authentication failed';
-    }
-  }
-
-  private clearErrorMessages(): void {
-    this.emailErrorMessage = null;
-    this.passwordErrorMessage = null;
+    this.signIn();
   }
 
   private get signInFormInstance(): FormGroup<SignInForm> {
@@ -105,6 +80,28 @@ export class SignInComponent {
     });
   }
 
+  private signIn() {
+    this.authorizationService.signIn(this.userInfo).subscribe({
+      next: ({ token }) => {
+        this.authorizationService.saveTokenToLocalStorage(token);
+        this.router.navigate(['/']);
+      },
+      error: ({ error }: HttpErrorResponse) => {
+        this.isSubmitting = false;
+        this.clearErrorMessages();
+
+        if (error.reason === 'alreadyLoggedIn') {
+          this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
+        }
+      },
+    });
+  }
+
+  private clearErrorMessages(): void {
+    this.emailErrorMessage = null;
+    this.passwordErrorMessage = null;
+  }
+
   public get redirectToSignUp() {
     return this.router.navigate(['/auth/signup']);
   }
@@ -114,5 +111,9 @@ export class SignInComponent {
       email: this.signInForm.controls.email.value,
       password: this.signInForm.controls.password.value,
     };
+  }
+
+  public showHidePassword() {
+    this.hide.set(!this.hide());
   }
 }

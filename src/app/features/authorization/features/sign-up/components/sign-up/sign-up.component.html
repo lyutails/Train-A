@@ -1,60 +1,79 @@
-<div class="sign-up_wrapper">
-  <form class="sign-up_form" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
-    <p class="sign-up_title">Sign Up</p>
-    <mat-form-field appearance="outline" class="sign-up_field">
-      <mat-label>Email</mat-label>
-      <input
-        #input
-        matInput
-        placeholder="email..."
-        formControlName="email"
-        [value]="signUpForm.controls.email.value | trim"
-      />
-    </mat-form-field>
-    @if (signUpForm.controls['email'].hasError('invalidUniqueKey')) {
-      <div class="sign-up_input-error">Account with this email already exists</div>
-    }
-    <mat-form-field appearance="outline" class="sign-up_field">
-      <mat-label>Password</mat-label>
-      <input
-        matInput
-        placeholder="password..."
-        formControlName="password"
-        type="password"
-        [value]="signUpForm.controls.password.value | trim"
-      />
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="sign-up_field">
-      <mat-label>Repeat Password</mat-label>
-      <input
-        matInput
-        placeholder="repeat password..."
-        formControlName="repeatPassword"
-        type="password"
-        [value]="signUpForm.controls.repeatPassword.value | trim"
-      />
-    </mat-form-field>
-    @if (signUpForm.controls.repeatPassword.touched && signUpForm.controls.repeatPassword.invalid) {
-      <div class="sign-up_input-error">
-        @if (signUpForm.controls.repeatPassword.errors?.['passwordMismatch']) {
-          <div>Passwords don't match</div>
-        }
-      </div>
-    }
-    <div class="sign-up_buttons">
-      <TTP-button
-        [type]="'submit'"
-        [width]="'100px'"
-        [disabled]="!signUpForm.valid"
-        [buttonText]="'Register'"
-      ></TTP-button>
-      <TTP-button
-        [type]="'button'"
-        [width]="'100px'"
-        [disabled]="false"
-        [buttonText]="'Sign In'"
-        (click)="(redirectToSignIn)"
-      ></TTP-button>
-    </div>
-  </form>
+<div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="sign-up_wrapper">
+    <form class="sign-up_form" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+      <p class="sign-up_title">Sign Up</p>
+      <mat-form-field appearance="outline" class="sign-up_field">
+        <mat-label>Email</mat-label>
+        <input
+          #input
+          matInput
+          placeholder="email..."
+          formControlName="email"
+          [value]="signUpForm.controls.email.value | trim"
+          [disabled]="true"
+        />
+      </mat-form-field>
+      @if (signUpForm.controls['email'].hasError('invalidUniqueKey')) {
+        <mat-error class="sign-up_input-error">Account with this email already exists</mat-error>
+      }
+      @if (isEqualToLastEmail() && signUpForm.controls['email'].hasError('pattern')) {
+        <mat-error class="sign-up_input-error">Incorrect email</mat-error>
+      }
+      <mat-form-field appearance="outline" class="sign-up_field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          placeholder="password..."
+          formControlName="password"
+          type="password"
+          [value]="signUpForm.controls.password.value | trim"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="sign-up_field">
+        <mat-label>Repeat Password</mat-label>
+        <input
+          matInput
+          placeholder="repeat password..."
+          formControlName="repeatPassword"
+          type="password"
+          [value]="signUpForm.controls.repeatPassword.value | trim"
+        />
+      </mat-form-field>
+      @if (signUpForm.controls.repeatPassword.touched && signUpForm.controls.repeatPassword.invalid) {
+        <div class="sign-up_input-error">
+          @if (signUpForm.controls.repeatPassword.errors?.['passwordMismatch']) {
+            <mat-error>Passwords don't match</mat-error>
+          }
+        </div>
+      }
+      @if (loadingService.spinnerCounter$ | async) {
+        <div class="sign-up_buttons">
+          <TTP-button [type]="'submit'" [width]="'10vw'" [disabled]="true" [buttonText]="'Register'"></TTP-button>
+          <TTP-button
+            [type]="'button'"
+            [width]="'10vw'"
+            (click)="(redirectToSignIn)"
+            [disabled]="true"
+            [buttonText]="'Sign In'"
+          ></TTP-button>
+        </div>
+      } @else {
+        <div class="sign-up_buttons">
+          <TTP-button
+            [type]="'submit'"
+            [width]="'10vw'"
+            [disabled]="!signUpForm.controls['email'].hasError('invalidUniqueKey') && !signUpForm.valid"
+            [buttonText]="'Register'"
+          ></TTP-button>
+          <TTP-button
+            [type]="'button'"
+            [width]="'10vw'"
+            (click)="(redirectToSignIn)"
+            [disabled]="false"
+            [buttonText]="'Sign In'"
+          ></TTP-button>
+        </div>
+      }
+    </form>
+  </div>
 </div>
