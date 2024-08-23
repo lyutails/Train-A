@@ -1,1 +1,15 @@
-<p>carriages works!</p>
+<div class="carriages_wrapper">
+  <TTP-button (click)="fetch()" [type]="'button'" [width]="'10vw'" [buttonText]="'Create'"></TTP-button>
+  @for (testCarriage of testCarriagesArray; track testCarriage) {
+    <div class="carriages_name">{{ testCarriage.name }}</div>
+    <div class="carriages_rows">{{ testCarriage.rows }} rows</div>
+    <div class="carriages_left-side">{{ testCarriage.leftSeats }} left seats</div>
+    <div class="carriages_right-side">{{ testCarriage.rightSeats }} right seats</div>
+    <TTP-button (click)="fetch()" [type]="'button'" [width]="'10vw'" [buttonText]="'Update'"></TTP-button>
+    <form [formGroup]="carriageForm">
+      <div class="carriages_seats"></div>
+      <mat-checkbox class="carriages_seat" [checked]></mat-checkbox
+      ><TTP-button (click)="fetch()" [type]="'submit'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
+    </form>
+  }
+</div>

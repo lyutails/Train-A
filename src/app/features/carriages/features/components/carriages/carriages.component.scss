@@ -1,4 +1,6 @@
-html {
-  display: flex;
-  flex-direction: column;
+.carriages {
+  &_wrapper {
+    width: 90vw;
+    margin: 0 auto;
+  }
 }
