@@ -20,7 +20,12 @@ export class StationsService {
     return this.stationHttpService.deleteStation(id);
   }
 
-  public createStation(station: NewStationDetails): Observable<number> {
-    return this.stationHttpService.createStation(station);
+  public createStation(station: NewStationDetails): Observable<StationInfo> {
+    return this.stationHttpService.createStation(station).pipe(
+      map((id: number) => ({
+        ...station,
+        id,
+      })),
+    );
   }
 }

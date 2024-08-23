@@ -1,4 +1,14 @@
 <section class="stations">
   <TTP-map></TTP-map>
-  <section class="station__list"></section>
+  <ng-container *ngIf="stationsFacade.isLoading | async; else loaded"> <h1>Loading...</h1> </ng-container>
+  <ng-template #loaded>
+    <section class="station-list">
+      <ng-container *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn">
+        <div class="station-desction">
+          <h4>{{ station.city }}</h4>
+          <p>{{ station.latitude }}, {{ station.longitude }}</p>
+        </div>
+      </ng-container>
+    </section>
+  </ng-template>
 </section>
