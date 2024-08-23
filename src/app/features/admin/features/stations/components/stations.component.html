@@ -1,16 +1,23 @@
 <section class="stations_wrapper">
   <TTP-map></TTP-map>
+  <TTP-button class="stations_save" [type]="'button'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
   <ng-container *ngIf="stationsFacade.isLoading | async; else loaded"><h1>Loading...</h1></ng-container>
   <ng-template #loaded>
     <section class="stations_station-list">
-      <ng-container *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn">
+      <ng-container
+        class="stations_container col-5"
+        *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn"
+      >
         <div class="stations_desction">
           <h4 class="stations_title">{{ station.city }}</h4>
           <div class="stations_coordinates">
-            <p>latitude {{ station.latitude }}</p>
-            <p>longitude {{ station.longitude }}</p>
+            <p><span class="stations_bold-text">Latitude:</span> {{ station.latitude }}</p>
+            <p><span class="stations_bold-text">Longitude</span> {{ station.longitude }}</p>
           </div>
-          <p>Related Stations: {{ station.relations | trainConnections: (stationsFacade.stations | async) }}</p>
+          <p>
+            <span class="stations_bold-text">Related Stations:</span>
+            {{ station.relations | trainConnections: (stationsFacade.stations | async) }}
+          </p>
         </div>
       </ng-container>
     </section>

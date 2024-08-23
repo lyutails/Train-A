@@ -1,12 +1,18 @@
+@import '../../../../../../styles';
+
 .stations {
   &_wrapper {
     width: 90vw;
     margin: 0 auto;
+
+    /* display: flex;
+    flex-direction: column; */
+    padding-top: 2vw;
   }
 
   &_station-list {
     display: flex;
-    flex-direction: column;
+    flex-flow: column wrap;
     gap: 10px;
     align-items: center;
     justify-content: center;
@@ -15,16 +21,46 @@
   &_title {
     font-size: 1.4rem;
     font-weight: 600;
+    color: $deep-blue;
+
+    &:first-child {
+      margin-top: 10px;
+    }
   }
 
   &_desction {
     width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+
     word-wrap: break-word;
     white-space: initial;
+
+    border: 1px solid rgb(0 0 0 / 20%);
+    border-radius: 10px;
   }
 
   &_coordinates {
     display: flex;
     flex-direction: column;
+  }
+
+  &_save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &_bold-text {
+    font-weight: 600;
+  }
+
+  &_map-button {
+    display: flex;
+    flex-direction: row;
+    height: 600px;
   }
 }
