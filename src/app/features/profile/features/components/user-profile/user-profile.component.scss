@@ -1,59 +1,67 @@
-.sign-up {
+@import '../../../../../../styles';
+
+.profile {
   &_wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
     width: 60vw;
     min-width: 220px;
     max-width: 500px;
-    padding: 30px;
+    margin: 20px auto;
+    padding: 20px;
 
+    background-color: #fff;
     border: 1px solid rgb(0 0 0 / 20%);
     border-radius: 10px;
   }
 
   &_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-    margin: 0 auto;
-    padding: 0;
-  }
-
-  &_field {
     width: 80%;
-    padding: 0;
   }
 
   &_title {
-    user-select: none;
-
     width: 100%;
-    margin-bottom: 20px;
-
     font-size: 1.6rem;
     font-weight: 800;
     text-align: center;
   }
 
-  &_buttons {
+  &_field {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    width: 80%;
-    margin-top: 20px;
+    width: 100%;
+    margin-top: 10px;
   }
 
-  &_input-error {
-    width: max-content;
-    font-size: 0.7rem;
-    color: oklch(59.98% 0.236 15.45deg);
+  &_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 20px;
+  }
+
+  &_admin {
+    margin-bottom: 20px;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $deep-blue;
+    text-align: center;
+  }
+
+  &_input-name {
+    font-weight: 800;
+
+    &.name {
+      margin-top: 15px;
+    }
   }
 }
 
@@ -62,19 +70,14 @@ input.ng-invalid.ng-touched {
 }
 
 @media screen and (width >= 300px) and (width <= 639.98px) {
-  .sign-up {
+  .profile {
     &_wrapper {
       width: 90vw;
     }
 
-    &_field {
+    &_item {
       width: 100%;
       padding: 0;
-    }
-
-    &_buttons {
-      width: 100%;
-      margin-top: 20px;
     }
   }
 }
