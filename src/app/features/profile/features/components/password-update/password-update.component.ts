@@ -8,7 +8,7 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
+import { MatError, MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { ButtonComponent } from '../../../../../common/button/button.component';
@@ -17,6 +17,7 @@ import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators
 import { MatIconButton } from '@angular/material/button';
 import { ProfileService } from '../../../../../repositories/profile/services/profile.service';
 import { ProfileFacade } from '../../../services/profile.facade';
+import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
 
 @Component({
   selector: 'TTP-password-update',
@@ -35,6 +36,8 @@ import { ProfileFacade } from '../../../services/profile.facade';
     FormsModule,
     MatIconButton,
     MatHint,
+    TrimPipe,
+    MatError,
   ],
   templateUrl: './password-update.component.html',
   styleUrl: './password-update.component.scss',
@@ -62,12 +65,7 @@ export class PasswordUpdateComponent implements OnInit {
           value: '',
           disabled: false,
         },
-        [
-          Validators.required,
-          Validators.pattern('^[a-zA-Zа-яА-Я0-9._%+-]+@[a-zA-Zа-яА-Я0-9.-]+\\.[a-zA-Zа-яА-Я]{2,}$'),
-          Validators.minLength(2),
-          Validators.maxLength(20),
-        ],
+        [Validators.required, Validators.minLength(8), Validators.pattern('^\\S*$')],
       ),
     });
   }
