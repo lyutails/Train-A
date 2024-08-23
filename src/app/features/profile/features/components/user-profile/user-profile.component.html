@@ -18,7 +18,7 @@
               <mat-error>Name is required</mat-error>
             }
             @if (profileForm.controls['name'].hasError('minlength')) {
-              <mat-error>Name must be at least 2 characters long</mat-error>
+              <mat-error>Should contain at least 2 characters long</mat-error>
             }
             @if (profileForm.controls['name'].hasError('maxlength')) {
               <mat-error>Maximum length is 20 symbols</mat-error>
@@ -47,10 +47,10 @@
           <mat-form-field appearance="outline" class="profile_field">
             <input matInput formControlName="email" appearance="outline" [value]="userCredentials.email | trim" />
             @if (profileForm.controls['email'].hasError('required')) {
-              <mat-error> Email is required </mat-error>
+              <mat-error>Email is required</mat-error>
             }
             @if (profileForm.controls['email'].hasError('pattern')) {
-              <mat-error>Invalid email format </mat-error>
+              <mat-error>Invalid email format</mat-error>
             }
           </mat-form-field>
           @if (editSaveEmail()) {

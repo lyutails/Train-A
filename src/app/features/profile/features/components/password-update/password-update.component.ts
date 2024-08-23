@@ -8,12 +8,13 @@ import {
   MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'TTP-password-update',
@@ -30,6 +31,8 @@ import { FormsModule } from '@angular/forms';
     MatDialogClose,
     CommonModule,
     FormsModule,
+    MatIconButton,
+    MatHint,
   ],
   templateUrl: './password-update.component.html',
   styleUrl: './password-update.component.scss',
