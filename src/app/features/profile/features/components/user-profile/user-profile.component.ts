@@ -95,6 +95,9 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.profileForm.controls['name'].disable();
     this.profileForm.controls['email'].disable();
     this.screenWidth = window.innerWidth;
+    if (this.userCredentials.role === 'manager') {
+      this.admin.set('manager');
+    }
   }
 
   ngAfterViewInit() {
@@ -174,18 +177,16 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   }
 
   public updateUserProfileOnServer() {
-    if (this.profileForm.valid) {
-      this.profileFacade.updateUserProfile(this.UserInfo).subscribe({
-        next: () => {
-          console.log('lalalas');
-          /* data.name = this.profileInfo.name;
-          data.email = this.profileInfo.email; */
-        },
-        error: () => {
-          console.error('Failed trying to change password');
-        },
-      });
-    }
+    this.profileFacade.updateUserProfile(this.profileInfo).subscribe({
+      next: (data) => {
+        console.log('update', data, this.profileInfo);
+        data.name = this.profileInfo.name;
+        data.email = this.profileInfo.email;
+      },
+      error: () => {
+        console.error('Failed trying to change password');
+      },
+    });
   }
 
   public openPasswordModal() {

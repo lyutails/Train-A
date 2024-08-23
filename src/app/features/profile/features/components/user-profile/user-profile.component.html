@@ -34,6 +34,7 @@
             <button
               mat-icon-button
               (click)="saveName()"
+              (click)="updateUserProfileOnServer()"
               aria-label="Save name"
               [disabled]="!profileForm.controls['name'].valid"
               matTooltip="Save your name"
@@ -63,6 +64,7 @@
             <button
               mat-icon-button
               (click)="saveEmail()"
+              (click)="updateUserProfileOnServer()"
               aria-label="Save email"
               [disabled]="!profileForm.controls['email'].valid"
               matTooltip="Save your name"
