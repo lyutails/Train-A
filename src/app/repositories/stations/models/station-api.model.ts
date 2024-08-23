@@ -1,9 +1,9 @@
 import { ConnectedStationsApi } from './connected-stations--api.model';
 
-export interface StationData {
+export interface StationApi {
   id: number;
   city: string;
   latitude: number;
   longitude: number;
-  connectedTo: ConnectedStationsApi;
+  connectedTo: ConnectedStationsApi[];
 }

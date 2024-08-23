@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
 import { MapComponent } from '../../map/compnents/map.component';
+import { StationsFacade } from '../services/stations.facade';
 
 @Component({
   selector: 'TTP-station',
   standalone: true,
   imports: [MapComponent],
-  templateUrl: './station.component.html',
-  styleUrl: './station.component.scss',
+  templateUrl: './stations.component.html',
+  styleUrl: './stations.component.scss',
 })
-export class StationComponent {}
+export class StationComponent {
+  constructor(private readonly stationFacade: StationsFacade) {
+    this.stationFacade.getStations().subscribe();
+  }
+}

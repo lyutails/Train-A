@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { StationsHttpService } from './stations-http.service';
 import { NewStationDetails } from '../../../features/admin/features/stations/models/station.model';
-import { Observable } from 'rxjs';
-import { StationData } from '../models/station-data.model';
+import { map, Observable } from 'rxjs';
+import { StationApi } from '../models/station-api.model';
+import { StationInfo } from '../../../features/admin/features/stations/models/station-info';
+import { transformStationApi } from '../helpers/transform-station-api';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +12,8 @@ import { StationData } from '../models/station-data.model';
 export class StationsService {
   constructor(private readonly stationHttpService: StationsHttpService) {}
 
-  public getStations(): Observable<StationData[]> {
-    return this.stationHttpService.getStations();
+  public getStations(): Observable<StationInfo[]> {
+    return this.stationHttpService.getStations().pipe(map((stations: StationApi[]) => transformStationApi(stations)));
   }
 
   public deleteStation(id: number): Observable<void> {

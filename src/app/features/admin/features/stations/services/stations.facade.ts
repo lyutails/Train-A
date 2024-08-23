@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { StationData } from '../../../../../repositories/stations/models/station-data.model';
 import { Observable } from 'rxjs';
 import { StationsService } from '../../../../../repositories/stations/services/stations.service';
 import { NewStationDetails } from '../models/station.model';
+import { StationInfo } from '../models/station-info';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { NewStationDetails } from '../models/station.model';
 export class StationsFacade {
   constructor(private readonly stationsService: StationsService) {}
 
-  public getStations(): Observable<StationData[]> {
+  public getStations(): Observable<StationInfo[]> {
     return this.stationsService.getStations();
   }
 

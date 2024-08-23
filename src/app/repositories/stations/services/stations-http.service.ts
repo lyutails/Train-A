@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { StationData } from '../models/station-data.model';
+import { StationApi } from '../models/station-api.model';
 import { NewStationDetails } from '../../../features/admin/features/stations/models/station.model';
 
 @Injectable({
@@ -10,8 +10,8 @@ import { NewStationDetails } from '../../../features/admin/features/stations/mod
 export class StationsHttpService {
   constructor(private readonly httpClient: HttpClient) {}
 
-  public getStations(): Observable<StationData[]> {
-    return this.httpClient.get<StationData[]>('station');
+  public getStations(): Observable<StationApi[]> {
+    return this.httpClient.get<StationApi[]>('station');
   }
 
   public deleteStation(id: number): Observable<void> {
