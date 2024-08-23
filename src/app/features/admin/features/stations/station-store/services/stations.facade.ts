@@ -12,7 +12,6 @@ export class StationsFacade {
   constructor(private readonly store: Store) {}
 
   public getStations(): void {
-    console.log('Dispatching loadStations action from component');
     return this.store.dispatch(stationsApiActions.loadStations());
   }
 
