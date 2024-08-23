@@ -13,7 +13,14 @@ import { MatInput } from '@angular/material/input';
 import { MatIcon } from '@angular/material/icon';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
 import { ProfileService } from '../../../../../repositories/profile/services/profile.service';
 import { ProfileFacade } from '../../../services/profile.facade';
@@ -38,6 +45,7 @@ import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
     MatHint,
     TrimPipe,
     MatError,
+    ReactiveFormsModule,
   ],
   templateUrl: './password-update.component.html',
   styleUrl: './password-update.component.scss',
@@ -74,22 +82,23 @@ export class PasswordUpdateComponent implements OnInit {
     return this.changePasswordForm.controls.password;
   }
 
-  closePasswordPopup() {
-    this.dialogRef.close();
-  }
-
-  saveAndClosePasswordPopup() {
+  public saveAndClosePasswordPopup() {
     if (this.changePasswordForm.valid) {
-      const password = this.changePasswordForm.controls.password.value;
-      this.profileFacade.updatePassword(password).subscribe({
+      const newPassword = this.changePasswordForm.controls.password.value;
+      console.log(newPassword);
+      this.profileFacade.updatePassword(newPassword).subscribe({
         next: () => {
           this.closePasswordPopup();
         },
         error: () => {
-          throw new Error('Failed trying to change password');
+          console.error('Failed trying to change password');
         },
       });
+      this.changePasswordForm.reset();
     }
+  }
+
+  closePasswordPopup() {
     this.dialogRef.close();
   }
 }

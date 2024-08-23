@@ -1,3 +1,4 @@
+import { ProfileFacade } from './../../../services/profile.facade';
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
@@ -25,12 +26,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ButtonComponent } from '../../../../../common/button/button.component';
-import { ProfileForm } from '../models/profile.model';
+import { ProfileInfo } from '../models/profile.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UserCredentials } from '../models/user-credentials.models';
 import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
-import { ProfileService } from '../../../../../repositories/profile/services/profile.service';
 import { PasswordUpdateComponent } from '../password-update/password-update.component';
+import { Router } from '@angular/router';
+import { ProfileForm } from '../models/profile-form.model';
+import { ProfileInformation } from '../../../../../repositories/profile/services/models/profile-information.model';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -58,7 +60,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   @ViewChild('inputName')
   public inputName!: HTMLInputElement;
   public profileForm!: FormGroup<ProfileForm>;
-  public userCredentials: UserCredentials = { name: '', email: '', password: '' };
+  public userCredentials: ProfileInformation = { name: '', email: '', role: 'user' };
   public editIconColour = 'oklch(49.71% 0.165 259.85deg)';
   public isNameBeingEdited = false;
   public editSaveName = signal(true);
@@ -67,33 +69,38 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
   public popupPassword = signal('');
   public passwordValue = model('');
   public dialog = inject(MatDialog);
+  public admin = signal('');
 
   constructor(
     private fb: NonNullableFormBuilder,
     private cdr: ChangeDetectorRef,
-    private profileService: ProfileService,
+    private profileFacade: ProfileFacade,
+    private router: Router,
   ) {}
 
   ngOnInit() {
     this.profileForm = this.profileFormInstance;
+    this.profileFacade.getUserProfile().subscribe({
+      next: (data) => {
+        console.log('get user', data);
+        this.userCredentials = data;
+        if (!data.name) {
+          this.userCredentials.name = '';
+        }
+      },
+      error: () => {
+        console.error('Failed trying to change password');
+      },
+    });
     this.profileForm.controls['name'].disable();
     this.profileForm.controls['email'].disable();
     this.screenWidth = window.innerWidth;
   }
 
-  ngAfterViewInit(): void {
-    // const localStorageCredentials = localStorage.getItem('credentials');
-    // this.userCredentials.name = localStorageCredentials ? JSON.parse(localStorageCredentials)! : '';
-    this.userCredentials = { name: 'lalala@lalala.com', email: 'lalala@lalala.com', password: 'someCoolPassword' };
-    if (this.isNameBeingEdited === false) {
-      const { email } = this.userCredentials;
-      this.userCredentials = {
-        name: `${email?.trim().replace(/@(.*)$/, '')}`,
-        email: `${email}`,
-        password: 'someCoolPassword',
-      };
+  ngAfterViewInit() {
+    if (this.userCredentials.role === 'manager') {
+      this.admin.set('manager');
     }
-    this.cdr.detectChanges();
   }
 
   private get profileFormInstance(): FormGroup<ProfileForm> {
@@ -151,12 +158,34 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     this.editSaveEmail.set(true);
   }
 
+  public get UserInfo(): ProfileInformation {
+    return {
+      name: this.profileForm.controls.name.value,
+      email: this.profileForm.controls.email.value,
+      role: this.userCredentials.role,
+    };
+  }
+
+  public get profileInfo(): ProfileInfo {
+    return {
+      name: this.profileForm.controls.name.value,
+      email: this.profileForm.controls.email.value,
+    };
+  }
+
   public updateUserProfileOnServer() {
-    // const localStorageCredentials = localStorage.getItem('credentials');
-    // this.userCredentials.name = localStorageCredentials ? JSON.parse(localStorageCredentials)! : '';
-    const name = this.userCredentials.name;
-    const email = this.userCredentials.email;
-    return this.profileService.updateUserProfile({ name, email });
+    if (this.profileForm.valid) {
+      this.profileFacade.updateUserProfile(this.UserInfo).subscribe({
+        next: () => {
+          console.log('lalalas');
+          /* data.name = this.profileInfo.name;
+          data.email = this.profileInfo.email; */
+        },
+        error: () => {
+          console.error('Failed trying to change password');
+        },
+      });
+    }
   }
 
   public openPasswordModal() {
@@ -171,9 +200,10 @@ export class UserProfileComponent implements OnInit, AfterViewInit {
     });
   }
 
-  // private setAdminTitle() {}
-
   public logoutAndRedirectToHome() {
-    this.profileService.logout();
+    this.profileFacade.logout().subscribe(() => {
+      console.log('logout success');
+    });
+    this.router.navigate(['']);
   }
 }

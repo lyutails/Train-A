@@ -1,7 +1,9 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="profile_wrapper">
     <p class="profile_title">Profile</p>
-    <div class="profile_admin">'Admin' here if logged in as Admin</div>
+    @if (admin() === 'manager') {
+      <div class="profile_admin">Admin</div>
+    }
     <TTP-button
       [type]="'button'"
       [width]="screenWidth < 600 ? '50vw' : '30vw'"
