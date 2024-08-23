@@ -1,3 +1,5 @@
+import { FormControl } from '@angular/forms';
+
 export interface PasswordPopupData {
-  password: string;
+  password: FormControl<string>;
 }
