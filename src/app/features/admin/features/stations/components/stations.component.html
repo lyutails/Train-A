@@ -1,11 +1,11 @@
-<section class="stations_wrapper">
+<section class="stations_wrapper container-xxl">
   <TTP-map></TTP-map>
   <TTP-button class="stations_save" [type]="'button'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
   <ng-container *ngIf="stationsFacade.isLoading | async; else loaded"><h1>Loading...</h1></ng-container>
   <ng-template #loaded>
     <section class="stations_station-list">
       <ng-container
-        class="stations_container col-5"
+        class="stations_container"
         *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn"
       >
         <div class="stations_desction">
