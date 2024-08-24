@@ -4,14 +4,31 @@ header {
 }
 
 .home-button {
-  .logo-img {
+  &_logo-img {
     width: 38px;
     margin-right: 8px;
   }
 
-  span {
+  &_description {
     font-size: 0.8rem;
     font-weight: 500;
     color: #005cbb;
+  }
+}
+
+.burger-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  &_icon {
+    font-size: 24px;
   }
 }

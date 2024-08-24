@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { Router } from '@angular/router';
 import { AuthFacade } from '../../../authorization/services/auth.facade';
@@ -9,12 +10,13 @@ import { RoleService } from '../../../roles/role.service';
 @Component({
   selector: 'TTP-header',
   standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatDividerModule],
+  imports: [MatButtonModule, MatIconModule, MatDividerModule, MatMenuModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   public userRole = '';
+  isSmallScreen: boolean = window.innerWidth < 640;
 
   constructor(
     private router: Router,
@@ -22,6 +24,7 @@ export class HeaderComponent {
     private roleService: RoleService,
   ) {
     this.initializeUserRole();
+    window.addEventListener('resize', () => this.checkScreenSize());
   }
 
   private initializeUserRole(): void {
@@ -64,5 +67,9 @@ export class HeaderComponent {
 
   public get isAdminRole(): boolean {
     return this.roleService.isAdminRole;
+  }
+
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth < 640;
   }
 }
