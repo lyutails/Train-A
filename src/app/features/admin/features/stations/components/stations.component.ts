@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MapComponent } from '../../map/compnents/map.component';
 import { StationsFacade } from '../station-store/services/stations.facade';
 import { StationInfo } from '../models/station-info';
@@ -12,8 +12,10 @@ import { TrainConnectionsPipe } from '../pipes/train-connections.pipe';
   templateUrl: './stations.component.html',
   styleUrl: './stations.component.scss',
 })
-export class StationComponent {
-  constructor(public readonly stationsFacade: StationsFacade) {
+export class StationComponent implements OnInit {
+  constructor(public readonly stationsFacade: StationsFacade) {}
+
+  ngOnInit(): void {
     this.stationsFacade.getStations();
   }
 

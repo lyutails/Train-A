@@ -1,13 +1,24 @@
-<section class="stations">
-  <TTP-map></TTP-map>
-  <ng-container *ngIf="stationsFacade.isLoading | async; else loaded"> <h1>Loading...</h1> </ng-container>
+<section class="stations_wrapper container-xxl">
+  <ng-container *ngIf="stationsFacade.isLoading | async; else loaded"><h1>Loading...</h1></ng-container>
   <ng-template #loaded>
-    <section class="station-list">
-      <ng-container *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn">
-        <div class="station-desction">
-          <h4>{{ station.city }}</h4>
-          <p>{{ station.latitude }}, {{ station.longitude }}</p>
-          <p>Related Stations: {{ station.relations | trainConnections: (stationsFacade.stations | async) }}</p>
+    <ng-container *ngIf="stationsFacade.stations | async as stations">
+      <TTP-map [stations]="stations"></TTP-map>
+    </ng-container>
+    <section class="stations_station-list">
+      <ng-container
+        class="stations_container"
+        *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn"
+      >
+        <div class="stations_desction">
+          <h4 class="stations_title">{{ station.city }}</h4>
+          <div class="stations_coordinates">
+            <p><span class="stations_bold-text">Latitude:</span> {{ station.latitude }}</p>
+            <p><span class="stations_bold-text">Longitude</span> {{ station.longitude }}</p>
+          </div>
+          <p>
+            <span class="stations_bold-text">Related Stations:</span>
+            {{ station.relations | trainConnections: (stationsFacade.stations | async) }}
+          </p>
         </div>
       </ng-container>
     </section>
