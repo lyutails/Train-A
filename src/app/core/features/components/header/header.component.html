@@ -13,14 +13,14 @@
     @if (isAuthenticated && !isAdminRole) {
       <div class="user-buttons">
         <button mat-button (click)="redirectToProfile()">Profile</button>
-        <button mat-button>My orders</button>
+        <button mat-button (click)="redirectToOrders()">My orders</button>
       </div>
     }
     @if (isAdminRole) {
       <div class="admin-buttons">
         <button mat-button (click)="redirectToProfile()">Profile</button>
         <button mat-button>Orders</button>
-        <button mat-button>Admin</button>
+        <button mat-button (click)="redirectToAdmin()">Admin</button>
       </div>
     }
   </nav>

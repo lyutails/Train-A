@@ -50,6 +50,14 @@ export class HeaderComponent {
     this.router.navigate(['/profile']);
   }
 
+  public redirectToOrders() {
+    this.router.navigate(['/orders']);
+  }
+
+  public redirectToAdmin() {
+    this.router.navigate(['/admin]']);
+  }
+
   public get isAuthenticated(): boolean {
     return this.authFacade.isAuthenticated;
   }
