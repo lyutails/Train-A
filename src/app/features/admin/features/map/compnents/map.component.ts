@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { marker, Marker } from 'leaflet';
+import { LeafletMouseEvent, marker, Marker } from 'leaflet';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { StationInfo } from '../../stations/models/station-info';
 import { defaultIcon } from '../constants/map-default-icon';
@@ -17,6 +17,7 @@ export class MapComponent implements OnInit {
   @Input() stations: StationInfo[] = [];
   public layers: Marker[] = [];
   public options = mapDefaultoptions;
+  private currentMarker?: Marker;
 
   public ngOnInit(): void {
     this.updateMarkers();
@@ -26,5 +27,15 @@ export class MapComponent implements OnInit {
     this.layers = this.stations.map((station) => {
       return marker([station.latitude, station.longitude], { icon: defaultIcon }).bindPopup(station.city);
     });
+  }
+
+  public onMapClick(event: LeafletMouseEvent): void {
+    const { latlng } = event;
+
+    if (this.currentMarker) {
+      this.currentMarker.remove();
+    }
+
+    this.currentMarker = marker([latlng.lat, latlng.lng], { icon: defaultIcon }).addTo(event.target);
   }
 }
