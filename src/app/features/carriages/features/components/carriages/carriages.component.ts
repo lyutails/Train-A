@@ -8,7 +8,7 @@ import { Carriage } from '../models/carriages.model';
 import { MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 
-export interface Rows {
+export interface CarriageCreatingParams {
   value: string;
   viewValue: string;
 }
@@ -30,11 +30,12 @@ export interface Rows {
   styleUrl: './carriages.component.scss',
 })
 export class CarriagesComponent {
-  public carriageForm!: FormGroup<Carriage>;
+  /* public carriageForm!: FormGroup<Carriage>; */
   public carriagesArray!: FormGroup<Carriage>[];
   create = signal(false);
   update = signal(false);
-  rows: Rows[] = [
+
+  possibleRows: CarriageCreatingParams[] = [
     { value: 'row-1', viewValue: '1 row' },
     { value: 'row-2', viewValue: '2 row' },
     { value: 'row-3', viewValue: '3 row' },
@@ -45,10 +46,25 @@ export class CarriagesComponent {
     { value: 'row-8', viewValue: '8 row' },
   ];
 
+  possibleLeftSeats: CarriageCreatingParams[] = [
+    { value: 'leftSeats-1', viewValue: '1 Left Seat' },
+    { value: 'leftSeats-2', viewValue: '2 Left Seats' },
+    { value: 'leftSeats-3', viewValue: '3 Left Seats' },
+  ];
+
+  possibleRightSeats: CarriageCreatingParams[] = [
+    { value: 'rightSeats-1', viewValue: '1 Right Seat' },
+    { value: 'rightSeats-2', viewValue: '2 Right Seats' },
+  ];
+
   constructor(
     private http: HttpClient,
     private fb: NonNullableFormBuilder,
   ) {}
+
+  /* ngOnInit() {
+    this.carriageForm = this.carriageFormInstance;
+  } */
 
   carriageInputValues = {
     name: '',
@@ -71,9 +87,9 @@ export class CarriagesComponent {
     this.update.set(!this.update());
   }
 
-  public saveCarriage() {
+  /* public saveCarriage() {
     this.carriagesArray.push(this.carriageForm);
-  }
+  } */
 
   /* ngOnInit() {
     this.carriageForm = this.carriageFormInstance;

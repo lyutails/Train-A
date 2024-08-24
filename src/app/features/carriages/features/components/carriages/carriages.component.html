@@ -2,13 +2,23 @@
   <TTP-button (click)="createCarriage()" [type]="'button'" [width]="'10vw'" [buttonText]="'Create'"></TTP-button>
   @if (create()) {
     <mat-label>Rows</mat-label>
-    <mat-select matInput placeholder="rows">
-      @for (row of rows; track row) {
-        <mat-option [value]="row.value">{{ row.viewValue }}</mat-option>
+    <mat-select>
+      @for (possibleRow of possibleRows; track possibleRow) {
+        <mat-option [value]="possibleRow.value">{{ possibleRow.viewValue }}</mat-option>
       }
     </mat-select>
-    <mat-select matInput placeholder="left seats"></mat-select>
-    <mat-select matInput placeholder="right seats"></mat-select>
+    <mat-label>Left Seats</mat-label>
+    <mat-select>
+      @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
+        <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
+      }
+    </mat-select>
+    <mat-label>Right Seats</mat-label>
+    <mat-select>
+      @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+        <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
+      }
+    </mat-select>
     <!-- <form class="carriages_carriage-shape" [formGroup]="carriageForm"></form> -->
   }
   @if (update()) {
@@ -18,7 +28,7 @@
       }
     </form>
   }
-  @for (testCarriage of testCarriagesArray; track testCarriage) {
+  <!-- @for (testCarriage of testCarriagesArray; track testCarriage) {
     <div class="carriages_name">{{ testCarriage.name }}</div>
     <div class="carriages_total-seats">
       {{ testCarriage.rows * testCarriage.leftSeats + testCarriage.rows * testCarriage.rightSeats }}
@@ -32,5 +42,5 @@
       <TTP-button (click)="fetch()" [type]="'button'" [width]="'10vw'" [buttonText]="'Update'"></TTP-button>
       <mat-checkbox class="carriages_seat" [checked]></mat-checkbox>
     </form>
-  }
+  } -->
 </div>
