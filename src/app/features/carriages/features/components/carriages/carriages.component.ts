@@ -82,6 +82,8 @@ export class CarriagesComponent {
     rightSide: 0,
   };
 
+  carriageParamsToUpdate = {};
+
   public getCarriages(): Observable<Carriage> {
     return this.httpClient.get<Carriage>('carriage');
   }
@@ -93,14 +95,18 @@ export class CarriagesComponent {
   }
 
   public postCarriages() {
-    return this.httpClient.post<Carriage>('carriage', this.testCarriagesArray[1]);
+    return this.httpClient.post<Carriage>('carriage', this.testCarriagesArray[2]);
+  }
+
+  public updateCarriages(code: string, body: Carriage) {
+    return this.httpClient.put<Carriage>(`carriage/{ ${code} }`, body);
   }
 
   public createCarriage() {
-    this.postCarriages().subscribe((data) => {
+    /* this.postCarriages().subscribe((data) => {
       console.log(data);
-    });
-    this.getCarriages();
+    }); */
+    this.getCarriagesInfo();
 
     this.create.set(!this.create());
     return this.fb.group({
@@ -109,10 +115,6 @@ export class CarriagesComponent {
       leftSeats: this.fb.array([new FormControl()]),
       rightSeats: this.fb.array([new FormControl()]),
     });
-  }
-
-  public updateCarriage() {
-    this.update.set(!this.update());
   }
 
   /* public saveCarriage() {
