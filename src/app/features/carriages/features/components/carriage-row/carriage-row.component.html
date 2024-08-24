@@ -1,7 +1,7 @@
 @for (rightSeat of [].constructor(rightSeatCount); track index; let index = $index) {
-  <TTP-carriage-seat [seatValue]="rowNumber.toString()"></TTP-carriage-seat>
+  <TTP-carriage-seat [seatValue]="rowNumber.toString()" class="carriage-row_with-seats"></TTP-carriage-seat>
 }
 <div class="carriage-row_empty"></div>
 @for (leftSeat of [].constructor(leftSeatCount); track index; let index = $index) {
-  <TTP-carriage-seat [seatValue]="rowNumber.toString()"></TTP-carriage-seat>
+  <TTP-carriage-seat [seatValue]="rowNumber.toString()" class="carriage-row_with-seats"></TTP-carriage-seat>
 }

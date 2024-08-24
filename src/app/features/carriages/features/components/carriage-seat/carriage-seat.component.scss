@@ -1,7 +1,10 @@
 .carriages {
   &_seat {
+    display: flex;
+    place-content: center center;
+
     aspect-ratio: 1 / 1;
     width: 20px;
-    margin: 5px;
+    margin: 2px;
   }
 }
