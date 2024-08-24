@@ -1,13 +1,14 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { Carriage } from '../models/carriages.model';
+import { Carriage, CarriageForm } from '../models/carriages.model';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { Observable } from 'rxjs';
+import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 
 export interface CarriageCreatingParams {
   value: string;
@@ -28,19 +29,27 @@ export interface CarriageCreatingParams {
     MatOption,
     MatFormField,
     FormsModule,
+    CarriageRowComponent,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
 })
-export class CarriagesComponent {
+export class CarriagesComponent implements OnInit {
   /* public carriageForm!: FormGroup<Carriage>; */
-  public carriagesArray!: FormGroup<Carriage>[];
+  public carriagesArray!: FormGroup<CarriageForm>[];
   create = signal(false);
   update = signal(false);
   selectedRowsValue = '';
   selectedLeftSideSeatsValue = '';
   selectedRightSideSeatsValue = '';
   carriagesData!: Carriage[];
+  retrievedCarriagesForm = new FormGroup({
+    code: new FormControl(''),
+    name: new FormControl(''),
+    rows: new FormControl(0),
+    leftSeats: new FormControl(0),
+    rightSeats: new FormControl(0),
+  });
 
   possibleRows: CarriageCreatingParams[] = [
     { value: 'row-2', viewValue: '2' },
@@ -66,31 +75,34 @@ export class CarriagesComponent {
   ];
 
   constructor(
-    private http: HttpClient,
     private fb: NonNullableFormBuilder,
     private httpClient: HttpClient,
   ) {}
 
-  /* ngOnInit() {
-    this.carriageForm = this.carriageFormInstance;
-  } */
-
-  carriageInputValues = {
-    name: '',
-    rows: 0,
-    leftSeats: 0,
-    rightSide: 0,
-  };
+  ngOnInit() {
+    // this.carriageForm = this.carriageFormInstance;
+    this.getCarriagesData();
+    this.retrievedCarriagesForm = new FormGroup({
+      code: new FormControl(''),
+      name: new FormControl(''),
+      rows: new FormControl(0),
+      leftSeats: new FormControl(0),
+      rightSeats: new FormControl(0),
+    });
+  }
 
   carriageParamsToUpdate = {};
 
-  public getCarriages(): Observable<Carriage> {
-    return this.httpClient.get<Carriage>('carriage');
+  public getCarriages(): Observable<Carriage[]> {
+    return this.httpClient.get<Carriage[]>('carriage');
   }
 
-  public getCarriagesInfo() {
+  public getCarriagesData() {
     this.getCarriages().subscribe((data) => {
       console.log(data);
+      this.carriagesData = data.filter((item) => {
+        return item.code !== '';
+      });
     });
   }
 
@@ -106,7 +118,6 @@ export class CarriagesComponent {
     /* this.postCarriages().subscribe((data) => {
       console.log(data);
     }); */
-    this.getCarriagesInfo();
 
     this.create.set(!this.create());
     return this.fb.group({
@@ -168,19 +179,5 @@ export class CarriagesComponent {
 
   /*  public paintCarriage(this.testCarriagesArray[0]) {
 
-  } */
-
-  /* private register() {
-    this.getCarriages(this.userInfo).subscribe({
-      next: () => {
-        this.router.navigate(['auth/signin']);
-      },
-      error: ({ error }: HttpErrorResponse) => {
-        if (error.reason === 'invalidUniqueKey') {
-          this.signUpForm.controls['email'].setErrors({ invalidUniqueKey: true });
-          this.emailValue.set(this.signUpForm.controls.email.value);
-        }
-      },
-    });
   } */
 }

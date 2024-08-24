@@ -1,5 +1,11 @@
 <div class="carriages_wrapper">
-  <TTP-button (click)="createCarriage()" [type]="'button'" [width]="'10vw'" [buttonText]="'Create'"></TTP-button>
+  <TTP-button
+    (click)="createCarriage()"
+    [type]="'button'"
+    [width]="'10vw'"
+    [buttonText]="'Create'"
+    class="carriages_create-button"
+  ></TTP-button>
   @if (create()) {
     <mat-form-field>
       <mat-label>Rows</mat-label>
@@ -26,6 +32,33 @@
       </mat-select></mat-form-field
     >
     <!-- <form class="carriages_carriage-shape" [formGroup]="carriageForm"></form> -->
+  }
+  @for (carriageItem of carriagesData; track carriageItem.name) {
+    <div class="carriages_name">{{ carriageItem.name }}</div>
+    <div class="carriages_total-seats">
+      {{ carriageItem.rows * carriageItem.leftSeats + carriageItem.rows * carriageItem.rightSeats }}
+    </div>
+    <div class="carriages_rows">{{ carriageItem.rows }} rows</div>
+    <div class="carriages_left-side">{{ carriageItem.leftSeats }} left seats</div>
+    <div class="carriages_right-side">{{ carriageItem.rightSeats }} right seats</div>
+    <form [formGroup]="retrievedCarriagesForm">
+      <div class="carriages_seats"></div>
+      <TTP-button
+        (click)="postCarriages()"
+        [type]="'submit'"
+        [width]="'10vw'"
+        [buttonText]="'Save'"
+        class="carriages_save-button"
+      ></TTP-button>
+      <!-- <TTP-button (click)="updateCarriages(carriageItem.code, carriageItem)" [type]="'button'" [width]="'10vw'" [buttonText]="'Update'"></TTP-button> -->
+      @for (row of [].constructor(carriageItem.rows); track index; let index = $index) {
+        <TTP-carriage-row
+          [rowNumber]="index + 1"
+          [leftSeatCount]="carriageItem.leftSeats"
+          [rightSeatCount]="carriageItem.rightSeats"
+        ></TTP-carriage-row>
+      }
+    </form>
   }
   @if (update()) {
     <form>

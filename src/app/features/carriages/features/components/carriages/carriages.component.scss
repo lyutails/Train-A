@@ -10,4 +10,21 @@
     width: 60vw;
     height: 300px;
   }
+
+  &_create-button {
+    display: flex;
+    align-self: flex-end;
+    margin-top: 20px;
+  }
+
+  &_save-button {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+ttp-carriage-row {
+  display: flex;
+  align-items: center;
 }
