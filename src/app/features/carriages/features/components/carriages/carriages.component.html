@@ -1,24 +1,30 @@
 <div class="carriages_wrapper">
   <TTP-button (click)="createCarriage()" [type]="'button'" [width]="'10vw'" [buttonText]="'Create'"></TTP-button>
   @if (create()) {
-    <mat-label>Rows</mat-label>
-    <mat-select>
-      @for (possibleRow of possibleRows; track possibleRow) {
-        <mat-option [value]="possibleRow.value">{{ possibleRow.viewValue }}</mat-option>
-      }
-    </mat-select>
-    <mat-label>Left Seats</mat-label>
-    <mat-select>
-      @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
-        <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
-      }
-    </mat-select>
-    <mat-label>Right Seats</mat-label>
-    <mat-select>
-      @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
-        <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
-      }
-    </mat-select>
+    <mat-form-field>
+      <mat-label>Rows</mat-label>
+      <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows">
+        @for (possibleRow of possibleRows; track possibleRow) {
+          <mat-option [value]="possibleRow.value">{{ possibleRow.viewValue }}</mat-option>
+        }
+      </mat-select></mat-form-field
+    >
+    <mat-form-field>
+      <mat-label>Left Seats</mat-label>
+      <mat-select>
+        @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
+          <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
+        }
+      </mat-select></mat-form-field
+    >
+    <mat-form-field>
+      <mat-label>Right Seats</mat-label>
+      <mat-select>
+        @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+          <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
+        }
+      </mat-select></mat-form-field
+    >
     <!-- <form class="carriages_carriage-shape" [formGroup]="carriageForm"></form> -->
   }
   @if (update()) {

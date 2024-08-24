@@ -1,12 +1,13 @@
 import { Component, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { HttpClient } from '@angular/common/http';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { Carriage } from '../models/carriages.model';
-import { MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
+import { Observable } from 'rxjs';
 
 export interface CarriageCreatingParams {
   value: string;
@@ -25,6 +26,8 @@ export interface CarriageCreatingParams {
     MatSelect,
     MatLabel,
     MatOption,
+    MatFormField,
+    FormsModule,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
@@ -34,32 +37,38 @@ export class CarriagesComponent {
   public carriagesArray!: FormGroup<Carriage>[];
   create = signal(false);
   update = signal(false);
+  selectedRowsValue = '';
+  selectedLeftSideSeatsValue = '';
+  selectedRightSideSeatsValue = '';
+  carriagesData!: Carriage[];
 
   possibleRows: CarriageCreatingParams[] = [
-    { value: 'row-1', viewValue: '1 row' },
-    { value: 'row-2', viewValue: '2 row' },
-    { value: 'row-3', viewValue: '3 row' },
-    { value: 'row-4', viewValue: '4 row' },
-    { value: 'row-5', viewValue: '5 row' },
-    { value: 'row-6', viewValue: '6 row' },
-    { value: 'row-7', viewValue: '7 row' },
-    { value: 'row-8', viewValue: '8 row' },
+    { value: 'row-2', viewValue: '2' },
+    { value: 'row-3', viewValue: '3' },
+    { value: 'row-4', viewValue: '4' },
+    { value: 'row-5', viewValue: '5' },
+    { value: 'row-6', viewValue: '6' },
+    { value: 'row-7', viewValue: '7' },
+    { value: 'row-8', viewValue: '8' },
+    { value: 'row-8', viewValue: '9' },
+    { value: 'row-8', viewValue: '10' },
   ];
 
   possibleLeftSeats: CarriageCreatingParams[] = [
-    { value: 'leftSeats-1', viewValue: '1 Left Seat' },
-    { value: 'leftSeats-2', viewValue: '2 Left Seats' },
-    { value: 'leftSeats-3', viewValue: '3 Left Seats' },
+    { value: 'leftSeats-1', viewValue: '1' },
+    { value: 'leftSeats-2', viewValue: '2' },
+    { value: 'leftSeats-3', viewValue: '3' },
   ];
 
   possibleRightSeats: CarriageCreatingParams[] = [
-    { value: 'rightSeats-1', viewValue: '1 Right Seat' },
-    { value: 'rightSeats-2', viewValue: '2 Right Seats' },
+    { value: 'rightSeats-1', viewValue: '1' },
+    { value: 'rightSeats-2', viewValue: '2' },
   ];
 
   constructor(
     private http: HttpClient,
     private fb: NonNullableFormBuilder,
+    private httpClient: HttpClient,
   ) {}
 
   /* ngOnInit() {
@@ -73,7 +82,26 @@ export class CarriagesComponent {
     rightSide: 0,
   };
 
+  public getCarriages(): Observable<Carriage> {
+    return this.httpClient.get<Carriage>('carriage');
+  }
+
+  public getCarriagesInfo() {
+    this.getCarriages().subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  public postCarriages() {
+    return this.httpClient.post<Carriage>('carriage', this.testCarriagesArray[1]);
+  }
+
   public createCarriage() {
+    this.postCarriages().subscribe((data) => {
+      console.log(data);
+    });
+    this.getCarriages();
+
     this.create.set(!this.create());
     return this.fb.group({
       name: this.fb.control({ value: '', disabled: false }),
@@ -94,12 +122,6 @@ export class CarriagesComponent {
   /* ngOnInit() {
     this.carriageForm = this.carriageFormInstance;
   } */
-
-  fetch() {
-    return this.http.get('route').subscribe((data) => {
-      console.log(data);
-    });
-  }
 
   testCarriagesArray = [
     {
@@ -144,5 +166,19 @@ export class CarriagesComponent {
 
   /*  public paintCarriage(this.testCarriagesArray[0]) {
 
+  } */
+
+  /* private register() {
+    this.getCarriages(this.userInfo).subscribe({
+      next: () => {
+        this.router.navigate(['auth/signin']);
+      },
+      error: ({ error }: HttpErrorResponse) => {
+        if (error.reason === 'invalidUniqueKey') {
+          this.signUpForm.controls['email'].setErrors({ invalidUniqueKey: true });
+          this.emailValue.set(this.signUpForm.controls.email.value);
+        }
+      },
+    });
   } */
 }
