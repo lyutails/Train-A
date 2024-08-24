@@ -12,9 +12,9 @@ export class CarriageRowComponent implements OnInit {
   @Input() rowNumber = 0;
   @Input() leftSeatCount = 0;
   @Input() rightSeatCount = 0;
-  startNumber = 0;
+  initialSeatValue = 0;
 
   ngOnInit(): void {
-    this.startNumber = 1;
+    this.initialSeatValue = 1 + this.leftSeatCount + this.rightSeatCount;
   }
 }

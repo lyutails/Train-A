@@ -2,4 +2,10 @@
   &_empty {
     width: 50px;
   }
+
+  &_with-seats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
