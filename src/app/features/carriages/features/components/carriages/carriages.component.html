@@ -65,7 +65,7 @@
             @for (row of [].constructor(carriageItem.rows); track index; let index = $index) {
               <TTP-carriage-row
                 class="carriages_carriage-row"
-                [rowNumber]="index + 1"
+                [rowNumber]="index"
                 [leftSeatCount]="carriageItem.leftSeats"
                 [rightSeatCount]="carriageItem.rightSeats"
               ></TTP-carriage-row>

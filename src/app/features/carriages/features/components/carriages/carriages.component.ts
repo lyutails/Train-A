@@ -111,7 +111,7 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateCarriages(code: string, body: Carriage) {
-    return this.httpClient.put<Carriage>(`carriage/{ ${code} }`, body);
+    return this.httpClient.put<Carriage>(`carriage/{ '${code}' }`, body);
   }
 
   public createCarriage() {
@@ -148,7 +148,7 @@ export class CarriagesComponent implements OnInit {
       code: '',
       name: 'carriage8K',
       rows: 10,
-      leftSeats: 2,
+      leftSeats: 3,
       rightSeats: 3,
     },
     {
