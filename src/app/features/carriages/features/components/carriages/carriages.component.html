@@ -7,14 +7,14 @@
     class="carriages_create-button"
   ></TTP-button>
   @if (create()) {
-    <form class="carriages_create-form">
+    <form class="carriages_create-form" [formGroup]="createCarriageForm" (ngSubmit)="createCarriage()">
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Name"
+        <input matInput placeholder="Name" formControlName="name"
       /></mat-form-field>
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Rows</mat-label>
-        <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows">
+        <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows" formControlName="rows">
           @for (possibleRow of possibleRows; track possibleRow) {
             <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
           }
@@ -22,7 +22,7 @@
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Left Seats</mat-label>
-        <mat-select>
+        <mat-select formControlName="leftSeats">
           @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
             <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
           }
@@ -30,7 +30,7 @@
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Right Seats</mat-label>
-        <mat-select>
+        <mat-select formControlName="rightSeats">
           @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
             <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
           }
@@ -43,6 +43,7 @@
       [width]="'10vw'"
       [buttonText]="'Save'"
       class="carriages_save-button"
+      [disabled]="!createCarriageForm.valid"
     ></TTP-button>
     <form [formGroup]="retrievedCarriagesForm" class="carriages_carriage-wrapper ticket">
       <div class="carriages_carriage-shape-create-ticket">
@@ -100,7 +101,7 @@
   </div>
   @if (update()) {
     <form>
-      @for (testCarriage of testCarriagesArray; track testCarriage) {
+      @for (initialPostCarriage of initialPostCarriagesArray; track initialPostCarriage.name) {
         <mat-checkbox></mat-checkbox>
       }
     </form>
