@@ -74,8 +74,18 @@ export class CarriagesComponent implements OnInit {
     { value: 'row-6', viewValue: '6' },
     { value: 'row-7', viewValue: '7' },
     { value: 'row-8', viewValue: '8' },
-    { value: 'row-8', viewValue: '9' },
-    { value: 'row-8', viewValue: '10' },
+    { value: 'row-9', viewValue: '9' },
+    { value: 'row-10', viewValue: '10' },
+    { value: 'row-11', viewValue: '11' },
+    { value: 'row-12', viewValue: '12' },
+    { value: 'row-13', viewValue: '13' },
+    { value: 'row-14', viewValue: '14' },
+    { value: 'row-15', viewValue: '15' },
+    { value: 'row-16', viewValue: '16' },
+    { value: 'row-17', viewValue: '17' },
+    { value: 'row-18', viewValue: '18' },
+    { value: 'row-19', viewValue: '19' },
+    { value: 'row-20', viewValue: '20' },
   ];
 
   possibleLeftSeats: CarriageCreatingParams[] = [
@@ -111,9 +121,9 @@ export class CarriagesComponent implements OnInit {
     },
     {
       name: 'lalala',
-      rows: 8,
-      leftSeats: 3,
-      rightSeats: 1,
+      rows: 3,
+      leftSeats: 2,
+      rightSeats: 2,
     },
   ];
 
@@ -144,27 +154,7 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
-  public get carriageNameFormControl(): FormControl<string> {
-    if (this.createCarriageForm.controls.name !== undefined) {
-      return this.createCarriageForm.controls.name;
-    } else {
-      throw new Error('no carriage name provided');
-    }
-  }
-
-  public get carriageRowsFormControl(): FormControl<number> {
-    return this.createCarriageForm.controls.rows;
-  }
-
-  public get carriageLeftSeatsFormControl(): FormControl<number> {
-    return this.createCarriageForm.controls.leftSeats;
-  }
-
-  public get carriageRightSeatsFormControl(): FormControl<number> {
-    return this.createCarriageForm.controls.rightSeats;
-  }
-
-  passPostCarriageData() {
+  public passPostCarriageData() {
     this.carriagesService
       .postCarriage({
         name: this.createCarriageForm.controls.name?.value,
@@ -179,6 +169,12 @@ export class CarriagesComponent implements OnInit {
 
   public showCreateCarriageView() {
     this.create.set(!this.create());
+  }
+
+  public updateExistingCarriage() {
+    this.carriagesService.updateCarriage('lalala', this.initialPostCarriagesArray[3]).subscribe((data) => {
+      console.log(data);
+    });
   }
 
   private get createCarriageFormInstance(): FormGroup<CarriageForm> {
@@ -211,8 +207,24 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
-  public updateCarriages(code: string, body: Carriage) {
-    return this.httpClient.put<Carriage>(`carriage/{ '${code}' }`, body);
+  public get carriageNameFormControl(): FormControl<string> {
+    if (this.createCarriageForm.controls.name !== undefined) {
+      return this.createCarriageForm.controls.name;
+    } else {
+      throw new Error('no carriage name provided');
+    }
+  }
+
+  public get carriageRowsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.rows;
+  }
+
+  public get carriageLeftSeatsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.leftSeats;
+  }
+
+  public get carriageRightSeatsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.rightSeats;
   }
 
   onSubmit() {

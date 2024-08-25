@@ -103,6 +103,12 @@
       </div>
     }
   </div>
+  <TTP-button
+    (click)="updateExistingCarriage()"
+    [type]="'button'"
+    [width]="'10vw'"
+    [buttonText]="'Update'"
+  ></TTP-button>
   @if (update()) {
     <form>
       @for (initialPostCarriage of initialPostCarriagesArray; track initialPostCarriage.name) {

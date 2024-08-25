@@ -16,4 +16,8 @@ export class CarriagesService {
   public postCarriage(data: Carriage) {
     return this.httpClient.post<Carriage>('carriage', data);
   }
+
+  public updateCarriage(code: string, body: Carriage) {
+    return this.httpClient.put<Carriage>(`carriage/${code}`, body);
+  }
 }
