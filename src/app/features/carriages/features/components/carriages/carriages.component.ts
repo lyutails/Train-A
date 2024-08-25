@@ -14,12 +14,12 @@ import { CommonModule } from '@angular/common';
 import { Carriage } from '../../models/carriage.model';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
-import { Observable } from 'rxjs';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
 import { RowsTrimPipe } from '../pipes/rows-trim.pipe';
 import { LeftSeatsTrimPipe } from '../pipes/left-seats-trim.pipe';
 import { RigthSeatsTrimPipe } from '../pipes/rigth-seats-trim.pipe';
+import { CarriagesService } from '../../services/carriages.service';
 
 export interface CarriageCreatingParams {
   value: string;
@@ -120,6 +120,7 @@ export class CarriagesComponent implements OnInit {
   constructor(
     private fb: NonNullableFormBuilder,
     private httpClient: HttpClient,
+    private carriagesService: CarriagesService,
   ) {}
 
   ngOnInit() {
@@ -134,12 +135,8 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
-  public getCarriages(): Observable<Carriage[]> {
-    return this.httpClient.get<Carriage[]>('carriage');
-  }
-
   public getCarriagesData() {
-    this.getCarriages().subscribe((data) => {
+    this.carriagesService.getCarriages().subscribe((data) => {
       console.log(data);
       this.carriagesData = data.filter((item) => {
         return item.code !== '';
@@ -167,24 +164,20 @@ export class CarriagesComponent implements OnInit {
     return this.createCarriageForm.controls.rightSeats;
   }
 
-  public postCarriage(data: Carriage) {
-    console.log('post');
-    // console.log(data);
-    return this.httpClient.post<Carriage>('carriage', data);
-  }
-
   passPostCarriageData() {
-    this.postCarriage({
-      name: this.createCarriageForm.controls.name?.value,
-      rows: +this.createCarriageForm.controls.rows.value,
-      leftSeats: +this.createCarriageForm.controls.leftSeats.value,
-      rightSeats: +this.createCarriageForm.controls.rightSeats.value,
-    }).subscribe((data) => {
-      console.log(data);
-    });
+    this.carriagesService
+      .postCarriage({
+        name: this.createCarriageForm.controls.name?.value,
+        rows: +this.createCarriageForm.controls.rows.value,
+        leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+        rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+      })
+      .subscribe((data) => {
+        console.log(data);
+      });
   }
 
-  public createCarriageView() {
+  public showCreateCarriageView() {
     this.create.set(!this.create());
   }
 
