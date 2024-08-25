@@ -69,7 +69,7 @@
     align-items: center;
     align-self: center;
 
-    height: 900px;
+    height: 850px;
 
     border: 1px solid $light-blue;
     border-radius: 5px;
@@ -78,6 +78,10 @@
   &_coloured-text {
     font-weight: 800;
     color: $deep-blue;
+  }
+
+  &_name {
+    margin-top: 5px;
   }
 }
 

@@ -19,4 +19,8 @@ export class CarriageSeatComponent {
   clickCheckbox() {
     this.check.set(!this.check());
   }
+
+  clicked() {
+    console.log('checked');
+  }
 }

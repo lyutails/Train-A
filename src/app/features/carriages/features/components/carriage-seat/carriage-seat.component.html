@@ -6,11 +6,11 @@
   [style.color]="check() ? 'white' : 'black'"
   >{{ seatValue }}
   <mat-checkbox
+    (click)="clicked()"
     id="{{ seatValue + carriageNameValue }}"
     [hidden]="true"
     class="carriages_seat"
     [value]="seatValue"
-    [checked]="false"
     [disabled]="false"
   ></mat-checkbox>
 </mat-label>
