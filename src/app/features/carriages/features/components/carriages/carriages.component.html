@@ -85,6 +85,7 @@
             [width]="'10vw'"
             [buttonText]="'Update'"
             class="carriages_update-button"
+            (click)="showUpdateCarriageView()"
           ></TTP-button>
           <div class="carriages_carriage-shape">
             @for (row of [].constructor(carriageItem.rows); track index; let index = $index) {
@@ -103,32 +104,25 @@
       </div>
     }
   </div>
-  <TTP-button
-    (click)="updateExistingCarriage()"
-    [type]="'button'"
-    [width]="'10vw'"
-    [buttonText]="'Update'"
-  ></TTP-button>
   @if (update()) {
-    <form>
-      @for (initialPostCarriage of initialPostCarriagesArray; track initialPostCarriage.name) {
-        <mat-checkbox></mat-checkbox>
-      }
-    </form>
+    @for (carriageItem of carriagesData; track carriageItem.name) {
+      <div class="carriages_name">{{ carriageItem.name }}</div>
+      <div class="carriages_total-seats">
+        {{ carriageItem.rows * carriageItem.leftSeats + carriageItem.rows * carriageItem.rightSeats }}
+      </div>
+      <div class="carriages_rows">{{ carriageItem.rows }} rows</div>
+      <div class="carriages_left-side">{{ carriageItem.leftSeats }} left seats</div>
+      <div class="carriages_right-side">{{ carriageItem.rightSeats }} right seats</div>
+      <form [formGroup]="createCarriageForm">
+        <div class="carriages_seats"></div>
+        <TTP-button
+          (click)="updateExistingCarriage()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Update'"
+        ></TTP-button>
+        <mat-checkbox class="carriages_seat" [checked]></mat-checkbox>
+      </form>
+    }
   }
-  <!-- @for (testCarriage of testCarriagesArray; track testCarriage) {
-    <div class="carriages_name">{{ testCarriage.name }}</div>
-    <div class="carriages_total-seats">
-      {{ testCarriage.rows * testCarriage.leftSeats + testCarriage.rows * testCarriage.rightSeats }}
-    </div>
-    <div class="carriages_rows">{{ testCarriage.rows }} rows</div>
-    <div class="carriages_left-side">{{ testCarriage.leftSeats }} left seats</div>
-    <div class="carriages_right-side">{{ testCarriage.rightSeats }} right seats</div>
-    <form [formGroup]="carriageForm">
-      <div class="carriages_seats"></div>
-      <TTP-button (click)="fetch()" [type]="'submit'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
-      <TTP-button (click)="fetch()" [type]="'button'" [width]="'10vw'" [buttonText]="'Update'"></TTP-button>
-      <mat-checkbox class="carriages_seat" [checked]></mat-checkbox>
-    </form>
-  } -->
 </div>

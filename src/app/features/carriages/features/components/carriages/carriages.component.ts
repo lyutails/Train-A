@@ -177,6 +177,10 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
+  public showUpdateCarriageView() {
+    this.update.set(!this.create());
+  }
+
   private get createCarriageFormInstance(): FormGroup<CarriageForm> {
     return this.fb.group<CarriageForm>({
       code: this.fb.control({ value: '', disabled: false }),
@@ -229,7 +233,7 @@ export class CarriagesComponent implements OnInit {
 
   onSubmit() {
     if (this.createCarriageForm.valid) {
-      console.log('create is valid');
+      this.create.set(false);
     }
   }
 }
