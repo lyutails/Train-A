@@ -1,3 +1,5 @@
+@import '../../../../../../styles';
+
 .carriages {
   &_seat {
     display: flex;
@@ -8,5 +10,26 @@
     margin: 2px;
 
     font-weight: 800;
+  }
+
+  &_seat-label {
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 25px;
+    margin: 0 5px;
+
+    color: black;
+
+    background-color: $light-blue;
+    border-radius: 5px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }

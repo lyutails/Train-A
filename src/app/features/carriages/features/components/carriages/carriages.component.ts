@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
-import { Carriage, CarriageForm } from '../models/carriages.model';
+import { Carriage, CarriageForm } from '../../models/carriages.model';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { Observable } from 'rxjs';

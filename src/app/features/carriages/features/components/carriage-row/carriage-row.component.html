@@ -1,11 +1,13 @@
 @for (leftSeat of [].constructor(leftSeatCount); track index; let index = $index) {
   @if (rowNumber === 0) {
     <TTP-carriage-seat
+      [carriageNameValue]="carriageName"
       [seatValue]="(rowNumber + seatsInRowNumber * rowNumber + index + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
   } @else {
     <TTP-carriage-seat
+      [carriageNameValue]="carriageName"
       [seatValue]="(seatsInRowNumber * rowNumber + index + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
@@ -15,11 +17,13 @@
 @for (rightSeat of [].constructor(rightSeatCount); track index; let index = $index) {
   @if (rowNumber === 0) {
     <TTP-carriage-seat
+      [carriageNameValue]="carriageName"
       [seatValue]="(rowNumber + seatsInRowNumber * rowNumber + index + leftSeatCount + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
   } @else {
     <TTP-carriage-seat
+      [carriageNameValue]="carriageName"
       [seatValue]="(seatsInRowNumber * rowNumber + index + leftSeatCount + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>

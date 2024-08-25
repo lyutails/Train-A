@@ -1,3 +1,15 @@
-<mat-checkbox class="carriages_seat" [value]="seatValue" [checked]="false" [disabled]="true">{{
-  seatValue
-}}</mat-checkbox>
+<mat-label
+  [attr.for]="seatValue + carriageNameValue"
+  class="carriages_seat-label"
+  [style.background]="'oklch(91.69% 0.0396 269.9781deg)'"
+  [style.color]="'black'"
+  >{{ seatValue }}</mat-label
+>
+<mat-checkbox
+  id="{{ seatValue + carriageNameValue }}"
+  [hidden]="false"
+  class="carriages_seat"
+  [value]="seatValue"
+  [checked]="false"
+  [disabled]="false"
+></mat-checkbox>

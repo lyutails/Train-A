@@ -12,6 +12,7 @@ export class CarriageRowComponent implements OnInit {
   @Input() rowNumber = 0;
   @Input() leftSeatCount = 0;
   @Input() rightSeatCount = 0;
+  @Input() carriageName!: string;
   seatsInRow!: number[];
   seatsInRowNumber!: number;
 

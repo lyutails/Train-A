@@ -12,4 +12,5 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class CarriageSeatComponent {
   @Input() seatValue = '';
+  @Input() carriageNameValue!: string;
 }
