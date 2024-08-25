@@ -7,7 +7,7 @@
     class="carriages_create-button"
   ></TTP-button>
   @if (create()) {
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Rows</mat-label>
       <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows">
         @for (possibleRow of possibleRows; track possibleRow) {
@@ -15,7 +15,7 @@
         }
       </mat-select></mat-form-field
     >
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Left Seats</mat-label>
       <mat-select>
         @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
@@ -23,7 +23,7 @@
         }
       </mat-select></mat-form-field
     >
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Right Seats</mat-label>
       <mat-select>
         @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
