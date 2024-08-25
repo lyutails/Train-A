@@ -17,6 +17,9 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { Observable } from 'rxjs';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
+import { RowsTrimPipe } from '../pipes/rows-trim.pipe';
+import { LeftSeatsTrimPipe } from '../pipes/left-seats-trim.pipe';
+import { RigthSeatsTrimPipe } from '../pipes/rigth-seats-trim.pipe';
 
 export interface CarriageCreatingParams {
   value: string;
@@ -38,6 +41,9 @@ export interface CarriageCreatingParams {
     MatFormField,
     FormsModule,
     CarriageRowComponent,
+    RowsTrimPipe,
+    LeftSeatsTrimPipe,
+    RigthSeatsTrimPipe,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
@@ -47,7 +53,6 @@ export class CarriagesComponent implements OnInit {
   selectedLeftSideSeatsValue = '';
   selectedRightSideSeatsValue = '';
   carriagesData!: Carriage[];
-  /* public carriageForm!: FormGroup<Carriage>; */
   public carriagesArray!: FormGroup<CarriageForm>[];
   retrievedCarriagesForm = new FormGroup({
     code: new FormControl(''),
@@ -59,6 +64,7 @@ export class CarriagesComponent implements OnInit {
   public createCarriageForm!: FormGroup<CarriageForm>;
   create = signal(false);
   update = signal(false);
+  carriageBluePrint!: Carriage;
 
   possibleRows: CarriageCreatingParams[] = [
     { value: 'row-2', viewValue: '2' },
@@ -114,8 +120,8 @@ export class CarriagesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.carriageForm = this.carriageFormInstance;
     this.getCarriagesData();
+    this.createCarriageForm = this.createCarriageFormInstance;
     this.retrievedCarriagesForm = new FormGroup({
       code: new FormControl(''),
       name: new FormControl(''),
@@ -124,8 +130,6 @@ export class CarriagesComponent implements OnInit {
       rightSeats: new FormControl(0),
     });
   }
-
-  carriageParamsToUpdate = {};
 
   public getCarriages(): Observable<Carriage[]> {
     return this.httpClient.get<Carriage[]>('carriage');
@@ -140,22 +144,38 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
-  public postCarriage() {
-    return this.httpClient.post<Carriage>('carriage', this.initialPostCarriagesArray[2]);
+  public get carriageNameFormControl(): FormControl<string> {
+    if (this.createCarriageForm.controls.name !== undefined) {
+      return this.createCarriageForm.controls.name;
+    } else {
+      throw new Error('no carriage name provided');
+    }
   }
 
-  public updateCarriages(code: string, body: Carriage) {
-    return this.httpClient.put<Carriage>(`carriage/{ '${code}' }`, body);
+  public get carriageRowsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.rows;
+  }
+
+  public get carriageLeftSeatsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.leftSeats;
+  }
+
+  public get carriageRightSeatsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.rightSeats;
+  }
+
+  public postCarriage(data: Carriage) {
+    console.log('post');
+    console.log(data);
+    return this.httpClient.post<Carriage>('carriage', data);
   }
 
   public createCarriage() {
-    /* this.postCarriages().subscribe((data) => {
-      console.log(data);
-    }); */
-
     this.create.set(!this.create());
+  }
 
-    return (this.createCarriageForm = this.fb.group<CarriageForm>({
+  private get createCarriageFormInstance(): FormGroup<CarriageForm> {
+    return this.fb.group<CarriageForm>({
       name: this.fb.control(
         { value: '', disabled: false },
         {
@@ -180,7 +200,11 @@ export class CarriagesComponent implements OnInit {
           validators: [Validators.required],
         },
       ),
-    }));
+    });
+  }
+
+  public updateCarriages(code: string, body: Carriage) {
+    return this.httpClient.put<Carriage>(`carriage/{ '${code}' }`, body);
   }
 
   /* public saveCarriage() {
@@ -211,4 +235,10 @@ export class CarriagesComponent implements OnInit {
   /*  public paintCarriage(this.initialPostCarriagesArray[0]) {
 
   } */
+
+  onSubmit() {
+    if (this.createCarriageForm.valid) {
+      console.log('create is valid');
+    }
+  }
 }

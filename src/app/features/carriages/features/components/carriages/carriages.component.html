@@ -7,54 +7,65 @@
     class="carriages_create-button"
   ></TTP-button>
   @if (create()) {
-    <form class="carriages_create-form" [formGroup]="createCarriageForm" (ngSubmit)="createCarriage()">
+    <form class="carriages_create-form" [formGroup]="createCarriageForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Name" formControlName="name"
-      /></mat-form-field>
+        @if (createCarriageForm.controls.name) {
+          <input matInput placeholder="Name" formControlName="name" [value]="createCarriageForm.controls.name.value" />
+        }
+      </mat-form-field>
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Rows</mat-label>
-        <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows" formControlName="rows">
+        <mat-select name="possibleRows" formControlName="rows" [value]="createCarriageForm.controls.rows.value">
           @for (possibleRow of possibleRows; track possibleRow) {
-            <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
+            <mat-option [value]="possibleRow.viewValue" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Left Seats</mat-label>
-        <mat-select [(ngModel)]="selectedLeftSideSeatsValue" formControlName="leftSeats">
+        <mat-select formControlName="leftSeats" [value]="createCarriageForm.controls.leftSeats.value">
           @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
-            <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
+            <mat-option [value]="possibleLeftSeat.viewValue">{{ possibleLeftSeat.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Right Seats</mat-label>
-        <mat-select [(ngModel)]="selectedRightSideSeatsValue" formControlName="rightSeats">
+        <mat-select formControlName="rightSeats" [value]="createCarriageForm.controls.rightSeats.value">
           @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
-            <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
+            <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
       >
-    </form>
-    <TTP-button
-      (click)="postCarriage()"
-      [type]="'submit'"
-      [width]="'10vw'"
-      [buttonText]="'Save'"
-      class="carriages_save-button"
-      [disabled]="!createCarriageForm.valid"
-    ></TTP-button>
-    <form [formGroup]="retrievedCarriagesForm" class="carriages_carriage-wrapper ticket">
-      <div class="carriages_carriage-shape-create-ticket">
-        <TTP-carriage-row
-          class="carriages_carriage-row-create-ticket"
-          [rowNumber]="5"
-          [leftSeatCount]="3"
-          [rightSeatCount]="2"
-          [carriageName]="'lalala'"
-        ></TTP-carriage-row>
-        <div class="carriages_ticket-image"></div>
+      <TTP-button
+        (click)="
+          postCarriage({
+            name: createCarriageForm.controls.name?.value,
+            rows: createCarriageForm.controls.rows.value,
+            leftSeats: createCarriageForm.controls.leftSeats.value,
+            rightSeats: createCarriageForm.controls.rightSeats.value,
+          })
+        "
+        [type]="'submit'"
+        [width]="'10vw'"
+        [buttonText]="'Save'"
+        class="carriages_save-button"
+        [disabled]="!createCarriageForm.valid"
+      ></TTP-button>
+      <div class="carriages_carriage-wrapper ticket">
+        <div class="carriages_carriage-shape-create-ticket">
+          @if (createCarriageForm.controls.name) {
+            <TTP-carriage-row
+              class="carriages_carriage-row-create-ticket"
+              [carriageName]="createCarriageForm.controls.name.value"
+              [rowNumber]="createCarriageForm.controls.rows.value"
+              [leftSeatCount]="createCarriageForm.controls.leftSeats.value"
+              [rightSeatCount]="createCarriageForm.controls.rightSeats.value"
+            ></TTP-carriage-row>
+          }
+          <div class="carriages_ticket-image"></div>
+        </div>
       </div>
     </form>
   }
