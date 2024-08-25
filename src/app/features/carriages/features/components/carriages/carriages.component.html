@@ -22,7 +22,7 @@
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Left Seats</mat-label>
-        <mat-select formControlName="leftSeats">
+        <mat-select [(ngModel)]="selectedLeftSideSeatsValue" formControlName="leftSeats">
           @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
             <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
           }
@@ -30,7 +30,7 @@
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Right Seats</mat-label>
-        <mat-select formControlName="rightSeats">
+        <mat-select [(ngModel)]="selectedRightSideSeatsValue" formControlName="rightSeats">
           @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
             <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
           }
