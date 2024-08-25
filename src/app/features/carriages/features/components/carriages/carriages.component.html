@@ -7,34 +7,36 @@
     class="carriages_create-button"
   ></TTP-button>
   @if (create()) {
-    <mat-form-field appearance="outline" class="carriages_control-inputs">
-      <mat-label>Name</mat-label>
-      <input matInput placeholder="Name"
-    /></mat-form-field>
-    <mat-form-field appearance="outline" class="carriages_control-inputs">
-      <mat-label>Rows</mat-label>
-      <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows">
-        @for (possibleRow of possibleRows; track possibleRow) {
-          <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
-        }
-      </mat-select></mat-form-field
-    >
-    <mat-form-field appearance="outline" class="carriages_control-inputs">
-      <mat-label>Left Seats</mat-label>
-      <mat-select>
-        @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
-          <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
-        }
-      </mat-select></mat-form-field
-    >
-    <mat-form-field appearance="outline" class="carriages_control-inputs">
-      <mat-label>Right Seats</mat-label>
-      <mat-select>
-        @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
-          <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
-        }
-      </mat-select></mat-form-field
-    >
+    <form class="carriages_create-form">
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Name"
+      /></mat-form-field>
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Rows</mat-label>
+        <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows">
+          @for (possibleRow of possibleRows; track possibleRow) {
+            <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
+          }
+        </mat-select></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Left Seats</mat-label>
+        <mat-select>
+          @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
+            <mat-option [value]="possibleLeftSeat.value">{{ possibleLeftSeat.viewValue }}</mat-option>
+          }
+        </mat-select></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Right Seats</mat-label>
+        <mat-select>
+          @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+            <mat-option [value]="possibleRightSeat.value">{{ possibleRightSeat.viewValue }}</mat-option>
+          }
+        </mat-select></mat-form-field
+      >
+    </form>
     <TTP-button
       (click)="postCarriage()"
       [type]="'submit'"

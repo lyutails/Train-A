@@ -116,6 +116,7 @@
   }
 
   &_carriage-shape-create-ticket {
+    z-index: -1;
     transform: rotate(90deg);
 
     display: flex;
@@ -155,6 +156,11 @@
     height: 1px;
     margin-bottom: 20px;
     background-color: $deep-blue;
+  }
+
+  &_create-form {
+    display: flex;
+    flex-direction: column;
   }
 }
 
