@@ -42,7 +42,21 @@
       [buttonText]="'Save'"
       class="carriages_save-button"
     ></TTP-button>
-    <!-- <form class="carriages_carriage-shape" [formGroup]="carriageForm"></form> -->
+    <form [formGroup]="retrievedCarriagesForm" class="carriages_carriage-wrapper ticket">
+      <div class="carriages_carriage-shape-create-ticket">
+        <TTP-carriage-row
+          class="carriages_carriage-row-create-ticket"
+          [rowNumber]="5"
+          [leftSeatCount]="3"
+          [rightSeatCount]="2"
+          [carriageName]="'lalala'"
+        ></TTP-carriage-row>
+        <div class="carriages_ticket-image"></div>
+      </div>
+    </form>
+  }
+  @if (create()) {
+    <div class="carriages_line-dividing"></div>
   }
   <div class="carriages_carriages-wrapper">
     @for (carriageItem of carriagesData; track carriageItem.name) {

@@ -16,7 +16,9 @@
   }
 
   &_save-button {
-    display: block;
+    display: flex;
+    align-self: flex-end;
+
     margin-top: 10px;
     margin-bottom: 10px;
   }
@@ -40,9 +42,14 @@
     flex-direction: column;
     align-items: center;
     width: 20vw;
+
+    &.ticket {
+      margin-bottom: 20px;
+    }
   }
 
   &_carriage-row {
+    z-index: 10;
     display: flex;
   }
 
@@ -82,6 +89,63 @@
 
   &_name {
     margin-top: 5px;
+  }
+
+  &_carriage-shape-create {
+    transform: rotate(90deg);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 640px;
+    height: 254px;
+    padding: 10px;
+
+    background-image: url('../../../../../../../public/ticket_ttp_horizontal_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_carriage-shape-create-ticket {
+    transform: rotate(90deg);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 640px;
+    height: 254px;
+    padding: 10px;
+  }
+
+  &_ticket-image {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(-90deg) translate(50%);
+
+    display: block;
+
+    width: 640px;
+    height: 254px;
+
+    background-image: url('../../../../../../../public/ticket_ttp_horizontal_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_carriage-row-create-ticket {
+    z-index: 10;
+    transform: translateY(50%);
+    // position: absolute;
+    display: flex;
+  }
+
+  &_line-dividing {
+    width: 100%;
+    height: 1px;
+    margin-bottom: 20px;
+    background-color: $deep-blue;
   }
 }
 
