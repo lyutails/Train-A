@@ -106,7 +106,7 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
-  public postCarriages() {
+  public postCarriage() {
     return this.httpClient.post<Carriage>('carriage', this.testCarriagesArray[2]);
   }
 
