@@ -5,12 +5,13 @@
   [style.background]="check() ? 'oklch(49.71% 0.165 259.85deg)' : 'oklch(91.69% 0.0396 269.9781deg)'"
   [style.color]="check() ? 'white' : 'black'"
   >{{ seatValue }}
-  <mat-checkbox
+  <input
+    type="checkbox"
     (click)="clicked()"
     id="{{ seatValue + carriageNameValue }}"
     [hidden]="true"
     class="carriages_seat"
     [value]="seatValue"
     [disabled]="false"
-  ></mat-checkbox>
+  />
 </mat-label>

@@ -11,7 +11,7 @@
       <mat-label>Rows</mat-label>
       <mat-select [(ngModel)]="selectedRowsValue" name="possibleRows">
         @for (possibleRow of possibleRows; track possibleRow) {
-          <mat-option [value]="possibleRow.value">{{ possibleRow.viewValue }}</mat-option>
+          <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
         }
       </mat-select></mat-form-field
     >

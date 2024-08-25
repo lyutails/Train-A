@@ -1,4 +1,4 @@
-# TrainTripsPlanning
+# Train Trips Planning <img src="./public/train.ico"  width="40" height="40">
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
