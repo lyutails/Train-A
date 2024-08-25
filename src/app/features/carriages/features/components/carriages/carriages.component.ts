@@ -92,24 +92,27 @@ export class CarriagesComponent implements OnInit {
 
   initialPostCarriagesArray = [
     {
-      code: '',
       name: 'carriage2F',
       rows: 12,
       leftSeats: 2,
       rightSeats: 2,
     },
     {
-      code: '',
       name: 'carriage8K',
       rows: 10,
       leftSeats: 3,
       rightSeats: 3,
     },
     {
-      code: '',
       name: 'carriageVIP',
       rows: 6,
       leftSeats: 1,
+      rightSeats: 1,
+    },
+    {
+      name: 'lalala',
+      rows: 8,
+      leftSeats: 3,
       rightSeats: 1,
     },
   ];
@@ -166,16 +169,28 @@ export class CarriagesComponent implements OnInit {
 
   public postCarriage(data: Carriage) {
     console.log('post');
-    console.log(data);
+    // console.log(data);
     return this.httpClient.post<Carriage>('carriage', data);
   }
 
-  public createCarriage() {
+  passPostCarriageData() {
+    this.postCarriage({
+      name: this.createCarriageForm.controls.name?.value,
+      rows: +this.createCarriageForm.controls.rows.value,
+      leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+      rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+    }).subscribe((data) => {
+      console.log(data);
+    });
+  }
+
+  public createCarriageView() {
     this.create.set(!this.create());
   }
 
   private get createCarriageFormInstance(): FormGroup<CarriageForm> {
     return this.fb.group<CarriageForm>({
+      code: this.fb.control({ value: '', disabled: false }),
       name: this.fb.control(
         { value: '', disabled: false },
         {
@@ -206,35 +221,6 @@ export class CarriagesComponent implements OnInit {
   public updateCarriages(code: string, body: Carriage) {
     return this.httpClient.put<Carriage>(`carriage/{ '${code}' }`, body);
   }
-
-  /* public saveCarriage() {
-    this.carriagesArray.push(this.carriageForm);
-  } */
-
-  /* ngOnInit() {
-    this.carriageForm = this.carriageFormInstance;
-  } */
-
-  private get carriageFormInstance() {
-    return this.fb.group({
-      name: this.fb.control({ value: '', disabled: false }),
-      rows: this.fb.control({ value: 0, disabled: false }),
-      leftSeats: this.fb.array([new FormControl()]),
-      rightSeats: this.fb.array([new FormControl()]),
-    });
-  }
-
-  /* private get leftSeats() {
-    return this.carriageForm.controls.leftSeats;
-  }
-
-  private get rightSeats() {
-    return this.carriageForm.controls.rightSeats;
-  } */
-
-  /*  public paintCarriage(this.initialPostCarriagesArray[0]) {
-
-  } */
 
   onSubmit() {
     if (this.createCarriageForm.valid) {

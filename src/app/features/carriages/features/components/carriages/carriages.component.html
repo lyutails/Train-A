@@ -1,6 +1,6 @@
 <div class="carriages_wrapper container-xl">
   <TTP-button
-    (click)="createCarriage()"
+    (click)="createCarriageView()"
     [type]="'button'"
     [width]="'10vw'"
     [buttonText]="'Create'"
@@ -39,14 +39,7 @@
         </mat-select></mat-form-field
       >
       <TTP-button
-        (click)="
-          postCarriage({
-            name: createCarriageForm.controls.name?.value,
-            rows: createCarriageForm.controls.rows.value,
-            leftSeats: createCarriageForm.controls.leftSeats.value,
-            rightSeats: createCarriageForm.controls.rightSeats.value,
-          })
-        "
+        (click)="passPostCarriageData()"
         [type]="'submit'"
         [width]="'10vw'"
         [buttonText]="'Save'"
