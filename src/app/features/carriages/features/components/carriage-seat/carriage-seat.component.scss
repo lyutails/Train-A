@@ -19,8 +19,8 @@
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 1;
-    width: 85px;
+    aspect-ratio: 1 / 0.2;
+    width: 25px;
     margin: 0 5px;
 
     color: black;
@@ -31,5 +31,10 @@
     &:hover {
       cursor: pointer;
     }
+  }
+
+  &_seat-checkbox {
+    padding: unset;
+    opacity: 0;
   }
 }

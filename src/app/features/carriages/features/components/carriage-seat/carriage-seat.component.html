@@ -2,16 +2,17 @@
   (click)="clickCheckbox()"
   [attr.for]="seatValue + carriageNameValue"
   class="carriages_seat-label"
-  [style.background]="check() ? 'pink' : 'oklch(91.69% 0.0396 269.9781deg)'"
+  [style.background]="check() ? 'oklch(49.71% 0.165 259.85deg)' : 'oklch(91.69% 0.0396 269.9781deg)'"
   [style.color]="check() ? 'white' : 'black'"
   >{{ seatValue }}
   <mat-checkbox
     (change)="inspectCheckboxValue($event)"
     id="{{ seatValue + carriageNameValue }}"
-    [hidden]="false"
-    class="carriages_seat"
+    [hidden]="true"
+    class="carriages_seat-checkbox"
     [value]="seatValue"
     [disabled]="false"
     #seatCheckbox
+    [checked]="check() ? true : false"
   ></mat-checkbox>
 </mat-label>

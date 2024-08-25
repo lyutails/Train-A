@@ -17,14 +17,18 @@ export class CarriageSeatComponent {
   @Input() carriageNameValue!: string;
   @ViewChild('seatCheckbox') seatCheckbox!: ElementRef;
   check = signal(false);
-  // isChecked!: boolean;
 
   clickCheckbox() {
     this.check.set(!this.check());
+    console.log(this.seatValue, this.carriageNameValue);
   }
 
   inspectCheckboxValue(event: MatCheckboxChange): void {
     console.log(event.checked);
+    if (event.checked) {
+      console.log('checked');
+    }
     console.log(this.seatCheckbox);
+    console.log(this.seatValue);
   }
 }
