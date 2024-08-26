@@ -1,0 +1,26 @@
+<section class="stations_wrapper container-xxl">
+  <ng-container *ngIf="stationsFacade.isLoading | async; else loaded"
+    ><mat-spinner class="map-spinner"></mat-spinner
+  ></ng-container>
+  <ng-template #loaded>
+    <TTP-map></TTP-map>
+    <section class="stations_station-list">
+      <ng-container
+        class="stations_container"
+        *ngFor="let station of stationsFacade.stations | async; trackBy: trackByFn"
+      >
+        <div class="stations_desction">
+          <h4 class="stations_title">{{ station.city }}</h4>
+          <div class="stations_coordinates">
+            <p><span class="stations_bold-text">Latitude:</span> {{ station.latitude }}</p>
+            <p><span class="stations_bold-text">Longitude</span> {{ station.longitude }}</p>
+          </div>
+          <p>
+            <span class="stations_bold-text">Related Stations:</span>
+            {{ station.relations | trainConnections: (stationsFacade.stations | async) }}
+          </p>
+        </div>
+      </ng-container>
+    </section>
+  </ng-template>
+</section>
