@@ -26,10 +26,12 @@
           <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
       </mat-form-field>
-      @if (signInForm.controls['email'].hasError('alreadyLoggedIn')) {
-      } @else if (signInForm.controls['email'].hasError('userNotFound')) {
-      } @else if (signInForm.controls['email'].hasError('invalidEmail')) {
-      } @else if (signInForm.controls['email'].hasError('invalidFields')) {
+      @if (
+        signInForm.controls['email'].hasError('alreadyLoggedIn') ||
+        signInForm.controls['email'].hasError('userNotFound') ||
+        signInForm.controls['email'].hasError('invalidEmail') ||
+        signInForm.controls['email'].hasError('invalidFields')
+      ) {
         <mat-error class="sign-in_input-error">Incorrect email or password</mat-error>
       }
       <div class="sign-in_buttons">
