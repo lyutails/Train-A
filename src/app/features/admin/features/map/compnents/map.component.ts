@@ -5,6 +5,7 @@ import { StationInfo } from '../../stations/models/station-info';
 import { defaultIcon } from '../constants/map-default-icon';
 import { mapDefaultoptions } from '../constants/map-default-options';
 import { ButtonComponent } from '../../../../../common/button/button.component';
+import { findPolylineIndex } from '../helpers/find-polylines-index';
 
 @Component({
   selector: 'TTP-map',
@@ -26,13 +27,12 @@ export class MapComponent implements OnInit {
     this.updateMarkers();
   }
 
+  public onMapReady(map: Map): void {
+    this.map = map;
+  }
+
   private updateMarkers(): void {
-    this.layers = this.stations.map((station) => {
-      const m = marker([station.latitude, station.longitude], { icon: defaultIcon })
-        .bindPopup(station.city)
-        .on('click', () => this.onLayerMarkerClick(m));
-      return m;
-    });
+    this.layers = this.stations.map((station) => this.createMarker(station));
   }
 
   public onMapClick(event: LeafletMouseEvent): void {
@@ -54,7 +54,7 @@ export class MapComponent implements OnInit {
 
   private onLayerMarkerClick(clickedMarker: Marker): void {
     if (this.lastMarkerAdded && this.map) {
-      const polylineIndex = this.findPolylineIndex(clickedMarker);
+      const polylineIndex = findPolylineIndex(clickedMarker, this.polylines);
 
       if (polylineIndex !== -1) {
         for (let i = this.polylines.length - 1; i >= polylineIndex; i--) {
@@ -64,21 +64,9 @@ export class MapComponent implements OnInit {
       } else {
         this.drawPolyline(this.lastMarkerAdded, clickedMarker);
       }
+
       this.lastMarkerAdded = clickedMarker;
     }
-  }
-
-  private findPolylineIndex(marker: Marker): number {
-    const clickedLatLng = marker.getLatLng();
-
-    for (let i = 0; i < this.polylines.length; i++) {
-      const polylineLatLngs = this.polylines[i].getLatLngs() as LatLng[];
-      if (polylineLatLngs.some((latLng) => latLng.equals(clickedLatLng))) {
-        return i + 1;
-      }
-    }
-
-    return -1;
   }
 
   private drawPolyline(startMarker: Marker, endMarker: Marker): void {
@@ -89,7 +77,9 @@ export class MapComponent implements OnInit {
     }
   }
 
-  public onMapReady(map: Map): void {
-    this.map = map;
+  private createMarker(station: StationInfo): Marker {
+    const mapMarker = marker([station.latitude, station.longitude], { icon: defaultIcon }).bindPopup(station.city);
+    mapMarker.on('click', () => this.onLayerMarkerClick(mapMarker));
+    return mapMarker;
   }
 }
