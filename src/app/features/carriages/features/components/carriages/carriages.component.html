@@ -48,14 +48,16 @@
       ></TTP-button>
       <div class="carriages_carriage-wrapper ticket">
         <div class="carriages_carriage-shape-create-ticket">
-          @if (createCarriageForm.controls.name) {
-            <TTP-carriage-row
-              class="carriages_carriage-row-create-ticket"
-              [carriageName]="createCarriageForm.controls.name.value"
-              [rowNumber]="createCarriageForm.controls.rows.value"
-              [leftSeatCount]="createCarriageForm.controls.leftSeats.value"
-              [rightSeatCount]="createCarriageForm.controls.rightSeats.value"
-            ></TTP-carriage-row>
+          @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
+            @if (createCarriageForm.controls.name) {
+              <TTP-carriage-row
+                class="carriages_carriage-row-create-ticket"
+                [carriageName]="createCarriageForm.controls.name.value"
+                [rowNumber]="index"
+                [leftSeatCount]="createCarriageForm.controls.leftSeats.value"
+                [rightSeatCount]="createCarriageForm.controls.rightSeats.value"
+              ></TTP-carriage-row>
+            }
           }
           <div class="carriages_ticket-image"></div>
         </div>
@@ -96,19 +98,22 @@
       >
       <TTP-button
         (click)="updateExistingCarriage()"
-        [type]="'button'"
+        [type]="'submit'"
         [width]="'10vw'"
         [buttonText]="'Save'"
+        [disabled]="!createCarriageForm.valid"
       ></TTP-button>
       <div class="carriages_carriage-shape">
-        @if (createCarriageForm.controls.name) {
-          <TTP-carriage-row
-            class="carriages_carriage-row"
-            [carriageName]="createCarriageForm.controls.name.value"
-            [rowNumber]="+createCarriageForm.controls.rows.value"
-            [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
-            [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
-          ></TTP-carriage-row>
+        @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
+          @if (createCarriageForm.controls.name) {
+            <TTP-carriage-row
+              class="carriages_carriage-row"
+              [carriageName]="createCarriageForm.controls.name.value"
+              [rowNumber]="index"
+              [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
+              [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
+            ></TTP-carriage-row>
+          }
         }
       </div>
     </form>
@@ -131,14 +136,16 @@
           <div class="carriages_right-side">Right seats: {{ carriageItem.rightSeats }}</div>
         </div>
         <form [formGroup]="retrievedCarriagesForm" class="carriages_carriage-wrapper">
-          <TTP-button
-            [type]="'button'"
-            [width]="'10vw'"
-            [buttonText]="'Update'"
-            class="carriages_update-button"
-            (click)="showUpdateCarriageView()"
-            (click)="getItemToUpdate($event)"
-          ></TTP-button>
+          @if (carriageItem.code) {
+            <TTP-button
+              [type]="'button'"
+              [width]="'10vw'"
+              [buttonText]="'Update'"
+              class="carriages_update-button"
+              (click)="getCarriageCode(carriageItem.code)"
+              (click)="showUpdateCarriageView()"
+            ></TTP-button>
+          }
           <div class="carriages_carriage-shape">
             @for (row of [].constructor(carriageItem.rows); track index; let index = $index) {
               @if (carriageItem.name) {

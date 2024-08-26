@@ -65,6 +65,7 @@ export class CarriagesComponent implements OnInit {
   create = signal(false);
   update = signal(false);
   carriageBluePrint!: Carriage;
+  carrigeCode = '';
 
   possibleRows: CarriageCreatingParams[] = [
     { value: 'row-1', viewValue: '1' },
@@ -119,7 +120,7 @@ export class CarriagesComponent implements OnInit {
       rightSeats: 1,
     },
     {
-      name: 'lalala',
+      name: 'lalalaUp',
       rows: 3,
       leftSeats: 2,
       rightSeats: 2,
@@ -170,10 +171,14 @@ export class CarriagesComponent implements OnInit {
     this.create.set(!this.create());
   }
 
+  public getCarriageCode(code: string) {
+    return (this.carrigeCode = code);
+  }
+
   public updateExistingCarriage() {
-    if (this.createCarriageForm.controls.code !== undefined) {
+    if (this.createCarriageForm.controls.code !== undefined && this.createCarriageForm.controls.name !== undefined) {
       this.carriagesService
-        .updateCarriage(this.createCarriageForm.controls.code?.value, {
+        .updateCarriage(this.carrigeCode, {
           name: this.createCarriageForm.controls.name?.value,
           rows: +this.createCarriageForm.controls.rows.value,
           leftSeats: +this.createCarriageForm.controls.leftSeats.value,
@@ -197,10 +202,6 @@ export class CarriagesComponent implements OnInit {
       return carriageDataForUpdate;
     }
     return;
-  }
-
-  public getItemToUpdate(event: MouseEvent) {
-    console.log(event.target);
   }
 
   private get createCarriageFormInstance(): FormGroup<CarriageForm> {
