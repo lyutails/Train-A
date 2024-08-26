@@ -46,21 +46,18 @@
         class="carriages_save-button"
         [disabled]="!createCarriageForm.valid"
       ></TTP-button>
-      <div class="carriages_carriage-wrapper ticket">
-        <div class="carriages_carriage-shape-create-ticket">
-          @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
-            @if (createCarriageForm.controls.name) {
-              <TTP-carriage-row
-                class="carriages_carriage-row-create-ticket"
-                [carriageName]="createCarriageForm.controls.name.value"
-                [rowNumber]="index"
-                [leftSeatCount]="createCarriageForm.controls.leftSeats.value"
-                [rightSeatCount]="createCarriageForm.controls.rightSeats.value"
-              ></TTP-carriage-row>
-            }
+      <div class="carriages_carriage-shape">
+        @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
+          @if (createCarriageForm.controls.name) {
+            <TTP-carriage-row
+              class="carriages_carriage-row-create-ticket"
+              [carriageName]="createCarriageForm.controls.name.value"
+              [rowNumber]="index"
+              [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
+              [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
+            ></TTP-carriage-row>
           }
-          <div class="carriages_ticket-image"></div>
-        </div>
+        }
       </div>
     </form>
   }

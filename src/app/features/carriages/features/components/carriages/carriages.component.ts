@@ -197,6 +197,7 @@ export class CarriagesComponent implements OnInit {
           console.log(data);
         });
     }
+    this.update.set(!this.update());
   }
 
   public showUpdateCarriageView() {
