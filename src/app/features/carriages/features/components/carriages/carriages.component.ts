@@ -149,18 +149,20 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
-  public passPostCarriageData() {
-    this.carriagesService
-      .postCarriage({
-        name: this.createCarriageForm.controls.name?.value,
-        rows: +this.createCarriageForm.controls.rows.value,
-        leftSeats: +this.createCarriageForm.controls.leftSeats.value,
-        rightSeats: +this.createCarriageForm.controls.rightSeats.value,
-      })
-      .subscribe((data) => {
-        console.log(data);
-        this.getCarriagesData();
+  public createCarriageData() {
+    const carriageWithoutCode = {
+      name: this.createCarriageForm.controls.name?.value,
+      rows: +this.createCarriageForm.controls.rows.value,
+      leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+      rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+    };
+    this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
+      console.log('vadim create', data);
+      this.carriagesData.unshift({
+        code: data.code,
+        ...carriageWithoutCode,
       });
+    });
   }
 
   public showCreateCarriageView() {
@@ -181,18 +183,22 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateExistingCarriage() {
+    const carriageWithoutCode = {
+      name: this.createCarriageForm.controls.name?.value,
+      rows: +this.createCarriageForm.controls.rows.value,
+      leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+      rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+    };
     if (this.createCarriageForm.controls.code !== undefined && this.createCarriageForm.controls.name !== undefined) {
-      this.carriagesService
-        .updateCarriage(this.carrigeCode, {
-          name: this.createCarriageForm.controls.name?.value,
-          rows: +this.createCarriageForm.controls.rows.value,
-          leftSeats: +this.createCarriageForm.controls.leftSeats.value,
-          rightSeats: +this.createCarriageForm.controls.rightSeats.value,
-        })
-        .subscribe((data) => {
-          console.log(data);
-          this.getCarriagesData();
-        });
+      this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe((data) => {
+        console.log(data);
+        const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
+        const updatedCarriage = {
+          code: this.carrigeCode,
+          ...carriageWithoutCode,
+        };
+        this.carriagesData[updatedCarriageIndex] = updatedCarriage;
+      });
     }
     this.update.set(!this.update());
   }
