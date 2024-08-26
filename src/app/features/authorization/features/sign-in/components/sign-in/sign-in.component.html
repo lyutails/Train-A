@@ -27,7 +27,10 @@
         </button>
       </mat-form-field>
       @if (signInForm.controls['email'].hasError('alreadyLoggedIn')) {
-        <mat-error class="sign-in_input-error"> Incorrect email or password </mat-error>
+      } @else if (signInForm.controls['email'].hasError('userNotFound')) {
+      } @else if (signInForm.controls['email'].hasError('invalidEmail')) {
+      } @else if (signInForm.controls['email'].hasError('invalidFields')) {
+        <mat-error class="sign-in_input-error">Incorrect email or password</mat-error>
       }
       <div class="sign-in_buttons">
         <TTP-button
