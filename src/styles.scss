@@ -27,6 +27,10 @@ body::-webkit-scrollbar-thumb {
   outline: 1px solid transparent;
 }
 
+.content-area {
+  min-height: calc(100vh - 90px);
+}
+
 @media screen and (width >= 1200px) and (width <= 2400px) {
   html {
     font-size: 18px;
