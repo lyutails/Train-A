@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { StationApi } from '../models/station-api.model';
 import { StationInfo } from '../../../features/admin/features/stations/models/station-info';
 import { transformStationApi } from '../helpers/transform-station-api';
+import { NominatimAddressInfo } from '../models/nominatim-address-info';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +28,9 @@ export class StationsService {
         id,
       })),
     );
+  }
+
+  public getCityName(lat: number, lng: number): Observable<NominatimAddressInfo> {
+    return this.stationHttpService.getCityName(lat, lng);
   }
 }

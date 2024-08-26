@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { StationApi } from '../models/station-api.model';
 import { NewStationDetails } from '../../../features/admin/features/stations/models/station.model';
+import { NominatimAddressInfo } from '../models/nominatim-address-info';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +21,16 @@ export class StationsHttpService {
 
   public createStation(station: NewStationDetails): Observable<number> {
     return this.httpClient.post<number>('station', station);
+  }
+
+  public getCityName(lat: number, lng: number): Observable<NominatimAddressInfo> {
+    const params = new URLSearchParams({
+      format: 'json',
+      lat: lat.toString(),
+      lon: lng.toString(),
+      addressdetails: '1',
+    }).toString();
+
+    return this.httpClient.get<NominatimAddressInfo>(`openstreetmap?${params}`);
   }
 }
