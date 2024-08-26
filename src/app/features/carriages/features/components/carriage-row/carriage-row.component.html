@@ -2,13 +2,13 @@
   @if (rowNumber === 0) {
     <TTP-carriage-seat
       [carriageNameValue]="carriageName"
-      [seatValue]="(rowNumber + seatsInRowNumber * rowNumber + index + 1).toString()"
+      [seatValue]="(totalSeats() * rowNumber + index + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
   } @else {
     <TTP-carriage-seat
       [carriageNameValue]="carriageName"
-      [seatValue]="(seatsInRowNumber * rowNumber + index + 1).toString()"
+      [seatValue]="(totalSeats() * rowNumber + index + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
   }
@@ -18,13 +18,13 @@
   @if (rowNumber === 0) {
     <TTP-carriage-seat
       [carriageNameValue]="carriageName"
-      [seatValue]="(rowNumber + seatsInRowNumber * rowNumber + index + leftSeatCount + 1).toString()"
+      [seatValue]="(totalSeats() * rowNumber + index + leftSeatCount + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
   } @else {
     <TTP-carriage-seat
       [carriageNameValue]="carriageName"
-      [seatValue]="(seatsInRowNumber * rowNumber + index + leftSeatCount + 1).toString()"
+      [seatValue]="(totalSeats() * rowNumber + index + leftSeatCount + 1).toString()"
       class="carriage-row_with-seats"
     ></TTP-carriage-seat>
   }

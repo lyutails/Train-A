@@ -47,15 +47,17 @@
         [disabled]="!createCarriageForm.valid"
       ></TTP-button>
       <div class="carriages_carriage-shape">
-        @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
-          @if (createCarriageForm.controls.name) {
-            <TTP-carriage-row
-              class="carriages_carriage-row"
-              [carriageName]="createCarriageForm.controls.name.value"
-              [rowNumber]="index"
-              [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
-              [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
-            ></TTP-carriage-row>
+        @if (createCarriageForm.controls.leftSeats.value && createCarriageForm.controls.rightSeats.value) {
+          @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
+            @if (createCarriageForm.controls.name) {
+              <TTP-carriage-row
+                class="carriages_carriage-row"
+                [carriageName]="createCarriageForm.controls.name.value"
+                [rowNumber]="index"
+                [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
+                [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
+              ></TTP-carriage-row>
+            }
           }
         }
       </div>
