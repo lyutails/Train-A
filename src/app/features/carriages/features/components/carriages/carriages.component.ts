@@ -16,11 +16,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
-import { RowsTrimPipe } from '../../pipes/rows-trim.pipe';
-import { LeftSeatsTrimPipe } from '../../pipes/left-seats-trim.pipe';
-import { RigthSeatsTrimPipe } from '../../pipes/rigth-seats-trim.pipe';
 import { CarriagesService } from '../../services/carriages.service';
-import { TostringPipe } from '../../pipes/tostring.pipe';
 
 export interface CarriageCreatingParams {
   value: string;
@@ -42,10 +38,6 @@ export interface CarriageCreatingParams {
     MatFormField,
     FormsModule,
     CarriageRowComponent,
-    RowsTrimPipe,
-    LeftSeatsTrimPipe,
-    RigthSeatsTrimPipe,
-    TostringPipe,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
@@ -167,6 +159,7 @@ export class CarriagesComponent implements OnInit {
       })
       .subscribe((data) => {
         console.log(data);
+        this.getCarriagesData();
       });
   }
 
@@ -198,6 +191,7 @@ export class CarriagesComponent implements OnInit {
         })
         .subscribe((data) => {
           console.log(data);
+          this.getCarriagesData();
         });
     }
     this.update.set(!this.update());
