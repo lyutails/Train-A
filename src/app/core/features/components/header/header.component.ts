@@ -58,7 +58,6 @@ export class HeaderComponent {
   }
 
   public redirectToAdmin() {
-    console.log('Redirecting to Admin');
     this.router.navigate(['/admin/stations']);
   }
 
