@@ -57,10 +57,6 @@
   }
 }
 
-input.ng-invalid.ng-touched {
-  border: 1px solid oklch(59.98% 0.236 15.45deg);
-}
-
 @media screen and (width >= 300px) and (width <= 639.98px) {
   .sign-up {
     &_wrapper {
