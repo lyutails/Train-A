@@ -58,7 +58,8 @@ export class HeaderComponent {
   }
 
   public redirectToAdmin() {
-    this.router.navigate(['/admin/stations]']);
+    console.log('Redirecting to Admin');
+    this.router.navigate(['/admin/stations']);
   }
 
   public get isAuthenticated(): boolean {
