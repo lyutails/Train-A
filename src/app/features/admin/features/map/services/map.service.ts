@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, Subject } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { StationsFacade } from '../../stations/station-store/services/stations.facade';
-import { LatLng, LeafletMouseEvent, marker, Marker, polyline } from 'leaflet';
+import { LatLng, marker, Marker, polyline } from 'leaflet';
 import { defaultIcon } from '../constants/map-default-icon';
 import { MapStateService } from './map-state.service';
 import { StationInfo } from '../../stations/models/station-info';
@@ -11,8 +11,6 @@ import { findPolylineIndex } from '../helpers/find-polylines-index';
   providedIn: 'root',
 })
 export class MapService {
-  private locationOutOfReach = new Subject<void>();
-  public locationOutOfReach$ = this.locationOutOfReach.asObservable();
   constructor(
     private stationFacade: StationsFacade,
     private mapStateService: MapStateService,
@@ -24,29 +22,13 @@ export class MapService {
       .pipe(map((data) => data.address?.city || data.address?.town || data.address?.village || 'Undefined'));
   }
 
-  public handleMapClick(event: LeafletMouseEvent): void {
-    const { latlng } = event;
+  public handleMapClick(): void {
     this.mapStateService.clearPolylines();
 
     const currentMarker = this.mapStateService.getCurrentMarker();
     if (currentMarker) {
       currentMarker.remove();
     }
-
-    this.getCityName(latlng.lat, latlng.lng).subscribe({
-      next: (response) => {
-        if (response !== 'Undefined') {
-          const map = this.mapStateService.getMap();
-          if (map) {
-            const newMarker = marker([latlng.lat, latlng.lng], { icon: defaultIcon }).bindPopup(response).addTo(map);
-            this.mapStateService.setCurrentMarker(newMarker);
-            this.mapStateService.setLastMarkerAdded(newMarker);
-          }
-        } else {
-          this.locationOutOfReach.next();
-        }
-      },
-    });
   }
 
   public handleLayerMarkerClick(clickedMarker: Marker): void {

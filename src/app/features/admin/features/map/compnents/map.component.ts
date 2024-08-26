@@ -7,11 +7,13 @@ import { ButtonComponent } from '../../../../../common/button/button.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PopUpComponent } from '../../../../../common/pop-up-window/components/pop-up/pop-up.component';
 import { MapFacade } from '../services/map.facade';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
   selector: 'TTP-map',
   standalone: true,
-  imports: [LeafletModule, ButtonComponent],
+  imports: [LeafletModule, ButtonComponent, MatProgressSpinnerModule, NgIf, AsyncPipe],
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
@@ -21,7 +23,7 @@ export class MapComponent implements OnInit {
   public options = mapDefaultoptions;
 
   constructor(
-    private readonly mapFacade: MapFacade,
+    public readonly mapFacade: MapFacade,
     public dialog: MatDialog,
   ) {
     this.mapFacade.locationOutOfReach$.subscribe(() => {

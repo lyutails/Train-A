@@ -1,9 +1,15 @@
-<div
-  class="map"
-  leaflet
-  [leafletOptions]="options"
-  [leafletLayers]="layers"
-  (leafletClick)="onMapClick($event)"
-  (leafletMapReady)="onMapReady($event)"
-></div>
+<div class="map-container">
+  <ng-container *ngIf="mapFacade.mapSpinner$ | async">
+    <mat-spinner class="map-spinner"></mat-spinner>
+  </ng-container>
+  <div
+    class="map"
+    leaflet
+    [leafletOptions]="options"
+    [leafletLayers]="layers"
+    (leafletClick)="onMapClick($event)"
+    (leafletMapReady)="onMapReady($event)"
+  ></div>
+  <div class="overlay" *ngIf="mapFacade.mapSpinner$ | async"></div>
+</div>
 <TTP-button class="stations-save" [type]="'button'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
