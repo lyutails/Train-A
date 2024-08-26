@@ -12,5 +12,5 @@ export const mapDefaultoptions = {
     }),
   ],
   zoom: 7,
-  center: latLng(46.879966, -121.726909),
+  center: latLng(50.0755, 14.4378),
 };

@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { StationsFacade } from '../../stations/station-store/services/stations.facade';
 import { LatLng, marker, Marker, polyline } from 'leaflet';
 import { defaultIcon } from '../constants/map-default-icon';
 import { MapStateService } from './map-state.service';
 import { StationInfo } from '../../stations/models/station-info';
 import { findPolylineIndex } from '../helpers/find-polylines-index';
+import { NewStationDetails } from '../../stations/models/station.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapService {
+  private relations = new BehaviorSubject<number[]>([]);
+  public relations$: Observable<number[]> = this.relations.asObservable();
+
   constructor(
     private stationFacade: StationsFacade,
     private mapStateService: MapStateService,
@@ -60,8 +64,12 @@ export class MapService {
   }
 
   public createMarker(station: StationInfo): Marker {
-    const mapMarker = marker([station.latitude, station.longitude], { icon: defaultIcon }).bindPopup(station.city);
+    const mapMarker = marker([station.latitude, station.longitude], { icon: defaultIcon }).bindTooltip(station.city);
     mapMarker.on('click', () => this.handleLayerMarkerClick(mapMarker));
     return mapMarker;
+  }
+
+  public saveStation(station: NewStationDetails) {
+    this.stationFacade.createStation(station);
   }
 }

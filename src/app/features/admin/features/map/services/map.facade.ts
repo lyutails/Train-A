@@ -5,6 +5,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { LeafletMouseEvent, Map, marker, Marker } from 'leaflet';
 import { StationInfo } from '../../stations/models/station-info';
 import { defaultIcon } from '../constants/map-default-icon';
+import { findStationRelatiove } from '../helpers/find-station-relations';
+import { NewStationDetails } from '../../stations/models/station.model';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,7 @@ export class MapFacade {
   private mapSpinner = new BehaviorSubject<boolean>(false);
   mapSpinner$ = this.mapSpinner.asObservable();
   private isProcessing = false;
+  private relations: number[] = [];
 
   constructor(
     private readonly mapService: MapService,
@@ -31,6 +34,7 @@ export class MapFacade {
 
   public handleMapClick(event: LeafletMouseEvent): void {
     if (this.isProcessing) return;
+
     this.isProcessing = true;
     const { latlng } = event;
     this.mapSpinner.next(true);
@@ -44,7 +48,7 @@ export class MapFacade {
         if (response !== 'Undefined') {
           const map = this.mapStateService.getMap();
           if (map) {
-            const newMarker = marker([lat, lng], { icon: defaultIcon }).bindPopup(response).addTo(map);
+            const newMarker = marker([lat, lng], { icon: defaultIcon }).bindTooltip(response).addTo(map);
             this.mapStateService.setCurrentMarker(newMarker);
             this.mapStateService.setLastMarkerAdded(newMarker);
           }
@@ -60,5 +64,30 @@ export class MapFacade {
         this.mapSpinner.next(false);
       },
     });
+  }
+
+  public saveStation(stations: StationInfo[]) {
+    const marker = this.mapStateService.getCurrentMarker();
+    if (marker) {
+      const city = marker.getTooltip()?.getContent()?.toString();
+      const latitude = marker.getLatLng().lat;
+      const longitude = marker.getLatLng().lng;
+      const polylines = this.mapStateService.getPolylines();
+      const trainRelations = findStationRelatiove(polylines, stations);
+      this.relations = Array.from(trainRelations);
+
+      if (city) {
+        const stationDetails: NewStationDetails = {
+          city,
+          latitude,
+          longitude,
+          relations: this.relations,
+        };
+        console.log(stationDetails);
+        this.mapService.saveStation(stationDetails);
+        this.mapStateService.resetState();
+        this.relations = [];
+      }
+    }
   }
 }

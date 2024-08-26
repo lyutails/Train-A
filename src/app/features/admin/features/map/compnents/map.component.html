@@ -12,4 +12,10 @@
   ></div>
   <div class="overlay" *ngIf="mapFacade.mapSpinner$ | async"></div>
 </div>
-<TTP-button class="stations-save" [type]="'button'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
+<TTP-button
+  class="stations-save"
+  [type]="'button'"
+  [width]="'10vw'"
+  [buttonText]="'Save'"
+  (click)="saveStation()"
+></TTP-button>

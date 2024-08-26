@@ -51,4 +51,11 @@ export class MapStateService {
     this.polylines.forEach((poly) => poly.remove());
     this.polylines = [];
   }
+
+  resetState(): void {
+    this.map = undefined;
+    this.currentMarker = undefined;
+    this.lastMarkerAdded = undefined;
+    this.clearPolylines();
+  }
 }

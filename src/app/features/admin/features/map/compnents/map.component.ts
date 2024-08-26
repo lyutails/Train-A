@@ -47,11 +47,16 @@ export class MapComponent implements OnInit {
     this.mapFacade.handleMapClick(event);
   }
 
-  private openDialog(): void {
+  private openDialog(message?: string): void {
+    const dialogMessage = message || 'No train stations in the near area!';
     this.dialog.open(PopUpComponent, {
       width: '15rem',
       height: '10rem',
-      data: { message: 'No train stations in the near area!' },
+      data: { message: dialogMessage },
     });
+  }
+
+  public saveStation(): void {
+    this.mapFacade.saveStation(this.stations);
   }
 }
