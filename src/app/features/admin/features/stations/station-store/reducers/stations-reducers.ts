@@ -42,6 +42,7 @@ export const stationReducer = createReducer(
     (state, { station }): StationsState => ({
       ...state,
       isUpdating: false,
+      errorMessage: null,
       stations: [...state.stations, station],
     }),
   ),

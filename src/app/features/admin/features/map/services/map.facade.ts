@@ -48,27 +48,16 @@ export class MapFacade {
     this.getStreetName(latlng.lat, latlng.lng);
   }
 
-  public getStreetName(lat: number, lng: number) {
+  public getStreetName(lat: number, lng: number): void {
     this.mapService.getCityName(lat, lng).subscribe({
       next: (response) => {
         if (response !== 'Undefined') {
-          const map = this.mapStateService.getMap();
-          const findIndex = this.stations.find((station) => station.city === response);
-          if (findIndex) {
-            this.locationOutOfReach.next();
-          }
-          if (map && !findIndex) {
-            const newMarker = marker([lat, lng], { icon: defaultIcon }).bindTooltip(response).addTo(map);
-            this.mapStateService.setCurrentMarker(newMarker);
-            this.mapStateService.setLastMarkerAdded(newMarker);
-          }
+          this.handleCityNameResponse(response, lat, lng);
         } else {
-          this.locationOutOfReach.next();
+          this.handleLocationOutOfReach();
         }
       },
-      error: () => {
-        this.locationOutOfReach.next();
-      },
+      error: () => this.handleLocationOutOfReach(),
       complete: () => {
         this.isProcessing = false;
         this.mapSpinner.next(false);
@@ -90,5 +79,30 @@ export class MapFacade {
 
   public getStations(): Observable<StationInfo[]> {
     return this.mapService.getCurrentStations();
+  }
+
+  private handleCityNameResponse(cityName: string, lat: number, lng: number): void {
+    if (this.doesCityExist(cityName)) {
+      this.handleLocationOutOfReach();
+    } else {
+      this.addMarkerToMap(cityName, lat, lng);
+    }
+  }
+
+  private doesCityExist(cityName: string): boolean {
+    return !!this.stations.find((station) => station.city === cityName);
+  }
+
+  private addMarkerToMap(cityName: string, lat: number, lng: number): void {
+    const map = this.mapStateService.getMap();
+    if (map) {
+      const newMarker = marker([lat, lng], { icon: defaultIcon }).bindTooltip(cityName).addTo(map);
+      this.mapStateService.setCurrentMarker(newMarker);
+      this.mapStateService.setLastMarkerAdded(newMarker);
+    }
+  }
+
+  private handleLocationOutOfReach(): void {
+    this.locationOutOfReach.next();
   }
 }
