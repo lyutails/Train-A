@@ -178,7 +178,11 @@ export class CarriagesComponent implements OnInit {
   }
 
   public showUpdateCarriageView() {
-    this.update.set(!this.create());
+    this.update.set(!this.update());
+  }
+
+  public getItemToUpdate(event: MouseEvent) {
+    console.log(event.target);
   }
 
   private get createCarriageFormInstance(): FormGroup<CarriageForm> {
@@ -193,19 +197,19 @@ export class CarriagesComponent implements OnInit {
       rows: this.fb.control(
         { value: 0, disabled: false },
         {
-          validators: [Validators.required],
+          validators: [Validators.required, Validators.pattern('^([2-9]|1[0-6])$')],
         },
       ),
       leftSeats: this.fb.control(
         { value: 0, disabled: false },
         {
-          validators: [Validators.required],
+          validators: [Validators.required, Validators.pattern('^([2-9]|1[0-6])$')],
         },
       ),
       rightSeats: this.fb.control(
         { value: 0, disabled: false },
         {
-          validators: [Validators.required],
+          validators: [Validators.required, Validators.pattern('^([2-9]|1[0-6])$')],
         },
       ),
     });

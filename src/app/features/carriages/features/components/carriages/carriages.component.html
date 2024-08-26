@@ -62,7 +62,56 @@
       </div>
     </form>
   }
-  @if (create()) {
+  @if (update()) {
+    <form class="carriages_create-form" [formGroup]="createCarriageForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Name</mat-label>
+        @if (createCarriageForm.controls.name) {
+          <input matInput placeholder="Name" formControlName="name" [value]="createCarriageForm.controls.name.value" />
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Rows</mat-label>
+        <mat-select name="possibleRows" formControlName="rows" [value]="createCarriageForm.controls.rows.value">
+          @for (possibleRow of possibleRows; track possibleRow) {
+            <mat-option [value]="possibleRow.viewValue" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
+          }
+        </mat-select></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Left Seats</mat-label>
+        <mat-select formControlName="leftSeats" [value]="createCarriageForm.controls.leftSeats.value">
+          @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
+            <mat-option [value]="possibleLeftSeat.viewValue">{{ possibleLeftSeat.viewValue }}</mat-option>
+          }
+        </mat-select></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="carriages_control-inputs">
+        <mat-label>Right Seats</mat-label>
+        <mat-select formControlName="rightSeats" [value]="createCarriageForm.controls.rightSeats.value">
+          @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+            <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
+          }
+        </mat-select></mat-form-field
+      >
+      <TTP-button
+        (click)="updateExistingCarriage()"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'Save'"
+      ></TTP-button>
+      <div class="carriages_carriage-shape">
+        <!-- <TTP-carriage-row
+          class="carriages_carriage-row"
+          [rowNumber]="index"
+          [leftSeatCount]="carriageItem.leftSeats"
+          [rightSeatCount]="carriageItem.rightSeats"
+          [carriageName]="carriageItem.name"
+        ></TTP-carriage-row> -->
+      </div>
+    </form>
+  }
+  @if (create() || update()) {
     <div class="carriages_line-dividing"></div>
   }
   <div class="carriages_carriages-wrapper">
@@ -86,6 +135,7 @@
             [buttonText]="'Update'"
             class="carriages_update-button"
             (click)="showUpdateCarriageView()"
+            (click)="getItemToUpdate($event)"
           ></TTP-button>
           <div class="carriages_carriage-shape">
             @for (row of [].constructor(carriageItem.rows); track index; let index = $index) {
@@ -104,25 +154,4 @@
       </div>
     }
   </div>
-  @if (update()) {
-    @for (carriageItem of carriagesData; track carriageItem.name) {
-      <div class="carriages_name">{{ carriageItem.name }}</div>
-      <div class="carriages_total-seats">
-        {{ carriageItem.rows * carriageItem.leftSeats + carriageItem.rows * carriageItem.rightSeats }}
-      </div>
-      <div class="carriages_rows">{{ carriageItem.rows }} rows</div>
-      <div class="carriages_left-side">{{ carriageItem.leftSeats }} left seats</div>
-      <div class="carriages_right-side">{{ carriageItem.rightSeats }} right seats</div>
-      <form [formGroup]="createCarriageForm">
-        <div class="carriages_seats"></div>
-        <TTP-button
-          (click)="updateExistingCarriage()"
-          [type]="'button'"
-          [width]="'10vw'"
-          [buttonText]="'Update'"
-        ></TTP-button>
-        <mat-checkbox class="carriages_seat" [checked]></mat-checkbox>
-      </form>
-    }
-  }
 </div>
