@@ -1,0 +1,61 @@
+<header>
+  <nav class="d-flex justify-content-between align-items-center p-3">
+    <div class="home-button" (click)="redirectToHome()" role="button" tabindex="0" (keydown.enter)="redirectToHome()">
+      <img src="train.webp" alt="Logo" class="home-button_logo-img" />
+      <span class="mat-button-label home-button_description">Train Trips Planning</span>
+    </div>
+
+    @if (isSmallScreen) {
+      <button mat-button [matMenuTriggerFor]="menu" class="burger-button">
+        <mat-icon class="burger-button_icon">menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        @if (!isAuthenticated) {
+          <div class="auth-buttons">
+            <button mat-menu-item (click)="redirectToSignIn()">Sign In</button>
+            <button mat-menu-item (click)="redirectToSignUp()">Sign Up</button>
+          </div>
+        }
+
+        @if (isAuthenticated && !isAdminRole) {
+          <div class="user-buttons">
+            <button mat-menu-item (click)="redirectToProfile()">Profile</button>
+            <button mat-menu-item (click)="redirectToOrders()">My orders</button>
+          </div>
+        }
+
+        @if (isAdminRole) {
+          <div class="admin-buttons">
+            <button mat-menu-item (click)="redirectToProfile()">Profile</button>
+            <button mat-menu-item>Orders</button>
+            <button mat-menu-item (click)="redirectToAdmin()">Admin</button>
+          </div>
+        }
+      </mat-menu>
+    }
+
+    @if (!isSmallScreen) {
+      @if (!isAuthenticated) {
+        <div class="auth-buttons">
+          <button mat-button (click)="redirectToSignIn()">Sign In</button>
+          <button mat-button (click)="redirectToSignUp()">Sign Up</button>
+        </div>
+      }
+
+      @if (isAuthenticated && !isAdminRole) {
+        <div class="user-buttons">
+          <button mat-button (click)="redirectToProfile()">Profile</button>
+          <button mat-button (click)="redirectToOrders()">My orders</button>
+        </div>
+      }
+
+      @if (isAdminRole) {
+        <div class="admin-buttons">
+          <button mat-button (click)="redirectToProfile()">Profile</button>
+          <button mat-button>Orders</button>
+          <button mat-button (click)="redirectToAdmin()">Admin</button>
+        </div>
+      }
+    }
+  </nav>
+</header>
