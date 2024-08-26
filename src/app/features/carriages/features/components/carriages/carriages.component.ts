@@ -67,6 +67,7 @@ export class CarriagesComponent implements OnInit {
   carriageBluePrint!: Carriage;
 
   possibleRows: CarriageCreatingParams[] = [
+    { value: 'row-1', viewValue: '1' },
     { value: 'row-2', viewValue: '2' },
     { value: 'row-3', viewValue: '3' },
     { value: 'row-4', viewValue: '4' },
@@ -84,8 +85,6 @@ export class CarriagesComponent implements OnInit {
     { value: 'row-16', viewValue: '16' },
     { value: 'row-17', viewValue: '17' },
     { value: 'row-18', viewValue: '18' },
-    { value: 'row-19', viewValue: '19' },
-    { value: 'row-20', viewValue: '20' },
   ];
 
   possibleLeftSeats: CarriageCreatingParams[] = [
@@ -172,13 +171,32 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateExistingCarriage() {
-    this.carriagesService.updateCarriage('lalala', this.initialPostCarriagesArray[3]).subscribe((data) => {
-      console.log(data);
-    });
+    if (this.createCarriageForm.controls.code !== undefined) {
+      this.carriagesService
+        .updateCarriage(this.createCarriageForm.controls.code?.value, {
+          name: this.createCarriageForm.controls.name?.value,
+          rows: +this.createCarriageForm.controls.rows.value,
+          leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+          rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+        })
+        .subscribe((data) => {
+          console.log(data);
+        });
+    }
   }
 
   public showUpdateCarriageView() {
     this.update.set(!this.update());
+    if (this.update()) {
+      const carriageDataForUpdate = {
+        name: this.createCarriageForm.controls.name?.value,
+        rows: +this.createCarriageForm.controls.rows.value,
+        leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+        rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+      };
+      return carriageDataForUpdate;
+    }
+    return;
   }
 
   public getItemToUpdate(event: MouseEvent) {
@@ -197,19 +215,19 @@ export class CarriagesComponent implements OnInit {
       rows: this.fb.control(
         { value: 0, disabled: false },
         {
-          validators: [Validators.required, Validators.pattern('^([2-9]|1[0-6])$')],
+          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
         },
       ),
       leftSeats: this.fb.control(
         { value: 0, disabled: false },
         {
-          validators: [Validators.required, Validators.pattern('^([2-9]|1[0-6])$')],
+          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
         },
       ),
       rightSeats: this.fb.control(
         { value: 0, disabled: false },
         {
-          validators: [Validators.required, Validators.pattern('^([2-9]|1[0-6])$')],
+          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
         },
       ),
     });
@@ -233,6 +251,14 @@ export class CarriagesComponent implements OnInit {
 
   public get carriageRightSeatsFormControl(): FormControl<number> {
     return this.createCarriageForm.controls.rightSeats;
+  }
+
+  public get carriageCodeFormControl(): FormControl<string> {
+    if (this.createCarriageForm.controls.code !== undefined) {
+      return this.createCarriageForm.controls.code;
+    } else {
+      throw new Error('no code provided');
+    }
   }
 
   onSubmit() {

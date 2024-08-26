@@ -101,13 +101,15 @@
         [buttonText]="'Save'"
       ></TTP-button>
       <div class="carriages_carriage-shape">
-        <!-- <TTP-carriage-row
-          class="carriages_carriage-row"
-          [rowNumber]="index"
-          [leftSeatCount]="carriageItem.leftSeats"
-          [rightSeatCount]="carriageItem.rightSeats"
-          [carriageName]="carriageItem.name"
-        ></TTP-carriage-row> -->
+        @if (createCarriageForm.controls.name) {
+          <TTP-carriage-row
+            class="carriages_carriage-row"
+            [carriageName]="createCarriageForm.controls.name.value"
+            [rowNumber]="+createCarriageForm.controls.rows.value"
+            [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
+            [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
+          ></TTP-carriage-row>
+        }
       </div>
     </form>
   }
