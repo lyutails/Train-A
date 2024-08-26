@@ -76,7 +76,7 @@
         <mat-label>Rows</mat-label>
         <mat-select name="possibleRows" formControlName="rows" [value]="createCarriageForm.controls.rows.value">
           @for (possibleRow of possibleRows; track possibleRow) {
-            <mat-option [value]="possibleRow.viewValue" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
+            <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
       >
@@ -90,12 +90,20 @@
       >
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Right Seats</mat-label>
-        <mat-select formControlName="rightSeats" [value]="createCarriageForm.controls.rightSeats.value">
-          @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
-            <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
-          }
-        </mat-select></mat-form-field
-      >
+        @if (createCarriageForm.controls.rightSeats.value) {
+          <mat-select formControlName="rightSeats" [value]="+createCarriageForm.controls.rightSeats.value">
+            @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+              <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
+            }
+          </mat-select>
+        } @else {
+          <mat-select formControlName="rightSeats" [value]="carriageData.rightSeats">
+            @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+              <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
+            }
+          </mat-select>
+        }
+      </mat-form-field>
       <TTP-button
         (click)="updateExistingCarriage()"
         [type]="'submit'"
@@ -104,15 +112,29 @@
         [disabled]="!createCarriageForm.valid"
       ></TTP-button>
       <div class="carriages_carriage-shape">
-        @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
-          @if (createCarriageForm.controls.name) {
-            <TTP-carriage-row
-              class="carriages_carriage-row"
-              [carriageName]="createCarriageForm.controls.name.value"
-              [rowNumber]="index"
-              [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
-              [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
-            ></TTP-carriage-row>
+        @if (createCarriageForm.controls.rows.value) {
+          @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
+            @if (createCarriageForm.controls.name) {
+              <TTP-carriage-row
+                class="carriages_carriage-row"
+                [carriageName]="createCarriageForm.controls.name.value"
+                [rowNumber]="index"
+                [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
+                [rightSeatCount]="+createCarriageForm.controls.rightSeats.value"
+              ></TTP-carriage-row>
+            }
+          }
+        } @else {
+          @for (row of [].constructor(carriageData.rows); track index; let index = $index) {
+            @if (carriageData.name) {
+              <TTP-carriage-row
+                class="carriages_carriage-row"
+                [carriageName]="carriageData.name"
+                [rowNumber]="index"
+                [leftSeatCount]="carriageData.leftSeats"
+                [rightSeatCount]="carriageData.rightSeats"
+              ></TTP-carriage-row>
+            }
           }
         }
       </div>
@@ -143,6 +165,14 @@
               [buttonText]="'Update'"
               class="carriages_update-button"
               (click)="getCarriageCode(carriageItem.code)"
+              (click)="
+                getCarriageData({
+                  name: carriageItem.name,
+                  rows: carriageItem.rows,
+                  leftSeats: carriageItem.leftSeats,
+                  rightSeats: carriageItem.rightSeats,
+                })
+              "
               (click)="showUpdateCarriageView()"
             ></TTP-button>
           }

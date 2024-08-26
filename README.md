@@ -1,6 +1,6 @@
 # Train Trips Planning <img src="./public/train.ico"  width="40" height="40">
 
-This awesome app is the final project of [RSSchool](https://app.rs.school/registry/student) **Angular** 2024Q3 Course.
+This awesome app is the final team project of [RSSchool](https://app.rs.school/registry/student) **Angular** 2024Q3 Course.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
@@ -30,6 +30,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ### Manager credentials
 
-The manager and the root administrator can enter the system with
-email: admin@admin.com
-password: my-password
+The manager and the root administrator can enter the system with</br>
+email: admin@admin.com</br>
+password: my-password</br>

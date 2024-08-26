@@ -16,10 +16,11 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
-import { RowsTrimPipe } from '../pipes/rows-trim.pipe';
-import { LeftSeatsTrimPipe } from '../pipes/left-seats-trim.pipe';
-import { RigthSeatsTrimPipe } from '../pipes/rigth-seats-trim.pipe';
+import { RowsTrimPipe } from '../../pipes/rows-trim.pipe';
+import { LeftSeatsTrimPipe } from '../../pipes/left-seats-trim.pipe';
+import { RigthSeatsTrimPipe } from '../../pipes/rigth-seats-trim.pipe';
 import { CarriagesService } from '../../services/carriages.service';
+import { TostringPipe } from '../../pipes/tostring.pipe';
 
 export interface CarriageCreatingParams {
   value: string;
@@ -44,6 +45,7 @@ export interface CarriageCreatingParams {
     RowsTrimPipe,
     LeftSeatsTrimPipe,
     RigthSeatsTrimPipe,
+    TostringPipe,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
@@ -66,26 +68,27 @@ export class CarriagesComponent implements OnInit {
   update = signal(false);
   carriageBluePrint!: Carriage;
   carrigeCode = '';
+  carriageData!: Carriage;
 
   possibleRows: CarriageCreatingParams[] = [
-    { value: 'row-1', viewValue: '1' },
-    { value: 'row-2', viewValue: '2' },
-    { value: 'row-3', viewValue: '3' },
-    { value: 'row-4', viewValue: '4' },
-    { value: 'row-5', viewValue: '5' },
-    { value: 'row-6', viewValue: '6' },
-    { value: 'row-7', viewValue: '7' },
-    { value: 'row-8', viewValue: '8' },
-    { value: 'row-9', viewValue: '9' },
-    { value: 'row-10', viewValue: '10' },
-    { value: 'row-11', viewValue: '11' },
-    { value: 'row-12', viewValue: '12' },
-    { value: 'row-13', viewValue: '13' },
-    { value: 'row-14', viewValue: '14' },
-    { value: 'row-15', viewValue: '15' },
-    { value: 'row-16', viewValue: '16' },
-    { value: 'row-17', viewValue: '17' },
-    { value: 'row-18', viewValue: '18' },
+    { value: '1', viewValue: '1' },
+    { value: '2', viewValue: '2' },
+    { value: '3', viewValue: '3' },
+    { value: '4', viewValue: '4' },
+    { value: '5', viewValue: '5' },
+    { value: '6', viewValue: '6' },
+    { value: '7', viewValue: '7' },
+    { value: '8', viewValue: '8' },
+    { value: '9', viewValue: '9' },
+    { value: '10', viewValue: '10' },
+    { value: '11', viewValue: '11' },
+    { value: '12', viewValue: '12' },
+    { value: '13', viewValue: '13' },
+    { value: '14', viewValue: '14' },
+    { value: '15', viewValue: '15' },
+    { value: '16', viewValue: '16' },
+    { value: '17', viewValue: '17' },
+    { value: '18', viewValue: '18' },
   ];
 
   possibleLeftSeats: CarriageCreatingParams[] = [
@@ -169,6 +172,12 @@ export class CarriagesComponent implements OnInit {
 
   public showCreateCarriageView() {
     this.create.set(!this.create());
+  }
+
+  public getCarriageData(data: Carriage) {
+    this.carriageData = data;
+    console.log(this.carriageData);
+    return this.carriageData;
   }
 
   public getCarriageCode(code: string) {
