@@ -172,6 +172,9 @@ export class CarriagesComponent implements OnInit {
 
   public showCreateCarriageView() {
     this.create.set(!this.create());
+    if (this.create()) {
+      this.update.set(false);
+    }
   }
 
   public getCarriageData(data: Carriage) {
@@ -202,6 +205,9 @@ export class CarriagesComponent implements OnInit {
 
   public showUpdateCarriageView() {
     this.update.set(!this.update());
+    if (this.update()) {
+      this.create.set(false);
+    }
     if (this.update()) {
       const carriageDataForUpdate = {
         name: this.createCarriageForm.controls.name?.value,
