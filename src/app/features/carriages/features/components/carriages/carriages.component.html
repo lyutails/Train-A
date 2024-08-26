@@ -50,7 +50,7 @@
         @for (row of [].constructor(+createCarriageForm.controls.rows.value); track index; let index = $index) {
           @if (createCarriageForm.controls.name) {
             <TTP-carriage-row
-              class="carriages_carriage-row-create-ticket"
+              class="carriages_carriage-row"
               [carriageName]="createCarriageForm.controls.name.value"
               [rowNumber]="index"
               [leftSeatCount]="+createCarriageForm.controls.leftSeats.value"
