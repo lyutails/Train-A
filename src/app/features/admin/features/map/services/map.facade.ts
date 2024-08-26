@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapService } from './map.service';
 import { MapStateService } from './map-state.service';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { LeafletMouseEvent, Map, marker, Marker } from 'leaflet';
 import { StationInfo } from '../../stations/models/station-info';
 import { defaultIcon } from '../constants/map-default-icon';
@@ -17,7 +17,7 @@ export class MapFacade {
   private mapSpinner = new BehaviorSubject<boolean>(false);
   mapSpinner$ = this.mapSpinner.asObservable();
   private isProcessing = false;
-  private relations: number[] = [];
+  public stations: StationInfo[] = [];
 
   constructor(
     private readonly mapService: MapService,
@@ -26,10 +26,17 @@ export class MapFacade {
 
   public onMapReady(map: Map): void {
     this.mapStateService.setMap(map);
+    this.getCurrentStations();
   }
 
   public createMarker(station: StationInfo): Marker {
     return this.mapService.createMarker(station);
+  }
+
+  public getCurrentStations(): void {
+    this.mapService.getCurrentStations().subscribe((stations) => {
+      this.stations = stations;
+    });
   }
 
   public handleMapClick(event: LeafletMouseEvent): void {
@@ -66,28 +73,29 @@ export class MapFacade {
     });
   }
 
-  public saveStation(stations: StationInfo[]) {
+  public saveStation() {
     const marker = this.mapStateService.getCurrentMarker();
     if (marker) {
       const city = marker.getTooltip()?.getContent()?.toString();
       const latitude = marker.getLatLng().lat;
       const longitude = marker.getLatLng().lng;
       const polylines = this.mapStateService.getPolylines();
-      const trainRelations = findStationRelatiove(polylines, stations);
-      this.relations = Array.from(trainRelations);
+      const trainRelations = findStationRelatiove(polylines, this.stations);
 
       if (city) {
         const stationDetails: NewStationDetails = {
           city,
           latitude,
           longitude,
-          relations: this.relations,
+          relations: Array.from(trainRelations),
         };
-        console.log(stationDetails);
         this.mapService.saveStation(stationDetails);
         this.mapStateService.resetState();
-        this.relations = [];
       }
     }
+  }
+
+  public getStations(): Observable<StationInfo[]> {
+    return this.mapService.getCurrentStations();
   }
 }

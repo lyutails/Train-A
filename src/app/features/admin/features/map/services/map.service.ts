@@ -72,4 +72,8 @@ export class MapService {
   public saveStation(station: NewStationDetails) {
     this.stationFacade.createStation(station);
   }
+
+  public getCurrentStations(): Observable<StationInfo[]> {
+    return this.stationFacade.stations;
+  }
 }

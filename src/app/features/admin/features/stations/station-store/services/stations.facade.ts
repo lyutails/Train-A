@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NewStationDetails } from '../../models/station.model';
 import { Store } from '@ngrx/store';
-import { selectIsLoading, selectStations } from '../selectors/stations.selectors';
+import { selectErrorMessage, selectIsLoading, selectIsUpdating, selectStations } from '../selectors/stations.selectors';
 import { stationActions } from '../actions/station.actions';
 import { stationsApiActions } from '../actions/stations-api-actions';
 import { StationsService } from '../../../../../../repositories/stations/services/stations.service';
@@ -39,5 +39,13 @@ export class StationsFacade {
 
   public getCityName(lat: number, lng: number): Observable<NominatimAddressInfo> {
     return this.stationService.getCityName(lat, lng);
+  }
+
+  public get isUpdating() {
+    return this.store.select(selectIsUpdating);
+  }
+
+  public get errorMessage() {
+    return this.store.select(selectErrorMessage);
   }
 }

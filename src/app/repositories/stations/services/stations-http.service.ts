@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { StationApi } from '../models/station-api.model';
 import { NewStationDetails } from '../../../features/admin/features/stations/models/station.model';
 import { NominatimAddressInfo } from '../models/nominatim-address-info';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class StationsHttpService {
   }
 
   public createStation(station: NewStationDetails): Observable<number> {
-    return this.httpClient.post<number>('station', station);
+    return this.httpClient.post<{ id: number }>('station', station).pipe(map((response) => response.id));
   }
 
   public getCityName(lat: number, lng: number): Observable<NominatimAddressInfo> {

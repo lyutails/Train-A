@@ -34,14 +34,14 @@ export const stationReducer = createReducer(
     stationActions.createStation,
     (state): StationsState => ({
       ...state,
-      isLoading: true,
+      isUpdating: true,
     }),
   ),
   on(
     stationActions.createStationSuccess,
     (state, { station }): StationsState => ({
       ...state,
-      isLoading: false,
+      isUpdating: false,
       stations: [...state.stations, station],
     }),
   ),
@@ -49,7 +49,7 @@ export const stationReducer = createReducer(
     stationActions.createStationFailure,
     (state, { errorMessage }): StationsState => ({
       ...state,
-      isLoading: false,
+      isUpdating: false,
       errorMessage,
     }),
   ),

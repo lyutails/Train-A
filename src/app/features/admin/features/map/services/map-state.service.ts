@@ -53,7 +53,6 @@ export class MapStateService {
   }
 
   resetState(): void {
-    this.map = undefined;
     this.currentMarker = undefined;
     this.lastMarkerAdded = undefined;
     this.clearPolylines();
