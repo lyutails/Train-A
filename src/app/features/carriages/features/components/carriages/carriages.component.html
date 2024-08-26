@@ -39,7 +39,7 @@
         </mat-select></mat-form-field
       >
       <TTP-button
-        (click)="passPostCarriageData()"
+        (click)="createCarriageForm.valid && passPostCarriageData()"
         [type]="'submit'"
         [width]="'10vw'"
         [buttonText]="'Save'"
@@ -104,7 +104,7 @@
         }
       </mat-form-field>
       <TTP-button
-        (click)="updateExistingCarriage()"
+        (click)="createCarriageForm.valid && updateExistingCarriage()"
         [type]="'submit'"
         [width]="'10vw'"
         [buttonText]="'Save'"
