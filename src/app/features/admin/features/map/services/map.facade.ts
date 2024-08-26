@@ -54,7 +54,11 @@ export class MapFacade {
       next: (response) => {
         if (response !== 'Undefined') {
           const map = this.mapStateService.getMap();
-          if (map) {
+          const findIndex = this.stations.find((station) => station.city === response);
+          if (findIndex) {
+            this.locationOutOfReach.next();
+          }
+          if (map && !findIndex) {
             const newMarker = marker([lat, lng], { icon: defaultIcon }).bindTooltip(response).addTo(map);
             this.mapStateService.setCurrentMarker(newMarker);
             this.mapStateService.setLastMarkerAdded(newMarker);

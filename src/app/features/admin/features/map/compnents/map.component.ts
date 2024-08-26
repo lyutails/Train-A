@@ -59,12 +59,14 @@ export class MapComponent implements OnInit {
     this.mapFacade.handleMapClick(event);
   }
 
-  private openDialog(message?: string): void {
-    const dialogMessage = message || 'No train stations in the near area!';
+  private openDialog(): void {
     this.dialog.open(PopUpComponent, {
       width: '15rem',
-      height: '10rem',
-      data: { message: dialogMessage },
+      height: '15rem',
+      data: {
+        message:
+          'We can not set here new station! Station might already exist or not supported by us. Try another coordinates!',
+      },
     });
   }
 

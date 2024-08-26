@@ -6,7 +6,7 @@ import { Marker, Polyline, Map } from 'leaflet';
 })
 export class MapStateService {
   private map?: Map;
-  private currentMarker?: Marker;
+  public currentMarker?: Marker;
   private lastMarkerAdded?: Marker;
   private polylines: Polyline[] = [];
 
