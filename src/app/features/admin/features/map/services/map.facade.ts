@@ -5,8 +5,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { LeafletMouseEvent, Map, marker, Marker } from 'leaflet';
 import { StationInfo } from '../../stations/models/station-info';
 import { defaultIcon } from '../constants/map-default-icon';
-import { findStationRelatiove } from '../helpers/find-station-relations';
-import { NewStationDetails } from '../../stations/models/station.model';
+import { createStation } from '../helpers/create-new-station-model';
 
 @Injectable({
   providedIn: 'root',
@@ -80,20 +79,10 @@ export class MapFacade {
   public saveStation() {
     const marker = this.mapStateService.getCurrentMarker();
     if (marker) {
-      const city = marker.getTooltip()?.getContent()?.toString();
-      const latitude = marker.getLatLng().lat;
-      const longitude = marker.getLatLng().lng;
-      const polylines = this.mapStateService.getPolylines();
-      const trainRelations = findStationRelatiove(polylines, this.stations);
+      const newStation = createStation(marker, this.mapStateService.getPolylines(), this.stations);
 
-      if (city) {
-        const stationDetails: NewStationDetails = {
-          city,
-          latitude,
-          longitude,
-          relations: Array.from(trainRelations),
-        };
-        this.mapService.saveStation(stationDetails);
+      if (newStation) {
+        this.mapService.saveStation(newStation);
         this.mapStateService.resetState();
       }
     }
