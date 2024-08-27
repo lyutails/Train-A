@@ -62,7 +62,7 @@ export class MapComponent implements OnInit {
   private openDialog(message: string): void {
     this.dialog.open(PopUpComponent, {
       width: '15rem',
-      height: '8rem',
+      height: '10rem',
       data: {
         message,
       },

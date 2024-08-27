@@ -68,14 +68,19 @@ export class MapFacade {
 
   public saveStation() {
     const marker = this.mapStateService.getCurrentMarker();
-    if (marker) {
-      const newStation = createStation(marker, this.mapStateService.getPolylines(), this.stations);
-
-      if (newStation) {
-        this.mapService.saveStation(newStation);
-        this.mapStateService.resetState();
-      }
+    if (!marker) {
+      this.handleLocationErrors(LOCATION_ERROR_MESSAGES.NO_STATION_SELECTED);
+      return;
     }
+
+    const newStation = createStation(marker, this.mapStateService.getPolylines(), this.stations);
+    if (!newStation || newStation.relations.length === 0) {
+      this.handleLocationErrors(LOCATION_ERROR_MESSAGES.NO_CONNECTIONS_FOUND);
+      return;
+    }
+
+    this.mapService.saveStation(newStation);
+    this.mapStateService.resetState();
   }
 
   public getStations(): Observable<StationInfo[]> {
