@@ -1,6 +1,5 @@
 import { selectOptionsRows } from './../../models/select-options-rows.model';
 import { Component, OnInit, signal } from '@angular/core';
-import { ButtonComponent } from '../../../../../common/button/button.component';
 import {
   FormControl,
   FormGroup,
@@ -16,10 +15,11 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
-import { CarriagesService } from '../../services/carriages.service';
 import { CarriageCreatingParams } from '../../models/carriage-select.model';
 import { selectOptionsLeftSeats } from '../../models/select-options-left-seats.model';
 import { selectOptionsRightSeats } from '../../models/select-options-right-seats.model';
+import { ButtonComponent } from '../../../../../../common/button/button.component';
+import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
 
 @Component({
   selector: 'TTP-carriages',
