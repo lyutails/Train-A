@@ -9,6 +9,8 @@ import { MatIcon } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { SearchForm } from '../../models/search-form.model';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
 
 @Component({
   selector: 'TTP-home',
@@ -30,12 +32,18 @@ import { SearchForm } from '../../models/search-form.model';
     MatButton,
     ReactiveFormsModule,
     ButtonComponent,
+    MatAutocompleteModule,
+    TrimPipe,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   public searchForm!: FormGroup<SearchForm>;
+  private datePattern =
+    /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+  testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
+  cityControl = new FormControl('');
 
   constructor(private fb: NonNullableFormBuilder) {}
 
@@ -60,10 +68,7 @@ export class HomeComponent implements OnInit {
       date: this.fb.control(
         { value: '', disabled: false },
         {
-          validators: [
-            Validators.required,
-            Validators.pattern('^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)dd$'),
-          ],
+          validators: [Validators.required],
         },
       ),
     });
@@ -81,7 +86,7 @@ export class HomeComponent implements OnInit {
     return this.searchForm.controls.date;
   }
 
-  public searchCarriages() {
+  public getCarriages() {
     // api call here
   }
 

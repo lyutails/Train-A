@@ -4,18 +4,21 @@
     <div class="home_inputs-wrapper">
       <mat-form-field appearance="outline" class="home_form-input" formControlName="from"
         ><mat-label>From...</mat-label>
-        @if (searchForm.controls.from) {
-          <input matInput placeholder="From" formControlName="from" [value]="searchForm.controls.from.value" />
-        }
-        <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon></mat-form-field
-      >
-      <!-- @if (searchForm.controls.from.touched && searchForm.controls.from.invalid) {
-        <div class="sign-up_input-error">
-          @if (searchForm.controls.from.errors?.['required']) {
-            <mat-error>From required</mat-error>
+        <input
+          matInput
+          placeholder="From"
+          formControlName="from"
+          [value]="searchForm.controls.from.value"
+          [formControl]="cityControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (city of testCities; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
           }
-        </div>
-      } -->
+        </mat-autocomplete></mat-form-field
+      >
       <mat-form-field appearance="outline" class="home_form-input" formControlName="to"
         ><mat-label>To...</mat-label>
         @if (searchForm.controls.to) {
@@ -24,20 +27,22 @@
         <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon></mat-form-field
       >
       <mat-form-field appearance="outline" class="home_form-input" formControlName="date"
-        ><mat-label>Choose a date...</mat-label><input matInput [matDatepicker]="picker" />
+        ><mat-label>Choose a date...</mat-label
+        ><input matInput [matDatepicker]="picker" formControlName="date" [value]="searchForm.controls.date.value" />
         <mat-hint>MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
     <TTP-button
-      (click)="searchCarriages()"
+      (click)="getCarriages()"
       [type]="'button'"
       [width]="'10vw'"
       [buttonText]="'Carriage'"
       class="home_carriage-button"
       [disabled]="!searchForm.controls.from.valid && !searchForm.controls.to.valid && !searchForm.controls.date.valid"
     ></TTP-button>
+    <div class="home_carriages"></div>
   </form>
   <TTP-button
     (click)="searchTrips()"

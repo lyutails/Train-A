@@ -41,6 +41,16 @@
     min-width: 200px;
     max-width: 300px;
   }
+
+  &_carriages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {
