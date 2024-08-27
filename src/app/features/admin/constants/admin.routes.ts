@@ -16,4 +16,9 @@ export const ADMIN_ROUTES: Routes = [
       provideEffects([StationsEffects]),
     ],
   },
+  {
+    path: 'carriages',
+    loadComponent: () =>
+      import('../features/carriages/components/carriages/carriages.component').then((m) => m.CarriagesComponent),
+  },
 ];

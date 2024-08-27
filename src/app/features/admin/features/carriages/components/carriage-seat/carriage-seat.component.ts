@@ -25,7 +25,6 @@ export class CarriageSeatComponent implements OnInit {
 
   clickCheckbox() {
     this.check.set(!this.check());
-    console.log(this.seatValue, this.carriageNameValue);
   }
 
   inspectCheckboxValue(event: MatCheckboxChange): void {
@@ -33,7 +32,5 @@ export class CarriageSeatComponent implements OnInit {
     if (event.checked) {
       console.log('checked');
     }
-    console.log(this.seatCheckbox);
-    console.log(this.seatValue);
   }
 }

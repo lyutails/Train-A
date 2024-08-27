@@ -46,6 +46,18 @@
   &_bold-text {
     font-weight: 600;
   }
+
+  &_tooltip {
+    font-size: 13px;
+    color: $deep-blue;
+  }
+
+  &_tooltip mat-icon {
+    width: 13px;
+    height: 13px;
+    margin: 0;
+    font-size: 13px;
+  }
 }
 
 .map-spinner {
@@ -54,4 +66,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+::ng-deep .tooltip-multiline {
+  white-space: pre-line;
 }

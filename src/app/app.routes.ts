@@ -27,13 +27,6 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./features/profile/constants/profile.routes').then((m) => m.PROFILE_ROUTES),
   },
   {
-    path: 'admin/carriages',
-    loadComponent: () =>
-      import('./features/carriages/features/components/carriages/carriages.component').then(
-        (m) => m.CarriagesComponent,
-      ),
-  },
-  {
     path: 'not-found',
     loadComponent: () =>
       import('./core/not-found/components/not-found/not-found.component').then((m) => m.NotFoundComponent),
