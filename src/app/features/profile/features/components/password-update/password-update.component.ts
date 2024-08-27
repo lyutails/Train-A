@@ -85,7 +85,6 @@ export class PasswordUpdateComponent implements OnInit {
   public saveAndClosePasswordPopup() {
     if (this.changePasswordForm.valid) {
       const newPassword = this.changePasswordForm.controls.password.value;
-      console.log(newPassword);
       this.profileFacade.updatePassword(newPassword).subscribe({
         next: () => {
           this.closePasswordPopup();

@@ -3,6 +3,14 @@
     ><mat-spinner class="map-spinner"></mat-spinner
   ></ng-container>
   <ng-template #loaded>
+    <span
+      [matTooltip]="tooltipContent"
+      class="stations_tooltip"
+      [matTooltipClass]="'tooltip-multiline stations_tooltip'"
+      aria-label="Display tooltip"
+    >
+      How to use <mat-icon>help_outline</mat-icon>
+    </span>
     <TTP-map></TTP-map>
     <section class="stations_station-list">
       <ng-container
