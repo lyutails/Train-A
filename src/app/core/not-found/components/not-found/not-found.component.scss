@@ -31,11 +31,9 @@
 
   &_coloured-text {
     color: $deep-blue;
-    transition: all 0.4 ease-in-out;
 
     &:hover {
       cursor: pointer;
-      color: $light-blue;
     }
   }
 }
