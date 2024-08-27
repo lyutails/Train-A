@@ -38,11 +38,7 @@ import { CarriageCreatingParams } from '../../models/carriage-select.model';
   styleUrl: './carriages.component.scss',
 })
 export class CarriagesComponent implements OnInit {
-  selectedRowsValue = '';
-  selectedLeftSideSeatsValue = '';
-  selectedRightSideSeatsValue = '';
   carriagesData!: Carriage[];
-  public carriagesArray!: FormGroup<CarriageForm>[];
   retrievedCarriagesForm = new FormGroup({
     code: new FormControl(''),
     name: new FormControl(''),
@@ -56,7 +52,6 @@ export class CarriagesComponent implements OnInit {
   carriageBluePrint!: Carriage;
   carrigeCode = '';
   carriageData!: Carriage;
-
   possibleRows: CarriageCreatingParams[] = [
     { value: '1', viewValue: '1' },
     { value: '2', viewValue: '2' },
@@ -77,13 +72,11 @@ export class CarriagesComponent implements OnInit {
     { value: '17', viewValue: '17' },
     { value: '18', viewValue: '18' },
   ];
-
   possibleLeftSeats: CarriageCreatingParams[] = [
     { value: 'leftSeats-1', viewValue: '1' },
     { value: 'leftSeats-2', viewValue: '2' },
     { value: 'leftSeats-3', viewValue: '3' },
   ];
-
   possibleRightSeats: CarriageCreatingParams[] = [
     { value: 'rightSeats-1', viewValue: '1' },
     { value: 'rightSeats-2', viewValue: '2' },
