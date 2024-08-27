@@ -22,7 +22,8 @@ import { TrimPipe } from '../../../../../common/pipes/trim-pipe/trim.pipe';
 import { PasswordUpdateComponent } from '../password-update/password-update.component';
 import { Router } from '@angular/router';
 import { ProfileForm } from '../models/profile-form.model';
-import { ProfileInformation } from '../../../../../repositories/profile/services/models/profile-information.model';
+import { ProfileInformation } from '../../../../../repositories/profile/models/profile-information.model';
+import { AuthFacade } from '../../../../../core/authorization/services/auth.facade';
 
 @Component({
   selector: 'TTP-user-profile',
@@ -65,6 +66,7 @@ export class UserProfileComponent implements OnInit {
     private fb: NonNullableFormBuilder,
     private profileFacade: ProfileFacade,
     private router: Router,
+    private authFacade: AuthFacade,
   ) {}
 
   ngOnInit() {
@@ -183,7 +185,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   public logoutAndRedirectToHome() {
-    this.profileFacade.logout().subscribe(() => {
+    this.authFacade.logout().subscribe(() => {
       console.log('logout success');
     });
     this.router.navigate(['']);
