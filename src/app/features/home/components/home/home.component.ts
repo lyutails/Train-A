@@ -1,4 +1,4 @@
-import { UpperCasePipe } from '@angular/common';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -11,6 +11,9 @@ import { ButtonComponent } from '../../../../common/button/button.component';
 import { SearchForm } from '../../models/search-form.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
+import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
+import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
+import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'TTP-home',
@@ -34,21 +37,42 @@ import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
     ButtonComponent,
     MatAutocompleteModule,
     TrimPipe,
+    CarriageRowComponent,
+    AsyncPipe,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
   public searchForm!: FormGroup<SearchForm>;
-  private datePattern =
-    /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
-  testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
+  private datePattern = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
   cityControl = new FormControl('');
+  carriageName!: string | undefined;
+  rowNumber!: number;
+  leftSeatCount!: number;
+  rightSeatCount!: number;
+
+  testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
+  filteredTestCities!: Observable<string[]>;
+
+  testCarriages: Carriage[] = [
+    { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
+    { code: 'justCarriage', name: 'justCarriage', rows: 10, leftSeats: 3, rightSeats: 1 },
+  ];
 
   constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit() {
     this.searchForm = this.searchFormInstance;
+    this.filteredTestCities = this.cityControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string) {
+    const filterValue = value.toLowerCase();
+    return this.testCities.filter((city) => city.toLowerCase().includes(filterValue));
   }
 
   private get searchFormInstance(): FormGroup<SearchForm> {
@@ -68,7 +92,7 @@ export class HomeComponent implements OnInit {
       date: this.fb.control(
         { value: '', disabled: false },
         {
-          validators: [Validators.required],
+          validators: [Validators.required, Validators.pattern(this.datePattern)],
         },
       ),
     });
@@ -88,6 +112,8 @@ export class HomeComponent implements OnInit {
 
   public getCarriages() {
     // api call here
+    // this.carriages = data
+    // tolowercase
   }
 
   public searchTrips() {

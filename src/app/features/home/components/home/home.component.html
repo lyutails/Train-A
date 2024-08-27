@@ -8,23 +8,33 @@
           matInput
           placeholder="From"
           formControlName="from"
-          [value]="searchForm.controls.from.value"
+          [value]="searchForm.controls.from.value | trim"
           [formControl]="cityControl"
           [matAutocomplete]="auto"
         />
         <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
-          @for (city of testCities; track city) {
+          @for (city of filteredTestCities | async; track city) {
             <mat-option [value]="city">{{ city }}</mat-option>
           }
         </mat-autocomplete></mat-form-field
       >
       <mat-form-field appearance="outline" class="home_form-input" formControlName="to"
         ><mat-label>To...</mat-label>
-        @if (searchForm.controls.to) {
-          <input matInput placeholder="To" formControlName="to" [value]="searchForm.controls.to.value" />
-        }
-        <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon></mat-form-field
+        <input
+          matInput
+          placeholder="To"
+          formControlName="to"
+          [value]="searchForm.controls.to.value | trim"
+          [formControl]="cityControl"
+          [matAutocomplete]="auto"
+        />
+        <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete">
+          @for (city of testCities; track city) {
+            <mat-option [value]="city | trim">{{ city }}</mat-option>
+          }
+        </mat-autocomplete></mat-form-field
       >
       <mat-form-field appearance="outline" class="home_form-input" formControlName="date"
         ><mat-label>Choose a date...</mat-label
@@ -42,7 +52,25 @@
       class="home_carriage-button"
       [disabled]="!searchForm.controls.from.valid && !searchForm.controls.to.valid && !searchForm.controls.date.valid"
     ></TTP-button>
-    <div class="home_carriages"></div>
+    <!-- <div class="home_carriages">
+      @for (carriage of carriages; track carriage) {
+        <div class="carriages_carriage-shape">
+          @if (searchForm.controls.from.value && searchForm.controls.to.value && searchForm.controls.date.value) {
+            @for (carriage of [].constructor(+carriages); track index; let index = $index) {
+              @if (carriages[0].name !== undefined) {
+                <TTP-carriage-row
+                  class="carriages_carriage-row"
+                  [carriageName]="carriages[index].name"
+                  [rowNumber]="index"
+                  [leftSeatCount]="carriages[index].leftSeats"
+                  [rightSeatCount]="carriages[index].rightSeats"
+                ></TTP-carriage-row>
+              }
+            }
+          }
+        </div>
+      }
+    </div> -->
   </form>
   <TTP-button
     (click)="searchTrips()"
