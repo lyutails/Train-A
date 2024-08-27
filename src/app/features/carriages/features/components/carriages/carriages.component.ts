@@ -1,0 +1,244 @@
+import { Component, OnInit, signal } from '@angular/core';
+import { ButtonComponent } from '../../../../../common/button/button.component';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CommonModule } from '@angular/common';
+import { Carriage } from '../../models/carriage.model';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
+import { CarriageForm } from '../../models/carriage-form.model';
+import { CarriagesService } from '../../services/carriages.service';
+import { CarriageCreatingParams } from '../../models/carriage-select.model';
+
+@Component({
+  selector: 'TTP-carriages',
+  standalone: true,
+  imports: [
+    ButtonComponent,
+    MatCheckboxModule,
+    CommonModule,
+    ReactiveFormsModule,
+    MatInput,
+    MatSelect,
+    MatLabel,
+    MatOption,
+    MatFormField,
+    FormsModule,
+    CarriageRowComponent,
+  ],
+  templateUrl: './carriages.component.html',
+  styleUrl: './carriages.component.scss',
+})
+export class CarriagesComponent implements OnInit {
+  public carriagesData!: Carriage[];
+  public retrievedCarriagesForm!: FormGroup<CarriageForm>;
+  public createCarriageForm!: FormGroup<CarriageForm>;
+  public create = signal(false);
+  public update = signal(false);
+  public carriageBluePrint!: Carriage;
+  public carrigeCode = '';
+  public carriageData!: Carriage;
+  public selectOptionsRows: CarriageCreatingParams[] = [
+    { value: '1', viewValue: '1' },
+    { value: '2', viewValue: '2' },
+    { value: '3', viewValue: '3' },
+    { value: '4', viewValue: '4' },
+    { value: '5', viewValue: '5' },
+    { value: '6', viewValue: '6' },
+    { value: '7', viewValue: '7' },
+    { value: '8', viewValue: '8' },
+    { value: '9', viewValue: '9' },
+    { value: '10', viewValue: '10' },
+    { value: '11', viewValue: '11' },
+    { value: '12', viewValue: '12' },
+    { value: '13', viewValue: '13' },
+    { value: '14', viewValue: '14' },
+    { value: '15', viewValue: '15' },
+    { value: '16', viewValue: '16' },
+    { value: '17', viewValue: '17' },
+    { value: '18', viewValue: '18' },
+  ];
+  public selectOptionsLeftSeats: CarriageCreatingParams[] = [
+    { value: 'leftSeats-1', viewValue: '1' },
+    { value: 'leftSeats-2', viewValue: '2' },
+    { value: 'leftSeats-3', viewValue: '3' },
+  ];
+  public selectOptionsRightSeats: CarriageCreatingParams[] = [
+    { value: 'rightSeats-1', viewValue: '1' },
+    { value: 'rightSeats-2', viewValue: '2' },
+    { value: 'leftSeats-3', viewValue: '3' },
+  ];
+
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private carriagesService: CarriagesService,
+  ) {}
+
+  ngOnInit() {
+    this.getCarriagesData();
+    this.createCarriageForm = this.createCarriageFormInstance;
+    this.retrievedCarriagesForm = this.retrievedCarriagesFormInstance;
+  }
+
+  public getCarriagesData() {
+    this.carriagesService.getCarriages().subscribe((data) => {
+      console.log(data);
+      this.carriagesData = data.filter((item) => {
+        return item.code !== '';
+      });
+    });
+  }
+
+  public createCarriageData() {
+    const carriageWithoutCode = {
+      name: this.createCarriageForm.controls.name?.value,
+      rows: +this.createCarriageForm.controls.rows.value,
+      leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+      rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+    };
+    this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
+      console.log('vadim create', data);
+      this.carriagesData.unshift({
+        code: data.code,
+        ...carriageWithoutCode,
+      });
+    });
+  }
+
+  public showCreateCarriageView() {
+    this.create.set(!this.create());
+    if (this.create()) {
+      this.update.set(false);
+    }
+  }
+
+  public getCarriageData(data: Carriage) {
+    this.carriageData = data;
+    console.log(this.carriageData);
+    return this.carriageData;
+  }
+
+  public getCarriageCode(code: string) {
+    return (this.carrigeCode = code);
+  }
+
+  public updateExistingCarriage() {
+    const carriageWithoutCode = {
+      name: this.createCarriageForm.controls.name?.value,
+      rows: +this.createCarriageForm.controls.rows.value,
+      leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+      rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+    };
+    if (this.createCarriageForm.controls.code !== undefined && this.createCarriageForm.controls.name !== undefined) {
+      this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe((data) => {
+        console.log(data);
+        const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
+        const updatedCarriage = {
+          code: this.carrigeCode,
+          ...carriageWithoutCode,
+        };
+        this.carriagesData[updatedCarriageIndex] = updatedCarriage;
+      });
+    }
+    this.update.set(!this.update());
+  }
+
+  public showUpdateCarriageView() {
+    this.update.set(!this.update());
+    if (this.update()) {
+      this.create.set(false);
+    }
+    if (this.update()) {
+      const carriageDataForUpdate = {
+        name: this.createCarriageForm.controls.name?.value,
+        rows: +this.createCarriageForm.controls.rows.value,
+        leftSeats: +this.createCarriageForm.controls.leftSeats.value,
+        rightSeats: +this.createCarriageForm.controls.rightSeats.value,
+      };
+      return carriageDataForUpdate;
+    }
+    return;
+  }
+
+  private get createCarriageFormInstance(): FormGroup<CarriageForm> {
+    return this.fb.group<CarriageForm>({
+      code: this.fb.control({ value: '', disabled: false }),
+      name: this.fb.control(
+        { value: '', disabled: false },
+        {
+          validators: [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
+        },
+      ),
+      rows: this.fb.control(
+        { value: 0, disabled: false },
+        {
+          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
+        },
+      ),
+      leftSeats: this.fb.control(
+        { value: 0, disabled: false },
+        {
+          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
+        },
+      ),
+      rightSeats: this.fb.control(
+        { value: 0, disabled: false },
+        {
+          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
+        },
+      ),
+    });
+  }
+
+  public get carriageNameFormControl(): FormControl<string> {
+    if (this.createCarriageForm.controls.name !== undefined) {
+      return this.createCarriageForm.controls.name;
+    } else {
+      throw new Error('no carriage name provided');
+    }
+  }
+
+  public get carriageRowsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.rows;
+  }
+
+  public get carriageLeftSeatsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.leftSeats;
+  }
+
+  public get carriageRightSeatsFormControl(): FormControl<number> {
+    return this.createCarriageForm.controls.rightSeats;
+  }
+
+  public get carriageCodeFormControl(): FormControl<string> {
+    if (this.createCarriageForm.controls.code !== undefined) {
+      return this.createCarriageForm.controls.code;
+    } else {
+      throw new Error('no code provided');
+    }
+  }
+
+  private get retrievedCarriagesFormInstance(): FormGroup<CarriageForm> {
+    return this.fb.group<CarriageForm>({
+      code: this.fb.control({ value: '', disabled: false }),
+      name: this.fb.control({ value: '', disabled: false }),
+      rows: this.fb.control({ value: 0, disabled: false }),
+      leftSeats: this.fb.control({ value: 0, disabled: false }),
+      rightSeats: this.fb.control({ value: 0, disabled: false }),
+    });
+  }
+
+  onSubmit() {
+    if (this.createCarriageForm.valid) {
+      this.create.set(false);
+    }
+  }
+}
