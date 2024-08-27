@@ -1,33 +1,4 @@
-@import '../../../../../../styles';
-
-.rides {
-  &_key-price {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &_title {
-    color: $deep-blue;
-  }
-
-  &_edit-save-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  &_cycle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 30vw;
-  }
-
-  &_form {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  }
+h4 {
+  margin: 0;
+  padding: 0;
 }
