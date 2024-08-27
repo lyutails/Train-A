@@ -59,6 +59,7 @@ export class HomeComponent implements OnInit {
     { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
     { code: 'justCarriage', name: 'justCarriage', rows: 10, leftSeats: 3, rightSeats: 1 },
     { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
+    { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
 
   constructor(private fb: NonNullableFormBuilder) {}
@@ -92,9 +93,9 @@ export class HomeComponent implements OnInit {
       ),
       date: this.fb.control(
         { value: '', disabled: false },
-        {
+        /* {
           validators: [Validators.required, Validators.pattern(this.datePattern)],
-        },
+        }, */
       ),
     });
   }

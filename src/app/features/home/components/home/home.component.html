@@ -52,26 +52,33 @@
       class="home_carriage-button"
       [disabled]="!searchForm.controls.from.valid && !searchForm.controls.to.valid && !searchForm.controls.date.valid"
     ></TTP-button>
-    <div class="home_carriages">
-      @for (carriage of testCarriages; track carriage) {
+  </form>
+  <div class="home_carriages">
+    @for (carriage of testCarriages; track carriage) {
+      <div class="home_shape-params">
+        <p class="home_carriage-details">{{ testCarriages[1].name }}</p>
+        <p class="home_carriage-details">{{ testCarriages[1].rows }}</p>
+        <p class="home_carriage-details">{{ testCarriages[1].leftSeats }}</p>
+        <p class="home_carriage-details">{{ testCarriages[1].rightSeats }}</p>
+        <p class="home_carriage-details">Chosen seat:</p>
         <div class="home_carriage-shape">
           @if (searchForm.controls.from.value && searchForm.controls.to.value && searchForm.controls.date.value) {
-            @for (carriage of [].constructor(+testCarriages); track index; let index = $index) {
-              @if (testCarriages[0].name !== undefined) {
+            @for (carriage of testCarriages; track index; let index = $index) {
+              @if (testCarriages[1].name !== undefined) {
                 <TTP-carriage-row
                   class="home_carriage-row"
-                  [carriageName]="testCarriages[0].name"
+                  [carriageName]="testCarriages[1].name"
                   [rowNumber]="index"
-                  [leftSeatCount]="testCarriages[0].leftSeats"
-                  [rightSeatCount]="testCarriages[0].rightSeats"
+                  [leftSeatCount]="testCarriages[1].leftSeats"
+                  [rightSeatCount]="testCarriages[1].rightSeats"
                 ></TTP-carriage-row>
               }
             }
           }
         </div>
-      }
-    </div>
-  </form>
+      </div>
+    }
+  </div>
   <TTP-button
     (click)="searchTrips()"
     [type]="'submit'"
