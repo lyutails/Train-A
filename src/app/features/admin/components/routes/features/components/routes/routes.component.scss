@@ -23,6 +23,8 @@
   }
 
   &_data-card {
+    position: relative;
+
     display: flex;
     flex-direction: column;
 
@@ -39,9 +41,18 @@
   }
 
   &_delete-btn {
-    position: absolute;
-    left: 1070px;
     background: none;
     border: none;
+  }
+
+  &_buttons {
+    position: absolute;
+    left: 750px;
+    display: flex;
+  }
+
+  &_btn-description {
+    font-size: 1rem;
+    font-weight: 500;
   }
 }
