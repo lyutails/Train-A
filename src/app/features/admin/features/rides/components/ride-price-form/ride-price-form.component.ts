@@ -8,21 +8,31 @@ import {
   Validators,
   FormGroup,
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { PriceForm } from '../../models/price-form.model';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'TTP-ride-price-form',
   standalone: true,
   imports: [
+    MatTableModule,
+    MatCardModule,
+    ReactiveFormsModule,
+    MatFormField,
     CommonModule,
+    FormsModule,
+    MatIcon,
+    MatIconButton,
+    MatTooltip,
+    MatFormField,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -34,6 +44,7 @@ import { PriceForm } from '../../models/price-form.model';
     MatFormField,
     ButtonComponent,
     MatTooltipModule,
+    RidePriceFormComponent,
   ],
   templateUrl: './ride-price-form.component.html',
   styleUrl: './ride-price-form.component.scss',
@@ -56,7 +67,7 @@ export class RidePriceFormComponent implements OnInit {
     return this.fb.group<PriceForm>({
       price: this.fb.control(
         {
-          value: 0,
+          value: this.price.value,
           disabled: false,
         },
         [Validators.required, Validators.pattern('^[1-9][0-9]*$')],
@@ -70,16 +81,14 @@ export class RidePriceFormComponent implements OnInit {
 
   editPrice() {
     this.priceForm.controls['price'].enable();
-    this.editSavePrice.update((value) => !value);
-    console.log('clicked', this.isEdit);
-    this.isEdit = false;
-    console.log('clicked', this.isEdit);
+    this.editSavePrice.set(false);
   }
 
   savePrice() {
     if (this.priceForm?.get('price')?.valid) {
+      // this.price.value = this.priceForm.controls.price.value;
       this.priceForm.controls['price'].disable();
     }
-    this.editSavePrice.update((value) => !value);
+    this.editSavePrice.set(true);
   }
 }

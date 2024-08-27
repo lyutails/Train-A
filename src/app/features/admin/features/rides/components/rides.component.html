@@ -25,10 +25,17 @@
               </ng-container>
             </td>
             <ng-container *ngIf="i < rideRoute()!.path.length - 1">
-              <div *ngFor="let price of priceList(ride.segments[i].price)" class="rides_cycle">
-                <TTP-ride-price-form [price]="price"></TTP-ride-price-form>
+              <div class="rides_cycle">
+                @for (price of priceList(ride.segments[i].price); track price.value) {
+                  <TTP-ride-price-form [price]="price"></TTP-ride-price-form>
+                }
               </div>
             </ng-container>
+            <!--  <ng-container *ngIf="i < rideRoute()!.path.length - 1">
+              <div *ngFor="let price of priceList(ride.segments[i].price); trackBy: trackByFn" class="rides_cycle">
+                <TTP-ride-price-form [price]="price"></TTP-ride-price-form>
+              </div>
+            </ng-container> -->
           </tr>
         </tbody>
       </table>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, Subject, takeUntil, tap } from 'rxjs';
@@ -8,7 +8,14 @@ import { AsyncPipe, CommonModule, DatePipe, NgFor, NgIf } from '@angular/common'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RideRoute } from '../models/route';
 import { getPricesByValue } from '../helpers/get-prices-by-value';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
@@ -17,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { RidePriceFormComponent } from './ride-price-form/ride-price-form.component';
+import { PriceForm } from '../models/price-form.model';
 
 @Component({
   selector: 'TTP-rides',
@@ -57,13 +65,20 @@ export class RidesComponent implements OnInit, OnDestroy {
   private readonly destroy$$ = new Subject<void>();
   public rideRoute = signal<RideRoute | null>(null);
   public priceList = getPricesByValue;
+  public priceForm!: FormGroup<PriceForm>;
+  editSavePrice = signal(true);
+  public editIconColour = 'oklch(49.71% 0.165 259.85deg)';
+  @Input() price!: { key: string; value: number };
+  isEdit = true;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private fb: NonNullableFormBuilder,
   ) {}
 
   public ngOnInit(): void {
+    this.priceForm = this.priceFormInstance;
     this.activatedRoute.data
       .pipe(
         map((data: { route?: RideRoute }) => data.route),
@@ -79,6 +94,7 @@ export class RidesComponent implements OnInit, OnDestroy {
           console.error('Failed to load ride route data', err);
         },
       });
+    this.priceForm.controls['price'].disable();
   }
 
   public ngOnDestroy(): void {
@@ -88,5 +104,34 @@ export class RidesComponent implements OnInit, OnDestroy {
 
   public returnToPreviousRoute(): void {
     this.router.navigate(['..'], { relativeTo: this.activatedRoute });
+  }
+
+  private get priceFormInstance(): FormGroup<PriceForm> {
+    return this.fb.group<PriceForm>({
+      price: this.fb.control(
+        {
+          value: 0,
+          disabled: false,
+        },
+        [Validators.required, Validators.pattern('^[1-9][0-9]*$')],
+      ),
+    });
+  }
+
+  public get priceFormControl(): FormControl<number> {
+    return this.priceForm.controls.price;
+  }
+
+  editPrice() {
+    this.priceForm.controls['price'].enable();
+    this.editSavePrice.set(false);
+  }
+
+  savePrice() {
+    if (this.priceForm?.get('price')?.valid) {
+      this.price.value = this.priceForm.controls.price.value;
+      this.priceForm.controls['price'].disable();
+    }
+    this.editSavePrice.set(true);
   }
 }

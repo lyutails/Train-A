@@ -11,23 +11,12 @@
     color: $deep-blue;
   }
 
-  &_edit-save-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   &_cycle {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    width: 30vw;
-  }
 
-  &_form {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    width: 30vw;
   }
 }
