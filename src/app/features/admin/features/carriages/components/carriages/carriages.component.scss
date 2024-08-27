@@ -1,4 +1,4 @@
-@import '../../../../../../../styles';
+@import '../../../../../../styles';
 
 .carriages {
   &_wrapper {
@@ -74,7 +74,7 @@
     height: 640px;
     padding: 10px;
 
-    background-image: url('../../../../../../../../public/ticket_ttp_vertical_opacity.png');
+    background-image: url('../../../../../../../public/ticket_ttp_vertical_opacity.png');
     background-size: contain;
     border-radius: 5px;
   }
@@ -111,7 +111,7 @@
     height: 254px;
     padding: 10px;
 
-    background-image: url('../../../../../../../../public/ticket_ttp_horizontal_opacity.png');
+    background-image: url('../../../../../../../public/ticket_ttp_horizontal_opacity.png');
     background-size: contain;
     border-radius: 5px;
   }
@@ -139,7 +139,7 @@
     width: 640px;
     height: 254px;
 
-    background-image: url('../../../../../../../../public/ticket_ttp_horizontal_opacity.png');
+    background-image: url('../../../../../../../public/ticket_ttp_horizontal_opacity.png');
     background-size: contain;
     border-radius: 5px;
   }
@@ -147,8 +147,6 @@
   &_carriage-row-create-ticket {
     z-index: 10;
     transform: translateY(-200px);
-
-    // position: absolute;
     display: flex;
   }
 
