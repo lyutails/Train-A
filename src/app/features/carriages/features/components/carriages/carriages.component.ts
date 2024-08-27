@@ -1,6 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../../common/button/button.component';
-import { HttpClient } from '@angular/common/http';
 import {
   FormControl,
   FormGroup,
@@ -93,7 +92,6 @@ export class CarriagesComponent implements OnInit {
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private httpClient: HttpClient,
     private carriagesService: CarriagesService,
   ) {}
 
