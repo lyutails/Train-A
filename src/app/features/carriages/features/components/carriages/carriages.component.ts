@@ -1,3 +1,4 @@
+import { selectOptionsRows } from './../../models/select-options-rows.model';
 import { Component, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import {
@@ -17,6 +18,8 @@ import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
 import { CarriagesService } from '../../services/carriages.service';
 import { CarriageCreatingParams } from '../../models/carriage-select.model';
+import { selectOptionsLeftSeats } from '../../models/select-options-left-seats.model';
+import { selectOptionsRightSeats } from '../../models/select-options-right-seats.model';
 
 @Component({
   selector: 'TTP-carriages',
@@ -45,36 +48,9 @@ export class CarriagesComponent implements OnInit {
   public carriageForm!: FormGroup<CarriageForm>;
   public create = signal(false);
   public update = signal(false);
-  public selectOptionsRows: CarriageCreatingParams[] = [
-    { value: '1', viewValue: '1' },
-    { value: '2', viewValue: '2' },
-    { value: '3', viewValue: '3' },
-    { value: '4', viewValue: '4' },
-    { value: '5', viewValue: '5' },
-    { value: '6', viewValue: '6' },
-    { value: '7', viewValue: '7' },
-    { value: '8', viewValue: '8' },
-    { value: '9', viewValue: '9' },
-    { value: '10', viewValue: '10' },
-    { value: '11', viewValue: '11' },
-    { value: '12', viewValue: '12' },
-    { value: '13', viewValue: '13' },
-    { value: '14', viewValue: '14' },
-    { value: '15', viewValue: '15' },
-    { value: '16', viewValue: '16' },
-    { value: '17', viewValue: '17' },
-    { value: '18', viewValue: '18' },
-  ];
-  public selectOptionsLeftSeats: CarriageCreatingParams[] = [
-    { value: 'leftSeats-1', viewValue: '1' },
-    { value: 'leftSeats-2', viewValue: '2' },
-    { value: 'leftSeats-3', viewValue: '3' },
-  ];
-  public selectOptionsRightSeats: CarriageCreatingParams[] = [
-    { value: 'rightSeats-1', viewValue: '1' },
-    { value: 'rightSeats-2', viewValue: '2' },
-    { value: 'leftSeats-3', viewValue: '3' },
-  ];
+  public selectOptionsRows!: CarriageCreatingParams[];
+  public selectOptionsLeftSeats!: CarriageCreatingParams[];
+  public selectOptionsRightSeats!: CarriageCreatingParams[];
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -89,7 +65,6 @@ export class CarriagesComponent implements OnInit {
 
   public getCarriagesData() {
     this.carriagesService.getCarriages().subscribe((data) => {
-      console.log(data);
       this.carriagesData = data.filter((item) => {
         return item.code !== '';
       });
@@ -104,7 +79,6 @@ export class CarriagesComponent implements OnInit {
       rightSeats: +this.carriageForm.controls.rightSeats.value,
     };
     this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
-      console.log(data);
       this.carriagesData.unshift({
         code: data.code,
         ...carriageWithoutCode,
@@ -114,6 +88,9 @@ export class CarriagesComponent implements OnInit {
   }
 
   public showCreateCarriageView() {
+    this.selectOptionsRows = selectOptionsRows;
+    this.selectOptionsLeftSeats = selectOptionsLeftSeats;
+    this.selectOptionsRightSeats = selectOptionsRightSeats;
     this.create.set(!this.create());
     if (this.create()) {
       this.update.set(false);
@@ -123,7 +100,6 @@ export class CarriagesComponent implements OnInit {
 
   public getCarriageData(data: Carriage) {
     this.carriageData = data;
-    console.log(this.carriageData);
     return this.carriageData;
   }
 
@@ -132,6 +108,9 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateExistingCarriage() {
+    this.selectOptionsRows = selectOptionsRows;
+    this.selectOptionsLeftSeats = selectOptionsLeftSeats;
+    this.selectOptionsRightSeats = selectOptionsRightSeats;
     const carriageWithoutCode = {
       name: this.carriageForm.controls.name?.value,
       rows: +this.carriageForm.controls.rows.value,
@@ -139,8 +118,7 @@ export class CarriagesComponent implements OnInit {
       rightSeats: +this.carriageForm.controls.rightSeats.value,
     };
     if (this.carriageForm.controls.code !== undefined && this.carriageForm.controls.name !== undefined) {
-      this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe((data) => {
-        console.log(data);
+      this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe(() => {
         const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
         const updatedCarriage = {
           code: this.carrigeCode,
