@@ -58,6 +58,7 @@ export class HomeComponent implements OnInit {
   testCarriages: Carriage[] = [
     { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
     { code: 'justCarriage', name: 'justCarriage', rows: 10, leftSeats: 3, rightSeats: 1 },
+    { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
   ];
 
   constructor(private fb: NonNullableFormBuilder) {}

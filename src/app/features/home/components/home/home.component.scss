@@ -30,10 +30,12 @@
 
   &_carriage-button {
     margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   &_search-button {
     margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   &_form-input {
@@ -50,6 +52,27 @@
     justify-content: space-between;
 
     width: 100%;
+  }
+
+  &_carriage-row {
+    z-index: 10;
+    display: flex;
+  }
+
+  &_carriage-shape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    justify-content: space-evenly;
+
+    width: 254px;
+    height: 640px;
+    padding: 10px;
+
+    background-image: url('../../../../../../public/ticket_ttp_vertical_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
   }
 }
 

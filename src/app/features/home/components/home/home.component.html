@@ -52,25 +52,25 @@
       class="home_carriage-button"
       [disabled]="!searchForm.controls.from.valid && !searchForm.controls.to.valid && !searchForm.controls.date.valid"
     ></TTP-button>
-    <!-- <div class="home_carriages">
-      @for (carriage of carriages; track carriage) {
-        <div class="carriages_carriage-shape">
+    <div class="home_carriages">
+      @for (carriage of testCarriages; track carriage) {
+        <div class="home_carriage-shape">
           @if (searchForm.controls.from.value && searchForm.controls.to.value && searchForm.controls.date.value) {
-            @for (carriage of [].constructor(+carriages); track index; let index = $index) {
-              @if (carriages[0].name !== undefined) {
+            @for (carriage of [].constructor(+testCarriages); track index; let index = $index) {
+              @if (testCarriages[0].name !== undefined) {
                 <TTP-carriage-row
-                  class="carriages_carriage-row"
-                  [carriageName]="carriages[index].name"
+                  class="home_carriage-row"
+                  [carriageName]="testCarriages[0].name"
                   [rowNumber]="index"
-                  [leftSeatCount]="carriages[index].leftSeats"
-                  [rightSeatCount]="carriages[index].rightSeats"
+                  [leftSeatCount]="testCarriages[0].leftSeats"
+                  [rightSeatCount]="testCarriages[0].rightSeats"
                 ></TTP-carriage-row>
               }
             }
           }
         </div>
       }
-    </div> -->
+    </div>
   </form>
   <TTP-button
     (click)="searchTrips()"
