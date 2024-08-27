@@ -1,1 +1,20 @@
-<p>routes works!</p>
+<!-- <div class="routes_wrapper container-xl">
+    <TTP-button
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Create'"
+      class="carriages_create-button"
+    ></TTP-button>
+  </div> -->
+@if (routes.length > 0) {
+  <div class="routes_data">
+    <h2>Available Routes</h2>
+    <ul>
+      <li *ngFor="let route of routes">
+        <strong>Route ID:</strong> {{ route.id }} <br />
+        <strong>Path:</strong> {{ route.path.join(' -> ') }} <br />
+        <strong>Carriages:</strong> {{ route.carriages.join(', ') }}
+      </li>
+    </ul>
+  </div>
+}
