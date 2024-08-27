@@ -44,15 +44,23 @@
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
-    <TTP-button
+    <!-- <TTP-button
       (click)="getCarriages()"
       [type]="'button'"
       [width]="'10vw'"
       [buttonText]="'Carriage'"
       class="home_carriage-button"
       [disabled]="!searchForm.controls.from.valid && !searchForm.controls.to.valid && !searchForm.controls.date.valid"
-    ></TTP-button>
+    ></TTP-button> -->
   </form>
+  <TTP-button
+    (click)="searchTrips()"
+    [type]="'submit'"
+    [width]="'10vw'"
+    [buttonText]="'Search' | uppercase"
+    class="home_search-button"
+    [disabled]="!searchForm.valid"
+  ></TTP-button>
   <div class="home_carriages">
     @for (carriage of testCarriages; track carriage) {
       <div class="home_shape-params">
@@ -80,11 +88,11 @@
     }
   </div>
   <TTP-button
-    (click)="searchTrips()"
+    (click)="buyTicket()"
     [type]="'submit'"
     [width]="'10vw'"
-    [buttonText]="'Search' | uppercase"
-    class="home_search-button"
+    [buttonText]="'Buy' | uppercase"
+    class="home_buy-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
 </div>

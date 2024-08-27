@@ -122,6 +122,10 @@ export class HomeComponent implements OnInit {
     // api call here
   }
 
+  public buyTicket() {
+    // api call here
+  }
+
   onSubmit() {
     this.searchForm.reset();
   }
