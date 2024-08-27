@@ -36,8 +36,8 @@ export class MapComponent implements OnInit {
     public readonly stationFacade: StationsFacade,
     public dialog: MatDialog,
   ) {
-    this.mapFacade.locationOutOfReach$.subscribe(() => {
-      this.openDialog();
+    this.mapFacade.popuUpErrors$.subscribe((errorMessage) => {
+      this.openDialog(errorMessage);
     });
   }
 
@@ -59,13 +59,12 @@ export class MapComponent implements OnInit {
     this.mapFacade.handleMapClick(event);
   }
 
-  private openDialog(): void {
+  private openDialog(message: string): void {
     this.dialog.open(PopUpComponent, {
       width: '15rem',
-      height: '15rem',
+      height: '8rem',
       data: {
-        message:
-          'We can not set here new station! Station might already exist or not supported by us. Try another coordinates!',
+        message,
       },
     });
   }
