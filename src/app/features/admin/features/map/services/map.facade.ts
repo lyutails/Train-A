@@ -6,15 +6,16 @@ import { LeafletMouseEvent, Map, marker, Marker } from 'leaflet';
 import { StationInfo } from '../../stations/models/station-info';
 import { defaultIcon } from '../constants/map-default-icon';
 import { createStation } from '../helpers/create-new-station-model';
+import { LOCATION_ERROR_MESSAGES } from '../models/location-error-message';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MapFacade {
-  private locationOutOfReach = new Subject<void>();
-  public locationOutOfReach$ = this.locationOutOfReach.asObservable();
+  private popuUpErrors = new Subject<string>();
+  public popuUpErrors$ = this.popuUpErrors.asObservable();
   private mapSpinner = new BehaviorSubject<boolean>(false);
-  mapSpinner$ = this.mapSpinner.asObservable();
+  public mapSpinner$ = this.mapSpinner.asObservable();
   private isProcessing = false;
   public stations: StationInfo[] = [];
 
@@ -54,10 +55,10 @@ export class MapFacade {
         if (response !== 'Undefined') {
           this.handleCityNameResponse(response, lat, lng);
         } else {
-          this.handleLocationOutOfReach();
+          this.handleLocationErrors(LOCATION_ERROR_MESSAGES.OUT_OF_REACH);
         }
       },
-      error: () => this.handleLocationOutOfReach(),
+      error: () => this.handleLocationErrors(LOCATION_ERROR_MESSAGES.NOT_FOUND),
       complete: () => {
         this.isProcessing = false;
         this.mapSpinner.next(false);
@@ -67,14 +68,19 @@ export class MapFacade {
 
   public saveStation() {
     const marker = this.mapStateService.getCurrentMarker();
-    if (marker) {
-      const newStation = createStation(marker, this.mapStateService.getPolylines(), this.stations);
-
-      if (newStation) {
-        this.mapService.saveStation(newStation);
-        this.mapStateService.resetState();
-      }
+    if (!marker) {
+      this.handleLocationErrors(LOCATION_ERROR_MESSAGES.NO_STATION_SELECTED);
+      return;
     }
+
+    const newStation = createStation(marker, this.mapStateService.getPolylines(), this.stations);
+    if (!newStation || newStation.relations.length === 0) {
+      this.handleLocationErrors(LOCATION_ERROR_MESSAGES.NO_CONNECTIONS_FOUND);
+      return;
+    }
+
+    this.mapService.saveStation(newStation);
+    this.mapStateService.resetState();
   }
 
   public getStations(): Observable<StationInfo[]> {
@@ -83,7 +89,7 @@ export class MapFacade {
 
   private handleCityNameResponse(cityName: string, lat: number, lng: number): void {
     if (this.doesCityExist(cityName)) {
-      this.handleLocationOutOfReach();
+      this.handleLocationErrors(LOCATION_ERROR_MESSAGES.ALREADY_EXISTS);
     } else {
       this.addMarkerToMap(cityName, lat, lng);
     }
@@ -102,7 +108,7 @@ export class MapFacade {
     }
   }
 
-  private handleLocationOutOfReach(): void {
-    this.locationOutOfReach.next();
+  private handleLocationErrors(message: string): void {
+    this.popuUpErrors.next(message);
   }
 }

@@ -17,7 +17,7 @@
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Rows</mat-label>
         <mat-select name="possibleRows" formControlName="rows" [value]="createCarriageForm.controls.rows.value">
-          @for (possibleRow of possibleRows; track possibleRow) {
+          @for (possibleRow of selectOptionsRows; track possibleRow) {
             <mat-option [value]="possibleRow.viewValue" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
@@ -25,7 +25,7 @@
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Left Seats</mat-label>
         <mat-select formControlName="leftSeats" [value]="createCarriageForm.controls.leftSeats.value">
-          @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
+          @for (possibleLeftSeat of selectOptionsLeftSeats; track possibleLeftSeat) {
             <mat-option [value]="possibleLeftSeat.viewValue">{{ possibleLeftSeat.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
@@ -33,7 +33,7 @@
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Right Seats</mat-label>
         <mat-select formControlName="rightSeats" [value]="createCarriageForm.controls.rightSeats.value">
-          @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+          @for (possibleRightSeat of selectOptionsRightSeats; track possibleRightSeat) {
             <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
@@ -74,7 +74,7 @@
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Rows</mat-label>
         <mat-select name="possibleRows" formControlName="rows" [value]="createCarriageForm.controls.rows.value">
-          @for (possibleRow of possibleRows; track possibleRow) {
+          @for (possibleRow of selectOptionsRows; track possibleRow) {
             <mat-option [value]="possibleRow.value" appearance="outline">{{ possibleRow.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
@@ -82,7 +82,7 @@
       <mat-form-field appearance="outline" class="carriages_control-inputs">
         <mat-label>Left Seats</mat-label>
         <mat-select formControlName="leftSeats" [value]="createCarriageForm.controls.leftSeats.value">
-          @for (possibleLeftSeat of possibleLeftSeats; track possibleLeftSeat) {
+          @for (possibleLeftSeat of selectOptionsLeftSeats; track possibleLeftSeat) {
             <mat-option [value]="possibleLeftSeat.viewValue">{{ possibleLeftSeat.viewValue }}</mat-option>
           }
         </mat-select></mat-form-field
@@ -91,13 +91,13 @@
         <mat-label>Right Seats</mat-label>
         @if (createCarriageForm.controls.rightSeats.value) {
           <mat-select formControlName="rightSeats" [value]="+createCarriageForm.controls.rightSeats.value">
-            @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+            @for (possibleRightSeat of selectOptionsRightSeats; track possibleRightSeat) {
               <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
             }
           </mat-select>
         } @else {
           <mat-select formControlName="rightSeats" [value]="carriageData.rightSeats">
-            @for (possibleRightSeat of possibleRightSeats; track possibleRightSeat) {
+            @for (possibleRightSeat of selectOptionsRightSeats; track possibleRightSeat) {
               <mat-option [value]="possibleRightSeat.viewValue">{{ possibleRightSeat.viewValue }}</mat-option>
             }
           </mat-select>
