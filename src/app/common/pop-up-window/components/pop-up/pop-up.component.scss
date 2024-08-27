@@ -1,8 +1,34 @@
+@import '../../../../../styles';
+
 .pop-up-window {
   display: flex;
   flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: center;
 
+  height: 100%;
   padding: 20px;
+
+  &__content {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+  }
+
+  &__message {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 }
