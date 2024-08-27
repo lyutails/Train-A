@@ -1,0 +1,21 @@
+<div *ngIf="rideRoute() && rideRoute()!.schedule">
+  <div *ngFor="let ride of rideRoute()!.schedule">
+    <mat-card>
+      <mat-card-title>Ride ID: {{ ride.rideId }}</mat-card-title>
+
+      <div>
+        <strong>Station:</strong>
+        <ul>
+          <li *ngFor="let city of rideRoute()!.path">{{ city }}</li>
+        </ul>
+      </div>
+
+      <div *ngFor="let segment of ride.segments">
+        <div>
+          <strong>Time:</strong>
+          {{ segment.time[0] }} to {{ segment.time[1] }}
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>
