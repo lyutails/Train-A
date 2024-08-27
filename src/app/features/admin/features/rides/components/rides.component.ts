@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RideRoute } from '../models/route';
+import { getPricesByValue } from '../helpers/get-prices-by-value';
 
 @Component({
   selector: 'TTP-rides',
@@ -18,6 +19,7 @@ import { RideRoute } from '../models/route';
 export class RidesComponent implements OnInit, OnDestroy {
   private readonly destroy$$ = new Subject<void>();
   public rideRoute = signal<RideRoute | null>(null);
+  public priceList = getPricesByValue;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,

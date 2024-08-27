@@ -13,16 +13,19 @@
           <td>{{ city }}</td>
           <td>
             <ng-container *ngIf="i === 0">
-              <div>Departs: {{ ride.segments[0].time[0] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+              <div>Departs: {{ ride.segments[0].time[0] | date: 'short' : '+0000' }}</div>
             </ng-container>
             <ng-container *ngIf="i === rideRoute()!.path.length - 1">
-              <div>Arrives: {{ ride.segments[ride.segments.length - 1].time[1] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+              <div>Arrives: {{ ride.segments[ride.segments.length - 1].time[1] | date: 'short' : '+0000' }}</div>
             </ng-container>
             <ng-container *ngIf="i > 0 && i < rideRoute()!.path.length - 1">
-              <div>Arrives: {{ ride.segments[i - 1].time[1] | date: 'dd-MM-yyyy HH:mm a' }}</div>
-              <div>Departs: {{ ride.segments[i].time[0] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+              <div>Arrives: {{ ride.segments[i - 1].time[1] | date: 'short' : '+0000' }}</div>
+              <div>Departs: {{ ride.segments[i].time[0] | date: 'short' : '+0000' }}</div>
             </ng-container>
           </td>
+          <ng-container *ngIf="i < rideRoute()!.path.length - 1">
+            <div *ngFor="let price of priceList(ride.segments[i].price)">{{ price.key }}: {{ price.value }}</div>
+          </ng-container>
         </tr>
       </tbody>
     </table>
