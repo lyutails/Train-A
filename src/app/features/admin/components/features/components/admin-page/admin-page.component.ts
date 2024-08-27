@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { MatTabsModule, MatTabChangeEvent } from '@angular/material/tabs';
 import { RouterModule, Router } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'TTP-admin-page',
   standalone: true,
-  imports: [MatTabsModule, RouterModule],
+  imports: [MatTabsModule, RouterModule, MatIcon],
   templateUrl: './admin-page.component.html',
   styleUrl: './admin-page.component.scss',
 })

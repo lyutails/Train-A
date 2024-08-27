@@ -1,7 +1,22 @@
 <mat-tab-group (selectedTabChange)="onTabChange($event)">
-  <mat-tab label="Stations"></mat-tab>
-  <mat-tab label="Carriages"></mat-tab>
-  <mat-tab label="Routes"></mat-tab>
+  <mat-tab class="tab">
+    <ng-template mat-tab-label class="tab_description">
+      <mat-icon class="tab_icon">store</mat-icon>
+      Stations
+    </ng-template>
+  </mat-tab>
+  <mat-tab class="tab">
+    <ng-template mat-tab-label class="tab_description">
+      <mat-icon class="tab_icon">directions_railway</mat-icon>
+      Carriages
+    </ng-template>
+  </mat-tab>
+  <mat-tab class="tab">
+    <ng-template mat-tab-label class="tab_description">
+      <mat-icon class="tab_icon">route</mat-icon>
+      Routes
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>
 
 <router-outlet></router-outlet>
