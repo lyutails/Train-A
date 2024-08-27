@@ -1,26 +1,37 @@
-<div class="home-search_wrapper container-xl">
-  <div class="home-search_title">Pick trip parameters</div>
-  <form class="home-search_inputs" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline" class="home-search_form-input"
-      ><mat-label>From...</mat-label><input matInput /> <mat-hint>Departure station</mat-hint
-      ><mat-icon matSuffix>store</mat-icon></mat-form-field
-    >
-    <mat-form-field appearance="outline" class="home-search_form-input"
-      ><mat-label>To...</mat-label><input matInput /> <mat-hint>Arrival station</mat-hint
-      ><mat-icon matSuffix>castle</mat-icon></mat-form-field
-    >
-    <mat-form-field appearance="outline" class="home-search_form-input"
-      ><mat-label>Choose a date...</mat-label><input matInput [matDatepicker]="picker" /> <mat-hint>MM/DD/YYYY</mat-hint
-      ><mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+<div class="home_wrapper container-xl">
+  <p class="home_title" [style.color]="'oklch(49.71% 0.165 259.85deg)'">Pick trip parameters</p>
+  <form class="home_form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div class="home_inputs-wrapper">
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>From...</mat-label><input matInput /> <mat-hint>Departure station</mat-hint
+        ><mat-icon matSuffix>store</mat-icon></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>To...</mat-label><input matInput /> <mat-hint>Arrival station</mat-hint
+        ><mat-icon matSuffix>castle</mat-icon></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>Choose a date...</mat-label><input matInput [matDatepicker]="picker" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <TTP-button
+      (click)="(searchForm.valid)"
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Carriage'"
+      class="home_carriage-button"
+      [disabled]="!searchForm.valid"
+    ></TTP-button>
   </form>
   <TTP-button
     (click)="(searchForm.valid)"
     [type]="'submit'"
     [width]="'10vw'"
     [buttonText]="'Search' | uppercase"
-    class="home-search_button"
+    class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
 </div>
