@@ -33,7 +33,5 @@ export class CarriageSeatComponent implements OnInit {
     if (event.checked) {
       console.log('checked');
     }
-    console.log(this.seatCheckbox);
-    console.log(this.seatValue);
   }
 }
