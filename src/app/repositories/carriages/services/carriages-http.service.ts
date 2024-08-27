@@ -1,12 +1,12 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Carriage } from '../../../features/admin/features/carriages/models/carriage.model';
 import { Observable } from 'rxjs';
-import { Carriage } from '../models/carriage.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CarriagesService {
+export class CarriagesHttpService {
   constructor(private httpClient: HttpClient) {}
 
   public getCarriages(): Observable<Carriage[]> {
