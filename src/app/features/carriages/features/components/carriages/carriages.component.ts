@@ -17,11 +17,7 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
 import { CarriagesService } from '../../services/carriages.service';
-
-export interface CarriageCreatingParams {
-  value: string;
-  viewValue: string;
-}
+import { CarriageCreatingParams } from '../../models/carriage-select.model';
 
 @Component({
   selector: 'TTP-carriages',
@@ -93,33 +89,6 @@ export class CarriagesComponent implements OnInit {
     { value: 'rightSeats-1', viewValue: '1' },
     { value: 'rightSeats-2', viewValue: '2' },
     { value: 'leftSeats-3', viewValue: '3' },
-  ];
-
-  initialPostCarriagesArray = [
-    {
-      name: 'carriage2F',
-      rows: 12,
-      leftSeats: 2,
-      rightSeats: 2,
-    },
-    {
-      name: 'carriage8K',
-      rows: 10,
-      leftSeats: 3,
-      rightSeats: 3,
-    },
-    {
-      name: 'carriageVIP',
-      rows: 6,
-      leftSeats: 1,
-      rightSeats: 1,
-    },
-    {
-      name: 'lalalaUp',
-      rows: 3,
-      leftSeats: 2,
-      rightSeats: 2,
-    },
   ];
 
   constructor(
