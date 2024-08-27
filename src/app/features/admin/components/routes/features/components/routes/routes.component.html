@@ -3,11 +3,16 @@
 
   @if (routes.length > 0) {
     <div class="routes_data">
-      <div *ngFor="let route of routes" class="routes_data-card">
-        <h4 class="routes_title">Route {{ route.id }}</h4>
-        <p><strong>Cities:</strong> {{ route.path.join(' - ') }}</p>
-        <p><strong>Carriage Types:</strong> {{ route.carriages.join(', ') }}</p>
-      </div>
+      @for (route of routes; track route) {
+        <div class="routes_data-card">
+          <h4 class="routes_title">Route {{ route.id }}</h4>
+          <p><strong>Cities:</strong> {{ route.path.join(' - ') }}</p>
+          <p><strong>Carriage Types:</strong> {{ route.carriages.join(', ') }}</p>
+          <button class="routes_delete-btn" mat-icon-button (click)="openDeleteModal(route.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      }
     </div>
   }
 </div>

@@ -37,4 +37,11 @@
     font-weight: 600;
     color: oklch(49.71% 0.165 259.85deg);
   }
+
+  &_delete-btn {
+    position: absolute;
+    left: 1070px;
+    background: none;
+    border: none;
+  }
 }
