@@ -1,0 +1,31 @@
+<div class="map-container" [attr.inert]="(mapFacade.mapSpinner$ | async) ? true : null">
+  <ng-container *ngIf="mapFacade.mapSpinner$ | async">
+    <mat-spinner class="map-spinner"></mat-spinner>
+  </ng-container>
+  <ng-container *ngIf="stationFacade.isUpdating | async; else updated">
+    <mat-spinner class="map-spinner"></mat-spinner>
+  </ng-container>
+  <ng-template #updated>
+    <div
+      class="map"
+      leaflet
+      [leafletOptions]="options"
+      [leafletLayers]="layers"
+      (leafletClick)="onMapClick($event)"
+      (leafletMapReady)="onMapReady($event)"
+    ></div>
+    <div class="overlay" *ngIf="mapFacade.mapSpinner$ | async"></div>
+  </ng-template>
+</div>
+<ng-container *ngIf="stationFacade.errorMessage | async as errorMessage">
+  <mat-error class="error-message">
+    Something went wrong. The train station is not reachable or already exists.
+  </mat-error>
+</ng-container>
+<TTP-button
+  class="stations-save"
+  [type]="'button'"
+  [width]="'10vw'"
+  [buttonText]="'Save'"
+  (click)="saveStation()"
+></TTP-button>

@@ -1,4 +1,6 @@
-# TrainTripsPlanning
+# Train Trips Planning <img src="./public/train.ico"  width="40" height="40">
+
+This awesome app is the final team project of [RSSchool](https://app.rs.school/registry/student) **Angular** 2024Q3 Course.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
@@ -25,3 +27,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+### Manager credentials
+
+The manager and the root administrator can enter the system with</br>
+email: admin@admin.com</br>
+password: my-password</br>

@@ -186,8 +186,7 @@ export class UserProfileComponent implements OnInit {
 
   public logoutAndRedirectToHome() {
     this.authFacade.logout().subscribe(() => {
-      console.log('logout success');
+      this.router.navigate(['']);
     });
-    this.router.navigate(['']);
   }
 }

@@ -7,12 +7,15 @@
     },
     {
       "files": ["**/*.scss"],
-      "extends": [
-        "stylelint-config-standard",
-        "stylelint-config-standard-scss",
-        "stylelint-config-clean-order"
-      ],
-      "rules": {}
+      "extends": ["stylelint-config-standard", "stylelint-config-standard-scss", "stylelint-config-clean-order"],
+      "rules": {
+        "selector-pseudo-element-no-unknown": [
+          true,
+          {
+            "ignorePseudoElements": ["ng-deep"]
+          }
+        ]
+      }
     }
   ],
   "rules": {

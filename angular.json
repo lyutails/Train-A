@@ -22,7 +22,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": ["lodash", "miragejs", "js-sha512"],
+            "allowedCommonJsDependencies": ["lodash", "miragejs", "js-sha512", "leaflet"],
             "outputPath": "dist/train-trips-planning",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -40,7 +40,11 @@
                 "output": "/"
               }
             ],
-            "styles": ["@angular/material/prebuilt-themes/azure-blue.css", "src/styles.scss"],
+            "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css"
+            ],
             "scripts": []
           },
           "configurations": {

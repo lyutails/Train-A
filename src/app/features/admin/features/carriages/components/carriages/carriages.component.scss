@@ -1,0 +1,258 @@
+@import '../../../../../../../styles';
+
+.carriages {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  &_create-button {
+    z-index: 100;
+
+    display: flex;
+    align-self: flex-end;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &_save-button {
+    z-index: 100;
+
+    display: flex;
+    align-self: flex-end;
+
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &_update-button {
+    z-index: 100;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &_control-inputs {
+    z-index: 110;
+  }
+
+  &_carriages-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_carriage-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20vw;
+
+    &.ticket {
+      margin-bottom: 60px;
+    }
+  }
+
+  &_carriage-row {
+    z-index: 10;
+    display: flex;
+  }
+
+  &_carriage-shape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    justify-content: space-evenly;
+
+    width: 254px;
+    height: 640px;
+    padding: 10px;
+
+    background-image: url('../../../../../../../../public/ticket_ttp_vertical_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_shape-params {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+
+    height: 850px;
+
+    border: 1px solid $light-blue;
+    border-radius: 5px;
+  }
+
+  &_coloured-text {
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_name {
+    margin-top: 5px;
+  }
+
+  &_carriage-shape-create {
+    transform: rotate(90deg);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 640px;
+    height: 254px;
+    padding: 10px;
+
+    background-image: url('../../../../../../../../public/ticket_ttp_horizontal_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_carriage-shape-create-ticket {
+    z-index: -1;
+    transform: rotate(90deg);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    width: 640px;
+    height: 254px;
+    padding: 10px;
+  }
+
+  &_ticket-image {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(-90deg) translate(40%);
+
+    display: block;
+
+    width: 640px;
+    height: 254px;
+
+    background-image: url('../../../../../../../../public/ticket_ttp_horizontal_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_carriage-row-create-ticket {
+    z-index: 10;
+    transform: translateY(-200px);
+
+    // position: absolute;
+    display: flex;
+  }
+
+  &_line-dividing {
+    width: 100%;
+    height: 1px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    background-color: $deep-blue;
+  }
+
+  &_create-form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+ttp-carriage-row {
+  display: flex;
+}
+
+@media screen and (width >= 900px) and (width <= 1300px) {
+  .carriages {
+    &_carriage-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 28vw;
+    }
+  }
+}
+
+@media screen and (width >= 760px) and (width <= 899.98px) {
+  .carriages {
+    &_carriage-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 40vw;
+
+      &.ticket {
+        transform: rotate(-90deg) translateX(-50%);
+      }
+    }
+
+    &_carriage-row-create-ticket {
+      transform: translateX(50vw);
+    }
+
+    &_carriage-shape-create-ticket {
+      position: relative;
+      transform: rotate(-180deg) translate(-160px, 80px);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      width: 640px;
+      height: 254px;
+      padding: 10px;
+    }
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 759.98px) {
+  .carriages {
+    &_carriage-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80vw;
+
+      &.ticket {
+        position: absolute;
+        transform: rotate(-180deg) translate(0, 0);
+
+        width: 254px;
+        max-width: 254px;
+        height: 640px;
+      }
+    }
+
+    &_carriage-row-create-ticket {
+      transform: translate(0, -260px);
+      width: 254px;
+      height: 640px;
+    }
+
+    &_carriage-shape-create-ticket {
+      position: relative;
+      transform: rotate(180deg) translate(0, 700px);
+
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      width: 254px;
+      height: 640px;
+      padding: 10px;
+    }
+
+    &_line-dividing {
+      margin-top: 680px;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<section class="pop-up-window">
+  <div mat-dialog-content class="pop-up-window__content">
+    <p class="pop-up-window__message">{{ data.message }}</p>
+  </div>
+  <div mat-dialog-actions class="pop-up-window__actions">
+    <TTP-button [type]="'button'" [width]="'10vw'" [buttonText]="'Close'" (click)="onClose()"></TTP-button>
+  </div>
+</section>
