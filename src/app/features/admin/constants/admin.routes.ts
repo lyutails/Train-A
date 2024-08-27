@@ -8,14 +8,13 @@ export const ADMIN_ROUTES: Routes = [
     children: [
       {
         path: 'stations',
-        loadComponent: () => import('../components/stations/station/station.component').then((m) => m.StationComponent),
+        loadComponent: () =>
+          import('../features/stations/components/stations.component').then((m) => m.StationComponent),
       },
       {
         path: 'carriages',
         loadComponent: () =>
-          import('../components/carriages/features/components/carriages/carriages.component').then(
-            (m) => m.CarriagesComponent,
-          ),
+          import('../features/carriages/components/carriages/carriages.component').then((m) => m.CarriagesComponent),
       },
       {
         path: 'routes',
