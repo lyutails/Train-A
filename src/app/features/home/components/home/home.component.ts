@@ -7,6 +7,7 @@ import { MatDatepicker, MatDatepickerModule, MatDatepickerToggle } from '@angula
 import { MatFormField, MatFormFieldModule, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput, MatInputModule } from '@angular/material/input';
+import { ButtonComponent } from '../../../../common/button/button.component';
 
 @Component({
   selector: 'TTP-home',
@@ -27,6 +28,7 @@ import { MatInput, MatInputModule } from '@angular/material/input';
     UpperCasePipe,
     MatButton,
     ReactiveFormsModule,
+    ButtonComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

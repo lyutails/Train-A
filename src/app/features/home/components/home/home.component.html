@@ -15,7 +15,12 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </form>
-  <button type="submit" mat-flat-button class="home-search_button" [disabled]="!searchForm.valid">
-    {{ searchButton | uppercase }}
-  </button>
+  <TTP-button
+    (click)="(searchForm.valid)"
+    [type]="'submit'"
+    [width]="'10vw'"
+    [buttonText]="'Search' | uppercase"
+    class="home-search_button"
+    [disabled]="!searchForm.valid"
+  ></TTP-button>
 </div>
