@@ -38,21 +38,15 @@ import { CarriageCreatingParams } from '../../models/carriage-select.model';
   styleUrl: './carriages.component.scss',
 })
 export class CarriagesComponent implements OnInit {
-  carriagesData!: Carriage[];
-  retrievedCarriagesForm = new FormGroup({
-    code: new FormControl(''),
-    name: new FormControl(''),
-    rows: new FormControl(0),
-    leftSeats: new FormControl(0),
-    rightSeats: new FormControl(0),
-  });
+  public carriagesData!: Carriage[];
+  public retrievedCarriagesForm!: FormGroup<CarriageForm>;
   public createCarriageForm!: FormGroup<CarriageForm>;
-  create = signal(false);
-  update = signal(false);
-  carriageBluePrint!: Carriage;
-  carrigeCode = '';
-  carriageData!: Carriage;
-  possibleRows: CarriageCreatingParams[] = [
+  public create = signal(false);
+  public update = signal(false);
+  public carriageBluePrint!: Carriage;
+  public carrigeCode = '';
+  public carriageData!: Carriage;
+  public selectOptionsRows: CarriageCreatingParams[] = [
     { value: '1', viewValue: '1' },
     { value: '2', viewValue: '2' },
     { value: '3', viewValue: '3' },
@@ -72,12 +66,12 @@ export class CarriagesComponent implements OnInit {
     { value: '17', viewValue: '17' },
     { value: '18', viewValue: '18' },
   ];
-  possibleLeftSeats: CarriageCreatingParams[] = [
+  public selectOptionsLeftSeats: CarriageCreatingParams[] = [
     { value: 'leftSeats-1', viewValue: '1' },
     { value: 'leftSeats-2', viewValue: '2' },
     { value: 'leftSeats-3', viewValue: '3' },
   ];
-  possibleRightSeats: CarriageCreatingParams[] = [
+  public selectOptionsRightSeats: CarriageCreatingParams[] = [
     { value: 'rightSeats-1', viewValue: '1' },
     { value: 'rightSeats-2', viewValue: '2' },
     { value: 'leftSeats-3', viewValue: '3' },
@@ -91,13 +85,7 @@ export class CarriagesComponent implements OnInit {
   ngOnInit() {
     this.getCarriagesData();
     this.createCarriageForm = this.createCarriageFormInstance;
-    this.retrievedCarriagesForm = new FormGroup({
-      code: new FormControl(''),
-      name: new FormControl(''),
-      rows: new FormControl(0),
-      leftSeats: new FormControl(0),
-      rightSeats: new FormControl(0),
-    });
+    this.retrievedCarriagesForm = this.retrievedCarriagesFormInstance;
   }
 
   public getCarriagesData() {
@@ -236,6 +224,16 @@ export class CarriagesComponent implements OnInit {
     } else {
       throw new Error('no code provided');
     }
+  }
+
+  private get retrievedCarriagesFormInstance(): FormGroup<CarriageForm> {
+    return this.fb.group<CarriageForm>({
+      code: this.fb.control({ value: '', disabled: false }),
+      name: this.fb.control({ value: '', disabled: false }),
+      rows: this.fb.control({ value: 0, disabled: false }),
+      leftSeats: this.fb.control({ value: 0, disabled: false }),
+      rightSeats: this.fb.control({ value: 0, disabled: false }),
+    });
   }
 
   onSubmit() {
