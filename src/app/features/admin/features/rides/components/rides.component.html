@@ -1,21 +1,30 @@
-<div *ngIf="rideRoute() && rideRoute()!.schedule">
+<ng-container *ngIf="rideRoute() && rideRoute()!.schedule">
   <div *ngFor="let ride of rideRoute()!.schedule">
-    <mat-card>
-      <mat-card-title>Ride ID: {{ ride.rideId }}</mat-card-title>
-
-      <div>
-        <strong>Station:</strong>
-        <ul>
-          <li *ngFor="let city of rideRoute()!.path">{{ city }}</li>
-        </ul>
-      </div>
-
-      <div *ngFor="let segment of ride.segments">
-        <div>
-          <strong>Time:</strong>
-          {{ segment.time[0] }} to {{ segment.time[1] }}
-        </div>
-      </div>
-    </mat-card>
+    <h4>Ride ID: {{ ride.rideId || 'No ID' }}</h4>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>City</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let city of rideRoute()!.path; let i = index">
+          <td>{{ city }}</td>
+          <td>
+            <ng-container *ngIf="i === 0">
+              <div>Departs: {{ ride.segments[0].time[0] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+            </ng-container>
+            <ng-container *ngIf="i === rideRoute()!.path.length - 1">
+              <div>Arrives: {{ ride.segments[ride.segments.length - 1].time[1] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+            </ng-container>
+            <ng-container *ngIf="i > 0 && i < rideRoute()!.path.length - 1">
+              <div>Arrives: {{ ride.segments[i - 1].time[1] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+              <div>Departs: {{ ride.segments[i].time[0] | date: 'dd-MM-yyyy HH:mm a' }}</div>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>
+</ng-container>
