@@ -20,11 +20,12 @@ export class CarriageSeatComponent implements OnInit {
   check = signal(false);
 
   ngOnInit() {
-    this.check.set(this.checked);
+    this.check.set(!this.checked);
   }
 
   clickCheckbox() {
     this.check.set(!this.check());
+    console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
   }
 
   inspectCheckboxValue(event: MatCheckboxChange): void {

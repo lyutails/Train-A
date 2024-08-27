@@ -1,4 +1,4 @@
-import { selectOptionsRows } from './../../models/select-options-rows.model';
+import { SELECT_OPTIONS_ROWS } from './../../models/select-options-rows.model';
 import { Component, OnInit, signal } from '@angular/core';
 import {
   FormControl,
@@ -16,8 +16,8 @@ import { MatOption, MatSelect } from '@angular/material/select';
 import { CarriageRowComponent } from '../carriage-row/carriage-row.component';
 import { CarriageForm } from '../../models/carriage-form.model';
 import { CarriageCreatingParams } from '../../models/carriage-select.model';
-import { selectOptionsLeftSeats } from '../../models/select-options-left-seats.model';
-import { selectOptionsRightSeats } from '../../models/select-options-right-seats.model';
+import { SELECT_LEFT_OPTION_ROWS } from '../../models/select-options-left-seats.model';
+import { SELECT_RIGHT_OPTION_ROWS } from '../../models/select-options-right-seats.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
 
@@ -88,9 +88,9 @@ export class CarriagesComponent implements OnInit {
   }
 
   public showCreateCarriageView() {
-    this.selectOptionsRows = selectOptionsRows;
-    this.selectOptionsLeftSeats = selectOptionsLeftSeats;
-    this.selectOptionsRightSeats = selectOptionsRightSeats;
+    this.selectOptionsRows = SELECT_OPTIONS_ROWS;
+    this.selectOptionsLeftSeats = SELECT_LEFT_OPTION_ROWS;
+    this.selectOptionsRightSeats = SELECT_RIGHT_OPTION_ROWS;
     this.create.set(!this.create());
     if (this.create()) {
       this.update.set(false);
@@ -108,9 +108,6 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateExistingCarriage() {
-    this.selectOptionsRows = selectOptionsRows;
-    this.selectOptionsLeftSeats = selectOptionsLeftSeats;
-    this.selectOptionsRightSeats = selectOptionsRightSeats;
     const carriageWithoutCode = {
       name: this.carriageForm.controls.name?.value,
       rows: +this.carriageForm.controls.rows.value,
@@ -132,6 +129,9 @@ export class CarriagesComponent implements OnInit {
   }
 
   public showUpdateCarriageView() {
+    this.selectOptionsRows = SELECT_OPTIONS_ROWS;
+    this.selectOptionsLeftSeats = SELECT_LEFT_OPTION_ROWS;
+    this.selectOptionsRightSeats = SELECT_RIGHT_OPTION_ROWS;
     this.update.set(!this.update());
     if (this.update()) {
       this.create.set(false);

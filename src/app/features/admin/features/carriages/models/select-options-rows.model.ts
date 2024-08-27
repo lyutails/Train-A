@@ -1,6 +1,6 @@
 import { CarriageCreatingParams } from './carriage-select.model';
 
-export const selectOptionsRows: CarriageCreatingParams[] = [
+export const SELECT_OPTIONS_ROWS: CarriageCreatingParams[] = [
   { value: '1', viewValue: '1' },
   { value: '2', viewValue: '2' },
   { value: '3', viewValue: '3' },

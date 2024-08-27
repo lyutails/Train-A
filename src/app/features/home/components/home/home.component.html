@@ -1,0 +1,21 @@
+<div class="home-search_wrapper container-xl">
+  <div class="home-search_title">Pick trip parameters</div>
+  <form class="home-search_inputs" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="home-search_form-input"
+      ><mat-label>From...</mat-label><input matInput /> <mat-hint>Departure station</mat-hint
+      ><mat-icon matSuffix>store</mat-icon></mat-form-field
+    >
+    <mat-form-field appearance="outline" class="home-search_form-input"
+      ><mat-label>To...</mat-label><input matInput /> <mat-hint>Arrival station</mat-hint
+      ><mat-icon matSuffix>castle</mat-icon></mat-form-field
+    >
+    <mat-form-field appearance="outline" class="home-search_form-input"
+      ><mat-label>Choose a date...</mat-label><input matInput [matDatepicker]="picker" /> <mat-hint>MM/DD/YYYY</mat-hint
+      ><mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </form>
+  <button type="submit" mat-flat-button class="home-search_button" [disabled]="!searchForm.valid">
+    {{ searchButton | uppercase }}
+  </button>
+</div>
