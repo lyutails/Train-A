@@ -31,8 +31,8 @@
         />
         <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
         <mat-autocomplete #auto="matAutocomplete">
-          @for (city of testCities; track city) {
-            <mat-option [value]="city | trim">{{ city }}</mat-option>
+          @for (city of filteredTestCities | async; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
           }
         </mat-autocomplete></mat-form-field
       >
