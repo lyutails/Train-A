@@ -63,13 +63,29 @@
     </div>
   </form>
   <TTP-button
-    (click)="searchTrips()"
+    (click)="getRides()"
     [type]="'submit'"
     [width]="'10vw'"
     [buttonText]="'Search' | uppercase"
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
+  @if (searchRides()) {
+    <div class="home_rides">
+      @for (trip of testTrips; track trip.name) {
+        <div class="home_trip">
+          <div class="home_trip-name">{{ trip.name }}</div>
+          <TTP-button
+            [type]="'button'"
+            [width]="'10vw'"
+            [buttonText]="'Pick trip'"
+            class="home_trip-button"
+            (click)="pickTrip()"
+          ></TTP-button>
+        </div>
+      }
+    </div>
+  }
   @if (searchCarriages() && searchForm.valid) {
     <div class="home_carriages">
       @for (carriage of testCarriages; track carriage.name) {
@@ -102,6 +118,6 @@
     [width]="'10vw'"
     [buttonText]="'Buy' | uppercase"
     class="home_buy-button"
-    [disabled]="!searchForm.valid && !isSeatSelected()"
+    [disabled]="!isSeatSelected()"
   ></TTP-button>
 </div>

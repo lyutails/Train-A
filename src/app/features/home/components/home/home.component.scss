@@ -56,7 +56,7 @@
     flex-wrap: wrap;
     gap: 20px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     width: 100%;
   }
@@ -87,11 +87,40 @@
 
     width: 254px;
     height: 640px;
-    padding: 10px;
+    padding: 20px;
 
     background-image: url('../../../../../../public/ticket_ttp_vertical_opacity.png');
     background-size: contain;
     border-radius: 5px;
+  }
+
+  &_rides {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  &_trip {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+
+    border: 1px solid rgb(0 92 187 / 50%);
+    border-radius: 10px;
+
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-blue;
+      border: 1px solid $deep-blue;
+    }
   }
 }
 

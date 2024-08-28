@@ -39,6 +39,7 @@ import { map, Observable, startWith } from 'rxjs';
     TrimPipe,
     CarriageRowComponent,
     AsyncPipe,
+    ButtonComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -52,6 +53,7 @@ export class HomeComponent implements OnInit {
   public leftSeatCount!: number;
   public rightSeatCount!: number;
   public searchCarriages = signal(false);
+  public searchRides = signal(false);
   public filteredOptions!: string[];
   filteredTestCitiesFrom!: Observable<string[]>;
   filteredTestCitiesTo!: Observable<string[]>;
@@ -65,6 +67,7 @@ export class HomeComponent implements OnInit {
     { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
     { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
+  testTrips = [{ name: 'trip2' }, { name: 'trip2' }, { name: 'trip3' }, { name: 'trip4' }];
 
   constructor(private fb: NonNullableFormBuilder) {
     this.filteredOptions = this.testCities.slice();
@@ -132,15 +135,19 @@ export class HomeComponent implements OnInit {
     return this.searchForm.controls.date;
   }
 
-  public getCarriages() {
+  public getRides() {
+    this.searchRides.set(true);
     // api call here
-    // this.carriages = data
-    // tolowercase
   }
 
-  public searchTrips() {
+  public pickTrip() {
+    this.getCarriages();
+  }
+
+  public getCarriages() {
     this.searchCarriages.set(true);
     // api call here
+    // this.carriages = data
   }
 
   public buyTicket() {
