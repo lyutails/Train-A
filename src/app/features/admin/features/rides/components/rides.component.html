@@ -26,7 +26,7 @@
           <ng-container *ngIf="i < rideRoute.path.length - 1">
             <div class="rides_cycle">
               <TTP-ride-price-form
-                *ngFor="let price of priceList(ride.segments[i].price); trackBy: trackByValue"
+                *ngFor="let price of ride.segments[i].price | keyvalue; trackBy: trackByValue"
                 [price]="price"
               >
               </TTP-ride-price-form>
