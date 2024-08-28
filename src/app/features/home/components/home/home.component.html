@@ -113,11 +113,17 @@
             <mat-icon>train</mat-icon> {{ searchForm.controls.from.value }} <mat-icon>trending_flat</mat-icon>
             {{ searchForm.controls.to.value }}
           </div>
-          <TTP-button [type]="'button'" [width]="'10vw'" [buttonText]="'Route'" class="home_route-button"></TTP-button>
+          <TTP-button
+            [type]="'button'"
+            [width]="'10vw'"
+            [buttonText]="'Route'"
+            class="home_route-button"
+            (click)="openRouteModal()"
+          ></TTP-button>
           <div class="home_trip-carriages">
             @for (carriage of testCarriages; track carriage.code) {
               <div class="home_trip-carriage-details">
-                <div class="home_trip-carriage-type">{{ carriage.name }}: number of seats</div>
+                <div class="home_trip-carriage-type">{{ carriage.name }}: (number of) seats</div>
                 <div class="home_trip-carriage-price">500$</div>
               </div>
             }

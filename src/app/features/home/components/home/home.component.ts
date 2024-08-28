@@ -1,8 +1,15 @@
-import { AsyncPipe, UpperCasePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
+import { Component, ElementRef, inject, model, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButton } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOption } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatFormField, MatFormFieldModule, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -14,6 +21,9 @@ import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
 import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 import { map, Observable, startWith } from 'rxjs';
+import { MatSelect } from '@angular/material/select';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RouteModalComponent } from '../route-modal/route-modal.component';
 
 export interface Trip {
   name: string;
@@ -44,6 +54,12 @@ export interface Trip {
     CarriageRowComponent,
     AsyncPipe,
     ButtonComponent,
+    CommonModule,
+    FormsModule,
+    MatSelect,
+    MatLabel,
+    MatOption,
+    MatDialogModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -63,6 +79,7 @@ export class HomeComponent implements OnInit {
   public filteredTestCitiesTo!: Observable<string[]>;
   public isSeatSelected = signal(false);
   public minDate = new Date();
+  public routeValue = model('');
 
   testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testCarriages: Carriage[] = [
@@ -161,5 +178,17 @@ export class HomeComponent implements OnInit {
 
   onSubmit() {
     this.searchForm.reset();
+  }
+  public popupRoute = signal('');
+  public dialog = inject(MatDialog);
+
+  public openRouteModal() {
+    const dialogRef = this.dialog.open(RouteModalComponent, {
+      data: { route: this.routeValue() },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      return;
+    });
   }
 }
