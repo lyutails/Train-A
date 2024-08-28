@@ -30,19 +30,24 @@ export const ADMIN_ROUTES: Routes = [
       },
       {
         path: 'routes',
-        loadComponent: () =>
-          import('../components/routes/features/components/routes/routes.component').then((m) => m.RoutesComponent),
-      },
-      {
-        path: 'routes/:id',
-        loadComponent: () => import('../features/rides/components/rides.component').then((m) => m.RidesComponent),
-        resolve: { route: routeResolver },
-        providers: [
-          provideState({
-            name: 'stations',
-            reducer: stationReducer,
-          }),
-          provideEffects([StationsEffects]),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('../components/routes/features/components/routes/routes.component').then((m) => m.RoutesComponent),
+          },
+          {
+            path: ':id',
+            loadComponent: () => import('../features/rides/components/rides.component').then((m) => m.RidesComponent),
+            resolve: { route: routeResolver },
+            providers: [
+              provideState({
+                name: 'stations',
+                reducer: stationReducer,
+              }),
+              provideEffects([StationsEffects]),
+            ],
+          },
         ],
       },
       {
