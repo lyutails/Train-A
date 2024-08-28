@@ -99,6 +99,10 @@
               <div class="home_trip-station">City2</div>
             </div>
           </div>
+          <div class="home_trip-from-to">
+            <mat-icon>train</mat-icon> {{ searchForm.controls.from.value }} <mat-icon>trending_flat</mat-icon>
+            {{ searchForm.controls.to.value }}
+          </div>
           <TTP-button [type]="'button'" [width]="'10vw'" [buttonText]="'Route'" class="home_route-button"></TTP-button>
           <div class="home_trip-carriages">
             @for (carriage of testCarriages; track carriage.code) {
@@ -112,7 +116,7 @@
       }
     }
     @if (searchRides() && testTrips.length === 0) {
-      <div>No trips found that would satisfy your criteria.</div>
+      <div>No direct trains found</div>
     }
   </div>
   @if (searchCarriages() && searchForm.valid) {

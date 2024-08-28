@@ -198,6 +198,11 @@
     margin-top: 10px;
     margin-bottom: 10px;
   }
+
+  &_trip-from-to {
+    display: flex;
+    align-items: center;
+  }
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {
