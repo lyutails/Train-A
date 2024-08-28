@@ -7,8 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonComponent } from '../../../../../../../common/button/button.component';
 import { CommonModule } from '@angular/common';
-import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'TTP-routes',
@@ -20,6 +23,9 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     ConfirmDeleteDialogComponent,
     ReactiveFormsModule,
+    MatLabel,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './routes.component.html',
   styleUrl: './routes.component.scss',
@@ -36,19 +42,14 @@ export class RoutesComponent implements OnInit {
     private readonly fb: FormBuilder,
   ) {
     this.createRouteForm = this.fb.group({
-      stations: this.fb.array<FormControl<number | null>>([], [Validators.required]),
-      carriages: this.fb.array(
-        [
-          this.fb.group({
-            code: this.fb.control<string | null>(null),
-            name: this.fb.control<string | null>(null),
-            rows: this.fb.control<number | null>(null),
-            leftSeats: this.fb.control<number | null>(null),
-            rightSeats: this.fb.control<number | null>(null),
-          }),
-        ],
-        [Validators.required],
-      ),
+      carriages: this.fb.array([
+        this.fb.group({
+          name: [''],
+          rows: [0],
+          leftSeats: [0],
+          rightSeats: [0],
+        }),
+      ]),
     });
   }
 
@@ -126,5 +127,27 @@ export class RoutesComponent implements OnInit {
       },
       error: (error) => console.error('There was an error deleting the route!', error),
     });
+  }
+
+  get carriages(): FormArray {
+    return this.createRouteForm.get('carriages') as FormArray;
+  }
+
+  createCarriageFormGroup(): FormGroup {
+    return this.fb.group({
+      code: [null, Validators.required],
+      name: [null, Validators.required],
+      rows: [null, Validators.required],
+      leftSeats: [null, Validators.required],
+      rightSeats: [null, Validators.required],
+    });
+  }
+
+  addCarriage(): void {
+    this.carriages.push(this.createCarriageFormGroup());
+  }
+
+  removeCarriage(index: number): void {
+    this.carriages.removeAt(index);
   }
 }

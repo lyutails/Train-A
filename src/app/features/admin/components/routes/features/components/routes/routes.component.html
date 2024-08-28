@@ -16,10 +16,49 @@
         </div>
         <div class="routes_form-section">
           <h6>Carriages</h6>
-          <div formArrayName="carriages"></div>
+          <div formArrayName="carriages">
+            <div *ngFor="let carriage of carriages.controls; let i = index" [formGroupName]="i">
+              <mat-form-field appearance="outline" class="routes_control-inputs">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Enter carriage name" formControlName="name" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="routes_control-inputs">
+                <mat-label>Rows</mat-label>
+                <input matInput placeholder="Number of rows" formControlName="rows" type="number" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="routes_control-inputs">
+                <mat-label>Left Seats</mat-label>
+                <input matInput placeholder="Number of left seats" formControlName="leftSeats" type="number" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="routes_control-inputs">
+                <mat-label>Right Seats</mat-label>
+                <input matInput placeholder="Number of right seats" formControlName="rightSeats" type="number" />
+              </mat-form-field>
+
+              <TTP-button
+                (click)="removeCarriage(i)"
+                [type]="'button'"
+                [width]="'15vw'"
+                [buttonText]="'Remove'"
+                class="routes_remove-button"
+              ></TTP-button>
+            </div>
+
+            <TTP-button
+              (click)="addCarriage()"
+              [type]="'button'"
+              [width]="'15vw'"
+              [buttonText]="'Add Carriage'"
+              class="routes_add-carriage-button"
+            ></TTP-button>
+          </div>
         </div>
       </div>
-      <div class="routes_form-buttons">
+
+      <!-- <div class="routes_form-buttons">
         <TTP-button
           (click)="handleFormSubmit()"
           [type]="'submit'"
@@ -37,7 +76,7 @@
           class="routes_cancel-button"
         >
         </TTP-button>
-      </div>
+      </div> -->
     </form>
   }
 

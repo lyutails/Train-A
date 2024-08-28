@@ -55,4 +55,20 @@
     font-size: 1rem;
     font-weight: 500;
   }
+
+  &_remove-button {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  &_form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+  }
+
+  &_control-inputs {
+    z-index: 110;
+  }
 }
