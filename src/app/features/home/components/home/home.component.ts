@@ -53,12 +53,12 @@ export class HomeComponent implements OnInit {
   public rightSeatCount!: number;
   public searchCarriages = signal(false);
   public filteredOptions!: string[];
-  testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   filteredTestCitiesFrom!: Observable<string[]>;
   filteredTestCitiesTo!: Observable<string[]>;
   isSeatSelected = signal(false);
   minDate = new Date();
 
+  testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testCarriages: Carriage[] = [
     { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
     { code: 'justCarriage', name: 'justCarriage', rows: 10, leftSeats: 3, rightSeats: 1 },

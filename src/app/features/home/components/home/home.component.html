@@ -18,7 +18,10 @@
         />
         <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
-          @for (city of filteredTestCitiesFrom | async; track city) {
+          <!-- @for (city of filteredTestCitiesFrom | async; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          } -->
+          @for (city of filteredOptions; track city) {
             <mat-option [value]="city">{{ city }}</mat-option>
           }
         </mat-autocomplete></mat-form-field
@@ -67,7 +70,7 @@
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
-  @if (searchCarriages()) {
+  @if (searchCarriages() && searchForm.valid) {
     <div class="home_carriages">
       @for (carriage of testCarriages; track carriage.name) {
         <div class="home_shape-params">
