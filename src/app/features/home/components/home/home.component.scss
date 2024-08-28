@@ -122,6 +122,10 @@
       border: 1px solid $deep-blue;
     }
   }
+
+  &.text-coloured {
+    color: $deep-blue;
+  }
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {

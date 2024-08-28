@@ -15,6 +15,10 @@ import { Carriage } from '../../../admin/features/carriages/models/carriage.mode
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 import { map, Observable, startWith } from 'rxjs';
 
+export interface Trip {
+  name: string;
+}
+
 @Component({
   selector: 'TTP-home',
   standalone: true,
@@ -67,7 +71,8 @@ export class HomeComponent implements OnInit {
     { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
     { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
-  testTrips = [{ name: 'trip2' }, { name: 'trip2' }, { name: 'trip3' }, { name: 'trip4' }];
+  testTrips: Trip[] = [{ name: 'trip2' }, { name: 'trip2' }, { name: 'trip3' }, { name: 'trip4' }];
+  // testTrips: Trip[] = [];
 
   constructor(private fb: NonNullableFormBuilder) {
     this.filteredOptions = this.testCities.slice();
@@ -137,6 +142,7 @@ export class HomeComponent implements OnInit {
 
   public getRides() {
     this.searchRides.set(true);
+    console.log('search');
     // api call here
   }
 
