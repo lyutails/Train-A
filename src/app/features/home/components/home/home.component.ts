@@ -1,5 +1,5 @@
 import { AsyncPipe, UpperCasePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -44,16 +44,20 @@ import { map, Observable, startWith } from 'rxjs';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
+  @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
-  private datePattern = /^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-  cityControl = new FormControl('');
-  carriageName!: string | undefined;
-  rowNumber!: number;
-  leftSeatCount!: number;
-  rightSeatCount!: number;
-
+  public carriageName!: string | undefined;
+  public rowNumber!: number;
+  public leftSeatCount!: number;
+  public rightSeatCount!: number;
+  public searchCarriages = signal(false);
+  public filteredOptions!: string[];
   testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
-  filteredTestCities!: Observable<string[]>;
+  filteredTestCitiesFrom!: Observable<string[]>;
+  filteredTestCitiesTo!: Observable<string[]>;
+  isSeatSelected = signal(false);
+  minDate = new Date();
 
   testCarriages: Carriage[] = [
     { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
@@ -62,14 +66,30 @@ export class HomeComponent implements OnInit {
     { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
 
-  constructor(private fb: NonNullableFormBuilder) {}
+  constructor(private fb: NonNullableFormBuilder) {
+    this.filteredOptions = this.testCities.slice();
+  }
 
   ngOnInit() {
     this.searchForm = this.searchFormInstance;
-    this.filteredTestCities = this.cityControl.valueChanges.pipe(
+    this.filteredTestCitiesFrom = this.searchForm.controls.from.valueChanges.pipe(
       startWith(''),
       map((value) => this._filter(value || '')),
     );
+    this.filteredTestCitiesTo = this.searchForm.controls.to.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value || '')),
+    );
+  }
+
+  public filterFrom() {
+    const filterValue = this.inputFrom.nativeElement.value.toLowerCase();
+    this.filteredOptions = this.testCities.filter((item) => item.toLowerCase().includes(filterValue));
+  }
+
+  public filterTo() {
+    const filterValue = this.inputTo.nativeElement.value.toLowerCase();
+    this.filteredOptions = this.testCities.filter((item) => item.toLowerCase().includes(filterValue));
   }
 
   private _filter(value: string) {
@@ -93,9 +113,9 @@ export class HomeComponent implements OnInit {
       ),
       date: this.fb.control(
         { value: '', disabled: false },
-        /* {
-          validators: [Validators.required, Validators.pattern(this.datePattern)],
-        }, */
+        {
+          validators: [Validators.required],
+        },
       ),
     });
   }
@@ -119,6 +139,7 @@ export class HomeComponent implements OnInit {
   }
 
   public searchTrips() {
+    this.searchCarriages.set(true);
     // api call here
   }
 
