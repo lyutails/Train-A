@@ -202,6 +202,32 @@
   &_trip-from-to {
     display: flex;
     align-items: center;
+
+    margin-top: 10px;
+    padding-top: 10px;
+
+    border-top: 1px solid $deep-blue;
+  }
+
+  &_trip-line {
+    width: 35%;
+    height: 2px;
+    background-color: $deep-blue;
+
+    /* &.left {
+      align-self: flex-start;
+    }
+
+    &.right {
+      align-self: flex-end;
+    } */
+  }
+
+  &_trip-total-time-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
   }
 }
 
@@ -220,6 +246,18 @@
       row-gap: 30px;
       align-items: center;
       justify-content: space-between;
+    }
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 660px) {
+  .home {
+    &_trip-line {
+      display: none;
+    }
+
+    &_trip-time-icon {
+      display: none;
     }
   }
 }

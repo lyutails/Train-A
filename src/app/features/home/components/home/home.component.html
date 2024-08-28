@@ -79,14 +79,24 @@
             <TTP-button
               [type]="'button'"
               [width]="'10vw'"
-              [buttonText]="'Pick trip'"
+              [buttonText]="'Select'"
               class="home_trip-button"
               (click)="pickTrip()"
             ></TTP-button>
           </div>
           <div class="home_trip-time">
             <div class="home_trip-time start">16:00</div>
-            <div class="home_trip-total-time">7h 22m</div>
+            <div class="home_trip-total-time-line">
+              <mat-icon class="home_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
+                >radio_button_unchecked</mat-icon
+              >
+              <div class="home_trip-line left"></div>
+              <div class="home_trip-total-time">7h 22m</div>
+              <div class="home_trip-line right"></div>
+              <mat-icon class="home_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
+                >radio_button_checked</mat-icon
+              >
+            </div>
             <div class="home_trip-time end">22:00</div>
           </div>
           <div class="home_trip-info">
