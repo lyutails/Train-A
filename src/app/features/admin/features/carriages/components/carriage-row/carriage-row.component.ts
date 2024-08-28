@@ -15,7 +15,6 @@ export class CarriageRowComponent implements OnInit, OnChanges {
   @Input() carriageName!: string;
   seatsInRow!: number[];
   seatsInRowNumber!: number;
-  seats!: string[];
 
   ngOnInit(): void {
     this.seatsInRowNumber = this.leftSeatCount + this.rightSeatCount;
@@ -23,10 +22,5 @@ export class CarriageRowComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.seatsInRowNumber = this.leftSeatCount + this.rightSeatCount;
-  }
-
-  clickSeat(seat: string) {
-    this.seats.push(seat);
-    console.log(seat);
   }
 }

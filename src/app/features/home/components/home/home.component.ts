@@ -142,8 +142,6 @@ export class HomeComponent implements OnInit {
 
   public getRides() {
     this.searchRides.set(true);
-    console.log('search');
-    console.log(this.searchForm.controls.from.value);
     // api call here
   }
 

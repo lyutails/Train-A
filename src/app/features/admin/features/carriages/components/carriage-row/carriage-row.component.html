@@ -1,6 +1,5 @@
 @for (leftSeat of [].constructor(leftSeatCount); track index; let index = $index) {
   <TTP-carriage-seat
-    (chosenSeat)="clickSeat($event)"
     [carriageNameValue]="carriageName"
     [seatValue]="(seatsInRowNumber * rowNumber + index + 1).toString()"
     class="carriage-row_with-seats"

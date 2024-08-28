@@ -85,13 +85,15 @@ export class CarriagesComponent implements OnInit {
       });
     });
     this.carriageForm.reset();
+    this.create.set(false);
+    this.update.set(false);
   }
 
   public showCreateCarriageView() {
     this.selectOptionsRows = SELECT_OPTIONS_ROWS;
     this.selectOptionsLeftSeats = SELECT_LEFT_OPTION_ROWS;
     this.selectOptionsRightSeats = SELECT_RIGHT_OPTION_ROWS;
-    this.create.set(!this.create());
+    this.create.set(true);
     if (this.create()) {
       this.update.set(false);
     }
@@ -125,7 +127,8 @@ export class CarriagesComponent implements OnInit {
       });
     }
     this.carriageForm.reset();
-    this.update.set(!this.update());
+    this.update.set(false);
+    this.create.set(false);
   }
 
   public showUpdateCarriageView() {
