@@ -105,6 +105,7 @@
 
   &_trip {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
 
     width: 100%;
@@ -125,6 +126,76 @@
 
   &.text-coloured {
     color: $deep-blue;
+  }
+
+  &_trip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &_trip-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_trip-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_trip-details {
+    display: flex;
+    flex-direction: column;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_trip-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.start {
+      align-items: flex-start;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    &.end {
+      align-items: flex-end;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+  }
+
+  &_trip-total-time {
+    color: $deep-blue;
+  }
+
+  &_trip-carriages {
+    padding-top: 10px;
+    border-top: 1px solid $deep-blue;
+  }
+
+  &_trip-carriage-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_route-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 

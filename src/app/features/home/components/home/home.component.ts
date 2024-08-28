@@ -59,10 +59,10 @@ export class HomeComponent implements OnInit {
   public searchCarriages = signal(false);
   public searchRides = signal(false);
   public filteredOptions!: string[];
-  filteredTestCitiesFrom!: Observable<string[]>;
-  filteredTestCitiesTo!: Observable<string[]>;
-  isSeatSelected = signal(false);
-  minDate = new Date();
+  public filteredTestCitiesFrom!: Observable<string[]>;
+  public filteredTestCitiesTo!: Observable<string[]>;
+  public isSeatSelected = signal(false);
+  public minDate = new Date();
 
   testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testCarriages: Carriage[] = [
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
     { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
     { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
-  testTrips: Trip[] = [{ name: 'trip2' }, { name: 'trip2' }, { name: 'trip3' }, { name: 'trip4' }];
+  testTrips: Trip[] = [{ name: 'trip1' }, { name: 'trip2' }, { name: 'trip3' }, { name: 'trip4' }];
   // testTrips: Trip[] = [];
 
   constructor(private fb: NonNullableFormBuilder) {

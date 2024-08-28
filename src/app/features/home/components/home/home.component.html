@@ -74,14 +74,40 @@
     @if (searchRides() && testTrips.length > 0) {
       @for (trip of testTrips; track trip.name) {
         <div class="home_trip">
-          <div class="home_trip-name">{{ trip.name }}</div>
-          <TTP-button
-            [type]="'button'"
-            [width]="'10vw'"
-            [buttonText]="'Pick trip'"
-            class="home_trip-button"
-            (click)="pickTrip()"
-          ></TTP-button>
+          <div class="home_trip-header">
+            <div class="home_trip-name">{{ trip.name }}</div>
+            <TTP-button
+              [type]="'button'"
+              [width]="'10vw'"
+              [buttonText]="'Pick trip'"
+              class="home_trip-button"
+              (click)="pickTrip()"
+            ></TTP-button>
+          </div>
+          <div class="home_trip-time">
+            <div class="home_trip-time start">16:00</div>
+            <div class="home_trip-total-time">7h 22m</div>
+            <div class="home_trip-time end">22:00</div>
+          </div>
+          <div class="home_trip-info">
+            <div class="home_trip-details start">
+              <div class="home_trip-date">August 30</div>
+              <div class="home_trip-station">City1</div>
+            </div>
+            <div class="home_trip-details end">
+              <div class="home_trip-date">August 31</div>
+              <div class="home_trip-station">City2</div>
+            </div>
+          </div>
+          <TTP-button [type]="'button'" [width]="'10vw'" [buttonText]="'Route'" class="home_route-button"></TTP-button>
+          <div class="home_trip-carriages">
+            @for (carriage of testCarriages; track carriage.code) {
+              <div class="home_trip-carriage-details">
+                <div class="home_trip-carriage-type">{{ carriage.name }}: number of seats</div>
+                <div class="home_trip-carriage-price">500$</div>
+              </div>
+            }
+          </div>
         </div>
       }
     }
