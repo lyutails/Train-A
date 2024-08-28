@@ -1,4 +1,22 @@
-h4 {
-  margin: 0;
-  padding: 0;
+@import '../../../../../../styles';
+
+.rides {
+  &_key-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_title {
+    color: $deep-blue;
+  }
+
+  &_cycle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 30vw;
+  }
 }

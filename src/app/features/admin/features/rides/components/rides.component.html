@@ -1,6 +1,6 @@
-<ng-container *ngIf="rideRoute() && rideRoute()!.schedule">
-  <div *ngFor="let ride of rideRoute()!.schedule">
-    <h4>Ride ID: {{ ride.rideId || 'No ID' }}</h4>
+<ng-container *ngIf="rideRoute">
+  <div *ngFor="let ride of rideRoute.schedule">
+    <h4 class="rides_title">Ride ID: {{ ride.rideId || 'No ID' }}</h4>
     <table class="table">
       <thead>
         <tr>
@@ -9,22 +9,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let city of rideRoute()!.path; let i = index">
+        <tr *ngFor="let city of rideRoute.path; let i = index">
           <td>{{ city }}</td>
           <td>
             <ng-container *ngIf="i === 0">
               <div>Departs: {{ ride.segments[0].time[0] | date: 'short' : '+0000' }}</div>
             </ng-container>
-            <ng-container *ngIf="i === rideRoute()!.path.length - 1">
+            <ng-container *ngIf="i === rideRoute.path.length - 1">
               <div>Arrives: {{ ride.segments[ride.segments.length - 1].time[1] | date: 'short' : '+0000' }}</div>
             </ng-container>
-            <ng-container *ngIf="i > 0 && i < rideRoute()!.path.length - 1">
+            <ng-container *ngIf="i > 0 && i < rideRoute.path.length - 1">
               <div>Arrives: {{ ride.segments[i - 1].time[1] | date: 'short' : '+0000' }}</div>
               <div>Departs: {{ ride.segments[i].time[0] | date: 'short' : '+0000' }}</div>
             </ng-container>
           </td>
-          <ng-container *ngIf="i < rideRoute()!.path.length - 1">
-            <div *ngFor="let price of priceList(ride.segments[i].price)">{{ price.key }}: {{ price.value }}</div>
+          <ng-container *ngIf="i < rideRoute.path.length - 1">
+            <div class="rides_cycle">
+              <TTP-ride-price-form
+                *ngFor="let price of priceList(ride.segments[i].price); trackBy: trackByValue"
+                [price]="price"
+              >
+              </TTP-ride-price-form>
+            </div>
           </ng-container>
         </tr>
       </tbody>
