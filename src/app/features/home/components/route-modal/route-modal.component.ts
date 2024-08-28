@@ -21,7 +21,7 @@ import { MatIcon } from '@angular/material/icon';
 export class RouteModalComponent implements OnInit {
   public dialogRef = inject(MatDialogRef<RouteModalComponent>);
   public data = inject(MAT_DIALOG_DATA);
-  public popupRoute = model(this.data);
+  public popupRoute = model(this.data.route);
 
   testRoutesInfo = [
     { time: '18:00', station: 'endStationName', stop: 'First station' },
@@ -31,7 +31,7 @@ export class RouteModalComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.dialogRef.updateSize('80vw', 'auto');
+    this.dialogRef.updateSize('50vw', 'auto');
   }
 
   closeRoutePopup() {

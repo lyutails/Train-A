@@ -13,9 +13,22 @@
   }
 
   &_detail {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
+
+    &.time {
+      width: 20%;
+    }
+
+    &.line {
+      width: 10%;
+    }
+
+    &.station {
+      width: 35%;
+    }
+
+    &.stop {
+      width: 35%;
+    }
   }
 }

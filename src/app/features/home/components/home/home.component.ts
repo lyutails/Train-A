@@ -79,6 +79,8 @@ export class HomeComponent implements OnInit {
   public filteredTestCitiesTo!: Observable<string[]>;
   public isSeatSelected = signal(false);
   public minDate = new Date();
+  public dialog = inject(MatDialog);
+  public popupRoute = signal('');
   public routeValue = model('');
 
   testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
@@ -179,8 +181,6 @@ export class HomeComponent implements OnInit {
   onSubmit() {
     this.searchForm.reset();
   }
-  public popupRoute = signal('');
-  public dialog = inject(MatDialog);
 
   public openRouteModal() {
     const dialogRef = this.dialog.open(RouteModalComponent, {
