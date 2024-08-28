@@ -13,7 +13,7 @@ export class RoutesService {
     return this.routeHttpService.getRoutes();
   }
 
-  public postRoute(data: RouteAPI): Observable<RouteAPI[]> {
+  public postRoute(data: RouteAPI): Observable<RouteAPI> {
     return this.routeHttpService.postRoute(data);
   }
 

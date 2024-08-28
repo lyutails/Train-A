@@ -1,5 +1,45 @@
 <div class="routes_wrapper container-xl">
-  <TTP-button [type]="'button'" [width]="'10vw'" [buttonText]="'Create'" class="routes_create-button"></TTP-button>
+  <TTP-button
+    (click)="showCreateForm()"
+    [type]="'button'"
+    [width]="'10vw'"
+    [buttonText]="'Create'"
+    class="routes_create-button"
+  >
+  </TTP-button>
+
+  @if (isFormVisible) {
+    <form [formGroup]="createRouteForm" class="routes_form">
+      <div class="routes_form-columns">
+        <div class="routes_form-section">
+          <h6>Stations</h6>
+        </div>
+        <div class="routes_form-section">
+          <h6>Carriages</h6>
+          <div formArrayName="carriages"></div>
+        </div>
+      </div>
+      <div class="routes_form-buttons">
+        <TTP-button
+          (click)="handleFormSubmit()"
+          [type]="'submit'"
+          [width]="'10vw'"
+          [buttonText]="'Save'"
+          class="routes_save-button"
+          [disabled]="!createRouteForm.valid"
+        >
+        </TTP-button>
+        <TTP-button
+          (click)="handleCancel()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Cancel'"
+          class="routes_cancel-button"
+        >
+        </TTP-button>
+      </div>
+    </form>
+  }
 
   @if (routes.length > 0) {
     <div class="routes_data">

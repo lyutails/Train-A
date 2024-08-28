@@ -13,8 +13,8 @@ export class RoutesHttpService {
     return this.httpClient.get<RouteAPI[]>('route');
   }
 
-  public postRoute(data: RouteAPI): Observable<RouteAPI[]> {
-    return this.httpClient.post<RouteAPI[]>('route', data);
+  public postRoute(data: RouteAPI): Observable<RouteAPI> {
+    return this.httpClient.post<RouteAPI>('route', data);
   }
 
   public updateRoute(id: number, body: RouteAPI) {
