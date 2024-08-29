@@ -108,27 +108,6 @@ export class RidesComponent implements OnInit, OnDestroy {
     return this.rideForm.controls.schedule;
   }
 
-  public getSegmentsFormControl(index: number): FormArray<FormGroup<RideSegmentsForm>> {
-    return this.scheduleFormControl.at(index).controls.segments;
-  }
-
-  public getPriceKeys(segmentIndex: number, scheduleIndex: number) {
-    const segmentsArray = this.getSegmentsFormControl(scheduleIndex);
-    const prices = segmentsArray.at(segmentIndex).controls.price;
-    return Object.keys(prices.controls);
-  }
-
-  public getPriceControl(segmentIndex: number, scheduleIndex: number, key: string): FormControl<number> {
-    const segmentsArray = this.getSegmentsFormControl(scheduleIndex);
-    const priceGroup = segmentsArray.at(segmentIndex).controls.price;
-    return priceGroup.controls[key] as FormControl<number>;
-  }
-
-  public getTimeControl(segmentIndx: number, scheduleIndx: number): FormArray<FormControl<string>> {
-    const segmentsArray = this.getSegmentsFormControl(scheduleIndx);
-    return segmentsArray.at(segmentIndx).controls.time;
-  }
-
   public setRides() {
     this.rideRoute.schedule.forEach((schedule) => {
       this.scheduleFormControl.push(this.createSegmentGroup(schedule));
