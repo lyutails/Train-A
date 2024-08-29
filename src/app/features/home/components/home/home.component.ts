@@ -205,22 +205,13 @@ export class HomeComponent implements OnInit {
     const content = document.getElementById('carousel-content');
     if (carousel && content) {
       this.width = content.offsetWidth;
+      window.addEventListener('resize', () => (this.width = content.offsetWidth));
     }
 
     if (carousel && next && content) {
       prev?.addEventListener('click', () => {
         content.scrollBy(-(this.width + 10), 0);
-        /* if (carousel.scrollLeft - this.width - 10 <= 0) {
-          prev.style.display = 'none';
-        }
-        if (content.scrollWidth - this.width - 10 <= carousel.scrollLeft + this.width) {
-          next.style.display = 'flex';
-        } */
       });
-    }
-
-    if (carousel && content) {
-      window.addEventListener('resize', () => (this.width = content.offsetWidth));
     }
   }
 
@@ -231,22 +222,13 @@ export class HomeComponent implements OnInit {
     const content = document.getElementById('carousel-content');
     if (carousel && content) {
       this.width = content.offsetWidth;
-    }
-
-    if (carousel && prev) {
-      next?.addEventListener('click', () => {
-        content?.scrollBy(this.width + 10, 0);
-      });
-      /* if (carousel.scrollWidth !== 0) {
-        prev.style.display = 'flex';
-      }
-      if (carousel.scrollWidth - this.width - 10 <= carousel.scrollLeft + this.width) {
-        prev.style.display = 'none';
-      } */
-    }
-
-    if (carousel && content) {
       window.addEventListener('resize', () => (this.width = content.offsetWidth));
+    }
+
+    if (carousel && prev && content) {
+      next?.addEventListener('click', () => {
+        content.scrollBy(this.width + 10, 0);
+      });
     }
   }
 }
