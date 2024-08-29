@@ -175,7 +175,7 @@
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {
-  .home {
+  .home-ride {
     &_wrapper {
       display: flex;
       flex-direction: column;
@@ -194,7 +194,7 @@
 }
 
 @media screen and (width >= 300px) and (width <= 660px) {
-  .home {
+  .home-ride {
     &_trip-line {
       display: none;
     }

@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouteModalComponent } from '../route-modal/route-modal.component';
 import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'TTP-home-ride',
   standalone: true,
-  imports: [ButtonComponent, MatIcon, CommonModule, MatDialogModule],
+  imports: [ButtonComponent, MatIcon, CommonModule, MatDialogModule, MatTooltipModule, MatTooltip],
   templateUrl: './home-ride.component.html',
   styleUrl: './home-ride.component.scss',
 })

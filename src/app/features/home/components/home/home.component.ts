@@ -21,7 +21,7 @@ import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 import { map, Observable, startWith } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
-import { MatTooltip } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
 import { RideDatesCarouselComponent } from '../ride-dates-carousel/ride-dates-carousel.component';
 import { ArrowTopComponent } from '../../../../common/arrow-top/arrow-top.component';
@@ -70,6 +70,7 @@ export interface TripDates {
     RideDatesCarouselComponent,
     MatIconButton,
     ArrowTopComponent,
+    MatTooltipModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
