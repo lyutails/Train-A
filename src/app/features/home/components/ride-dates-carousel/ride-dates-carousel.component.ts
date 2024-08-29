@@ -13,6 +13,6 @@ export class RideDatesCarouselComponent {
   public selectDateFilterItem = signal(false);
 
   setColour() {
-    this.selectDateFilterItem.set(true);
+    this.selectDateFilterItem.set(!this.selectDateFilterItem());
   }
 }
