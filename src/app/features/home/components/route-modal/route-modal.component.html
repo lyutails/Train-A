@@ -1,18 +1,17 @@
 <div class="route-popup_header">
-  <div mat-dialog-title class="route-popup__title">Route</div>
+  <div mat-dialog-title class="route-popup__title">Route: routeId</div>
   <mat-dialog-actions class="route-popup_button">
-    <button mat-icon-button (click)="closeRoutePopup()" [mat-dialog-close]="popupRoute()">
+    <button mat-icon-button (click)="closeRoutePopup()" [mat-dialog-close]="popupRoutes()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-dialog-actions>
 </div>
 <mat-dialog-content>
-  @for (route of data.routes; track route) {
+  @for (route of data.routes; track index; let index = $index) {
     <div class="route-popup_info">
       <div class="route-popup_detail time">{{ route.time }}</div>
-      <div class="route-popup_detail point">
+      <div id="point{{ index }}" class="route-popup_detail point">
         <mat-icon [style.color]="'oklch(49.71% 0.165 259.85deg)'">circle</mat-icon>
-        <div [style.color]="'oklch(49.71% 0.165 259.85deg)'" class="route-popup_detail line"></div>
       </div>
       <div class="route-popup_detail station">{{ route.station }}</div>
       <div class="route-popup_detail stop">{{ route.stop }}</div>

@@ -90,8 +90,8 @@ export class HomeComponent implements OnInit {
     { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
     { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
-  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
-  // testTrips: Trip[] = [];
+  // testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
+  testTrips: Trip[] = [];
 
   constructor(private fb: NonNullableFormBuilder) {
     this.filteredOptions = this.testCities.slice();

@@ -79,7 +79,7 @@
             <TTP-button
               [type]="'button'"
               [width]="'10vw'"
-              [buttonText]="'Select'"
+              [buttonText]="'Details'"
               class="home_trip-button"
               (click)="pickTrip()"
             ></TTP-button>
@@ -132,7 +132,8 @@
       }
     }
     @if (searchRides() && testTrips.length === 0) {
-      <div>No direct trains found</div>
+      <div class="home_trip-no-trains">No direct trains found.</div>
+      <div class="home_trip-not-found"></div>
     }
   </div>
   @if (searchCarriages() && searchForm.valid) {

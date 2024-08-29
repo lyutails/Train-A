@@ -6173,6 +6173,11 @@ launch-editor@^2.6.1:
     picocolors "^1.0.0"
     shell-quote "^1.8.1"
 
+leader-line@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/leader-line/-/leader-line-1.0.7.tgz#c197268d8346d73f7ac10fe568d677d119c656c1"
+  integrity sha512-PhJpQLV7XychSIuGPD0TEqR9PgRYBbrhReaOcmHFOVtTw4dWKfUMAtOb7UP7xTsoib6sFzq2giQeOUHy7LCuJQ==
+
 leaflet@^1.9.4:
   version "1.9.4"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.9.4.tgz#23fae724e282fa25745aff82ca4d394748db7d8d"
