@@ -19,10 +19,11 @@
     align-items: center;
     justify-content: center;
 
-    aspect-ratio: 1 / 0.2;
+    aspect-ratio: 1 / 1;
     width: 25px;
-    margin: 0 5px;
+    margin: 0 2px;
 
+    font-size: 0.8rem;
     color: black;
 
     background-color: $light-blue;
