@@ -15,6 +15,6 @@
 ## 3. Commits convention:
 
 - commit prefix like fix / feat / refactor / init etc.
-- commit scope following commit prefix in paranthesis like this: `'feat(component): create...`
+- commit scope following commit prefix in paranthesis like this: `'feat(component): create...'`
 - commit message start with verb in simple present time
 - commit body is short, descriptive and informative
