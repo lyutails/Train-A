@@ -2,22 +2,31 @@
 
 .footer {
   width: 100%;
-  height: 55px;
   background-color: $deep-blue;
 
   &_wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    width: 90vw;
-    margin: 0 auto;
   }
 
   &_rss-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+    min-width: 40px;
+    max-width: 70px;
+
+    font-size: 1.8rem;
     font-weight: 800;
-    color: $light-blue;
+    color: $deep-blue;
     text-decoration: none;
+
+    background-color: $light-blue;
+    border-radius: 50%;
   }
 
   &_githubs {
@@ -30,7 +39,9 @@
     display: block;
 
     aspect-ratio: 1 / 1;
-    width: 50px;
+    width: 5vw;
+    min-width: 40px;
+    max-width: 70px;
 
     background-color: $deep-blue;
     background-image: url('../../../../../../public/github.png');
