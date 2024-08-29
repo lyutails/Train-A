@@ -1,6 +1,6 @@
-import { RouteSection } from './route-section.model';
+import { RouteSegments } from './route-section.model';
 
 export interface RouteSchedule {
   rideId: number;
-  segments: RouteSection[];
+  segments: RouteSegments[];
 }
