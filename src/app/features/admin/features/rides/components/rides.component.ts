@@ -27,7 +27,7 @@ import { RouteSchedule } from '../../../../../repositories/rides/services/models
 import { RideSegmentsForm } from '../models/ride-segments-form.model';
 import { RouteSegments } from '../../../../../repositories/rides/services/models/route-section.model';
 import { MatInputModule } from '@angular/material/input';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { isoDateValidator } from '../helpers/date-validator';
 
 @Component({
   selector: 'TTP-rides',
@@ -45,8 +45,6 @@ import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-mat
     MatTooltip,
     FormsModule,
     MatButtonModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
     MatDialogModule,
     MatIconModule,
     ReactiveFormsModule,
@@ -150,7 +148,12 @@ export class RidesComponent implements OnInit, OnDestroy {
       arr.push(
         this.fb.group<RideSegmentsForm>({
           price: this.createPriceFormGroup(segment.price),
-          time: this.fb.array(segment.time.map((t) => this.fb.control<string>(t, [Validators.required]))),
+          time: this.fb.array(
+            segment.time.map((t) => {
+              const formattedTime = this.datePipe.transform(t, 'yyyy-MM-ddTHH:mm', 'UTC');
+              return this.fb.control<string>(formattedTime || '', [Validators.required, isoDateValidator()]);
+            }),
+          ),
         }),
       );
     });
