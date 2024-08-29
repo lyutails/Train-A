@@ -71,7 +71,6 @@
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
-  <!-- <div class="home_rides"> -->
   @if (searchRides() && testTrips.length > 0) {
     @for (trip of testTrips; track trip.name) {
       <TTP-home-ride [tripName]="trip.name" [tripFrom]="inputFrom.value" [tripTo]="inputTo.value"></TTP-home-ride>
@@ -81,5 +80,4 @@
     <div class="home_trip-no-trains">No direct trains found.</div>
     <div class="home_trip-not-found"></div>
   }
-  <!-- </div> -->
 </div>
