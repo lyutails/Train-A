@@ -82,7 +82,7 @@
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
     <div id="carousel-content" class="home_ride-date-filter-slides">
-      @for (day of allDaysChosenRideAvailableAt; track day) {
+      @for (day of allDaysChosenRideAvailableAt; track day; let index = $index) {
         <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
       }
     </div>
