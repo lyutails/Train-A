@@ -184,7 +184,14 @@ export class HomeComponent implements OnInit {
 
   public openRouteModal() {
     const dialogRef = this.dialog.open(RouteModalComponent, {
-      data: { route: this.routeValue() },
+      data: {
+        routes: [
+          { time: '18:00', station: 'endStationName', stop: 'First station' },
+          { time: '19:00', station: 'lalala1', stop: '2m' },
+          { time: '20:00', station: 'lalala2', stop: '5m' },
+          { time: '20:00', station: 'startStationName', stop: 'Last station' },
+        ],
+      },
     });
 
     dialogRef.afterClosed().subscribe(() => {

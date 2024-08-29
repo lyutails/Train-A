@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 40px;
+    height: 80px;
   }
 
   &_detail {
@@ -19,7 +19,9 @@
       width: 20%;
     }
 
-    &.line {
+    &.point {
+      display: flex;
+      flex-direction: column;
       width: 10%;
     }
 
