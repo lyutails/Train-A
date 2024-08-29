@@ -31,6 +31,10 @@ body::-webkit-scrollbar-thumb {
   min-height: calc(100vh - 90px);
 }
 
+ttp-orders {
+  flex: 1 0 auto;
+}
+
 @media screen and (width >= 1200px) and (width <= 2400px) {
   html {
     font-size: 18px;
