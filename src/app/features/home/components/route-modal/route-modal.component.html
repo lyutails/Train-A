@@ -10,9 +10,9 @@
   @for (route of data.routes; track index; let index = $index) {
     <div class="route-popup_info">
       <div class="route-popup_detail time">{{ route.time }}</div>
-      <div id="point{{ index }}" class="route-popup_detail point">
+      <!-- <div id="point{{ index }}" class="route-popup_detail point">
         <mat-icon [style.color]="'oklch(49.71% 0.165 259.85deg)'">circle</mat-icon>
-      </div>
+      </div> -->
       <div class="route-popup_detail station">{{ route.station }}</div>
       <div class="route-popup_detail stop">{{ route.stop }}</div>
     </div>

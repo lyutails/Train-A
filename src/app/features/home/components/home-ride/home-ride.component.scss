@@ -1,6 +1,6 @@
 @import '../../../../../styles';
 
-.home {
+.home-ride {
   &_wrapper {
     display: flex;
     flex-direction: column;
@@ -8,104 +8,10 @@
     justify-content: space-between;
   }
 
-  &_title {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-    font-weight: 800;
-  }
-
-  &_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  &_inputs-wrapper {
-    display: flex;
-    column-gap: 20px;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-  }
-
-  &_carriage-button {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-
-  &_search-button {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-
-  &_buy-button {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-
-  &_form-input {
-    width: 20vw;
-    min-width: 200px;
-    max-width: 300px;
-  }
-
-  &_carriages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-  }
-
-  &_carriage-row {
-    z-index: 10;
-    display: flex;
-  }
-
-  &_shape-params {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-
-    height: 850px;
-
-    border: 1px solid $light-blue;
-    border-radius: 5px;
-  }
-
-  &_carriage-shape {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-    justify-content: space-evenly;
-
-    width: 254px;
-    height: 640px;
-    padding: 20px;
-
-    background-image: url('../../../../../../public/ticket_ttp_vertical_opacity.png');
-    background-size: contain;
-    border-radius: 5px;
-  }
-
-  &_rides {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-  }
-
   &_trip {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: space-between;
 
     width: 100%;
@@ -230,12 +136,12 @@
     background-color: $deep-blue;
 
     /* &.left {
-      align-self: flex-start;
-    }
-
-    &.right {
-      align-self: flex-end;
-    } */
+        align-self: flex-start;
+      }
+  
+      &.right {
+        align-self: flex-end;
+      } */
   }
 
   &_trip-total-time-line {

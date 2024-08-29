@@ -19,13 +19,13 @@
         <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
           <!-- @for (city of filteredTestCitiesFrom | async; track city) {
-            <mat-option [value]="city">{{ city }}</mat-option>
-          } -->
+              <mat-option [value]="city">{{ city }}</mat-option>
+            } -->
           @for (city of filteredOptions; track city) {
             <mat-option [value]="city">{{ city }}</mat-option>
           }
-        </mat-autocomplete></mat-form-field
-      >
+        </mat-autocomplete>
+      </mat-form-field>
       <mat-form-field appearance="outline" class="home_form-input" formControlName="to"
         ><mat-label>To...</mat-label>
         <input
@@ -48,7 +48,7 @@
         </mat-autocomplete></mat-form-field
       >
       <mat-form-field appearance="outline" class="home_form-input" formControlName="date"
-        ><mat-label>Choose a date...</mat-label
+        ><mat-label>Date...</mat-label
         ><input
           matInput
           [matDatepicker]="picker"
@@ -62,6 +62,7 @@
       </mat-form-field>
     </div>
   </form>
+  <div class="home_date-day-carousel"></div>
   <TTP-button
     (click)="getRides()"
     [type]="'submit'"
@@ -70,103 +71,15 @@
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
-  <div class="home_rides">
-    @if (searchRides() && testTrips.length > 0) {
-      @for (trip of testTrips; track trip.name) {
-        <div class="home_trip">
-          <div class="home_trip-header">
-            <div class="home_trip-name">{{ trip.name }}</div>
-            <TTP-button
-              [type]="'button'"
-              [width]="'10vw'"
-              [buttonText]="'Details'"
-              class="home_trip-button"
-              (click)="pickTrip()"
-            ></TTP-button>
-          </div>
-          <div class="home_trip-time">
-            <div class="home_trip-time start">16:00</div>
-            <div class="home_trip-total-time-line">
-              <mat-icon class="home_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
-                >radio_button_unchecked</mat-icon
-              >
-              <div class="home_trip-line left"></div>
-              <div class="home_trip-total-time">7h 22m</div>
-              <div class="home_trip-line right"></div>
-              <mat-icon class="home_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
-                >radio_button_checked</mat-icon
-              >
-            </div>
-            <div class="home_trip-time end">22:00</div>
-          </div>
-          <div class="home_trip-info">
-            <div class="home_trip-details start">
-              <div class="home_trip-date">August 30</div>
-              <div class="home_trip-station">City1</div>
-            </div>
-            <div class="home_trip-details end">
-              <div class="home_trip-date">August 31</div>
-              <div class="home_trip-station">City2</div>
-            </div>
-          </div>
-          <div class="home_trip-from-to">
-            <mat-icon>train</mat-icon> {{ searchForm.controls.from.value }} <mat-icon>trending_flat</mat-icon>
-            {{ searchForm.controls.to.value }}
-          </div>
-          <TTP-button
-            [type]="'button'"
-            [width]="'10vw'"
-            [buttonText]="'Route'"
-            class="home_route-button"
-            (click)="openRouteModal()"
-          ></TTP-button>
-          <div class="home_trip-carriages">
-            @for (carriage of testCarriages; track carriage.code) {
-              <div class="home_trip-carriage-details">
-                <div class="home_trip-carriage-type">{{ carriage.name }}: (number of) seats</div>
-                <div class="home_trip-carriage-price">500$</div>
-              </div>
-            }
-          </div>
-        </div>
-      }
+  <!-- <div class="home_rides"> -->
+  @if (searchRides() && testTrips.length > 0) {
+    @for (trip of testTrips; track trip.name) {
+      <TTP-home-ride [tripName]="trip.name" [tripFrom]="inputFrom.value" [tripTo]="inputTo.value"></TTP-home-ride>
     }
-    @if (searchRides() && testTrips.length === 0) {
-      <div class="home_trip-no-trains">No direct trains found.</div>
-      <div class="home_trip-not-found"></div>
-    }
-  </div>
-  @if (searchCarriages() && searchForm.valid) {
-    <div class="home_carriages">
-      @for (carriage of testCarriages; track carriage.name) {
-        <div class="home_shape-params">
-          <p class="home_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
-          <p class="home_carriage-details">Rows: {{ carriage.rows }}</p>
-          <p class="home_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
-          <p class="home_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
-          <div class="home_carriage-shape">
-            @for (row of [].constructor(carriage.rows); track index; let index = $index) {
-              @if (carriage.name !== undefined) {
-                <TTP-carriage-row
-                  class="home_carriage-row"
-                  [carriageName]="carriage.name"
-                  [rowNumber]="index"
-                  [leftSeatCount]="carriage.leftSeats"
-                  [rightSeatCount]="carriage.rightSeats"
-                ></TTP-carriage-row>
-              }
-            }
-          </div>
-        </div>
-      }
-    </div>
   }
-  <TTP-button
-    (click)="buyTicket()"
-    [type]="'submit'"
-    [width]="'10vw'"
-    [buttonText]="'Buy' | uppercase"
-    class="home_buy-button"
-    [disabled]="!isSeatSelected()"
-  ></TTP-button>
+  @if (searchRides() && testTrips.length === 0) {
+    <div class="home_trip-no-trains">No direct trains found.</div>
+    <div class="home_trip-not-found"></div>
+  }
+  <!-- </div> -->
 </div>

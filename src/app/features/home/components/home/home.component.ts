@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { Component, ElementRef, inject, model, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -18,12 +18,11 @@ import { ButtonComponent } from '../../../../common/button/button.component';
 import { SearchForm } from '../../models/search-form.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
-import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 import { map, Observable, startWith } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { RouteModalComponent } from '../route-modal/route-modal.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { HomeRideComponent } from '../home-ride/home-ride.component';
 
 export interface Trip {
   name: string;
@@ -59,7 +58,8 @@ export interface Trip {
     MatSelect,
     MatLabel,
     MatOption,
-    MatDialogModule,
+    MatTooltip,
+    HomeRideComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -72,26 +72,23 @@ export class HomeComponent implements OnInit {
   public rowNumber!: number;
   public leftSeatCount!: number;
   public rightSeatCount!: number;
-  public searchCarriages = signal(false);
   public searchRides = signal(false);
   public filteredOptions!: string[];
   public filteredTestCitiesFrom!: Observable<string[]>;
   public filteredTestCitiesTo!: Observable<string[]>;
   public isSeatSelected = signal(false);
   public minDate = new Date();
-  public dialog = inject(MatDialog);
-  public popupRoute = signal('');
-  public routeValue = model('');
 
-  testCities: string[] = ['london', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
-  testCarriages: Carriage[] = [
-    { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
-    { code: 'justCarriage', name: 'justCarriage', rows: 10, leftSeats: 3, rightSeats: 1 },
-    { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
-    { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
+  testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
+  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
+  // testTrips: Trip[] = [];
+  allDaysChoseRideAvailableAt = [
+    { date: 'September 01', day: 'Monday' },
+    { date: 'September 08', day: 'Monday' },
+    { date: 'September 16', day: 'Monday' },
+    { date: 'September 23', day: 'Monday' },
+    { date: 'September 30', day: 'Monday' },
   ];
-  // testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
-  testTrips: Trip[] = [];
 
   constructor(private fb: NonNullableFormBuilder) {
     this.filteredOptions = this.testCities.slice();
@@ -164,38 +161,11 @@ export class HomeComponent implements OnInit {
     // api call here
   }
 
-  public pickTrip() {
-    this.getCarriages();
-  }
-
-  public getCarriages() {
-    this.searchCarriages.set(true);
-    // api call here
-    // this.carriages = data
-  }
-
   public buyTicket() {
     // api call here
   }
 
   onSubmit() {
     this.searchForm.reset();
-  }
-
-  public openRouteModal() {
-    const dialogRef = this.dialog.open(RouteModalComponent, {
-      data: {
-        routes: [
-          { time: '18:00', station: 'endStationName', stop: 'First station' },
-          { time: '19:00', station: 'lalala1', stop: '2m' },
-          { time: '20:00', station: 'lalala2', stop: '5m' },
-          { time: '20:00', station: 'startStationName', stop: 'Last station' },
-        ],
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      return;
-    });
   }
 }
