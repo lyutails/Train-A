@@ -96,6 +96,7 @@ export class HomeComponent implements OnInit {
   public filteredTestCitiesTo!: Observable<string[]>;
   public isSeatSelected = signal(false);
   public minDate = new Date();
+  public width!: number;
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
@@ -202,18 +203,24 @@ export class HomeComponent implements OnInit {
     const next = document.getElementById('next');
     const prev = document.getElementById('prev');
     const content = document.getElementById('carousel-content');
-    const width = carousel?.offsetWidth;
+    if (carousel && content) {
+      this.width = content.offsetWidth;
+    }
 
-    if (carousel && width && next && content) {
+    if (carousel && next && content) {
       prev?.addEventListener('click', () => {
-        carousel.scrollBy(-(width + 10), 0);
-        if (carousel.scrollLeft - width - 10 <= 0) {
+        content.scrollBy(-(this.width + 10), 0);
+        /* if (carousel.scrollLeft - this.width - 10 <= 0) {
           prev.style.display = 'none';
         }
-        if (content.scrollWidth - width - 10 <= carousel.scrollLeft + width) {
+        if (content.scrollWidth - this.width - 10 <= carousel.scrollLeft + this.width) {
           next.style.display = 'flex';
-        }
+        } */
       });
+    }
+
+    if (carousel && content) {
+      window.addEventListener('resize', () => (this.width = content.offsetWidth));
     }
   }
 
@@ -221,18 +228,25 @@ export class HomeComponent implements OnInit {
     const carousel = document.getElementById('carousel');
     const next = document.getElementById('next');
     const prev = document.getElementById('prev');
-    const width = carousel?.offsetWidth;
+    const content = document.getElementById('carousel-content');
+    if (carousel && content) {
+      this.width = content.offsetWidth;
+    }
 
-    if (carousel && width && prev) {
+    if (carousel && prev) {
       next?.addEventListener('click', () => {
-        carousel?.scrollBy(width + 10, 0);
+        content?.scrollBy(this.width + 10, 0);
       });
-      if (carousel.scrollWidth !== 0) {
+      /* if (carousel.scrollWidth !== 0) {
         prev.style.display = 'flex';
       }
-      if (carousel.scrollWidth - width - 10 <= carousel.scrollLeft + width) {
+      if (carousel.scrollWidth - this.width - 10 <= carousel.scrollLeft + this.width) {
         prev.style.display = 'none';
-      }
+      } */
+    }
+
+    if (carousel && content) {
+      window.addEventListener('resize', () => (this.width = content.offsetWidth));
     }
   }
 }
