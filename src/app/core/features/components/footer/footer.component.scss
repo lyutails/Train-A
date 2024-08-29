@@ -29,6 +29,13 @@
 
     background-color: $light-blue;
     border-radius: 50%;
+
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-color: white;
+    }
   }
 
   &_githubs {
@@ -54,7 +61,15 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 0 0;
+
+    transition: all 0.2s ease-in-out;
+
     mask-image: url('../../../../../../public/github.png');
     mask-size: cover;
+
+    &:hover {
+      cursor: pointer;
+      background-color: white;
+    }
   }
 }
