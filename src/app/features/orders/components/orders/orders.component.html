@@ -1,1 +1,40 @@
-<div class="orders container-xl"></div>
+<div class="orders container-xl">
+  @if (isAuthenticated && !isAdminRole) {
+    <div class="orders_ticket">
+      <div class="orders_trip-station start"></div>
+      <div class="orders_trip-station end"></div>
+      <div class="orders_trip-time start"></div>
+      <div class="orders_trip-time end"></div>
+      <div class="orders_trip-duration"></div>
+      <div class="orders_carriage-type"></div>
+      <div class="orders_carriage-number"></div>
+      <div class="orders_seat-number"></div>
+      <div class="orders_ticket-price"></div>
+      <TTP-button
+        (click)="logoutAndRedirectToHome()"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'Cancel'"
+      ></TTP-button>
+    </div>
+  }
+  @if (isAuthenticated && isAdminRole) {
+    <div class="orders_ticket">
+      <div class="orders_trip-station start"></div>
+      <div class="orders_trip-station end"></div>
+      <div class="orders_trip-time start"></div>
+      <div class="orders_trip-time end"></div>
+      <div class="orders_trip-duration"></div>
+      <div class="orders_carriage-type"></div>
+      <div class="orders_carriage-number"></div>
+      <div class="orders_seat-number"></div>
+      <div class="orders_ticket-price"></div>
+      <TTP-button
+        (click)="logoutAndRedirectToHome()"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'Cancel'"
+      ></TTP-button>
+    </div>
+  }
+</div>
