@@ -1,22 +1,22 @@
 @import '../../../../../../styles';
 
-.rides {
-  &_key-price {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+.table-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
 
-  &_title {
-    color: $deep-blue;
-  }
+.table-header {
+  display: contents;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+}
 
-  &_cycle {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+.table-row {
+  display: contents;
+}
 
-    width: 30vw;
-  }
+.table-cell {
+  padding: 8px;
+  border: 1px solid #ddd;
 }

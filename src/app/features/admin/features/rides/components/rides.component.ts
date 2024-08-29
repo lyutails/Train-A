@@ -26,8 +26,8 @@ import { RideInfoForm } from '../models/ride-info-form-model';
 import { RouteSchedule } from '../../../../../repositories/rides/services/models/route-schedule.model';
 import { RideSegmentsForm } from '../models/ride-segments-form.model';
 import { RouteSegments } from '../../../../../repositories/rides/services/models/route-section.model';
-import { isoDateValidator } from '../helpers/date-validator';
 import { MatInputModule } from '@angular/material/input';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 
 @Component({
   selector: 'TTP-rides',
@@ -45,6 +45,8 @@ import { MatInputModule } from '@angular/material/input';
     MatTooltip,
     FormsModule,
     MatButtonModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
     MatDialogModule,
     MatIconModule,
     ReactiveFormsModule,
@@ -55,6 +57,7 @@ import { MatInputModule } from '@angular/material/input';
   ],
   templateUrl: './rides.component.html',
   styleUrl: './rides.component.scss',
+  providers: [DatePipe],
 })
 export class RidesComponent implements OnInit, OnDestroy {
   private readonly destroy$$ = new Subject<void>();
@@ -66,6 +69,7 @@ export class RidesComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly fb: NonNullableFormBuilder,
+    private readonly datePipe: DatePipe,
   ) {}
 
   public ngOnInit(): void {
@@ -122,7 +126,7 @@ export class RidesComponent implements OnInit, OnDestroy {
     return priceGroup.controls[key] as FormControl<number>;
   }
 
-  public getTimeControlKeys(segmentIndx: number, scheduleIndx: number) {
+  public getTimeControl(segmentIndx: number, scheduleIndx: number): FormArray<FormControl<string>> {
     const segmentsArray = this.getSegmentsFormControl(scheduleIndx);
     return segmentsArray.at(segmentIndx).controls.time;
   }
@@ -146,7 +150,7 @@ export class RidesComponent implements OnInit, OnDestroy {
       arr.push(
         this.fb.group<RideSegmentsForm>({
           price: this.createPriceFormGroup(segment.price),
-          time: this.fb.array(segment.time.map((t) => this.fb.control<string>(t, [isoDateValidator()]))),
+          time: this.fb.array(segment.time.map((t) => this.fb.control<string>(t, [Validators.required]))),
         }),
       );
     });
@@ -167,7 +171,12 @@ export class RidesComponent implements OnInit, OnDestroy {
     return this.fb.group(controls);
   }
 
-  public onSubmit() {
-    console.log(this.rideForm.value);
+  public onSubmit(): void {
+    this.rideForm.controls.schedule.controls.forEach((sched, index) => {
+      if (sched.dirty) {
+        console.log(sched.value);
+        console.log(index);
+      }
+    });
   }
 }

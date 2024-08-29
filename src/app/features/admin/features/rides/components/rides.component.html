@@ -2,42 +2,72 @@
   <form [formGroup]="rideForm" (ngSubmit)="onSubmit()">
     <div formArrayName="schedule">
       <div *ngFor="let sc of scheduleFormControl.controls; let i = index" [formGroupName]="i">
-        <legend>
-          <h4>Ride {{ rideRoute.schedule[i].rideId }}</h4>
-        </legend>
-
         <fieldset>
           <mat-card>
             <mat-card-header>
-              <mat-card-title>Schedule {{ i + 1 }}</mat-card-title>
+              <mat-card-title>Ride {{ rideRoute.schedule[i].rideId }}</mat-card-title>
             </mat-card-header>
-            <mat-card-content>
-              <div formArrayName="segments">
-                <div *ngFor="let segment of getSegmentsFormControl(i).controls; let j = index" [formGroupName]="j">
-                  <fieldset>
-                    <mat-card>
-                      <mat-card-header>
-                        <mat-card-title>Segment {{ j }}</mat-card-title>
-                      </mat-card-header>
-                      <mat-card-content>
-                        <div *ngFor="let priceKey of getPriceKeys(j, i); let k = index">
-                          <mat-form-field appearance="fill">
-                            <mat-label>{{ priceKey }}</mat-label>
-                            <input matInput [formControl]="getPriceControl(j, i, priceKey)" />
-                            <mat-error *ngIf="getPriceControl(j, i, priceKey).hasError('required')">
-                              "Price is required"
-                            </mat-error>
-                            <mat-error *ngIf="getPriceControl(j, i, priceKey).hasError('pattern')">
-                              'Price is not in correct format'
-                            </mat-error>
-                          </mat-form-field>
+
+            <div formArrayName="segments">
+              <div *ngFor="let segment of getSegmentsFormControl(i).controls; let j = index" [formGroupName]="j">
+                <fieldset>
+                  <mat-card>
+                    <mat-card-content>
+                      <div class="table-container">
+                        <div class="table-header">
+                          <div class="table-cell">Stations</div>
+                          <div class="table-cell">Price</div>
+                          <div class="table-cell">Schedule</div>
                         </div>
-                      </mat-card-content>
-                    </mat-card>
-                  </fieldset>
-                </div>
+
+                        <div class="table-row">
+                          <div class="table-cell">{{ rideRoute.path[j] }}</div>
+                          <div class="table-cell">
+                            <div class="price-column">
+                              <div *ngFor="let priceKey of getPriceKeys(j, i); let k = index">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>{{ priceKey }}</mat-label>
+                                  <input matInput [formControl]="getPriceControl(j, i, priceKey)" />
+                                  <mat-error *ngIf="getPriceControl(j, i, priceKey).hasError('required')">
+                                    "Price is required"
+                                  </mat-error>
+                                  <mat-error *ngIf="getPriceControl(j, i, priceKey).hasError('pattern')">
+                                    'Price is not in correct format'
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="table-cell">
+                            <div class="time-column">
+                              <div *ngFor="let timeControl of getTimeControl(j, i).controls; let k = index">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>
+                                    <ng-container *ngIf="j === 0 && k === 0">Departs</ng-container>
+                                    <ng-container *ngIf="j === 0 && k > 0">Arrives</ng-container>
+                                    <ng-container *ngIf="j > 0 && j < getSegmentsFormControl(i).controls.length - 1"
+                                      >Arrives/Departs</ng-container
+                                    >
+                                    <ng-container *ngIf="j === getSegmentsFormControl(i).controls.length - 1 && k === 0"
+                                      >Arrives</ng-container
+                                    >
+                                  </mat-label>
+                                  <input matInput [formControl]="timeControl" />
+                                  <mat-error *ngIf="timeControl.hasError('required')"> "Time is required" </mat-error>
+                                  <mat-error *ngIf="timeControl.hasError('pattern')">
+                                    'Time is not in correct format'
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </fieldset>
               </div>
-            </mat-card-content>
+            </div>
           </mat-card>
         </fieldset>
       </div>
