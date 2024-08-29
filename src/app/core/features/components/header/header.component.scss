@@ -27,6 +27,7 @@ header {
   justify-content: center;
 
   width: 40px;
+  max-width: 40px;
   height: 40px;
   padding: 0;
 
@@ -36,6 +37,13 @@ header {
   border: none;
 
   &_icon {
-    font-size: 50px;
+    transform: scale(1.8);
+    margin-right: unset;
+    font-size: 30px;
+    text-align: center;
   }
+}
+
+.mat-mdc-button > .mat-icon {
+  margin-right: unset;
 }
