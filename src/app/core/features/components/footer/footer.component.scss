@@ -36,15 +36,26 @@
   }
 
   &_github-icon {
-    display: block;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     aspect-ratio: 1 / 1;
     width: 5vw;
     min-width: 40px;
     max-width: 70px;
 
-    background-color: $deep-blue;
+    background-color: $light-blue;
     background-image: url('../../../../../../public/github.png');
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 0 0;
+
+    mask-image: url('../../../../../../public/github.png');
+    mask-image: url('../../../../../../public/github.png');
+    mask-size: cover;
+    mask-size: cover;
   }
 }
