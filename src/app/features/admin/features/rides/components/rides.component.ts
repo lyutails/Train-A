@@ -121,10 +121,8 @@ export class RidesComponent implements OnInit, OnDestroy {
   }
 
   private createEditableForm(segments: RouteSegments[]): FormArray<FormGroup<RideSegmentsForm>> {
-    const arr = this.fb.array<FormGroup<RideSegmentsForm>>([]);
-
-    segments.forEach((segment) => {
-      arr.push(
+    return this.fb.array<FormGroup<RideSegmentsForm>>(
+      segments.map((segment) =>
         this.fb.group<RideSegmentsForm>({
           price: this.createPriceFormGroup(segment.price),
           time: this.fb.array(
@@ -134,10 +132,8 @@ export class RidesComponent implements OnInit, OnDestroy {
             }),
           ),
         }),
-      );
-    });
-
-    return arr;
+      ),
+    );
   }
 
   private createPriceFormGroup(priceObj: Record<string, number>): FormGroup {
