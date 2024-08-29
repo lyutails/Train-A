@@ -13,11 +13,39 @@
       <div class="routes_form-columns">
         <div class="routes_form-section">
           <h6>Stations</h6>
+          <div formArrayName="stations">
+            <div *ngFor="let station of getStationsControls(); let i = index" [formGroupName]="i">
+              <mat-form-field appearance="outline" class="routes_control-inputs">
+                <mat-label>Station {{ i + 1 }}</mat-label>
+                <mat-select (selectionChange)="onStationChange(i)" formControlName="station">
+                  <mat-option *ngFor="let connectedStation of connectedStations[i]" [value]="connectedStation.id">
+                    {{ connectedStation.city }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <TTP-button
+                *ngIf="i > 0"
+                (click)="removeStation(i)"
+                [type]="'button'"
+                [width]="'15vw'"
+                [buttonText]="'Remove'"
+                class="routes_remove-button"
+              ></TTP-button>
+            </div>
+            <TTP-button
+              *ngIf="canAddStation()"
+              (click)="addStation()"
+              [type]="'button'"
+              [width]="'15vw'"
+              [buttonText]="'Add Station'"
+              class="routes_add-station-button"
+            ></TTP-button>
+          </div>
         </div>
         <div class="routes_form-section">
           <h6>Carriages</h6>
           <div formArrayName="carriages">
-            <div *ngFor="let carriage of carriages.controls; let i = index" [formGroupName]="i">
+            <div *ngFor="let carriage of getCarriagesControls(); let i = index" [formGroupName]="i">
               <mat-form-field appearance="outline" class="routes_control-inputs">
                 <mat-label>Name</mat-label>
                 <input matInput placeholder="Enter carriage name" formControlName="name" />
@@ -58,7 +86,7 @@
         </div>
       </div>
 
-      <!-- <div class="routes_form-buttons">
+      <div class="routes_form-buttons">
         <TTP-button
           (click)="handleFormSubmit()"
           [type]="'submit'"
@@ -76,7 +104,7 @@
           class="routes_cancel-button"
         >
         </TTP-button>
-      </div> -->
+      </div>
     </form>
   }
 

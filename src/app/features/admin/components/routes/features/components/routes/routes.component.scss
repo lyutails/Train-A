@@ -64,11 +64,15 @@
   &_form-section {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 300px;
+    width: 400px;
   }
 
   &_control-inputs {
     z-index: 110;
+  }
+
+  &_form-columns {
+    display: flex;
+    gap: 50px;
   }
 }
