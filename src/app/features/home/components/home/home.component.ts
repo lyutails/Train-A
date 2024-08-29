@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatNativeDateModule, MatOption } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatFormField, MatFormFieldModule, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
@@ -24,6 +24,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
 import { RideDatesCarouselComponent } from '../ride-dates-carousel/ride-dates-carousel.component';
+import { ArrowTopComponent } from '../../../../common/arrow-top/arrow-top.component';
 
 export interface Trip {
   name: string;
@@ -67,6 +68,8 @@ export interface TripDates {
     MatTooltip,
     HomeRideComponent,
     RideDatesCarouselComponent,
+    MatIconButton,
+    ArrowTopComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -89,12 +92,16 @@ export class HomeComponent implements OnInit {
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
   // testTrips: Trip[] = [];
-  allDaysChoseRideAvailableAt: TripDates[] = [
+  allDaysChosenRideAvailableAt: TripDates[] = [
     { date: 'September 01', day: 'Monday' },
     { date: 'September 08', day: 'Monday' },
     { date: 'September 16', day: 'Monday' },
     { date: 'September 23', day: 'Monday' },
     { date: 'September 30', day: 'Monday' },
+    { date: 'October 07', day: 'Monday' },
+    { date: 'October 14', day: 'Monday' },
+    { date: 'October 21', day: 'Monday' },
+    { date: 'October 28', day: 'Monday' },
   ];
 
   constructor(private fb: NonNullableFormBuilder) {
@@ -180,5 +187,9 @@ export class HomeComponent implements OnInit {
 
   onSubmit() {
     this.searchForm.reset();
+  }
+
+  moveDatesCarouselLeft() {
+    console.log('move me left');
   }
 }

@@ -1,0 +1,18 @@
+@import '../../../styles';
+
+.arrow-top {
+  &_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  &_icon-button {
+    position: absolute;
+
+    // transform: translate(50px, 0px);
+    color: white;
+    background-color: $deep-blue;
+    border-radius: 50%;
+  }
+}

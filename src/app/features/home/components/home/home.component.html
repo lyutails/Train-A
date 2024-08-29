@@ -75,14 +75,21 @@
       </mat-form-field>
     </div>
   </form>
-  <div class="home_ride-date-carousel">
-    <button mat-icon-button type="button" class="home_ride-date-carousel-button left">
+  <div class="home_ride-date-filter-carousel">
+    <button mat-icon-button type="button" class="home_ride-date-carousel-button left" (click)="moveDatesCarouselLeft()">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
-    @for (day of allDaysChoseRideAvailableAt; track day) {
-      <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
-    }
-    <button mat-icon-button type="button" class="home_ride-date-carousel-button right">
+    <div class="home_ride-date-filter-slides">
+      @for (day of allDaysChosenRideAvailableAt; track day) {
+        <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
+      }
+    </div>
+    <button
+      mat-icon-button
+      type="button"
+      class="home_ride-date-carousel-button right"
+      (click)="moveDatesCarouselLeft()"
+    >
       <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
   </div>
@@ -104,3 +111,37 @@
     <div class="home_trip-not-found"></div>
   }
 </div>
+<TTP-arrow-top [style.width]="'90%'" [style.display]="'block'"></TTP-arrow-top>
+<!--   @if (searchCarriages() && searchForm.valid) {
+    <div class="home_carriages">
+      @for (carriage of testCarriages; track carriage.name) {
+        <div class="home_shape-params">
+          <p class="home_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
+          <p class="home_carriage-details">Rows: {{ carriage.rows }}</p>
+          <p class="home_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
+          <p class="home_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
+          <div class="home_carriage-shape">
+            @for (row of [].constructor(carriage.rows); track index; let index = $index) {
+              @if (carriage.name !== undefined) {
+                <TTP-carriage-row
+                  class="home_carriage-row"
+                  [carriageName]="carriage.name"
+                  [rowNumber]="index"
+                  [leftSeatCount]="carriage.leftSeats"
+                  [rightSeatCount]="carriage.rightSeats"
+                ></TTP-carriage-row>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <TTP-button
+      (click)="buyTicket()"
+      [type]="'submit'"
+      [width]="'10vw'"
+      [buttonText]="'Buy' | uppercase"
+      class="home_buy-button"
+      [disabled]="!isSeatSelected()"
+    ></TTP-button>
+  } -->

@@ -264,13 +264,26 @@
     background-size: cover;
   }
 
-  &_ride-date-carousel {
+  &_ride-date-filter-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  &_ride-date-filter-slides {
+    overflow: hidden;
     display: flex;
     column-gap: 10px;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 
-    width: 100%;
+    width: 80%;
     max-width: 100%;
     margin-top: 20px;
     padding-right: 20px;
@@ -278,6 +291,10 @@
   }
 
   &_ride-date-carousel-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     background-color: transparent;
     border: none;
   }
@@ -288,7 +305,10 @@ ttp-home-ride {
 }
 
 ttp-ride-dates-carousel {
+  aspect-ratio: 1 / 0.4;
   width: 15%;
+  min-width: 110px;
+  min-height: 65px;
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {
