@@ -2,16 +2,14 @@
   <p class="home_title" [style.color]="'oklch(49.71% 0.165 259.85deg)'">Pick trip parameters</p>
   <form class="home_form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <div class="home_inputs-wrapper">
-      <mat-form-field appearance="outline" class="home_form-input" formControlName="from"
+      <mat-form-field appearance="outline" class="home_form-input"
         ><mat-label>From...</mat-label>
         <input
           #inputFrom
           matInput
-          type="text"
           placeholder="From"
           formControlName="from"
           [value]="searchForm.controls.from.value"
-          [formControl]="searchForm.controls.from"
           [matAutocomplete]="auto"
           (input)="filterFrom()"
           (focus)="filterFrom()"
@@ -26,16 +24,14 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="home_form-input" formControlName="to"
+      <mat-form-field appearance="outline" class="home_form-input"
         ><mat-label>To...</mat-label>
         <input
           #inputTo
           matInput
-          type="text"
           placeholder="To"
           formControlName="to"
           [value]="searchForm.controls.to.value"
-          [formControl]="searchForm.controls.to"
           [matAutocomplete]="auto"
           (input)="filterTo()"
           (focus)="filterTo()"
@@ -47,7 +43,7 @@
           }
         </mat-autocomplete></mat-form-field
       >
-      <mat-form-field appearance="outline" class="home_form-input" formControlName="date"
+      <mat-form-field appearance="outline" class="home_form-input"
         ><mat-label>Date...</mat-label
         ><input
           matInput
@@ -60,7 +56,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field appearance="outline" class="home_form-input" formControlName="time"
+      <mat-form-field appearance="outline" class="home_form-input"
         ><mat-label for="appt">Time...</mat-label
         ><input
           matInput
@@ -75,16 +71,23 @@
       </mat-form-field>
     </div>
   </form>
-  <div class="home_ride-date-filter-carousel">
-    <button mat-icon-button type="button" class="home_ride-date-carousel-button left" (click)="moveDatesCarouselLeft()">
+  <div class="home_ride-date-filter-carousel" id="carousel">
+    <button
+      id="prev"
+      mat-icon-button
+      type="button"
+      class="home_ride-date-carousel-button left"
+      (click)="moveDatesCarouselLeft()"
+    >
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
-    <div class="home_ride-date-filter-slides">
+    <div id="carousel-content" class="home_ride-date-filter-slides">
       @for (day of allDaysChosenRideAvailableAt; track day) {
         <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
       }
     </div>
     <button
+      id="next"
       mat-icon-button
       type="button"
       class="home_ride-date-carousel-button right"
@@ -111,7 +114,23 @@
     <div class="home_trip-not-found"></div>
   }
 </div>
-<TTP-arrow-top [style.width]="'80%'" [style.display]="'block'"></TTP-arrow-top>
+@if (searchRides() && testTrips.length > 0) {
+  <TTP-arrow-top
+    [style.width]="'80%'"
+    [style.height]="'50px'"
+    [style.display]="'block'"
+    [disabled]="false"
+    [backgroundColor]="'oklch(49.71% 0.165 259.85deg)'"
+  ></TTP-arrow-top>
+} @else {
+  <TTP-arrow-top
+    [style.width]="'80%'"
+    [style.height]="'50px'"
+    [style.display]="'block'"
+    [disabled]="true"
+    [backgroundColor]="'lightgray'"
+  ></TTP-arrow-top>
+}
 <!--   @if (searchCarriages() && searchForm.valid) {
     <div class="home_carriages">
       @for (carriage of testCarriages; track carriage.name) {
@@ -140,7 +159,7 @@
       (click)="buyTicket()"
       [type]="'submit'"
       [width]="'10vw'"
-      [buttonText]="'Buy' | uppercase"
+      [buttonText]="'Book seat' | uppercase"
       class="home_buy-button"
       [disabled]="!isSeatSelected()"
     ></TTP-button>

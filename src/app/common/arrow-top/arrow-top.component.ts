@@ -11,6 +11,6 @@ import { MatIcon } from '@angular/material/icon';
   styleUrl: './arrow-top.component.scss',
 })
 export class ArrowTopComponent {
-  @Input() width = '';
-  @Input() display = '';
+  @Input() disabled!: boolean;
+  @Input() backgroundColor!: string;
 }

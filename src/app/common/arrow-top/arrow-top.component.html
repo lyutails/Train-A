@@ -1,6 +1,11 @@
 <div class="arrow-top_wrapper">
   <a href="#">
-    <button mat-icon-button type="button" class="arrow-top_icon-button">
+    <button
+      type="button"
+      class="arrow-top_icon-button"
+      [disabled]="disabled"
+      [style.background-color]="backgroundColor"
+    >
       <mat-icon>keyboard_arrow_up</mat-icon>
     </button></a
   >

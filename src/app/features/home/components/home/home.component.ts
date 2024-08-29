@@ -4,6 +4,7 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
+  NG_VALUE_ACCESSOR,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
@@ -11,9 +12,9 @@ import {
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatNativeDateModule, MatOption } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
-import { MatFormField, MatFormFieldModule, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatFormFieldModule, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
-import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { SearchForm } from '../../models/search-form.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -39,8 +40,11 @@ export interface TripDates {
   selector: 'TTP-home',
   standalone: true,
   imports: [
-    MatFormField,
-    MatInput,
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatLabel,
     MatIcon,
     MatSuffix,
@@ -48,20 +52,16 @@ export interface TripDates {
     MatHint,
     MatDatepickerToggle,
     MatNativeDateModule,
-    MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
     UpperCasePipe,
     MatButton,
-    ReactiveFormsModule,
     ButtonComponent,
     MatAutocompleteModule,
     TrimPipe,
     CarriageRowComponent,
     AsyncPipe,
     ButtonComponent,
-    CommonModule,
-    FormsModule,
     MatSelect,
     MatLabel,
     MatOption,
@@ -74,6 +74,13 @@ export interface TripDates {
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      multi: true,
+      useExisting: HomeComponent,
+    },
+  ],
 })
 export class HomeComponent implements OnInit {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
@@ -191,6 +198,41 @@ export class HomeComponent implements OnInit {
   }
 
   moveDatesCarouselLeft() {
-    console.log('move me left');
+    const carousel = document.getElementById('carousel');
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+    const content = document.getElementById('carousel-content');
+    const width = carousel?.offsetWidth;
+
+    if (carousel && width && next && content) {
+      prev?.addEventListener('click', () => {
+        carousel.scrollBy(-(width + 10), 0);
+        if (carousel.scrollLeft - width - 10 <= 0) {
+          prev.style.display = 'none';
+        }
+        if (content.scrollWidth - width - 10 <= carousel.scrollLeft + width) {
+          next.style.display = 'flex';
+        }
+      });
+    }
+  }
+
+  moveDatesCarouselRight() {
+    const carousel = document.getElementById('carousel');
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+    const width = carousel?.offsetWidth;
+
+    if (carousel && width && prev) {
+      next?.addEventListener('click', () => {
+        carousel?.scrollBy(width + 10, 0);
+      });
+      if (carousel.scrollWidth !== 0) {
+        prev.style.display = 'flex';
+      }
+      if (carousel.scrollWidth - width - 10 <= carousel.scrollLeft + width) {
+        prev.style.display = 'none';
+      }
+    }
   }
 }
