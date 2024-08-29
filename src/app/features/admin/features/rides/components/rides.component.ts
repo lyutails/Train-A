@@ -7,13 +7,27 @@ import { MatCardModule } from '@angular/material/card';
 import { AsyncPipe, DatePipe, KeyValuePipe, NgFor, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RideRoute } from '../models/route';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ButtonComponent } from '../../../../../common/button/button.component';
-import { RidePriceFormComponent } from './ride-price-form/ride-price-form.component';
+import { RideFormModel } from '../models/ride-form.model';
+import { RideInfoForm } from '../models/ride-info-form-model';
+import { RouteSchedule } from '../../../../../repositories/rides/services/models/route-schedule.model';
+import { RideSegmentsForm } from '../models/ride-segments-form.model';
+import { RouteSegments } from '../../../../../repositories/rides/services/models/route-section.model';
+import { isoDateValidator } from '../helpers/date-validator';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'TTP-rides',
@@ -36,8 +50,8 @@ import { RidePriceFormComponent } from './ride-price-form/ride-price-form.compon
     ReactiveFormsModule,
     ButtonComponent,
     MatTooltipModule,
-    RidePriceFormComponent,
     KeyValuePipe,
+    MatInputModule,
   ],
   templateUrl: './rides.component.html',
   styleUrl: './rides.component.scss',
@@ -46,13 +60,16 @@ export class RidesComponent implements OnInit, OnDestroy {
   private readonly destroy$$ = new Subject<void>();
   @Input() price!: { key: string; value: number };
   public rideRoute!: RideRoute;
+  public rideForm!: FormGroup<RideFormModel>;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
+    private readonly fb: NonNullableFormBuilder,
   ) {}
 
   public ngOnInit(): void {
+    this.rideForm = this.rideFormInstance;
     this.activatedRoute.data
       .pipe(
         map((data: { route?: RideRoute }) => data.route),
@@ -62,6 +79,7 @@ export class RidesComponent implements OnInit, OnDestroy {
       )
       .subscribe((rideRoute) => {
         this.rideRoute = rideRoute;
+        this.setRides();
       });
   }
 
@@ -76,5 +94,80 @@ export class RidesComponent implements OnInit, OnDestroy {
 
   public trackByValue(index: number, item: { key: string; value: number }): string {
     return item.value.toString();
+  }
+
+  private get rideFormInstance(): FormGroup<RideFormModel> {
+    return this.fb.group<RideFormModel>({
+      schedule: this.fb.array<FormGroup<RideInfoForm>>([]),
+    });
+  }
+
+  public get scheduleFormControl(): FormArray<FormGroup<RideInfoForm>> {
+    return this.rideForm.controls.schedule;
+  }
+
+  public getSegmentsFormControl(index: number): FormArray<FormGroup<RideSegmentsForm>> {
+    return this.scheduleFormControl.at(index).controls.segments;
+  }
+
+  public getPriceKeys(segmentIndex: number, scheduleIndex: number) {
+    const segmentsArray = this.getSegmentsFormControl(scheduleIndex);
+    const prices = segmentsArray.at(segmentIndex).controls.price;
+    return Object.keys(prices.controls);
+  }
+
+  public getPriceControl(segmentIndex: number, scheduleIndex: number, key: string): FormControl<number> {
+    const segmentsArray = this.getSegmentsFormControl(scheduleIndex);
+    const priceGroup = segmentsArray.at(segmentIndex).controls.price;
+    return priceGroup.controls[key] as FormControl<number>;
+  }
+
+  public getTimeControlKeys(segmentIndx: number, scheduleIndx: number) {
+    const segmentsArray = this.getSegmentsFormControl(scheduleIndx);
+    return segmentsArray.at(segmentIndx).controls.time;
+  }
+
+  public setRides() {
+    this.rideRoute.schedule.forEach((schedule) => {
+      this.scheduleFormControl.push(this.createSegmentGroup(schedule));
+    });
+  }
+
+  private createSegmentGroup(schedule: RouteSchedule) {
+    return this.fb.group<RideInfoForm>({
+      segments: this.createEditableForm(schedule.segments),
+    });
+  }
+
+  private createEditableForm(segments: RouteSegments[]): FormArray<FormGroup<RideSegmentsForm>> {
+    const arr = this.fb.array<FormGroup<RideSegmentsForm>>([]);
+
+    segments.forEach((segment) => {
+      arr.push(
+        this.fb.group<RideSegmentsForm>({
+          price: this.createPriceFormGroup(segment.price),
+          time: this.fb.array(segment.time.map((t) => this.fb.control<string>(t, [isoDateValidator()]))),
+        }),
+      );
+    });
+
+    return arr;
+  }
+
+  private createPriceFormGroup(priceObj: Record<string, number>): FormGroup {
+    const controls: Record<string, FormControl<number>> = {};
+
+    Object.keys(priceObj).forEach((key) => {
+      controls[key] = this.fb.control<number>(priceObj[key], [
+        Validators.required,
+        Validators.pattern('^[1-9][0-9]*$'),
+      ]);
+    });
+
+    return this.fb.group(controls);
+  }
+
+  public onSubmit() {
+    console.log(this.rideForm.value);
   }
 }

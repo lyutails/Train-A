@@ -1,39 +1,47 @@
 <ng-container *ngIf="rideRoute">
-  <div *ngFor="let ride of rideRoute.schedule">
-    <h4 class="rides_title">Ride ID: {{ ride.rideId || 'No ID' }}</h4>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>City</th>
-          <th>Time</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let city of rideRoute.path; let i = index">
-          <td>{{ city }}</td>
-          <td>
-            <ng-container *ngIf="i === 0">
-              <div>Departs: {{ ride.segments[0].time[0] | date: 'short' : '+0000' }}</div>
-            </ng-container>
-            <ng-container *ngIf="i === rideRoute.path.length - 1">
-              <div>Arrives: {{ ride.segments[ride.segments.length - 1].time[1] | date: 'short' : '+0000' }}</div>
-            </ng-container>
-            <ng-container *ngIf="i > 0 && i < rideRoute.path.length - 1">
-              <div>Arrives: {{ ride.segments[i - 1].time[1] | date: 'short' : '+0000' }}</div>
-              <div>Departs: {{ ride.segments[i].time[0] | date: 'short' : '+0000' }}</div>
-            </ng-container>
-          </td>
-          <ng-container *ngIf="i < rideRoute.path.length - 1">
-            <div class="rides_cycle">
-              <TTP-ride-price-form
-                *ngFor="let price of ride.segments[i].price | keyvalue; trackBy: trackByValue"
-                [price]="price"
-              >
-              </TTP-ride-price-form>
-            </div>
-          </ng-container>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <form [formGroup]="rideForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="schedule">
+      <div *ngFor="let sc of scheduleFormControl.controls; let i = index" [formGroupName]="i">
+        <legend>
+          <h4>Ride {{ rideRoute.schedule[i].rideId }}</h4>
+        </legend>
+
+        <fieldset>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Schedule {{ i + 1 }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div formArrayName="segments">
+                <div *ngFor="let segment of getSegmentsFormControl(i).controls; let j = index" [formGroupName]="j">
+                  <fieldset>
+                    <mat-card>
+                      <mat-card-header>
+                        <mat-card-title>Segment {{ j }}</mat-card-title>
+                      </mat-card-header>
+                      <mat-card-content>
+                        <div *ngFor="let priceKey of getPriceKeys(j, i); let k = index">
+                          <mat-form-field appearance="fill">
+                            <mat-label>{{ priceKey }}</mat-label>
+                            <input matInput [formControl]="getPriceControl(j, i, priceKey)" />
+                            <mat-error *ngIf="getPriceControl(j, i, priceKey).hasError('required')">
+                              "Price is required"
+                            </mat-error>
+                            <mat-error *ngIf="getPriceControl(j, i, priceKey).hasError('pattern')">
+                              'Price is not in correct format'
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </fieldset>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </fieldset>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
 </ng-container>
