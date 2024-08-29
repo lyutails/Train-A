@@ -39,28 +39,29 @@
                           <div class="table-cell">
                             <div class="time-column">
                               <div *ngFor="let timeControl of segment.controls.time.controls; let k = index">
-                                <mat-form-field appearance="outline">
-                                  <mat-label>
-                                    <ng-container *ngIf="j === 0 && k === 0">Departs</ng-container>
-                                    <ng-container *ngIf="j === 0 && k > 0">Arrives</ng-container>
-                                    <ng-container
-                                      *ngIf="j > 0 && k > 0 && k < segment.controls.time.controls.length - 1"
-                                    >
-                                      Arrives/Departs
-                                    </ng-container>
-                                    <ng-container *ngIf="j === segment.controls.time.controls.length - 1 && k === 0"
-                                      >Arrives</ng-container
-                                    >
-                                  </mat-label>
+                                <ng-container *ngIf="j === 0 && k === 0">
+                                  <mat-label> Departs </mat-label>
                                   <input type="datetime-local" matInput [formControl]="timeControl" />
                                   <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
-                                  <mat-error *ngIf="timeControl.hasError('invalidDate')"
-                                    >Time is not in correct format</mat-error
-                                  >
-                                  <mat-error *ngIf="timeControl.hasError('pastDate')"
-                                    >Date cannot be in the past</mat-error
-                                  >
-                                </mat-form-field>
+                                </ng-container>
+
+                                <ng-container *ngIf="j > 0 && j < sc.controls.segments.controls.length - 1 && k === 1">
+                                  <mat-label> Arrives </mat-label>
+                                  <input type="datetime-local" matInput [formControl]="getTrainArrival(i, j)" />
+                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
+                                </ng-container>
+
+                                <ng-container *ngIf="j > 0 && j < sc.controls.segments.controls.length - 1 && k === 0">
+                                  <mat-label> Departs </mat-label>
+                                  <input type="datetime-local" matInput [formControl]="timeControl" />
+                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
+                                </ng-container>
+
+                                <ng-container *ngIf="j === sc.controls.segments.controls.length - 1 && k === 1">
+                                  <mat-label> Arrives </mat-label>
+                                  <input type="datetime-local" matInput [formControl]="timeControl" />
+                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
+                                </ng-container>
                               </div>
                             </div>
                           </div>

@@ -20,3 +20,8 @@
   padding: 8px;
   border: 1px solid #ddd;
 }
+
+.time-column {
+  display: flex;
+  flex-direction: column-reverse;
+}

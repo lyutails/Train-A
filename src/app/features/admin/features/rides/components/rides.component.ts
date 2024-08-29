@@ -98,14 +98,14 @@ export class RidesComponent implements OnInit, OnDestroy {
     return item.value.toString();
   }
 
+  public get scheduleFormControl(): FormArray<FormGroup<RideInfoForm>> {
+    return this.rideForm.controls.schedule;
+  }
+
   private get rideFormInstance(): FormGroup<RideFormModel> {
     return this.fb.group<RideFormModel>({
       schedule: this.fb.array<FormGroup<RideInfoForm>>([]),
     });
-  }
-
-  public get scheduleFormControl(): FormArray<FormGroup<RideInfoForm>> {
-    return this.rideForm.controls.schedule;
   }
 
   public setRides() {
@@ -160,5 +160,10 @@ export class RidesComponent implements OnInit, OnDestroy {
         console.log(index);
       }
     });
+  }
+
+  public getTrainArrival(scheduleIndex: number, segmentIndex: number): FormControl<string> {
+    const timeArray = this.scheduleFormControl.at(scheduleIndex).controls.segments.at(segmentIndex - 1).controls.time;
+    return timeArray.at(1) || '';
   }
 }
