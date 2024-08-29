@@ -1,0 +1,19 @@
+@import '../../../../../styles';
+
+.home-date-carousel {
+  &_carousel-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    border: 1px solid $light-blue;
+    border-radius: 5px;
+  }
+
+  &_date-item {
+    aspect-ratio: 1 / 0.4;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+}

@@ -48,7 +48,7 @@
   &_form-input {
     width: 20vw;
     min-width: 200px;
-    max-width: 300px;
+    max-width: 280px;
   }
 
   &_carriages {
@@ -263,10 +263,32 @@
     background-image: url('../../../../../../public/train_engine.png');
     background-size: cover;
   }
+
+  &_ride-date-carousel {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  &_ride-date-carousel-button {
+    background-color: transparent;
+    border: none;
+  }
 }
 
 ttp-home-ride {
   width: 100%;
+}
+
+ttp-ride-dates-carousel {
+  width: 15%;
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {
@@ -297,5 +319,11 @@ ttp-home-ride {
     &_trip-time-icon {
       display: none;
     }
+  }
+}
+
+.mdc-text-field {
+  &__input::-webkit-calendar-picker-indicator {
+    display: block !important;
   }
 }

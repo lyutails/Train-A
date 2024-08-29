@@ -23,9 +23,15 @@ import { map, Observable, startWith } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
+import { RideDatesCarouselComponent } from '../ride-dates-carousel/ride-dates-carousel.component';
 
 export interface Trip {
   name: string;
+}
+
+export interface TripDates {
+  date: string;
+  day: string;
 }
 
 @Component({
@@ -60,6 +66,7 @@ export interface Trip {
     MatOption,
     MatTooltip,
     HomeRideComponent,
+    RideDatesCarouselComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -82,7 +89,7 @@ export class HomeComponent implements OnInit {
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
   // testTrips: Trip[] = [];
-  allDaysChoseRideAvailableAt = [
+  allDaysChoseRideAvailableAt: TripDates[] = [
     { date: 'September 01', day: 'Monday' },
     { date: 'September 08', day: 'Monday' },
     { date: 'September 16', day: 'Monday' },
@@ -141,6 +148,7 @@ export class HomeComponent implements OnInit {
           validators: [Validators.required],
         },
       ),
+      time: this.fb.control({ value: '', disabled: false }),
     });
   }
 
@@ -156,8 +164,13 @@ export class HomeComponent implements OnInit {
     return this.searchForm.controls.date;
   }
 
+  public get searchTimeFormControl(): FormControl<string> {
+    return this.searchForm.controls.time;
+  }
+
   public getRides() {
     this.searchRides.set(true);
+    console.log(this.searchForm.controls.time.value);
     // api call here
   }
 
