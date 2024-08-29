@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonComponent } from '../../../../../../../common/button/button.component';
 import { CommonModule } from '@angular/common';
-import { FormGroup, Validators, NonNullableFormBuilder, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, Validators, NonNullableFormBuilder, FormArray } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
@@ -17,21 +17,7 @@ import { StationsService } from '../../../../../../../repositories/stations/serv
 import { CarriagesService } from '../../../../../../../repositories/carriages/services/carriages.service';
 import { Carriage } from '../../../../../features/carriages/models/carriage.model';
 import { StationInfo } from '../../../../../features/stations/models/station-info';
-
-export interface CarriageForm {
-  code?: FormControl<string>;
-  name?: FormControl<string>;
-  rows: FormControl<number>;
-  leftSeats: FormControl<number>;
-  rightSeats: FormControl<number>;
-}
-
-export interface StationForm {
-  city: FormControl<string>;
-  latitude: FormControl<number>;
-  longitude: FormControl<number>;
-  station: number;
-}
+import { StationForm } from '../../models/station-form.model';
 
 @Component({
   selector: 'TTP-routes',

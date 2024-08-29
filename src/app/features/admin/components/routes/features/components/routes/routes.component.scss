@@ -59,20 +59,35 @@
   &_remove-button {
     display: block;
     margin-bottom: 10px;
+    text-align: center;
+  }
+
+  &_add-carriage-button {
+    display: block;
+    text-align: center;
   }
 
   &_form-section {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    align-items: center;
+    width: 500px;
   }
 
   &_control-inputs {
     z-index: 110;
+    width: 450px;
   }
 
   &_form-columns {
     display: flex;
-    gap: 50px;
+    gap: 150px;
+  }
+
+  &_form-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 30px;
   }
 }
