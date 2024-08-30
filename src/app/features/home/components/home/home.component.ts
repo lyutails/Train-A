@@ -134,7 +134,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.prev = document.querySelector('#prev')!;
-    this.next = document.querySelector('#next');
+    this.next = document.querySelector('#next')!;
     this.content = document.querySelector('#carousel-content')!;
     if (!this.prev) {
       throw new Error('no prev out there');
@@ -237,7 +237,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   moveDatesCarouselRight() {
     if (this.next) {
-      console.log('r');
       this.next.addEventListener('click', () => {
         this.content.scrollBy(this.width + 10, 0);
       });
