@@ -97,8 +97,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
-  public prev!: HTMLElement;
-  public next!: HTMLElement;
+  public prev!: HTMLElement | null;
+  public next!: HTMLElement | null;
   public content!: HTMLElement;
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
@@ -230,14 +230,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   moveDatesCarouselLeft() {
-    this.prev.addEventListener('click', () => {
-      this.content.scrollBy(-(this.width + 10), 0);
-    });
+    if (this.prev) {
+      this.prev.addEventListener('click', () => {
+        this.content.scrollBy(-(this.width + 10), 0);
+      });
+    }
   }
 
   moveDatesCarouselRight() {
-    this.next.addEventListener('click', () => {
-      this.content.scrollBy(this.width + 10, 0);
-    });
+    if (this.next) {
+      this.next.addEventListener('click', () => {
+        this.content.scrollBy(this.width + 10, 0);
+      });
+    }
   }
 }
