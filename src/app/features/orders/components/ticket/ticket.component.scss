@@ -7,6 +7,11 @@
   }
 
   &_body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
     aspect-ratio: 1/ 0.4;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -15,10 +20,110 @@
     border: $border-frame;
     border-radius: 10px;
   }
+
+  &_stations {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  &_trip-station {
+    display: flex;
+    flex-direction: column;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  &_trip-time {
+    display: flex;
+    flex-direction: column;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_carriage-details {
+    align-self: center;
+
+    width: 90%;
+    min-width: 200px;
+    max-width: 350px;
+    margin-bottom: 10px;
+    padding: 20px;
+
+    background-color: $light-blue;
+    border-radius: 5px;
+  }
+
+  &_carriage-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_trip-duration {
+    margin-bottom: 10px;
+  }
+
+  &_ticket-price {
+    margin-bottom: 10px;
+  }
+
+  &_duration-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &_stamp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &_stamp-pic {
+    aspect-ratio: 1 / 1;
+    width: 20vw;
+    min-width: 20px;
+    max-width: 60px;
+
+    background-image: url('../../../../../../public/subway.ico');
+    background-size: cover;
+  }
+
+  &_bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 
 .text-coloured-bold {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: $deep-blue;
 }
@@ -26,4 +131,20 @@
 .text-coloured {
   font-size: 1.2rem;
   color: $deep-blue;
+}
+
+.text-bold {
+  font-weight: 800;
+}
+
+.text {
+  font-size: 0.9rem;
+}
+
+.start {
+  text-align: start;
+}
+
+.end {
+  text-align: end;
 }

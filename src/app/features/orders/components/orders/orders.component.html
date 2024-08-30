@@ -9,8 +9,12 @@
     }
   }
   @if (isAdminRole) {
-    <div class="orders_ticket">
-      <TTP-ticket></TTP-ticket>
-    </div>
+    @for (ticket of tickets; track ticket.id) {
+      <TTP-ticket
+        [stationStart]="ticket.stationStart"
+        [stationEnd]="ticket.stationEnd"
+        [seatId]="ticket.seatId"
+      ></TTP-ticket>
+    }
   }
 </div>

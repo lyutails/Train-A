@@ -1,18 +1,54 @@
 <div class="ticket_wrapper">
   <div class="ticket_body">
-    <div class="ticket_trip-station start">
-      Departure station: <span class="text-coloured-bold">{{ stationStart }}</span>
+    <div class="ticket_stations">
+      <div class="ticket_trip-station start">
+        <span class="text-coloured-bold">{{ stationStart }}</span
+        ><span class="text">Departure station</span>
+      </div>
+      <div class="ticket_trip-station end">
+        <span class="text-coloured-bold">{{ stationEnd }}</span
+        ><span class="text">Arrival station</span>
+      </div>
     </div>
-    <div class="ticket_trip-station end">
-      Arrival station: <span class="text-coloured-bold">{{ stationEnd }}</span>
+    <div class="ticket_time">
+      <div class="ticket_trip-time start">
+        <span class="text-coloured-bold">date and time</span><span class="text">Departure time</span>
+      </div>
+      <div class="ticket_trip-time end">
+        <span class="text-coloured-bold">date and time</span><span class="text">Arrival time</span>
+      </div>
     </div>
-    <div class="ticket_trip-time start">Start of the trip: <span class="text-coloured">time start</span></div>
-    <div class="ticket_trip-time end">End of the trip: <span class="text-coloured">time end</span></div>
-    <div class="ticket_trip-duration">Trip duration:</div>
-    <div class="ticket_carriage-type">Carriage type: carriage type</div>
-    <div class="ticket_carriage-number">Carriage number: carriage number</div>
-    <div class="ticket_seat-number">Seat number: {{ seatId }}</div>
-    <div class="ticket_ticket-price">Ticket price: ticket price</div>
-    <TTP-button (click)="cancel()" [type]="'button'" [width]="'10vw'" [buttonText]="'Cancel'"></TTP-button>
+    <div class="ticket_carriage-details">
+      <div class="ticket_carriage-detail type">
+        <span class="text start">Carriage type: </span><span class="text-bold end">carriage type</span>
+      </div>
+      <div class="ticket_carriage-detail carriage-number">
+        <span class="text start">Carriage number: </span><span class="text-bold end">carriage number</span>
+      </div>
+      <div class="ticket_carriage-detail seat-number">
+        <span class="text start">Seat number: </span><span class="text-bold end">{{ seatId }}</span>
+      </div>
+    </div>
+    <div class="ticket_bottom">
+      <div class="ticket_duration-price">
+        <div class="ticket_trip-duration">
+          <span class="text">Trip duration: </span><span class="text-coloured">12h 46m</span>
+        </div>
+        <div class="ticket_ticket-price">
+          <span class="text">Ticket price: </span><span class="text-coloured">500$</span>
+        </div>
+      </div>
+      <div class="ticket_stamp">
+        <span class="ticket_stamp-pic"></span>
+        <p class="ticket_company-name text-coloured-bold">TTP</p>
+      </div>
+    </div>
+    <TTP-button
+      (click)="cancel()"
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Cancel'"
+      [style.align-self]="'flex-end'"
+    ></TTP-button>
   </div>
 </div>
