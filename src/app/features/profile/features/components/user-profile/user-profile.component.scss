@@ -13,9 +13,7 @@
     margin: 20px auto;
     padding: 20px;
 
-    background-color: #fff;
-    border: 1px solid rgb(0 92 187 / 50%);
-    border-radius: 10px;
+    @include border-frame;
   }
 
   &_form {
