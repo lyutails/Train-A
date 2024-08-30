@@ -4,5 +4,4 @@ export interface StationInfo {
   latitude: number;
   longitude: number;
   relations: number[];
-  connectedTo?: StationInfo[];
 }

@@ -18,6 +18,7 @@ import { CarriagesService } from '../../../../../../../repositories/carriages/se
 import { Carriage } from '../../../../../features/carriages/models/carriage.model';
 import { StationInfo } from '../../../../../features/stations/models/station-info';
 import { StationForm } from '../../models/station-form.model';
+import { ConnectedStationsApi } from '../../../../../../../repositories/stations/models/connected-stations--api.model';
 
 @Component({
   selector: 'TTP-routes',
@@ -43,7 +44,7 @@ export class RoutesComponent implements OnInit {
   isFormVisible = false;
   createRouteForm!: FormGroup;
   currentRoute: RouteAPI | null = null;
-  connectedStations: StationInfo[][] = [];
+  connectedStations: ConnectedStationsApi[][] = [];
   carriages: Carriage[] = [];
   stations: StationInfo[] = [];
 
@@ -113,7 +114,7 @@ export class RoutesComponent implements OnInit {
     const formValue = this.createRouteForm.value;
     const routeData: RouteAPI = {
       id: this.currentRoute ? this.currentRoute.id : 0,
-      path: formValue.stations.map((s: StationForm) => s.station),
+      path: (formValue.stations as StationForm[]).map((s: StationForm) => s.station),
       carriages: formValue.carriages,
     };
 
@@ -181,27 +182,31 @@ export class RoutesComponent implements OnInit {
   }
 
   public addCarriage(): void {
-    (this.createRouteForm.get('carriages') as FormArray).push(this.createCarriageFormGroup());
+    const carriageControl = this.createRouteForm.get('carriages');
+    if (carriageControl instanceof FormArray) {
+      carriageControl.push(this.createCarriageFormGroup());
+    }
   }
 
   public removeCarriage(index: number): void {
-    (this.createRouteForm.get('carriages') as FormArray).removeAt(index);
+    const carriageControl = this.createRouteForm.get('carriages');
+    if (carriageControl instanceof FormArray) {
+      carriageControl.removeAt(index);
+    }
   }
 
   public addStation(): void {
-    const lastStationIndex = (this.createRouteForm.get('stations') as FormArray).length - 1;
-
-    if (lastStationIndex >= 0) {
-      const lastStationId = (this.createRouteForm.get('stations') as FormArray).at(lastStationIndex).value.station;
-      const lastStation = this.stations.find((station) => station.id === lastStationId);
-      const connectedStations = lastStation?.connectedTo || [];
-      this.connectedStations.push(connectedStations);
+    const stationsControl = this.createRouteForm.get('stations');
+    if (stationsControl instanceof FormArray) {
+      stationsControl.push(this.createStationFormGroup());
     }
-    (this.createRouteForm.get('stations') as FormArray).push(this.createStationFormGroup());
   }
 
   public removeStation(index: number): void {
-    (this.createRouteForm.get('stations') as FormArray).removeAt(index);
+    const stationsControl = this.createRouteForm.get('stations');
+    if (stationsControl instanceof FormArray) {
+      stationsControl.removeAt(index);
+    }
     this.connectedStations.splice(index, 1);
   }
 
@@ -215,11 +220,6 @@ export class RoutesComponent implements OnInit {
   public onStationChange(index: number): void {
     if (index === (this.createRouteForm.get('stations') as FormArray).length - 1) {
       this.addStation();
-    } else {
-      this.connectedStations.splice(index + 1);
-      (this.createRouteForm.get('stations') as FormArray).controls
-        .slice(index + 1)
-        .forEach(() => this.removeStation(index + 1));
     }
   }
 

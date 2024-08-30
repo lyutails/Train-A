@@ -18,8 +18,8 @@
               <mat-form-field appearance="outline" class="routes_control-inputs">
                 <mat-label>Station {{ i + 1 }}</mat-label>
                 <mat-select (selectionChange)="onStationChange(i)" formControlName="station">
-                  <mat-option *ngFor="let connectedStation of connectedStations[i]" [value]="connectedStation.id">
-                    {{ connectedStation.city }}
+                  <mat-option *ngFor="let station of stations" [value]="station.id">
+                    {{ station.city }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
