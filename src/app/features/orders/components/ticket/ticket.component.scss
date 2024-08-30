@@ -147,3 +147,12 @@
 .end {
   text-align: end;
 }
+
+@media screen and (width >= 300px) and (width <= 680px) {
+  .ticket {
+    &_wrapper {
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
