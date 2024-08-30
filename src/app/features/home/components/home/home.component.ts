@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -82,7 +82,7 @@ export interface TripDates {
     },
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
@@ -97,10 +97,13 @@ export class HomeComponent implements OnInit {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
+  public prev!: HTMLElement;
+  public next!: HTMLElement;
+  public content!: HTMLElement;
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
   testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
-  // testTrips: Trip[] = [];
+  // to check pic for no rides: testTrips: Trip[] = [];
   allDaysChosenRideAvailableAt: TripDates[] = [
     { date: 'September 01', day: 'Monday' },
     { date: 'September 08', day: 'Monday' },
@@ -127,6 +130,32 @@ export class HomeComponent implements OnInit {
       startWith(''),
       map((value) => this._filter(value || '')),
     );
+  }
+
+  ngAfterViewInit(): void {
+    /* document.addEventListener('DOMContentLoaded', () => {
+    }); */
+    this.prev = document.getElementById('prev')!;
+    this.next = document.getElementById('next')!;
+    this.content = document.getElementById('carousel-content')!;
+    if (!this.prev) {
+      throw new Error('no prev out there');
+    }
+    if (!this.next) {
+      throw new Error('no next out there');
+    }
+    if (!this.content) {
+      throw new Error('no content out there');
+    }
+    if (this.content) {
+      this.width = this.content.offsetWidth;
+      window.addEventListener('resize', () => {
+        if (!this.content) {
+          throw new Error('no content out there');
+        }
+        this.width = this.content.offsetWidth;
+      });
+    }
   }
 
   public filterFrom() {
@@ -201,36 +230,14 @@ export class HomeComponent implements OnInit {
   }
 
   moveDatesCarouselLeft() {
-    const carousel = document.getElementById('carousel');
-    const next = document.getElementById('next');
-    const prev = document.getElementById('prev');
-    const content = document.getElementById('carousel-content');
-    if (carousel && content) {
-      this.width = content.offsetWidth;
-      window.addEventListener('resize', () => (this.width = content.offsetWidth));
-    }
-
-    if (carousel && next && content) {
-      prev?.addEventListener('click', () => {
-        content.scrollBy(-(this.width + 10), 0);
-      });
-    }
+    this.prev.addEventListener('click', () => {
+      this.content.scrollBy(-(this.width + 10), 0);
+    });
   }
 
   moveDatesCarouselRight() {
-    const carousel = document.getElementById('carousel');
-    const next = document.getElementById('next');
-    const prev = document.getElementById('prev');
-    const content = document.getElementById('carousel-content');
-    if (carousel && content) {
-      this.width = content.offsetWidth;
-      window.addEventListener('resize', () => (this.width = content.offsetWidth));
-    }
-
-    if (carousel && prev && content) {
-      next?.addEventListener('click', () => {
-        content.scrollBy(this.width + 10, 0);
-      });
-    }
+    this.next.addEventListener('click', () => {
+      this.content.scrollBy(this.width + 10, 0);
+    });
   }
 }
