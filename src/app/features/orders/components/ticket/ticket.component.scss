@@ -17,8 +17,7 @@
     margin-bottom: 20px;
     padding: 20px;
 
-    border: $border-frame;
-    border-radius: 10px;
+    @include border-frame;
   }
 
   &_stations {
