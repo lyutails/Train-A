@@ -1,6 +1,6 @@
 @import '../../../../../styles';
 
-.home {
+.home-ride {
   &_wrapper {
     display: flex;
     flex-direction: column;
@@ -8,104 +8,10 @@
     justify-content: space-between;
   }
 
-  &_title {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-    font-weight: 800;
-  }
-
-  &_form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  &_inputs-wrapper {
-    display: flex;
-    column-gap: 20px;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-  }
-
-  &_carriage-button {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-
-  &_search-button {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-
-  &_buy-button {
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
-
-  &_form-input {
-    width: 20vw;
-    min-width: 200px;
-    max-width: 280px;
-  }
-
-  &_carriages {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-
-    width: 100%;
-  }
-
-  &_carriage-row {
-    z-index: 10;
-    display: flex;
-  }
-
-  &_shape-params {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-
-    height: 850px;
-
-    border: 1px solid $light-blue;
-    border-radius: 5px;
-  }
-
-  &_carriage-shape {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-    justify-content: space-evenly;
-
-    width: 254px;
-    height: 640px;
-    padding: 20px;
-
-    background-image: url('../../../../../../public/ticket_ttp_vertical_opacity.png');
-    background-size: contain;
-    border-radius: 5px;
-  }
-
-  &_rides {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-  }
-
   &_trip {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: space-between;
 
     width: 100%;
@@ -199,6 +105,7 @@
   }
 
   &_trip-carriages {
+    width: 100%;
     padding-top: 10px;
     border-top: 1px solid $deep-blue;
   }
@@ -210,6 +117,7 @@
   }
 
   &_route-button {
+    align-self: flex-start;
     margin-top: 10px;
     margin-bottom: 10px;
   }
@@ -218,6 +126,7 @@
     display: flex;
     align-items: center;
 
+    width: 100%;
     margin-top: 10px;
     padding-top: 10px;
 
@@ -230,12 +139,12 @@
     background-color: $deep-blue;
 
     /* &.left {
-      align-self: flex-start;
-    }
+        align-self: flex-start;
+      }
 
-    &.right {
-      align-self: flex-end;
-    } */
+      &.right {
+        align-self: flex-end;
+      } */
   }
 
   &_trip-total-time-line {
@@ -263,56 +172,10 @@
     background-image: url('../../../../../../public/train_engine.png');
     background-size: cover;
   }
-
-  &_ride-date-filter-carousel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-    height: 100px;
-    margin-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
-
-  &_ride-date-filter-slides {
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-
-    overflow: auto;
-    display: flex;
-    column-gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 80%;
-    margin-top: 20px;
-    padding-right: 20px;
-    padding-left: 20px;
-  }
-
-  &_ride-date-carousel-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color: transparent;
-    border: none;
-  }
-}
-
-ttp-home-ride {
-  width: 100%;
-}
-
-ttp-ride-dates-carousel {
-  width: 120px;
-  height: 65px;
 }
 
 @media screen and (width >= 300px) and (width <= 860px) {
-  .home {
+  .home-ride {
     &_wrapper {
       display: flex;
       flex-direction: column;
@@ -331,7 +194,7 @@ ttp-ride-dates-carousel {
 }
 
 @media screen and (width >= 300px) and (width <= 660px) {
-  .home {
+  .home-ride {
     &_trip-line {
       display: none;
     }
@@ -339,11 +202,5 @@ ttp-ride-dates-carousel {
     &_trip-time-icon {
       display: none;
     }
-  }
-}
-
-.mdc-text-field {
-  &__input::-webkit-calendar-picker-indicator {
-    display: block !important;
   }
 }
