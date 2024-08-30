@@ -154,6 +154,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.width = this.content.offsetWidth;
       });
     }
+    if (this.prev) {
+      this.prev.addEventListener('click', () => {
+        this.content.scrollBy(-(this.width + 10), 0);
+      });
+    }
+    if (this.next) {
+      this.next.addEventListener('click', () => {
+        this.content.scrollBy(this.width + 10, 0);
+      });
+    }
   }
 
   public filterFrom() {
@@ -225,21 +235,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.searchForm.reset();
-  }
-
-  moveDatesCarouselLeft() {
-    if (this.prev) {
-      this.prev.addEventListener('click', () => {
-        this.content.scrollBy(-(this.width + 10), 0);
-      });
-    }
-  }
-
-  moveDatesCarouselRight() {
-    if (this.next) {
-      this.next.addEventListener('click', () => {
-        this.content.scrollBy(this.width + 10, 0);
-      });
-    }
   }
 }
