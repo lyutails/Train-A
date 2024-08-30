@@ -22,7 +22,7 @@
 
                   <div class="table-cell">
                     <div class="time-column">
-                      <ng-container *ngIf="j < sc.controls.segments.controls.length - 1">
+                      <ng-container *ngIf="isFirst">
                         <mat-form-field appearance="outline">
                           <mat-label>Departs</mat-label>
                           <input
@@ -35,6 +35,22 @@
                             >Time is required</mat-error
                           >
                         </mat-form-field>
+                        <button
+                          mat-icon-button
+                          (click)="
+                            isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0])
+                              ? saveTime(sc.controls.segments.controls[j].controls.time.controls[0])
+                              : editTime(sc.controls.segments.controls[j].controls.time.controls[0])
+                          "
+                          class="ride-price_edit-save-button"
+                          type="button"
+                        >
+                          <mat-icon>{{
+                            isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0])
+                              ? 'save'
+                              : 'edit'
+                          }}</mat-icon>
+                        </button>
                       </ng-container>
 
                       <ng-container *ngIf="j >= 0 && !isFirst && !isLast">
@@ -46,10 +62,52 @@
                             [formControl]="sc.controls.segments.controls[j - 1].controls.time.controls[1]"
                           />
                           <mat-error
-                            *ngIf="sc.controls.segments.controls[j].controls.time.controls[1].hasError('required')"
-                            >Time is required</mat-error
+                            *ngIf="sc.controls.segments.controls[j - 1].controls.time.controls[1].hasError('required')"
                           >
+                            Time is required
+                          </mat-error>
                         </mat-form-field>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Departs</mat-label>
+                          <input
+                            type="datetime-local"
+                            matInput
+                            [formControl]="sc.controls.segments.controls[j].controls.time.controls[0]"
+                          />
+                          <mat-error
+                            *ngIf="sc.controls.segments.controls[j].controls.time.controls[0].hasError('required')"
+                          >
+                            Time is required
+                          </mat-error>
+                        </mat-form-field>
+                        <button
+                          mat-icon-button
+                          (click)="
+                            isTimeEditButton(
+                              sc.controls.segments.controls[j].controls.time.controls[0],
+                              sc.controls.segments.controls[j - 1].controls.time.controls[1]
+                            )
+                              ? saveTime(
+                                  sc.controls.segments.controls[j].controls.time.controls[0],
+                                  sc.controls.segments.controls[j - 1].controls.time.controls[1]
+                                )
+                              : editTime(
+                                  sc.controls.segments.controls[j].controls.time.controls[0],
+                                  sc.controls.segments.controls[j - 1].controls.time.controls[1]
+                                )
+                          "
+                          class="ride-price_edit-save-button"
+                          type="button"
+                        >
+                          <mat-icon>{{
+                            isTimeEditButton(
+                              sc.controls.segments.controls[j].controls.time.controls[0],
+                              sc.controls.segments.controls[j - 1].controls.time.controls[1]
+                            )
+                              ? 'save'
+                              : 'edit'
+                          }}</mat-icon>
+                        </button>
                       </ng-container>
 
                       <ng-container *ngIf="j === rideRoute.path.length - 1">
@@ -63,9 +121,26 @@
                           />
                           <mat-error
                             *ngIf="sc.controls.segments.controls[j - 1].controls.time.controls[1].hasError('required')"
-                            >Time is required</mat-error
                           >
+                            Time is required
+                          </mat-error>
                         </mat-form-field>
+                        <button
+                          mat-icon-button
+                          (click)="
+                            isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1])
+                              ? saveTime(sc.controls.segments.controls[j - 1].controls.time.controls[1])
+                              : editTime(sc.controls.segments.controls[j - 1].controls.time.controls[1])
+                          "
+                          class="ride-price_edit-save-button"
+                          type="button"
+                        >
+                          <mat-icon>{{
+                            isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1])
+                              ? 'save'
+                              : 'edit'
+                          }}</mat-icon>
+                        </button>
                       </ng-container>
                     </div>
                   </div>

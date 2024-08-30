@@ -173,4 +173,27 @@ export class RidesComponent implements OnInit, OnDestroy {
   public isEditButton(priceControl: FormControl<number>): boolean {
     return priceControl ? priceControl.enabled : false;
   }
+
+  public isTimeEditButton(timeControl: FormControl<string>, timeControl2?: FormControl<string>): boolean {
+    if (timeControl2) {
+      return timeControl.enabled && timeControl2.enabled;
+    }
+    return timeControl ? timeControl.enabled : false;
+  }
+
+  public editTime(timeControl: FormControl<string>, timeControl2?: FormControl<string>) {
+    console.log('click');
+    timeControl.enable();
+    if (timeControl2) {
+      timeControl2.enable();
+    }
+  }
+
+  public saveTime(timeControl: FormControl<string>, timeControl2?: FormControl<string>) {
+    this.onSubmit();
+    timeControl.disable();
+    if (timeControl2) {
+      timeControl2.disable();
+    }
+  }
 }
