@@ -1,0 +1,18 @@
+<div class="ticket_wrapper">
+  <div class="ticket_body">
+    <div class="ticket_trip-station start">
+      Departure station: <span class="text-coloured-bold">{{ stationStart }}</span>
+    </div>
+    <div class="ticket_trip-station end">
+      Arrival station: <span class="text-coloured-bold">{{ stationEnd }}</span>
+    </div>
+    <div class="ticket_trip-time start">Start of the trip: <span class="text-coloured">time start</span></div>
+    <div class="ticket_trip-time end">End of the trip: <span class="text-coloured">time end</span></div>
+    <div class="ticket_trip-duration">Trip duration:</div>
+    <div class="ticket_carriage-type">Carriage type: carriage type</div>
+    <div class="ticket_carriage-number">Carriage number: carriage number</div>
+    <div class="ticket_seat-number">Seat number: {{ seatId }}</div>
+    <div class="ticket_ticket-price">Ticket price: ticket price</div>
+    <TTP-button (click)="cancel()" [type]="'button'" [width]="'10vw'" [buttonText]="'Cancel'"></TTP-button>
+  </div>
+</div>

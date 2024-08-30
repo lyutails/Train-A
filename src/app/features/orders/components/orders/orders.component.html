@@ -1,73 +1,16 @@
 <div class="orders container-xl">
   @if (isAuthenticated && !isAdminRole) {
-    <div class="orders_ticket">
-      <div class="orders_trip-station start"></div>
-      <div class="orders_trip-station end"></div>
-      <div class="orders_trip-time start"></div>
-      <div class="orders_trip-time end"></div>
-      <div class="orders_trip-duration"></div>
-      <div class="orders_carriage-type"></div>
-      <div class="orders_carriage-number"></div>
-      <div class="orders_seat-number"></div>
-      <div class="orders_ticket-price"></div>
-      <TTP-button
-        (click)="logoutAndRedirectToHome()"
-        [type]="'button'"
-        [width]="'10vw'"
-        [buttonText]="'Cancel'"
-      ></TTP-button>
-      <!-- @if (searchCarriages() && searchForm.valid) {
-        <div class="home_carriages">
-          @for (carriage of testCarriages; track carriage.name) {
-            <div class="home_shape-params">
-              <p class="home_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
-              <p class="home_carriage-details">Rows: {{ carriage.rows }}</p>
-              <p class="home_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
-              <p class="home_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
-              <div class="home_carriage-shape">
-                @for (row of [].constructor(carriage.rows); track index; let index = $index) {
-                  @if (carriage.name !== undefined) {
-                    <TTP-carriage-row
-                      class="home_carriage-row"
-                      [carriageName]="carriage.name"
-                      [rowNumber]="index"
-                      [leftSeatCount]="carriage.leftSeats"
-                      [rightSeatCount]="carriage.rightSeats"
-                    ></TTP-carriage-row>
-                  }
-                }
-              </div>
-            </div>
-          }
-        </div>
-        <TTP-button
-          (click)="buyTicket()"
-          [type]="'submit'"
-          [width]="'10vw'"
-          [buttonText]="'Book seat' | uppercase"
-          class="home_buy-button"
-          [disabled]="!isSeatSelected()"
-        ></TTP-button>
-      } -->
-    </div>
+    @for (ticket of tickets; track ticket.id) {
+      <TTP-ticket
+        [stationStart]="ticket.stationStart"
+        [stationEnd]="ticket.stationEnd"
+        [seatId]="ticket.seatId"
+      ></TTP-ticket>
+    }
   }
-  @if (isAuthenticated && isAdminRole) {
+  @if (isAdminRole) {
     <div class="orders_ticket">
-      <div class="orders_trip-station start"></div>
-      <div class="orders_trip-station end"></div>
-      <div class="orders_trip-time start"></div>
-      <div class="orders_trip-time end"></div>
-      <div class="orders_trip-duration"></div>
-      <div class="orders_carriage-type"></div>
-      <div class="orders_carriage-number"></div>
-      <div class="orders_seat-number"></div>
-      <div class="orders_ticket-price"></div>
-      <TTP-button
-        (click)="logoutAndRedirectToHome()"
-        [type]="'button'"
-        [width]="'10vw'"
-        [buttonText]="'Cancel'"
-      ></TTP-button>
+      <TTP-ticket></TTP-ticket>
     </div>
   }
 </div>

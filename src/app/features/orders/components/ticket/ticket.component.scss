@@ -1,0 +1,29 @@
+@import '../../../../../styles';
+
+.ticket {
+  &_wrapper {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  &_body {
+    aspect-ratio: 1/ 0.4;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+
+    border: $border-frame;
+    border-radius: 10px;
+  }
+}
+
+.text-coloured-bold {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: $deep-blue;
+}
+
+.text-coloured {
+  font-size: 1.2rem;
+  color: $deep-blue;
+}
