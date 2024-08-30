@@ -8,69 +8,96 @@
               <mat-card-title>Ride {{ rideRoute.schedule[i].rideId }}</mat-card-title>
             </mat-card-header>
 
-            <div formArrayName="segments">
-              <div *ngFor="let segment of sc.controls.segments.controls; let j = index" [formGroupName]="j">
-                <fieldset>
-                  <mat-card>
-                    <mat-card-content>
-                      <div class="table-container">
-                        <div class="table-header">
-                          <div class="table-cell">Stations</div>
-                          <div class="table-cell">Price</div>
-                          <div class="table-cell">Schedule</div>
-                        </div>
-
-                        <div class="table-row">
-                          <div class="table-cell">{{ rideRoute.path[j] }}</div>
-                          <div class="table-cell">
-                            <div class="price-column">
-                              <div *ngFor="let price of segment.controls.price.controls | keyvalue; let k = index">
-                                <mat-form-field appearance="outline">
-                                  <mat-label>{{ price.key }}</mat-label>
-                                  <input matInput [formControl]="price.value" />
-                                  <mat-error *ngIf="price.value.hasError('required')"> "Price is required" </mat-error>
-                                  <mat-error *ngIf="price.value.hasError('pattern')">
-                                    'Price is not in correct format'
-                                  </mat-error>
-                                </mat-form-field>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="table-cell">
-                            <div class="time-column">
-                              <div *ngFor="let timeControl of segment.controls.time.controls; let k = index">
-                                <ng-container *ngIf="j === 0 && k === 0">
-                                  <mat-label> Departs </mat-label>
-                                  <input type="datetime-local" matInput [formControl]="timeControl" />
-                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
-                                </ng-container>
-
-                                <ng-container *ngIf="j > 0 && j < sc.controls.segments.controls.length - 1 && k === 1">
-                                  <mat-label> Arrives </mat-label>
-                                  <input type="datetime-local" matInput [formControl]="getTrainArrival(i, j)" />
-                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
-                                </ng-container>
-
-                                <ng-container *ngIf="j > 0 && j < sc.controls.segments.controls.length - 1 && k === 0">
-                                  <mat-label> Departs </mat-label>
-                                  <input type="datetime-local" matInput [formControl]="timeControl" />
-                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
-                                </ng-container>
-
-                                <ng-container *ngIf="j === sc.controls.segments.controls.length - 1 && k === 1">
-                                  <mat-label> Arrives </mat-label>
-                                  <input type="datetime-local" matInput [formControl]="timeControl" />
-                                  <mat-error *ngIf="timeControl.hasError('required')">Time is required</mat-error>
-                                </ng-container>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </mat-card-content>
-                  </mat-card>
-                </fieldset>
+            <div class="table-container">
+              <div class="table-header">
+                <div class="table-cell">Stations</div>
+                <div class="table-cell">Price</div>
+                <div class="table-cell">Schedule</div>
               </div>
+              <ng-container *ngFor="let city of rideRoute.path; let j = index; let isLast = last; let isFirst = first">
+                <div class="table-row">
+                  <div class="table-cell">
+                    <div class="city-column">{{ city }}</div>
+                  </div>
+
+                  <div class="table-cell">
+                    <div class="time-column">
+                      <ng-container *ngIf="j < sc.controls.segments.controls.length - 1">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Departs</mat-label>
+                          <input
+                            type="datetime-local"
+                            matInput
+                            [formControl]="sc.controls.segments.controls[j].controls.time.controls[0]"
+                          />
+                          <mat-error
+                            *ngIf="sc.controls.segments.controls[j].controls.time.controls[0].hasError('required')"
+                            >Time is required</mat-error
+                          >
+                        </mat-form-field>
+                      </ng-container>
+
+                      <ng-container *ngIf="j >= 0 && !isFirst && !isLast">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Arrives</mat-label>
+                          <input
+                            type="datetime-local"
+                            matInput
+                            [formControl]="sc.controls.segments.controls[j - 1].controls.time.controls[1]"
+                          />
+                          <mat-error
+                            *ngIf="sc.controls.segments.controls[j].controls.time.controls[1].hasError('required')"
+                            >Time is required</mat-error
+                          >
+                        </mat-form-field>
+                      </ng-container>
+
+                      <ng-container *ngIf="j === rideRoute.path.length - 1">
+                        {{ j }}
+                        <mat-form-field appearance="outline">
+                          <mat-label>Arrives</mat-label>
+                          <input
+                            type="datetime-local"
+                            matInput
+                            [formControl]="sc.controls.segments.controls[j - 1].controls.time.controls[1]"
+                          />
+                          <mat-error
+                            *ngIf="sc.controls.segments.controls[j - 1].controls.time.controls[1].hasError('required')"
+                            >Time is required</mat-error
+                          >
+                        </mat-form-field>
+                      </ng-container>
+                    </div>
+                  </div>
+
+                  <div class="table-cell">
+                    <div class="price-column">
+                      <ng-container *ngIf="sc.controls.segments.controls[j]">
+                        <div *ngFor="let price of sc.controls.segments.controls[j].controls.price.controls | keyvalue">
+                          <mat-form-field appearance="outline">
+                            <mat-label>{{ price.key }}</mat-label>
+                            <input type="number" matInput [formControl]="price.value" />
+                            <mat-error *ngIf="price.value.hasError('required')">Price is required</mat-error>
+                            <mat-error *ngIf="price.value.hasError('pattern')"
+                              >Price is not in correct format</mat-error
+                            >
+                          </mat-form-field>
+                          <button
+                            mat-icon-button
+                            (click)="isEditButton(price.value) ? savePrice(price.value) : editPrice(price.value)"
+                            class="ride-price_edit-save-button"
+                            matTooltip="{{ isEditButton(price.value) ? 'Save' : 'Edit' }} price"
+                            [disabled]="!price.value.valid && isEditButton(price.value)"
+                            type="button"
+                          >
+                            <mat-icon>{{ isEditButton(price.value) ? 'save' : 'edit' }}</mat-icon>
+                          </button>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </mat-card>
         </fieldset>

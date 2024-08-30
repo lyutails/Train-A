@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, Subject, takeUntil, tap } from 'rxjs';
@@ -59,9 +59,9 @@ import { isoDateValidator } from '../helpers/date-validator';
 })
 export class RidesComponent implements OnInit, OnDestroy {
   private readonly destroy$$ = new Subject<void>();
-  @Input() price!: { key: string; value: number };
   public rideRoute!: RideRoute;
   public rideForm!: FormGroup<RideFormModel>;
+  public editIconColour = 'oklch(49.71% 0.165 259.85deg)';
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -128,7 +128,10 @@ export class RidesComponent implements OnInit, OnDestroy {
           time: this.fb.array(
             segment.time.map((t) => {
               const formattedTime = this.datePipe.transform(t, 'yyyy-MM-ddTHH:mm', 'UTC');
-              return this.fb.control<string>(formattedTime || '', [Validators.required, isoDateValidator()]);
+              return this.fb.control<string>({ value: formattedTime || '', disabled: true }, [
+                Validators.required,
+                isoDateValidator(),
+              ]);
             }),
           ),
         }),
@@ -140,7 +143,7 @@ export class RidesComponent implements OnInit, OnDestroy {
     const controls: Record<string, FormControl<number>> = {};
 
     Object.keys(priceObj).forEach((key) => {
-      controls[key] = this.fb.control<number>(priceObj[key], [
+      controls[key] = this.fb.control<number>({ value: priceObj[key], disabled: true }, [
         Validators.required,
         Validators.pattern('^[1-9][0-9]*$'),
       ]);
@@ -152,14 +155,22 @@ export class RidesComponent implements OnInit, OnDestroy {
   public onSubmit(): void {
     this.rideForm.controls.schedule.controls.forEach((sched, index) => {
       if (sched.dirty) {
-        console.log(sched.value);
+        console.log(sched.getRawValue());
         console.log(index);
       }
     });
   }
 
-  public getTrainArrival(scheduleIndex: number, segmentIndex: number): FormControl<string> {
-    const timeArray = this.scheduleFormControl.at(scheduleIndex).controls.segments.at(segmentIndex - 1).controls.time;
-    return timeArray.at(1) || '';
+  public editPrice(priceControl: FormControl<number>) {
+    priceControl.enable();
+  }
+
+  public savePrice(priceControl: FormControl<number>) {
+    this.onSubmit();
+    priceControl.disable();
+  }
+
+  public isEditButton(priceControl: FormControl<number>): boolean {
+    return priceControl ? priceControl.enabled : false;
   }
 }
