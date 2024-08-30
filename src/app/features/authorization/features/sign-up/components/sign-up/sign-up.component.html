@@ -10,7 +10,6 @@
           placeholder="email..."
           formControlName="email"
           [value]="signUpForm.controls.email.value | trim"
-          [disabled]="true"
         />
       </mat-form-field>
       @if (signUpForm.controls['email'].hasError('invalidUniqueKey')) {

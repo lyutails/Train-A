@@ -1,0 +1,154 @@
+<div class="home_wrapper container-xl">
+  <p class="home_title" [style.color]="'oklch(49.71% 0.165 259.85deg)'">Pick trip parameters</p>
+  <form class="home_form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div class="home_inputs-wrapper">
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>From...</mat-label>
+        <input
+          #inputFrom
+          matInput
+          placeholder="From"
+          formControlName="from"
+          [value]="searchForm.controls.from.value"
+          [matAutocomplete]="auto"
+          (input)="filterFrom()"
+          (focus)="filterFrom()"
+        />
+        <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" requireSelection>
+          <!-- @for (city of filteredTestCitiesFrom | async; track city) {
+              <mat-option [value]="city">{{ city }}</mat-option>
+            } -->
+          @for (city of filteredOptions; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>To...</mat-label>
+        <input
+          #inputTo
+          matInput
+          placeholder="To"
+          formControlName="to"
+          [value]="searchForm.controls.to.value"
+          [matAutocomplete]="auto"
+          (input)="filterTo()"
+          (focus)="filterTo()"
+        />
+        <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" requireSelection>
+          @for (city of filteredTestCitiesTo | async; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          }
+        </mat-autocomplete></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>Date...</mat-label
+        ><input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="date"
+          [min]="minDate"
+          [value]="searchForm.controls.date.value"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label for="appt">Time...</mat-label
+        ><input
+          matInput
+          matNativeControl
+          type="time"
+          [value]="searchForm.controls.time"
+          id="appt"
+          name="appt"
+          formControlName="time"
+        />
+        <mat-hint>12:00 AM</mat-hint>
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="home_ride-date-filter-carousel" id="carousel">
+    <button id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <div id="carousel-content" class="home_ride-date-filter-slides">
+      @for (day of allDaysChosenRideAvailableAt; track day; let index = $index) {
+        <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
+      }
+    </div>
+    <button id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <TTP-button
+    (click)="getRides()"
+    [type]="'submit'"
+    [width]="'10vw'"
+    [buttonText]="'Search' | uppercase"
+    class="home_search-button"
+    [disabled]="!searchForm.valid"
+  ></TTP-button>
+  @if (searchRides() && testTrips.length > 0) {
+    @for (trip of testTrips; track trip.name) {
+      <TTP-home-ride [tripName]="trip.name" [tripFrom]="inputFrom.value" [tripTo]="inputTo.value"></TTP-home-ride>
+    }
+  }
+  @if (searchRides() && testTrips.length === 0) {
+    <div class="home_trip-no-trains">No direct trains found</div>
+    <div class="home_trip-not-found"></div>
+  }
+</div>
+@if (searchRides() && testTrips.length > 0) {
+  <TTP-arrow-top
+    [style.width]="'80%'"
+    [style.height]="'50px'"
+    [style.display]="'block'"
+    [disabled]="false"
+    [backgroundColor]="'oklch(49.71% 0.165 259.85deg)'"
+  ></TTP-arrow-top>
+} @else {
+  <TTP-arrow-top
+    [style.width]="'80%'"
+    [style.height]="'50px'"
+    [style.display]="'block'"
+    [disabled]="true"
+    [backgroundColor]="'lightgray'"
+  ></TTP-arrow-top>
+}
+<!--   @if (searchCarriages() && searchForm.valid) {
+    <div class="home_carriages">
+      @for (carriage of testCarriages; track carriage.name) {
+        <div class="home_shape-params">
+          <p class="home_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
+          <p class="home_carriage-details">Rows: {{ carriage.rows }}</p>
+          <p class="home_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
+          <p class="home_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
+          <div class="home_carriage-shape">
+            @for (row of [].constructor(carriage.rows); track index; let index = $index) {
+              @if (carriage.name !== undefined) {
+                <TTP-carriage-row
+                  class="home_carriage-row"
+                  [carriageName]="carriage.name"
+                  [rowNumber]="index"
+                  [leftSeatCount]="carriage.leftSeats"
+                  [rightSeatCount]="carriage.rightSeats"
+                ></TTP-carriage-row>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <TTP-button
+      (click)="buyTicket()"
+      [type]="'submit'"
+      [width]="'10vw'"
+      [buttonText]="'Book seat' | uppercase"
+      class="home_buy-button"
+      [disabled]="!isSeatSelected()"
+    ></TTP-button>
+  } -->
