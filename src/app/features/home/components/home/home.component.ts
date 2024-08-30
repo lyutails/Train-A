@@ -97,8 +97,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
-  public prev!: HTMLElement | null;
-  public next!: HTMLElement | null;
+  public prev!: HTMLElement;
+  public next!: HTMLElement;
   public content!: HTMLElement;
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
