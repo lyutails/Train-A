@@ -11,3 +11,10 @@
 
 - container class `container-xl` for top level wrapper of the component if the content gonna take full screen size
 - for top level container for the pages with centered content `d-flex justify-content-center align-items-center vh-100`
+
+## 3. Commits convention:
+
+- commit prefix like fix / feat / refactor / init etc.
+- commit scope following commit prefix in paranthesis like this: `'feat(component): create...'`
+- commit message start with verb in simple present time
+- commit body is short, descriptive and informative

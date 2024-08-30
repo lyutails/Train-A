@@ -9,7 +9,12 @@ body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
   margin: 0;
+
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
@@ -30,6 +35,24 @@ body::-webkit-scrollbar-thumb {
 
 .content-area {
   min-height: calc(100vh - 90px);
+}
+
+ttp-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+ttp-footer {
+  flex-shrink: 0;
+}
+
+ttp-admin-page {
+  flex: 1 0 auto;
+}
+
+ttp-home {
+  flex: 1 0 auto;
 }
 
 @media screen and (width >= 1200px) and (width <= 2400px) {
