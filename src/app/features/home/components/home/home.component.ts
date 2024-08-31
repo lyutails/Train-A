@@ -233,7 +233,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked
     }
   }
 
-  ngAfterContentChecked(): void {
+  ngAfterContentChecked() {
     this.searchForm.controls.time.disable();
     if (this.searchForm.controls.date.valid) {
       this.dateValid.set(true);
