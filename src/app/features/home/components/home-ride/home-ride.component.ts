@@ -23,6 +23,7 @@ export class HomeRideComponent implements OnInit {
   @Input() timeFrom = '';
   @Input() timeTo = '';
   @Input() carriages!: Carriage[];
+  @Input() rideId!: number;
   public hoursFrom = signal(0);
   public minutesFrom = signal(0);
   public dayFrom = signal(0);
@@ -69,6 +70,7 @@ export class HomeRideComponent implements OnInit {
   public openRouteModal() {
     const dialogRef = this.dialog.open(RouteModalComponent, {
       data: {
+        rideid: this.rideId,
         routes: [
           { time: '18:00', station: 'startStationName', stop: 'First station' },
           { time: '19:00', station: 'lalala1', stop: '2m' },
