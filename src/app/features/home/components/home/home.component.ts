@@ -97,8 +97,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
-  public prev!: HTMLElement;
-  public next!: HTMLElement;
   public content!: HTMLElement;
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
@@ -133,15 +131,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.prev = document.querySelector('#prev')!;
-    this.next = document.querySelector('#next')!;
     this.content = document.querySelector('#carousel-content')!;
-    if (!this.prev) {
-      throw new Error('no prev out there');
-    }
-    if (!this.next) {
-      throw new Error('no next out there');
-    }
     if (!this.content) {
       throw new Error('no content out there');
     }
@@ -152,16 +142,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
           throw new Error('no content out there');
         }
         this.width = this.content.offsetWidth;
-      });
-    }
-    if (this.prev) {
-      this.prev.addEventListener('click', () => {
-        this.content.scrollBy(-(this.width + 10), 0);
-      });
-    }
-    if (this.next) {
-      this.next.addEventListener('click', () => {
-        this.content.scrollBy(this.width + 10, 0);
       });
     }
   }
@@ -235,5 +215,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.searchForm.reset();
+  }
+
+  moveLeft() {
+    this.content.scrollBy(-(this.width + 10), 0);
+  }
+
+  moveRight() {
+    this.content.scrollBy(this.width + 10, 0);
   }
 }
