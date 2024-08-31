@@ -213,14 +213,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.width = this.content.offsetWidth;
       });
     }
-
-    /* if (this.searchForm.controls.date.valid) {
-      this.dateValid.set(true);
-      this.searchForm.controls.time.enable();
-    } else {
-      this.dateValid.set(false);
-      this.searchForm.controls.time.disable();
-    } */
   }
 
   ngAfterViewChecked() {
