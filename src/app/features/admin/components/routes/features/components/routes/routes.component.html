@@ -114,7 +114,11 @@
           <h4 class="routes_title">Route {{ route.id }}</h4>
           <p>
             <strong>Cities:</strong>
-            {{ route.path.join(' - ') }}
+            {{
+              route.path && route.path.length > 0
+                ? route.path.join(' - ')
+                : 'Refresh this page and you will see your new route'
+            }}
           </p>
           @if (route.carriages && route.carriages.length > 0) {
             <p>
