@@ -29,17 +29,17 @@
       <div class="home-ride_trip-info">
         <div class="home-ride_trip-details start">
           <div class="home-ride_trip-date">August 30</div>
-          <div class="home-ride_trip-station">City1</div>
+          <div class="home-ride_trip-station">{{ tripFrom }}</div>
         </div>
         <div class="home-ride_trip-details end">
           <div class="home-ride_trip-date">August 31</div>
-          <div class="home-ride_trip-station">City2</div>
+          <div class="home-ride_trip-station">{{ tripTo }}</div>
         </div>
       </div>
     </a>
     <div class="home-ride_trip-from-to">
-      <mat-icon>train</mat-icon> {{ tripFrom }} <mat-icon>trending_flat</mat-icon>
-      {{ tripTo }}
+      <mat-icon>train</mat-icon> {{ routeFrom }} <mat-icon>trending_flat</mat-icon>
+      {{ routeTo }}
     </div>
     <TTP-button
       [type]="'button'"

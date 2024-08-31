@@ -15,9 +15,12 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './home-ride.component.scss',
 })
 export class HomeRideComponent {
-  @Input() tripName = '';
+  @Input() tripName!: number;
   @Input() tripFrom = '';
   @Input() tripTo = '';
+  @Input() routeFrom = '';
+  @Input() routeTo = '';
+  @Input() carriages!: Carriage[];
   public searchCarriages = signal(false);
   public dialog = inject(MatDialog);
   public popupRoute = signal('');
