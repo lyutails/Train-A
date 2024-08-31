@@ -4,24 +4,50 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
+
+  width: 70%;
+  margin: 0 auto;
 }
 
 .table-header {
   display: contents;
   font-weight: bold;
+  text-align: center;
   border-bottom: 1px solid #ccc;
+}
+
+.mat-mdc-card-header {
+  display: flex;
+  justify-content: center;
+
+  padding: 5px;
+
+  font-size: bold;
+  color: #005cbb;
+}
+
+.table-cell.title {
+  border: 1px solid #ccc;
 }
 
 .table-row {
   display: contents;
+  text-align: center;
 }
 
-.table-cell {
-  padding: 8px;
+.table-cell:not(:nth-child(3)) {
   border: 1px solid #ddd;
 }
 
 .time-column {
   display: flex;
   flex-direction: column-reverse;
+  padding: 8px;
+}
+
+.price-column {
+  position: relative;
+  top: 100px;
+  margin-top: 50px;
+  padding: 8px;
 }

@@ -27,7 +27,7 @@ import { RouteSchedule } from '../../../../../repositories/rides/services/models
 import { RideSegmentsForm } from '../models/ride-segments-form.model';
 import { RouteSegments } from '../../../../../repositories/rides/services/models/route-section.model';
 import { MatInputModule } from '@angular/material/input';
-import { isoDateValidator } from '../helpers/date-validator';
+import { RidesFacade } from '../services/rides.facade';
 
 @Component({
   selector: 'TTP-rides',
@@ -68,6 +68,7 @@ export class RidesComponent implements OnInit, OnDestroy {
     private readonly router: Router,
     private readonly fb: NonNullableFormBuilder,
     private readonly datePipe: DatePipe,
+    private readonly rideFacade: RidesFacade,
   ) {}
 
   public ngOnInit(): void {
@@ -128,10 +129,7 @@ export class RidesComponent implements OnInit, OnDestroy {
           time: this.fb.array(
             segment.time.map((t) => {
               const formattedTime = this.datePipe.transform(t, 'yyyy-MM-ddTHH:mm', 'UTC');
-              return this.fb.control<string>({ value: formattedTime || '', disabled: true }, [
-                Validators.required,
-                isoDateValidator(),
-              ]);
+              return this.fb.control<string>({ value: formattedTime || '', disabled: true }, [Validators.required]);
             }),
           ),
         }),
@@ -153,10 +151,22 @@ export class RidesComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    this.rideForm.controls.schedule.controls.forEach((sched, index) => {
-      if (sched.dirty) {
-        console.log(sched.getRawValue());
-        console.log(index);
+    this.rideForm.controls.schedule.controls.forEach((ride, index) => {
+      if (ride.dirty) {
+        this.rideFacade
+          .updateRide({
+            id: this.rideRoute.id,
+            rideId: this.rideRoute.schedule[index].rideId,
+            segments: ride.getRawValue().segments,
+          })
+          .subscribe({
+            next: () => {
+              console.log('Ride updated successfully');
+            },
+            error: (error) => {
+              console.error('Error updating ride:', error);
+            },
+          });
       }
     });
   }
@@ -182,7 +192,6 @@ export class RidesComponent implements OnInit, OnDestroy {
   }
 
   public editTime(timeControl: FormControl<string>, timeControl2?: FormControl<string>) {
-    console.log('click');
     timeControl.enable();
     if (timeControl2) {
       timeControl2.enable();
@@ -191,6 +200,7 @@ export class RidesComponent implements OnInit, OnDestroy {
 
   public saveTime(timeControl: FormControl<string>, timeControl2?: FormControl<string>) {
     this.onSubmit();
+
     timeControl.disable();
     if (timeControl2) {
       timeControl2.disable();

@@ -21,6 +21,6 @@ export class RidesHttpService {
 
   public updateRide(request: UpdateRideApi): Observable<void> {
     const { id, rideId, segments } = request;
-    return this.httpClient.put<void>(`route/${id}/ride/${rideId}`, segments);
+    return this.httpClient.put<void>(`route/${id}/ride/${rideId}`, { segments: segments });
   }
 }

@@ -34,6 +34,11 @@
                             *ngIf="sc.controls.segments.controls[j].controls.time.controls[0].hasError('required')"
                             >Time is required</mat-error
                           >
+                          <mat-error
+                            *ngIf="sc.controls.segments.controls[j].controls.time.controls[0].hasError('invalidDate')"
+                          >
+                            Invalid Date
+                          </mat-error>
                         </mat-form-field>
                         <button
                           mat-icon-button
@@ -66,6 +71,13 @@
                           >
                             Time is required
                           </mat-error>
+                          <mat-error
+                            *ngIf="
+                              sc.controls.segments.controls[j - 1].controls.time.controls[1].hasError('invalidDate')
+                            "
+                          >
+                            Invalid Date
+                          </mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="outline">
                           <mat-label>Departs</mat-label>
@@ -78,6 +90,11 @@
                             *ngIf="sc.controls.segments.controls[j].controls.time.controls[0].hasError('required')"
                           >
                             Time is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="sc.controls.segments.controls[j].controls.time.controls[0].hasError('invalidDate')"
+                          >
+                            Invalid Date
                           </mat-error>
                         </mat-form-field>
                         <button
@@ -111,7 +128,6 @@
                       </ng-container>
 
                       <ng-container *ngIf="j === rideRoute.path.length - 1">
-                        {{ j }}
                         <mat-form-field appearance="outline">
                           <mat-label>Arrives</mat-label>
                           <input
@@ -123,6 +139,13 @@
                             *ngIf="sc.controls.segments.controls[j - 1].controls.time.controls[1].hasError('required')"
                           >
                             Time is required
+                          </mat-error>
+                          <mat-error
+                            *ngIf="
+                              sc.controls.segments.controls[j - 1].controls.time.controls[1].hasError('invalidDate')
+                            "
+                          >
+                            Invalid Date
                           </mat-error>
                         </mat-form-field>
                         <button
@@ -150,7 +173,7 @@
                       <ng-container *ngIf="sc.controls.segments.controls[j]">
                         <div *ngFor="let price of sc.controls.segments.controls[j].controls.price.controls | keyvalue">
                           <mat-form-field appearance="outline">
-                            <mat-label>{{ price.key }}</mat-label>
+                            <mat-label>{{ price.key }} - currency:USD</mat-label>
                             <input type="number" matInput [formControl]="price.value" />
                             <mat-error *ngIf="price.value.hasError('required')">Price is required</mat-error>
                             <mat-error *ngIf="price.value.hasError('pattern')"

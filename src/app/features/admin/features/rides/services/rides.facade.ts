@@ -5,6 +5,8 @@ import { filter, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { RouteApi } from '../../../../../repositories/rides/services/models/route-api.model';
 import { StationInfo } from '../../stations/models/station-info';
 import { RideRoute } from '../models/route';
+import { UpdateRideApi } from '../../../../../repositories/rides/services/models/update-route-api';
+import { transformDateToIsoString } from '../helpers/transform-date-to-isostring';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +48,12 @@ export class RidesFacade {
       ...route,
       path: pathWithCityNames,
     };
+  }
+
+  public updateRide(ride: UpdateRideApi): Observable<void> {
+    ride.segments.forEach((segment) => {
+      segment.time = segment.time.map((t) => transformDateToIsoString(t));
+    });
+    return this.ridesService.updateRide(ride);
   }
 }
