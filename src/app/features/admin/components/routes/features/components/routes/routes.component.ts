@@ -247,8 +247,15 @@ export class RoutesComponent implements OnInit {
   }
 
   public onStationChange(index: number): void {
-    if (index === (this.createRouteForm.get('stations') as FormArray).length - 1) {
-      this.addStation();
+    const stationsControl = this.createRouteForm.get('stations');
+    if (stationsControl instanceof FormArray) {
+      if (index === stationsControl.length - 1 && stationsControl.at(index)?.valid) {
+        this.addStation();
+      }
+
+      stationsControl.controls.forEach((control) => {
+        control.get('station')?.updateValueAndValidity({ onlySelf: true });
+      });
     }
   }
 
@@ -289,5 +296,13 @@ export class RoutesComponent implements OnInit {
       },
       error: (error) => console.error('Error loading routes', error),
     });
+  }
+
+  public filteredStations(index: number): StationInfo[] {
+    const selectedStationIds = this.getStationsControls()
+      .filter((_, i) => i !== index)
+      .map((stationCtrl) => stationCtrl.get('station')?.value);
+
+    return this.stations.filter((station) => !selectedStationIds.includes(station.id));
   }
 }
