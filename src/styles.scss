@@ -1,0 +1,51 @@
+$light-blue: oklch(92.53% 0.037 249.47deg);
+$deep-blue: oklch(49.71% 0.165 259.85deg);
+$selected-seat: oklch(71.74% 0.19 48.65deg);
+
+html,
+body {
+  height: 100%;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgb(0 0 0 / 30%);
+}
+
+body::-webkit-scrollbar-thumb {
+  background: linear-gradient($light-blue, $deep-blue);
+  border-radius: 20px;
+  outline: 1px solid transparent;
+}
+
+.content-area {
+  min-height: calc(100vh - 90px);
+}
+
+@media screen and (width >= 1200px) and (width <= 2400px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media screen and (width >= 640px) and (width <= 1199.98px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  html {
+    font-size: 14px;
+  }
+}

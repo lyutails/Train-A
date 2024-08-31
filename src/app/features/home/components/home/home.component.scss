@@ -1,0 +1,349 @@
+@import '../../../../../styles';
+
+.home {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_title {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    font-weight: 800;
+  }
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &_inputs-wrapper {
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  &_carriage-button {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  &_search-button {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  &_buy-button {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  &_form-input {
+    width: 20vw;
+    min-width: 200px;
+    max-width: 280px;
+  }
+
+  &_carriages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+  }
+
+  &_carriage-row {
+    z-index: 10;
+    display: flex;
+  }
+
+  &_shape-params {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+
+    height: 850px;
+
+    border: 1px solid $light-blue;
+    border-radius: 5px;
+  }
+
+  &_carriage-shape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    justify-content: space-evenly;
+
+    width: 254px;
+    height: 640px;
+    padding: 20px;
+
+    background-image: url('../../../../../../public/ticket_ttp_vertical_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_rides {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+  }
+
+  &_trip {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+
+    border: 1px solid rgb(0 92 187 / 50%);
+    border-radius: 10px;
+  }
+
+  &_trip-detail-part {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+
+    color: $deep-blue;
+    text-decoration: none;
+
+    background-color: transparent;
+    border: none;
+    outline: none;
+
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-blue;
+      border-radius: 10px;
+    }
+  }
+
+  &.text-coloured {
+    color: $deep-blue;
+  }
+
+  &_trip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &_trip-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_trip-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_trip-details {
+    display: flex;
+    flex-direction: column;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_trip-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.start {
+      align-items: flex-start;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    &.end {
+      align-items: flex-end;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+  }
+
+  &_trip-total-time {
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_trip-carriages {
+    padding-top: 10px;
+    border-top: 1px solid $deep-blue;
+  }
+
+  &_trip-carriage-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_route-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &_trip-from-to {
+    display: flex;
+    align-items: center;
+
+    margin-top: 10px;
+    padding-top: 10px;
+
+    border-top: 1px solid $deep-blue;
+  }
+
+  &_trip-line {
+    width: 35%;
+    height: 2px;
+    background-color: $deep-blue;
+
+    /* &.left {
+      align-self: flex-start;
+    }
+
+    &.right {
+      align-self: flex-end;
+    } */
+  }
+
+  &_trip-total-time-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+  }
+
+  &_trip-no-trains {
+    margin-bottom: 20px;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $deep-blue;
+    text-align: center;
+  }
+
+  &_trip-not-found {
+    aspect-ratio: 1 / 1;
+    width: 50vw;
+    min-width: 160px;
+    max-width: 350px;
+
+    background-image: url('../../../../../../public/train_engine.png');
+    background-size: cover;
+  }
+
+  &_ride-date-filter-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    height: 100px;
+    margin-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  &_ride-date-filter-slides {
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+
+    overflow: auto;
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 80%;
+    margin-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  &_ride-date-carousel-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: transparent;
+    border: none;
+  }
+}
+
+ttp-home-ride {
+  width: 100%;
+}
+
+ttp-ride-dates-carousel {
+  width: 120px;
+  height: 65px;
+}
+
+@media screen and (width >= 300px) and (width <= 860px) {
+  .home {
+    &_wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &_inputs-wrapper {
+      display: flex;
+      flex-direction: column;
+      row-gap: 30px;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 660px) {
+  .home {
+    &_trip-line {
+      display: none;
+    }
+
+    &_trip-time-icon {
+      display: none;
+    }
+  }
+}
+
+.mdc-text-field {
+  &__input::-webkit-calendar-picker-indicator {
+    display: block !important;
+  }
+}

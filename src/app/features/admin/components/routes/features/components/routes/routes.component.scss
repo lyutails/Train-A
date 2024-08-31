@@ -1,0 +1,100 @@
+@import '../../../../../../../../styles';
+
+.routes {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    margin: 0 auto;
+  }
+
+  &_create-button {
+    display: flex;
+    align-self: flex-end;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &_data {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: space-between;
+  }
+
+  &_data-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+
+    border: 1px solid oklch(91.69% 0.0396 269.9781deg);
+    border-radius: 5px;
+  }
+
+  &_title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: oklch(49.71% 0.165 259.85deg);
+  }
+
+  &_delete-btn {
+    background: none;
+    border: none;
+  }
+
+  &_buttons {
+    position: absolute;
+    left: 750px;
+    display: flex;
+  }
+
+  &_btn-description {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  &_remove-button {
+    display: block;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  &_add-carriage-button {
+    display: block;
+    text-align: center;
+  }
+
+  &_add-station-button {
+    display: block;
+    text-align: center;
+  }
+
+  &_form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+  }
+
+  &_control-inputs {
+    z-index: 110;
+    width: 450px;
+  }
+
+  &_form-columns {
+    display: flex;
+    gap: 150px;
+  }
+
+  &_form-buttons {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+
+    margin-top: 30px;
+    margin-bottom: 40px;
+  }
+}

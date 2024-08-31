@@ -1,0 +1,49 @@
+@import '../../../../../styles';
+
+header {
+  background: $light-blue;
+  border-bottom: 1px solid $deep-blue;
+}
+
+.home-button {
+  &_logo-img {
+    aspect-ratio: 1 / 1;
+    width: 5vw;
+    min-width: 40px;
+    max-width: 70px;
+    margin-right: 8px;
+  }
+
+  &_description {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #005cbb;
+  }
+}
+
+.burger-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  max-width: 40px;
+  height: 40px;
+  padding: 0;
+
+  font-size: 50px;
+
+  background: none;
+  border: none;
+
+  &_icon {
+    transform: scale(1.8);
+    margin-right: unset;
+    font-size: 30px;
+    text-align: center;
+  }
+}
+
+.mat-mdc-button > .mat-icon {
+  margin-right: unset;
+}

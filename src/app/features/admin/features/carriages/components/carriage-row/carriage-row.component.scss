@@ -1,0 +1,13 @@
+.carriage-row {
+  &_empty {
+    width: 40px;
+    border-right: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+  }
+
+  &_with-seats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

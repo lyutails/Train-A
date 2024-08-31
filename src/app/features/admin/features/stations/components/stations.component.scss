@@ -1,0 +1,72 @@
+@import '../../../../../../styles';
+
+.stations {
+  &_wrapper {
+    position: relative;
+    min-height: 100vh;
+    margin: 0 auto;
+  }
+
+  &_station-list {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: $deep-blue;
+
+    &:first-child {
+      margin-top: 10px;
+    }
+  }
+
+  &_desction {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+
+    word-wrap: break-word;
+    white-space: initial;
+
+    border: 1px solid rgb(0 0 0 / 20%);
+    border-radius: 10px;
+  }
+
+  &_coordinates {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_bold-text {
+    font-weight: 600;
+  }
+
+  &_tooltip {
+    font-size: 13px;
+    color: $deep-blue;
+  }
+
+  &_tooltip mat-icon {
+    width: 13px;
+    height: 13px;
+    margin: 0;
+    font-size: 13px;
+  }
+}
+
+.map-spinner {
+  position: absolute;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+::ng-deep .tooltip-multiline {
+  white-space: pre-line;
+}
