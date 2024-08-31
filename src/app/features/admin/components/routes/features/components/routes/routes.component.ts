@@ -63,7 +63,6 @@ export class RoutesComponent implements OnInit {
   ngOnInit(): void {
     this.routesService.getRoutes().subscribe({
       next: (data) => {
-        console.log('Fetched routes data:', data);
         this.routes = (Array.isArray(data) ? data : []).map((route) => ({
           ...route,
           carriages: Array.isArray(route.carriages) ? route.carriages : [],
@@ -102,6 +101,7 @@ export class RoutesComponent implements OnInit {
 
   public showUpdateForm(route: RouteAPI): void {
     this.currentRoute = { ...route };
+    console.log(this.currentRoute.carriages[0]);
     this.isFormVisible = true;
 
     const stationsArray = this.createRouteForm.get('stations') as FormArray;
@@ -110,8 +110,10 @@ export class RoutesComponent implements OnInit {
     });
 
     const carriagesArray = this.createRouteForm.get('carriages') as FormArray;
-    this.currentRoute.carriages.forEach(() => {
-      carriagesArray.push(this.createCarriageFormGroup());
+    carriagesArray.clear();
+
+    this.currentRoute.carriages.forEach((carriage) => {
+      carriagesArray.push(this.createCarriageFormGroup(carriage));
     });
   }
 
@@ -180,29 +182,29 @@ export class RoutesComponent implements OnInit {
     });
   }
 
-  public createCarriageFormGroup(): FormGroup {
+  public createCarriageFormGroup(carriage: Carriage): FormGroup {
     return this.fb.group({
-      code: this.fb.control({ value: '', disabled: false }),
+      code: this.fb.control({ value: carriage.code, disabled: false }),
       name: this.fb.control(
-        { value: '', disabled: false },
+        { value: carriage.name, disabled: false },
         {
           validators: [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
         },
       ),
       rows: this.fb.control(
-        { value: 0, disabled: false },
+        { value: carriage.rows, disabled: false },
         {
           validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
         },
       ),
       leftSeats: this.fb.control(
-        { value: 0, disabled: false },
+        { value: carriage.leftSeats, disabled: false },
         {
           validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
         },
       ),
       rightSeats: this.fb.control(
-        { value: 0, disabled: false },
+        { value: carriage.rightSeats, disabled: false },
         {
           validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
         },
@@ -213,7 +215,14 @@ export class RoutesComponent implements OnInit {
   public addCarriage(): void {
     const carriageControl = this.createRouteForm.get('carriages');
     if (carriageControl instanceof FormArray) {
-      carriageControl.push(this.createCarriageFormGroup());
+      const newCarriage: Carriage = {
+        code: '',
+        name: '',
+        rows: 0,
+        leftSeats: 0,
+        rightSeats: 0,
+      };
+      carriageControl.push(this.createCarriageFormGroup(newCarriage));
     }
   }
 
