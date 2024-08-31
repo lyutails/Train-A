@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { AfterContentChecked, AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -83,7 +83,7 @@ export interface TripDates {
     },
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked {
+export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
@@ -200,15 +200,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked
   }
 
   ngAfterViewInit(): void {
-    this.prev = document.querySelector('#prev')!;
-    this.next = document.querySelector('#next')!;
     this.content = document.querySelector('#carousel-content')!;
-    if (!this.prev) {
-      throw new Error('no prev out there');
-    }
-    if (!this.next) {
-      throw new Error('no next out there');
-    }
     if (!this.content) {
       throw new Error('no content out there');
     }
@@ -221,23 +213,23 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked
         this.width = this.content.offsetWidth;
       });
     }
-    if (this.prev) {
-      this.prev.addEventListener('click', () => {
-        this.content.scrollBy(-(this.width + 10), 0);
-      });
-    }
-    if (this.next) {
-      this.next.addEventListener('click', () => {
-        this.content.scrollBy(this.width + 10, 0);
-      });
-    }
+
+    /* if (this.searchForm.controls.date.valid) {
+      this.dateValid.set(true);
+      this.searchForm.controls.time.enable();
+    } else {
+      this.dateValid.set(false);
+      this.searchForm.controls.time.disable();
+    } */
   }
 
-  ngAfterContentChecked() {
-    this.searchForm.controls.time.disable();
+  ngAfterViewChecked() {
     if (this.searchForm.controls.date.valid) {
       this.dateValid.set(true);
       this.searchForm.controls.time.enable();
+    } else {
+      this.dateValid.set(false);
+      this.searchForm.controls.time.disable();
     }
   }
 
@@ -276,7 +268,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked
           validators: [Validators.required],
         },
       ),
-      time: this.fb.control({ value: '', disabled: false }),
+      time: this.fb.control({ value: '', disabled: true }),
     });
   }
 
@@ -302,6 +294,14 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked
     }
     console.log('date unix timestamp', Math.floor(new Date(this.searchForm.controls.date.value).getTime() / 1000));
     // api call here
+  }
+
+  moveLeft() {
+    this.content.scrollBy(-(this.width + 10), 0);
+  }
+
+  moveRight() {
+    this.content.scrollBy(this.width + 10, 0);
   }
 
   onSubmit() {
