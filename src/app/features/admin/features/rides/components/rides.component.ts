@@ -208,6 +208,6 @@ export class RidesComponent implements OnInit, OnDestroy {
   }
 
   public createNewRide() {
-    console.log();
+    this.router.navigate([`/admin/routes`, this.rideRoute.id, 'new-ride']);
   }
 }

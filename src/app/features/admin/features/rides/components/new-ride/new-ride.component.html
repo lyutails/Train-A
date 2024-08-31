@@ -1,30 +1,15 @@
 <ng-container *ngIf="rideRoute">
   <section class="ride">
-    <div class="button-wrapper">
-      <TTP-button
-        [type]="'button'"
-        [width]="'10vw'"
-        [buttonText]="'Back'"
-        (click)="returnToPreviousRoute()"
-      ></TTP-button>
-      <TTP-button [type]="'button'" [width]="'10vw'" [buttonText]="'Create'" (click)="createNewRide()"></TTP-button>
-    </div>
-    <h2>Route {{ rideRoute.id }}</h2>
-
     <form [formGroup]="rideForm" (ngSubmit)="onSubmit()">
       <div formArrayName="schedule">
         <div *ngFor="let sc of scheduleFormControl.controls; let i = index" [formGroupName]="i">
           <fieldset>
             <mat-card>
-              <mat-card-header>
-                <mat-card-title>Ride {{ rideRoute.schedule[i].rideId }}</mat-card-title>
-              </mat-card-header>
-
               <div class="table-container">
                 <div class="table-header">
                   <div class="table-cell">Stations</div>
-                  <div class="table-cell">Schedule</div>
                   <div class="table-cell">Price</div>
+                  <div class="table-cell">Schedule</div>
                 </div>
                 <ng-container
                   *ngFor="let city of rideRoute.path; let j = index; let isLast = last; let isFirst = first"
@@ -54,26 +39,6 @@
                               Invalid Date
                             </mat-error>
                           </mat-form-field>
-                          <button
-                            mat-icon-button
-                            (click)="
-                              isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0])
-                                ? saveTime(sc.controls.segments.controls[j].controls.time.controls[0])
-                                : editTime(sc.controls.segments.controls[j].controls.time.controls[0])
-                            "
-                            class="ride-price_edit-save-button"
-                            type="button"
-                            [disabled]="
-                              isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0]) &&
-                              !sc.controls.segments.controls[j].controls.time.controls[0].valid
-                            "
-                          >
-                            <mat-icon>{{
-                              isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0])
-                                ? 'save'
-                                : 'edit'
-                            }}</mat-icon>
-                          </button>
                         </ng-container>
 
                         <ng-container *ngIf="j >= 0 && !isFirst && !isLast">
@@ -117,42 +82,6 @@
                               Invalid Date
                             </mat-error>
                           </mat-form-field>
-                          <button
-                            mat-icon-button
-                            (click)="
-                              isTimeEditButton(
-                                sc.controls.segments.controls[j].controls.time.controls[0],
-                                sc.controls.segments.controls[j - 1].controls.time.controls[1]
-                              )
-                                ? saveTime(
-                                    sc.controls.segments.controls[j].controls.time.controls[0],
-                                    sc.controls.segments.controls[j - 1].controls.time.controls[1]
-                                  )
-                                : editTime(
-                                    sc.controls.segments.controls[j].controls.time.controls[0],
-                                    sc.controls.segments.controls[j - 1].controls.time.controls[1]
-                                  )
-                            "
-                            class="ride-price_edit-save-button"
-                            type="button"
-                            [disabled]="
-                              isTimeEditButton(
-                                sc.controls.segments.controls[j].controls.time.controls[0],
-                                sc.controls.segments.controls[j - 1].controls.time.controls[1]
-                              ) &&
-                              (!sc.controls.segments.controls[j].controls.time.controls[0].valid ||
-                                !sc.controls.segments.controls[j - 1].controls.time.controls[1].valid)
-                            "
-                          >
-                            <mat-icon>{{
-                              isTimeEditButton(
-                                sc.controls.segments.controls[j].controls.time.controls[0],
-                                sc.controls.segments.controls[j - 1].controls.time.controls[1]
-                              )
-                                ? 'save'
-                                : 'edit'
-                            }}</mat-icon>
-                          </button>
                         </ng-container>
 
                         <ng-container *ngIf="j === rideRoute.path.length - 1">
@@ -178,30 +107,9 @@
                               Invalid Date
                             </mat-error>
                           </mat-form-field>
-                          <button
-                            mat-icon-button
-                            (click)="
-                              isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1])
-                                ? saveTime(sc.controls.segments.controls[j - 1].controls.time.controls[1])
-                                : editTime(sc.controls.segments.controls[j - 1].controls.time.controls[1])
-                            "
-                            class="ride-price_edit-save-button"
-                            type="button"
-                            [disabled]="
-                              isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1]) &&
-                              !sc.controls.segments.controls[j - 1].controls.time.controls[1].valid
-                            "
-                          >
-                            <mat-icon>{{
-                              isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1])
-                                ? 'save'
-                                : 'edit'
-                            }}</mat-icon>
-                          </button>
                         </ng-container>
                       </div>
                     </div>
-
                     <div class="table-cell">
                       <div class="price-column">
                         <ng-container *ngIf="sc.controls.segments.controls[j]">
@@ -216,16 +124,6 @@
                                 >Price is not in correct format</mat-error
                               >
                             </mat-form-field>
-                            <button
-                              mat-icon-button
-                              (click)="isEditButton(price.value) ? savePrice(price.value) : editPrice(price.value)"
-                              class="ride-price_edit-save-button"
-                              matTooltip="{{ isEditButton(price.value) ? 'Save' : 'Edit' }} price"
-                              [disabled]="!price.value.valid && isEditButton(price.value)"
-                              type="button"
-                            >
-                              <mat-icon>{{ isEditButton(price.value) ? 'save' : 'edit' }}</mat-icon>
-                            </button>
                           </div>
                         </ng-container>
                       </div>
@@ -236,6 +134,15 @@
             </mat-card>
           </fieldset>
         </div>
+      </div>
+      <div class="button-wrapper">
+        <TTP-button
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Cancel'"
+          (click)="returnToPreviousRoute()"
+        ></TTP-button>
+        <TTP-button [type]="'submit'" [width]="'10vw'" [buttonText]="'Save'"></TTP-button>
       </div>
     </form>
   </section>

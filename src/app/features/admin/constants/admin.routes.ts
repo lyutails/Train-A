@@ -32,11 +32,6 @@ export const ADMIN_ROUTES: Routes = [
         path: 'routes',
         children: [
           {
-            path: '',
-            loadComponent: () =>
-              import('../components/routes/features/components/routes/routes.component').then((m) => m.RoutesComponent),
-          },
-          {
             path: ':id',
             loadComponent: () => import('../features/rides/components/rides.component').then((m) => m.RidesComponent),
             resolve: { route: routeResolver },
@@ -47,6 +42,11 @@ export const ADMIN_ROUTES: Routes = [
               }),
               provideEffects([StationsEffects]),
             ],
+          },
+          {
+            path: ':id/new-ride',
+            loadComponent: () =>
+              import('../features/rides/components/new-ride/new-ride.component').then((m) => m.NewRideComponent),
           },
         ],
       },

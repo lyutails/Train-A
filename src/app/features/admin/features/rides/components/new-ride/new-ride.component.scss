@@ -1,0 +1,43 @@
+@import '../../../../../../../styles';
+
+.table-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+
+  width: 70%;
+  margin: 0 auto;
+}
+
+.table-header {
+  display: contents;
+  font-weight: bold;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.table-row {
+  display: contents;
+  text-align: center;
+}
+
+.time-column {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 8px;
+}
+
+h2 {
+  font-size: 30px;
+  text-align: center;
+}
+
+.ride {
+  margin: 10px;
+
+  .button-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
