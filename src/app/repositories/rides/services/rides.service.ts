@@ -19,7 +19,7 @@ export class RidesService {
     return this.ridesHttpService.updateRide(request);
   }
 
-  public addRideToRoute(id: number, segments: RouteSegments): Observable<number> {
+  public addRideToRoute(id: number, segments: RouteSegments[]): Observable<number> {
     return this.ridesHttpService.addRideToRoute(id, segments);
   }
 }

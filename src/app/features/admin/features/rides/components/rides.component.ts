@@ -160,9 +160,6 @@ export class RidesComponent implements OnInit, OnDestroy {
             segments: ride.getRawValue().segments,
           })
           .subscribe({
-            next: () => {
-              console.log('Ride updated successfully');
-            },
             error: (error) => {
               console.error('Error updating ride:', error);
             },

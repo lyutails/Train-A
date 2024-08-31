@@ -25,6 +25,7 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
+import { validateTimeSequence } from '../../helpers/time-sequence-validator';
 
 @Component({
   selector: 'TTP-new-ride',
@@ -70,7 +71,6 @@ export class NewRideComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.rideFacade.route$.subscribe((route) => {
       if (route) {
-        console.log(route);
         this.rideRoute = route;
         this.rideForm = this.rideFormInstance;
       } else {
@@ -125,14 +125,36 @@ export class NewRideComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit() {
-    if (this.rideForm.valid) {
-      console.log('test');
-      console.log(this.rideForm.value);
-      console.log('hello');
+    this.rideForm.setErrors(null);
+    const isValidTimeSequence = validateTimeSequence(this.segments);
+    if (this.rideForm.invalid || !isValidTimeSequence) {
+      this.rideForm.setErrors({ wrongSchedule: true });
+      return this.rideForm.markAllAsTouched();
+    } else {
+      this.rideFacade.addRideToRoute(this.rideRoute.id, this.segments.getRawValue()).subscribe({
+        next: () => {
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Error updating ride:', error);
+        },
+      });
     }
   }
 
   public get scheduleFormControl(): FormArray<FormGroup<RideInfoForm>> {
     return this.rideForm.controls.schedule;
+  }
+
+  public get segments(): FormArray<FormGroup<RideSegmentsForm>> {
+    return this.rideForm.controls.schedule.at(0).controls.segments;
+  }
+
+  public resetForm(): void {
+    this.rideForm.reset();
+    this.rideForm.markAllAsTouched();
+    this.rideForm.markAsPristine();
+    this.rideForm.setErrors(null);
+    this.returnToPreviousRoute();
   }
 }

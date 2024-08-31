@@ -7,6 +7,7 @@ import { StationInfo } from '../../stations/models/station-info';
 import { RideRoute } from '../models/route';
 import { UpdateRideApi } from '../../../../../repositories/rides/services/models/update-route-api';
 import { transformDateToIsoString } from '../helpers/transform-date-to-isostring';
+import { RouteSegments } from '../../../../../repositories/rides/services/models/route-section.model';
 
 @Injectable({
   providedIn: 'root',
@@ -62,5 +63,12 @@ export class RidesFacade {
       segment.time = segment.time.map((t) => transformDateToIsoString(t));
     });
     return this.ridesService.updateRide(ride);
+  }
+
+  public addRideToRoute(id: number, segments: RouteSegments[]): Observable<number> {
+    segments.forEach((segment) => {
+      segment.time = segment.time.map((t) => transformDateToIsoString(t));
+    });
+    return this.ridesService.addRideToRoute(id, segments);
   }
 }

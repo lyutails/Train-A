@@ -135,6 +135,9 @@
           </fieldset>
         </div>
       </div>
+      <mat-error *ngIf="rideForm.errors?.['wrongSchedule']">
+        The date schedule is not correct. Check if train arrives not before its departure or price are set!
+      </mat-error>
       <div class="button-wrapper">
         <TTP-button
           [type]="'button'"
