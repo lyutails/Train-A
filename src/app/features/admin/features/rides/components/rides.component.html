@@ -63,6 +63,10 @@
                             "
                             class="ride-price_edit-save-button"
                             type="button"
+                            [disabled]="
+                              isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0]) &&
+                              !sc.controls.segments.controls[j].controls.time.controls[0].valid
+                            "
                           >
                             <mat-icon>{{
                               isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0])
@@ -131,6 +135,14 @@
                             "
                             class="ride-price_edit-save-button"
                             type="button"
+                            [disabled]="
+                              isTimeEditButton(
+                                sc.controls.segments.controls[j].controls.time.controls[0],
+                                sc.controls.segments.controls[j - 1].controls.time.controls[1]
+                              ) &&
+                              (!sc.controls.segments.controls[j].controls.time.controls[0].valid ||
+                                !sc.controls.segments.controls[j - 1].controls.time.controls[1].valid)
+                            "
                           >
                             <mat-icon>{{
                               isTimeEditButton(
@@ -175,6 +187,10 @@
                             "
                             class="ride-price_edit-save-button"
                             type="button"
+                            [disabled]="
+                              isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1]) &&
+                              !sc.controls.segments.controls[j - 1].controls.time.controls[1].valid
+                            "
                           >
                             <mat-icon>{{
                               isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1])
