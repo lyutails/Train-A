@@ -206,4 +206,8 @@ export class RidesComponent implements OnInit, OnDestroy {
       timeControl2.disable();
     }
   }
+
+  public createNewRide() {
+    console.log();
+  }
 }
