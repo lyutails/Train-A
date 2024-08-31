@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Subject, takeUntil, tap } from 'rxjs';
+import { filter, map, Subject, takeUntil } from 'rxjs';
 
 import { MatCardModule } from '@angular/material/card';
 import { AsyncPipe, DatePipe, KeyValuePipe, NgFor, NgIf } from '@angular/common';
@@ -73,17 +73,17 @@ export class RidesComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.rideForm = this.rideFormInstance;
-    this.activatedRoute.data
+
+    this.rideFacade.route$
       .pipe(
-        map((data: { route?: RideRoute }) => data.route),
         filter((rideRoute): rideRoute is RideRoute => Boolean(rideRoute)),
+        map((rideRoute) => {
+          this.rideRoute = rideRoute;
+          this.setRides();
+        }),
         takeUntil(this.destroy$$),
-        tap(console.log),
       )
-      .subscribe((rideRoute) => {
-        this.rideRoute = rideRoute;
-        this.setRides();
-      });
+      .subscribe();
   }
 
   public ngOnDestroy(): void {

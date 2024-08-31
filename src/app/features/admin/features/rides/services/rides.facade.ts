@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RidesService } from '../../../../../repositories/rides/services/rides.service';
 import { StationsFacade } from '../../stations/station-store/services/stations.facade';
-import { filter, forkJoin, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, map, Observable, of, switchMap } from 'rxjs';
 import { RouteApi } from '../../../../../repositories/rides/services/models/route-api.model';
 import { StationInfo } from '../../stations/models/station-info';
 import { RideRoute } from '../models/route';
@@ -12,6 +12,9 @@ import { transformDateToIsoString } from '../helpers/transform-date-to-isostring
   providedIn: 'root',
 })
 export class RidesFacade {
+  private routeSubject$$ = new BehaviorSubject<RideRoute | null>(null);
+  public route$ = this.routeSubject$$.asObservable();
+
   constructor(
     private readonly ridesService: RidesService,
     private stationsFacade: StationsFacade,
@@ -35,7 +38,11 @@ export class RidesFacade {
       switchMap((stations) => {
         return forkJoin([this.ridesService.getRoute(id), of(stations)]);
       }),
-      map(([route, stations]) => this.mapRouteWithCityNames(route, stations)),
+      map(([route, stations]) => {
+        const routeWithCityNames = this.mapRouteWithCityNames(route, stations);
+        this.routeSubject$$.next(routeWithCityNames);
+        return routeWithCityNames;
+      }),
     );
   }
 
