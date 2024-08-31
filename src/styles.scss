@@ -1,6 +1,12 @@
 $light-blue: oklch(92.53% 0.037 249.47deg);
 $deep-blue: oklch(49.71% 0.165 259.85deg);
+$border-frame: 1px solid rgb(0 92 187 / 50%);
 $selected-seat: oklch(71.74% 0.19 48.65deg);
+
+@mixin border-frame {
+  border: $border-frame;
+  border-radius: 10px;
+}
 
 html,
 body {
@@ -9,7 +15,12 @@ body {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
   margin: 0;
+
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
@@ -30,6 +41,28 @@ body::-webkit-scrollbar-thumb {
 
 .content-area {
   min-height: calc(100vh - 90px);
+}
+
+ttp-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+ttp-footer {
+  flex-shrink: 0;
+}
+
+ttp-admin-page {
+  flex: 1 0 auto;
+}
+
+ttp-home {
+  flex: 1 0 auto;
+}
+
+ttp-orders {
+  flex: 1 0 auto;
 }
 
 @media screen and (width >= 1200px) and (width <= 2400px) {

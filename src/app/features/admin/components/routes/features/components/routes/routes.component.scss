@@ -1,3 +1,7 @@
-p {
-  color: #005cbb;
+@import '../../../../../../../../styles';
+
+.routes {
+  &_wrapper {
+    margin: 0 auto;
+  }
 }
