@@ -1,18 +1,8 @@
 <div class="home-ride_wrapper container-xl">
   <div class="home-ride_trip">
-    <a class="home-ride_trip-detail-part" matTooltip="click Details for info and order">
-      <div class="home-ride_trip-header">
-        <div class="home-ride_trip-name">{{ tripName }}</div>
-        <TTP-button
-          [type]="'button'"
-          [width]="'10vw'"
-          [buttonText]="'Details'"
-          class="home-ride_trip-button"
-          (click)="pickTripDetails()"
-        ></TTP-button>
-      </div>
+    <a class="home-ride_trip-detail-part" matTooltip="click for detailed info and to book a seat">
       <div class="home-ride_trip-time">
-        <div class="home-ride_trip-time start">16:00</div>
+        <div class="home-ride_trip-time start">{{ hoursFrom() }}:{{ minutesFrom() }}</div>
         <div class="home-ride_trip-total-time-line">
           <mat-icon class="home-ride_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
             >radio_button_unchecked</mat-icon
@@ -24,15 +14,15 @@
             >radio_button_checked</mat-icon
           >
         </div>
-        <div class="home-ride_trip-time end">22:00</div>
+        <div class="home-ride_trip-time end">{{ hoursTo() }}:{{ minutesTo() }}</div>
       </div>
       <div class="home-ride_trip-info">
         <div class="home-ride_trip-details start">
-          <div class="home-ride_trip-date">August 30</div>
+          <div class="home-ride_trip-date">{{ monthFrom() }} {{ dayFrom() }}</div>
           <div class="home-ride_trip-station">{{ tripFrom }}</div>
         </div>
         <div class="home-ride_trip-details end">
-          <div class="home-ride_trip-date">August 31</div>
+          <div class="home-ride_trip-date">{{ monthTo() }} {{ dayTo() }}</div>
           <div class="home-ride_trip-station">{{ tripTo }}</div>
         </div>
       </div>

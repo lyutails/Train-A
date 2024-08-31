@@ -101,16 +101,18 @@
           [tripTo]="inputTo.value"
           [routeFrom]="trip.from.city"
           [routeTo]="trip.to.city"
+          [timeFrom]="ride.segments.time.departure_from_prev_station"
+          [timeTo]="ride.segments.time.arrival_at_next_station"
         ></TTP-home-ride>
       }
     }
   }
-  @if (searchRides() && testTrips.length === 0) {
+  @if (searchRides() && tripsResponse.length === 0) {
     <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
 </div>
-@if (searchRides() && testTrips.length > 0) {
+@if (searchRides() && tripsResponse.length > 0) {
   <TTP-arrow-top
     [style.width]="'80%'"
     [style.height]="'50px'"

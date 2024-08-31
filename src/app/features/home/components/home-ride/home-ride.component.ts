@@ -1,4 +1,4 @@
-import { Component, inject, Input, model, signal } from '@angular/core';
+import { Component, inject, Input, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
@@ -14,14 +14,25 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './home-ride.component.html',
   styleUrl: './home-ride.component.scss',
 })
-export class HomeRideComponent {
+export class HomeRideComponent implements OnInit {
   @Input() tripName!: number;
   @Input() tripFrom = '';
   @Input() tripTo = '';
   @Input() routeFrom = '';
   @Input() routeTo = '';
+  @Input() timeFrom = '';
+  @Input() timeTo = '';
   @Input() carriages!: Carriage[];
-  public searchCarriages = signal(false);
+  public hoursFrom = signal(0);
+  public minutesFrom = signal(0);
+  public dayFrom = signal(0);
+  public monthFrom = signal(0);
+  public hoursTo = signal(0);
+  public minutesTo = signal(0);
+  public dayTo = signal(0);
+  public monthTo = signal(0);
+  public startDate = signal(0);
+  public endDate = signal(0);
   public dialog = inject(MatDialog);
   public popupRoute = signal('');
   public routeValue = model('');
@@ -33,15 +44,26 @@ export class HomeRideComponent {
     { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
   ];
 
-  public pickTripDetails() {
-    this.getCarriages();
-    // router.navigate /trip/:rideId?from=stationId&to=stationId
+  ngOnInit() {
+    const dateFrom = Date.parse(this.timeFrom);
+    const date1 = new Date(dateFrom * 1000);
+    this.hoursFrom.set(date1.getHours());
+    this.minutesFrom.set(date1.getMinutes());
+    this.dayFrom.set(date1.getDay());
+    this.monthFrom.set(date1.getMonth());
+    this.startDate.set(dateFrom);
+
+    const dateTo = Date.parse(this.timeTo);
+    const date2 = new Date(dateTo * 1000);
+    this.hoursTo.set(date2.getHours());
+    this.minutesTo.set(date2.getMinutes());
+    this.dayTo.set(date2.getDay());
+    this.monthTo.set(date1.getMonth());
+    this.endDate.set(dateTo);
   }
 
-  public getCarriages() {
-    this.searchCarriages.set(true);
-    // api call here
-    // this.carriages = data
+  public pickTripDetails() {
+    // /trip/:rideId?from=stationId&to=stationId
   }
 
   public openRouteModal() {

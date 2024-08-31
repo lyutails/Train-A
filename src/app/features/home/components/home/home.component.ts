@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -83,7 +83,7 @@ export interface TripDates {
     },
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, AfterContentChecked {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
@@ -101,9 +101,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public prev!: HTMLElement;
   public next!: HTMLElement;
   public content!: HTMLElement;
+  public dateValid = signal(false);
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
-  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
   // currently in template from to are values from inputs
   tripsResponse: SearchResponse[] = [
     {
@@ -146,8 +146,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             rideId: 576,
             segments: {
               time: {
-                departure_from_prev_station: '2024-10-08T22:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T03:29:57.708Z',
+                departure_from_prev_station: '2024-08-08T09:19:57.708Z',
+                arrival_at_next_station: '2024-08-12T10:29:57.708Z',
               },
               price: { type: 3523 },
               occupiedSeats: [345, 44, 3],
@@ -157,8 +157,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
             rideId: 88,
             segments: {
               time: {
-                departure_from_prev_station: '2024-11-08T22:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T03:29:57.708Z',
+                departure_from_prev_station: '2024-08-08T12:19:57.708Z',
+                arrival_at_next_station: '2024-08-12T13:29:57.708Z',
               },
               price: { type: 3523 },
               occupiedSeats: [345, 44, 3],
@@ -169,7 +169,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  // to show pic for no rides: testTrips: Trip[] = [];
+  // to show pic for no rides: tripsResponse: SearchResponse[] = [];
 
   allDaysChosenRideAvailableAt: TripDates[] = [
     { date: 'September 01', day: 'Monday' },
@@ -233,6 +233,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngAfterContentChecked(): void {
+    this.searchForm.controls.time.disable();
+    if (this.searchForm.controls.date.valid) {
+      this.dateValid.set(true);
+      this.searchForm.controls.time.enable();
+    }
+  }
+
   public filterFrom() {
     const filterValue = this.inputFrom.nativeElement.value.toLowerCase();
     this.filteredOptions = this.testCities.filter((item) => item.toLowerCase().includes(filterValue));
@@ -293,10 +301,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.searchRides.set(true);
     }
     console.log('date unix timestamp', Math.floor(new Date(this.searchForm.controls.date.value).getTime() / 1000));
-    // api call here
-  }
-
-  public buyTicket() {
     // api call here
   }
 
