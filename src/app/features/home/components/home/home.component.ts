@@ -286,15 +286,15 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     // api call here
   }
 
+  onSubmit() {
+    this.searchForm.reset();
+  }
+
   moveLeft() {
     this.content.scrollBy(-(this.width + 10), 0);
   }
 
   moveRight() {
     this.content.scrollBy(this.width + 10, 0);
-  }
-
-  onSubmit() {
-    this.searchForm.reset();
   }
 }
