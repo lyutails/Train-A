@@ -98,8 +98,6 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
-  public prev!: HTMLElement;
-  public next!: HTMLElement;
   public content!: HTMLElement;
   public dateValid = signal(false);
 
