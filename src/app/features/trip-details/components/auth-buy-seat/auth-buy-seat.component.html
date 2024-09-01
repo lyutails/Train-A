@@ -1,0 +1,27 @@
+<div class="auth-buy_header">
+  <div mat-dialog-title class="auth-buy_title">Dear user, happens you're not authorized in our system yet!</div>
+  <mat-dialog-actions class="auth-buy-popup_buttons">
+    <button mat-icon-button (click)="closeAuthToBuyPopup()" [mat-dialog-close]="popupAuthToBuy()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-dialog-actions>
+</div>
+<mat-dialog-content>
+  Please
+  <TTP-button
+    (click)="redirectToSignUp()"
+    [type]="'button'"
+    [width]="'10vw'"
+    [buttonText]="'Sign Up'"
+    class="auth-buy_signup-button"
+  ></TTP-button>
+  or
+  <TTP-button
+    (click)="redirectToSignIn()"
+    [type]="'button'"
+    [width]="'10vw'"
+    [buttonText]="'Login'"
+    class="auth-buy_signin-button"
+  ></TTP-button>
+  <p class="auth-buy_required">to book a seat for your great trip on one of our awesome trains.</p></mat-dialog-content
+>

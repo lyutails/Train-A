@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="trip-details_route-details">
-      <p class="trip-details_rideid">Ride rideId</p>
+      <p class="trip-details_rideid">Ride (rideId)</p>
       <TTP-button
         (click)="redirectToHomePage()"
         [type]="'button'"
@@ -35,13 +35,25 @@
         <p class="trip-details_carriage-price">Trip price:</p>
       </div>
     </div>
-    <TTP-button
-      (click)="redirectToHomePage()"
-      [type]="'button'"
-      [width]="'10vw'"
-      [buttonText]="'Book seat'"
-      class="trip-details_buy-button"
-    ></TTP-button>
+    @if (seatIsSelected()) {
+      @if (isAuthenticated) {
+        <TTP-button
+          (click)="openBookSeatModal()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Book seat'"
+          class="trip-details_buy-button"
+        ></TTP-button>
+      } @else {
+        <TTP-button
+          (click)="openAuthModal()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Book seat'"
+          class="trip-details_buy-button"
+        ></TTP-button>
+      }
+    }
     <div class="trip-details_seat-indications">
       <div class="trip-details_seat-info">
         <mat-label

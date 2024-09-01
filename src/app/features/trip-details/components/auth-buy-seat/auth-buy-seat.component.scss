@@ -1,0 +1,13 @@
+.auth-buy {
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &_title {
+    width: 80%;
+    text-align: center;
+  }
+}

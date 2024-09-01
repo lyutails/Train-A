@@ -84,6 +84,8 @@
   }
 
   &_seat-label {
+    user-select: none;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -104,6 +106,10 @@
     align-self: center;
     margin-top: 20px;
     margin-bottom: 20px;
+  }
+
+  &_auth-required {
+    text-align: center;
   }
 }
 
