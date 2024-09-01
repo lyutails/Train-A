@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, model, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -10,15 +10,17 @@ import { AuthFacade } from '../../../../core/authorization/services/auth.facade'
 import { RoleService } from '../../../../core/roles/role.service';
 import { AuthBuySeatComponent } from '../auth-buy-seat/auth-buy-seat.component';
 import { TripDetailsResponse } from '../../models/trip-details-response.model';
+import { MatIconButton } from '@angular/material/button';
+import { CarriagesCarouselComponent } from '../carriages-carousel/carriages-carousel.component';
 
 @Component({
   selector: 'TTP-trip-details',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, MatIcon, MatLabel, MatCheckbox],
+  imports: [CommonModule, ButtonComponent, MatIcon, MatLabel, MatCheckbox, MatIconButton, CarriagesCarouselComponent],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
-export class TripDetailsComponent implements OnInit {
+export class TripDetailsComponent implements OnInit, AfterViewInit {
   public popupAuth = signal('');
   public authValue = model('');
   public dialog = inject(MatDialog);
@@ -26,6 +28,8 @@ export class TripDetailsComponent implements OnInit {
   public openBookSeatPopup = signal(false);
   public seatIsSelected = signal(true);
   public uniqueCarriageNames!: string[];
+  public width!: number;
+  public content!: HTMLElement;
 
   constructor(
     private router: Router,
@@ -37,6 +41,22 @@ export class TripDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.uniqueCarriageNames = [...new Set(this.fakeTripResponse.carriages)];
+  }
+
+  ngAfterViewInit(): void {
+    this.content = document.querySelector('#carousel-content')!;
+    if (!this.content) {
+      throw new Error('no content out there');
+    }
+    if (this.content) {
+      this.width = this.content.offsetWidth;
+      window.addEventListener('resize', () => {
+        if (!this.content) {
+          throw new Error('no content out there');
+        }
+        this.width = this.content.offsetWidth;
+      });
+    }
   }
 
   fakeTripResponse: TripDetailsResponse = {
@@ -51,6 +71,12 @@ export class TripDetailsComponent implements OnInit {
       'carriage_type_7',
       'carriage_type_7',
       'carriage_type_7',
+      'carriage_type_4',
+      'carriage_type_3',
+      'carriage_type_5',
+      'carriage_type_8',
+      'carriage_type_2',
+      'carriage_type_6',
     ],
     schedule: {
       segments: [
@@ -95,5 +121,13 @@ export class TripDetailsComponent implements OnInit {
 
   public buyTicket() {
     console.log('call api to buy ticket');
+  }
+
+  moveLeft() {
+    this.content.scrollBy(-(this.width + 10), 0);
+  }
+
+  moveRight() {
+    this.content.scrollBy(this.width + 10, 0);
   }
 }

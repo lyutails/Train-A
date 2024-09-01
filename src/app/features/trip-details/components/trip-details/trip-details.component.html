@@ -29,16 +29,24 @@
       ></TTP-button>
     </div>
     <p class="trip-details_carriages-types">Available carriage types:</p>
-    <div class="trip-details_carriages-tabs">
-      @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
-        <div class="trip-details_carriage-info">
-          <p class="trip-details_carriage-name">
-            <span class="small-text">Carriage name: </span><span class="coloured-text">{{ carriage }}</span>
-          </p>
-          <p class="trip-details_carriage-seats"><span class="small-text">Free seats: </span>44</p>
-          <p class="trip-details_carriage-price"><span class="small-text">Trip price: </span>674</p>
-        </div>
-      }
+    <div class="trip-details_carriages-carousel" id="carousel">
+      <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </button>
+      <div class="trip-details_carriages-tabs" id="carousel-content">
+        @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
+          <TTP-carriages-carousel [carriage]="carriage"></TTP-carriages-carousel>
+        }
+      </div>
+      <button
+        (click)="moveRight()"
+        id="next"
+        mat-icon-button
+        type="button"
+        class="home_ride-date-carousel-button right"
+      >
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
     </div>
     @if (seatIsSelected()) {
       @if (isAuthenticated) {
