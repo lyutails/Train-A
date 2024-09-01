@@ -22,6 +22,8 @@
 
   &_table-cell:not(:nth-child(3)) {
     width: 100%;
+    min-width: 80px;
+    max-width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
 
@@ -29,18 +31,60 @@
     border-radius: 10px;
   }
 
+  &_table-cell:nth-child(3) {
+    width: 100%;
+    min-width: 80px;
+    max-width: 300px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
   &_form-field {
     width: 100%;
+    min-width: 80px;
   }
-}
 
-.table-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
+  &_form-input {
+    width: 100%;
+    min-width: 80px;
+  }
 
-  width: 80%;
-  margin: 0 auto;
+  &_table-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  &_city-column {
+    width: 100%;
+    min-width: 80px;
+    max-width: 300px;
+    padding: 10px;
+  }
+
+  &_time-column {
+    display: flex;
+    flex-direction: column-reverse;
+
+    width: 100%;
+    min-width: 80px;
+    max-width: 300px;
+    padding: 10px;
+  }
+
+  &_price-column {
+    position: relative;
+    top: 100px;
+
+    width: 100%;
+    min-width: 80px;
+    max-width: 300px;
+    margin-top: 50px;
+    padding: 10px;
+  }
 }
 
 .table-header {
@@ -69,40 +113,33 @@
   text-align: center;
 }
 
-.time-column {
-  display: flex;
-  flex-direction: column-reverse;
-  width: 100%;
-  padding: 8px;
-}
-
-/* .city-column {
-  width: 100%;
-  min-width: 80px;
-} */
-
-.price-column {
-  position: relative;
-  top: 100px;
-
-  width: 100%;
-  margin-top: 50px;
-  padding: 8px;
-}
-
 .mat-mdc-card {
   padding-bottom: 10px;
   background-color: transparent !important;
 }
 
+mat-form-field.mat-mdc-form-field {
+  width: 100%;
+  min-width: 80px;
+  max-width: 300px;
+}
+
 @media screen and (width >= 650px) and (width <= 1000px) {
-  .table-container {
-    width: 80%;
+  .ride {
+    font-size: 0.7rem;
+
+    &_table-container {
+      width: 80%;
+    }
   }
 }
 
-@media screen and (width >= 300px) and (width <= 1000px) {
-  .table-container {
-    width: 90%;
+@media screen and (width >= 300px) and (width <= 649.98px) {
+  .ride {
+    font-size: 0.4rem;
+
+    &_table-container {
+      width: 96%;
+    }
   }
 }
