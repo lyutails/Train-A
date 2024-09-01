@@ -93,17 +93,17 @@ export class TripDetailsComponent implements AfterViewInit {
 
   public buyTicket() {
     console.log('call api to buy ticket');
-    this.httpClient.get<TripDetailsResponse>('route').subscribe({
+    this.httpClient.get('route').subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+    });
+    this.httpClient.get<TripDetailsResponse>(`search/${this.rideId}`).subscribe({
       next: (data) => {
         console.log(data);
         this.rideCarriages = data.carriages;
-        this.uniqueCarriageNames = [...new Set(this.rideCarriages)];
         console.log(data.carriages);
-      },
-    });
-    this.httpClient.get(`search/${this.rideId}`).subscribe({
-      next: (data) => {
-        console.log(data);
+        this.uniqueCarriageNames = [...new Set(this.rideCarriages)];
       },
     });
     this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
