@@ -52,6 +52,7 @@ import { RidesFacade } from '../services/rides.facade';
     MatTooltipModule,
     KeyValuePipe,
     MatInputModule,
+    MatIconButton,
   ],
   templateUrl: './rides.component.html',
   styleUrl: './rides.component.scss',
