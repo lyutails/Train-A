@@ -9,4 +9,94 @@
   &_back-button {
     margin: 20px 0;
   }
+
+  &_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 50%;
+    min-width: 280px;
+    max-width: 600px;
+  }
+
+  &_detail-stations {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &_detail-times {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &_detail-station {
+    margin-bottom: 0;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_detail-time {
+    margin-bottom: 0;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_route-details {
+    display: flex;
+    align-items: center;
+  }
+
+  &_rideid {
+    margin-right: 20px;
+    margin-bottom: 0;
+  }
+
+  &_route-button {
+    margin: 20px 0;
+  }
+
+  &_seat-indications {
+    display: flex;
+    align-items: center;
+  }
+
+  &_seat-info {
+    display: flex;
+    align-items: center;
+  }
+
+  &_seat-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+
+    border-radius: 5px;
+  }
+
+  &_seat-description {
+    margin-right: 30px;
+    margin-bottom: 0;
+  }
 }

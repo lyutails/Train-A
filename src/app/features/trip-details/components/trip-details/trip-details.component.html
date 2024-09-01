@@ -7,5 +7,83 @@
       [buttonText]="'Back'"
       class="trip-details_back-button"
     ></TTP-button>
+    <div class="trip-details_details">
+      <div class="trip-details_detail-stations">
+        <p class="trip-details_detail-station start">start station</p>
+        <mat-icon class="">trending_flat</mat-icon>
+        <p class="trip-details_detail-station end">end station</p>
+      </div>
+      <div class="trip-details_detail-times">
+        <p class="trip-details_detail-time start">departure time</p>
+        <p class="trip-details_detail-time end">arrival time</p>
+      </div>
+    </div>
+    <div class="trip-details_route-details">
+      <p class="trip-details_rideid">rideId</p>
+      <TTP-button
+        (click)="redirectToHomePage()"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'Route'"
+        class="trip-details_route-button"
+      ></TTP-button>
+    </div>
+    <TTP-button
+      (click)="redirectToHomePage()"
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Book seat'"
+      class="trip-details_route-button"
+    ></TTP-button>
+    <div class="trip-details_seat-indications">
+      <div class="trip-details_seat-info">
+        <mat-label
+          [attr.for]="'occupied'"
+          class="trip-details_seat-label occupied"
+          [style.background]="'lightgray'"
+          [style.color]="'white'"
+          >1
+          <mat-checkbox
+            id="occupied"
+            [hidden]="true"
+            class="trip-details_seat-checkbox"
+            [disabled]="true"
+          ></mat-checkbox>
+        </mat-label>
+        <p class="trip-details_seat-description">- Reserved seat</p>
+      </div>
+      <div class="trip-details_seat-info">
+        <mat-label
+          [attr.for]="'available'"
+          class="trip-details_seat-label available"
+          [style.background]="'oklch(50.65% 0.164 263.09deg)'"
+          [style.color]="'white'"
+          >1
+          <mat-checkbox
+            id="available"
+            [hidden]="true"
+            class="trip-details_seat-checkbox"
+            [disabled]="true"
+          ></mat-checkbox>
+        </mat-label>
+        <p class="trip-details_seat-description">- Available seat</p>
+      </div>
+      <div class="trip-details_seat-info">
+        <mat-label
+          [attr.for]="'selected'"
+          class="trip-details_seat-label selected"
+          [style.background]="'oklch(71.74% 0.19 48.65deg)'"
+          [style.color]="'white'"
+          >1
+          <mat-checkbox
+            id="selected"
+            [hidden]="true"
+            class="trip-details_seat-checkbox"
+            [disabled]="true"
+          ></mat-checkbox>
+        </mat-label>
+        <p class="trip-details_seat-description">- Occupied seat</p>
+      </div>
+    </div>
   </div>
 </div>
