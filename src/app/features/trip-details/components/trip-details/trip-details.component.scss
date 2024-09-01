@@ -99,4 +99,22 @@
     margin-right: 30px;
     margin-bottom: 0;
   }
+
+  &_buy-button {
+    align-self: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .trip-details {
+    &_seat-indications {
+      flex-direction: column;
+    }
+
+    &_seat-info {
+      margin-bottom: 20px;
+    }
+  }
 }
