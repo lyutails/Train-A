@@ -5,7 +5,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { BookSeatComponent } from '../book-seat/book-seat.component';
 import { Router } from '@angular/router';
 import { AuthFacade } from '../../../../core/authorization/services/auth.facade';
 import { RoleService } from '../../../../core/roles/role.service';
@@ -52,18 +51,6 @@ export class TripDetailsComponent {
     return this.authFacade.isAuthenticated;
   }
 
-  public openBookSeatModal() {
-    const dialogRef = this.dialog.open(BookSeatComponent, {
-      data: { password: this.passwordValue() },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result !== undefined) {
-        this.passwordValue.set(result);
-      }
-    });
-  }
-
   public openAuthModal() {
     const dialogRef = this.dialog.open(AuthBuySeatComponent, {
       data: { password: this.passwordValue() },
@@ -74,5 +61,9 @@ export class TripDetailsComponent {
         this.passwordValue.set(result);
       }
     });
+  }
+
+  public buyTicket() {
+    console.log('call api to buy ticket');
   }
 }

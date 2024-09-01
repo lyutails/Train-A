@@ -38,7 +38,7 @@
     @if (seatIsSelected()) {
       @if (isAuthenticated) {
         <TTP-button
-          (click)="openBookSeatModal()"
+          (click)="buyTicket()"
           [type]="'button'"
           [width]="'10vw'"
           [buttonText]="'Book seat'"
