@@ -1,0 +1,20 @@
+<div class="orders container-xl">
+  @if (isAuthenticated && !isAdminRole) {
+    @for (ticket of tickets; track ticket.id) {
+      <TTP-ticket
+        [stationStart]="ticket.stationStart"
+        [stationEnd]="ticket.stationEnd"
+        [seatId]="ticket.seatId"
+      ></TTP-ticket>
+    }
+  }
+  @if (isAdminRole) {
+    @for (ticket of tickets; track ticket.id) {
+      <TTP-ticket
+        [stationStart]="ticket.stationStart"
+        [stationEnd]="ticket.stationEnd"
+        [seatId]="ticket.seatId"
+      ></TTP-ticket>
+    }
+  }
+</div>

@@ -1,0 +1,206 @@
+@import '../../../../../styles';
+
+.home-ride {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_trip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+
+    border: 1px solid rgb(0 92 187 / 50%);
+    border-radius: 10px;
+  }
+
+  &_trip-detail-part {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 100%;
+
+    color: $deep-blue;
+    text-decoration: none;
+
+    background-color: transparent;
+    border: none;
+    outline: none;
+
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-blue;
+      border-radius: 10px;
+    }
+  }
+
+  &.text-coloured {
+    color: $deep-blue;
+  }
+
+  &_trip-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &_trip-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_trip-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_trip-details {
+    display: flex;
+    flex-direction: column;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_trip-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.start {
+      align-items: flex-start;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    &.end {
+      align-items: flex-end;
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+  }
+
+  &_trip-total-time {
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_trip-carriages {
+    width: 100%;
+    padding-top: 10px;
+    border-top: 1px solid $deep-blue;
+  }
+
+  &_trip-carriage-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_route-button {
+    align-self: flex-start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  &_trip-from-to {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+
+    border-top: 1px solid $deep-blue;
+  }
+
+  &_trip-line {
+    width: 35%;
+    height: 2px;
+    background-color: $deep-blue;
+
+    /* &.left {
+        align-self: flex-start;
+      }
+
+      &.right {
+        align-self: flex-end;
+      } */
+  }
+
+  &_trip-total-time-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+  }
+
+  &_trip-no-trains {
+    margin-bottom: 20px;
+
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: $deep-blue;
+    text-align: center;
+  }
+
+  &_trip-not-found {
+    aspect-ratio: 1 / 1;
+    width: 50vw;
+    min-width: 160px;
+    max-width: 350px;
+
+    background-image: url('../../../../../../public/train_engine.png');
+    background-size: cover;
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 860px) {
+  .home-ride {
+    &_wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &_inputs-wrapper {
+      display: flex;
+      flex-direction: column;
+      row-gap: 30px;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 660px) {
+  .home-ride {
+    &_trip-line {
+      display: none;
+    }
+
+    &_trip-time-icon {
+      display: none;
+    }
+  }
+}

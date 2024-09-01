@@ -1,0 +1,132 @@
+<div class="home_wrapper container-xl">
+  <p class="home_title" [style.color]="'oklch(49.71% 0.165 259.85deg)'">Pick trip parameters</p>
+  <form class="home_form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div class="home_inputs-wrapper">
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>From...</mat-label>
+        <input
+          #inputFrom
+          matInput
+          placeholder="From"
+          formControlName="from"
+          [value]="searchForm.controls.from.value"
+          [matAutocomplete]="auto"
+          (input)="filterFrom()"
+          (focus)="filterFrom()"
+        />
+        <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" requireSelection>
+          <!-- @for (city of filteredTestCitiesFrom | async; track city) {
+              <mat-option [value]="city">{{ city }}</mat-option>
+            } -->
+          @for (city of filteredOptions; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>To...</mat-label>
+        <input
+          #inputTo
+          matInput
+          placeholder="To"
+          formControlName="to"
+          [value]="searchForm.controls.to.value"
+          [matAutocomplete]="auto"
+          (input)="filterTo()"
+          (focus)="filterTo()"
+        />
+        <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
+        <mat-autocomplete #auto="matAutocomplete" requireSelection>
+          @for (city of filteredTestCitiesTo | async; track city) {
+            <mat-option [value]="city">{{ city }}</mat-option>
+          }
+        </mat-autocomplete></mat-form-field
+      >
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label>Date...</mat-label
+        ><input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="date"
+          [min]="minDate"
+          [value]="searchForm.controls.date.value"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="home_form-input"
+        ><mat-label for="appt">Time...</mat-label
+        ><input
+          matInput
+          matNativeControl
+          type="time"
+          [value]="searchForm.controls.time"
+          id="appt"
+          name="appt"
+          formControlName="time"
+        />
+        <mat-hint>12:00 AM</mat-hint>
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="home_ride-date-filter-carousel" id="carousel">
+    <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <div id="carousel-content" class="home_ride-date-filter-slides">
+      @for (day of allDaysChosenRideAvailableAt; track day; let index = $index) {
+        <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
+      }
+    </div>
+    <button (click)="moveRight()" id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </div>
+  <TTP-button
+    (click)="getRides()"
+    [type]="'submit'"
+    [width]="'10vw'"
+    [buttonText]="'Search' | uppercase"
+    class="home_search-button"
+    [disabled]="!searchForm.valid"
+  ></TTP-button>
+  @if (searchRides() && tripsResponse.length > 0) {
+    @for (trip of tripsResponse; track trip.routes.id) {
+      @for (ride of trip.routes.schedule; track ride.rideId; let index = $index) {
+        <TTP-home-ride
+          [tripName]="ride.rideId"
+          [tripFrom]="inputFrom.value"
+          [tripTo]="inputTo.value"
+          [routeFrom]="trip.from.city"
+          [routeTo]="trip.to.city"
+          [timeFrom]="ride.segments.time.departure_from_prev_station"
+          [timeTo]="ride.segments.time.arrival_at_next_station"
+          [rideId]="ride.rideId"
+        ></TTP-home-ride>
+      }
+    }
+  }
+  @if (searchRides() && tripsResponse.length === 0) {
+    <div class="home_trip-no-trains">No rides available</div>
+    <div class="home_trip-not-found"></div>
+  }
+</div>
+@if (searchRides() && tripsResponse.length > 0) {
+  <TTP-arrow-top
+    [style.width]="'80%'"
+    [style.height]="'50px'"
+    [style.display]="'block'"
+    [disabled]="false"
+    [backgroundColor]="'oklch(49.71% 0.165 259.85deg)'"
+  ></TTP-arrow-top>
+} @else {
+  <TTP-arrow-top
+    [style.width]="'80%'"
+    [style.height]="'50px'"
+    [style.display]="'block'"
+    [disabled]="true"
+    [backgroundColor]="'lightgray'"
+  ></TTP-arrow-top>
+}

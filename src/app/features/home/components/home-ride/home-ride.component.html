@@ -1,0 +1,50 @@
+<div class="home-ride_wrapper container-xl">
+  <div class="home-ride_trip">
+    <a class="home-ride_trip-detail-part" matTooltip="click for detailed info and to book a seat">
+      <div class="home-ride_trip-time">
+        <div class="home-ride_trip-time start">{{ hoursFrom() }}:{{ minutesFrom() }}</div>
+        <div class="home-ride_trip-total-time-line">
+          <mat-icon class="home-ride_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
+            >radio_button_unchecked</mat-icon
+          >
+          <div class="home-ride_trip-line left"></div>
+          <div class="home-ride_trip-total-time">7h 22m</div>
+          <div class="home-ride_trip-line right"></div>
+          <mat-icon class="home-ride_trip-time-icon" [style.color]="'oklch(49.71% 0.165 259.85deg)'"
+            >radio_button_checked</mat-icon
+          >
+        </div>
+        <div class="home-ride_trip-time end">{{ hoursTo() }}:{{ minutesTo() }}</div>
+      </div>
+      <div class="home-ride_trip-info">
+        <div class="home-ride_trip-details start">
+          <div class="home-ride_trip-date">August 31</div>
+          <div class="home-ride_trip-station">{{ tripFrom }}</div>
+        </div>
+        <div class="home-ride_trip-details end">
+          <div class="home-ride_trip-date">August 31</div>
+          <div class="home-ride_trip-station">{{ tripTo }}</div>
+        </div>
+      </div>
+    </a>
+    <div class="home-ride_trip-from-to">
+      <mat-icon>train</mat-icon> {{ routeFrom }} <mat-icon>trending_flat</mat-icon>
+      {{ routeTo }}
+    </div>
+    <TTP-button
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Route'"
+      class="home-ride_route-button"
+      (click)="openRouteModal()"
+    ></TTP-button>
+    <div class="home-ride_trip-carriages">
+      @for (carriage of testCarriages; track carriage.code) {
+        <div class="home-ride_trip-carriage-details">
+          <div class="home-ride_trip-carriage-type">{{ carriage.name }}: (number of free seats here) seats</div>
+          <div class="home-ride_trip-carriage-price">500$</div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
