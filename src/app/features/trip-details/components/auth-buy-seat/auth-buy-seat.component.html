@@ -6,14 +6,14 @@
     </button>
   </mat-dialog-actions>
 </div>
-<mat-dialog-content>
+<mat-dialog-content class="auth-buy_content">
   Please
   <TTP-button
     (click)="redirectToSignUp()"
     [type]="'button'"
     [width]="'10vw'"
     [buttonText]="'Sign Up'"
-    class="auth-buy_signup-button"
+    class="auth-buy_auth-button"
   ></TTP-button>
   or
   <TTP-button
@@ -21,7 +21,9 @@
     [type]="'button'"
     [width]="'10vw'"
     [buttonText]="'Login'"
-    class="auth-buy_signin-button"
+    class="auth-buy_auth-button"
   ></TTP-button>
-  <p class="auth-buy_required">to book a seat for your great trip on one of our awesome trains.</p></mat-dialog-content
+  <p class="auth-buy_required">
+    to book a seat for your wonderful trip on one of our awesome trains.
+  </p></mat-dialog-content
 >

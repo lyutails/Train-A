@@ -18,8 +18,8 @@ import { AuthBuySeatComponent } from '../auth-buy-seat/auth-buy-seat.component';
   styleUrl: './trip-details.component.scss',
 })
 export class TripDetailsComponent {
-  public popupPassword = signal('');
-  public passwordValue = model('');
+  public popupAuth = signal('');
+  public authValue = model('');
   public dialog = inject(MatDialog);
   public userRole = '';
   public openBookSeatPopup = signal(false);
@@ -53,12 +53,12 @@ export class TripDetailsComponent {
 
   public openAuthModal() {
     const dialogRef = this.dialog.open(AuthBuySeatComponent, {
-      data: { password: this.passwordValue() },
+      data: this.authValue(),
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
-        this.passwordValue.set(result);
+        this.authValue.set(result);
       }
     });
   }

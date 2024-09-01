@@ -22,7 +22,7 @@ import { MatIconButton } from '@angular/material/button';
 export class AuthBuySeatComponent {
   public dialogRef = inject(MatDialogRef<AuthBuySeatComponent>);
   public data = inject(MAT_DIALOG_DATA);
-  public popupAuthToBuy = model(this.data.password);
+  public popupAuthToBuy = model('');
 
   constructor(private readonly router: Router) {}
 
