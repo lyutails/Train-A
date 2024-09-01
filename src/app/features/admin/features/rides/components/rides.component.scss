@@ -22,7 +22,7 @@
 
   &_table-cell:not(:nth-child(3)) {
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
     max-width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -33,7 +33,7 @@
 
   &_table-cell:nth-child(3) {
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
     max-width: 300px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -41,12 +41,12 @@
 
   &_form-field {
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
   }
 
   &_form-input {
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
   }
 
   &_table-container {
@@ -60,7 +60,7 @@
 
   &_city-column {
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
     max-width: 300px;
     padding: 10px;
   }
@@ -70,7 +70,7 @@
     flex-direction: column-reverse;
 
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
     max-width: 300px;
     padding: 10px;
   }
@@ -80,7 +80,7 @@
     top: 100px;
 
     width: 100%;
-    min-width: 80px;
+    min-width: 70px;
     max-width: 300px;
     margin-top: 50px;
     padding: 10px;
@@ -125,6 +125,18 @@
     &_table-container {
       width: 80%;
     }
+
+    &_city-column {
+      padding: 5px;
+    }
+
+    &_time-column {
+      padding: 5px;
+    }
+
+    &_price-column {
+      padding: 5px;
+    }
   }
 }
 
@@ -134,6 +146,18 @@
 
     &_table-container {
       width: 96%;
+    }
+
+    &_city-column {
+      padding: 2px;
+    }
+
+    &_time-column {
+      padding: 2px;
+    }
+
+    &_price-column {
+      padding: 2px;
     }
   }
 }
