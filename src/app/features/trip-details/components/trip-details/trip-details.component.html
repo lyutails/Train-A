@@ -1,3 +1,11 @@
 <div class="trip-details container-xl">
-  <div class="trip-details_wrapper">trip details</div>
+  <div class="trip-details_wrapper">
+    <TTP-button
+      (click)="redirectToHomePage()"
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Back'"
+      class="trip-details_back-button"
+    ></TTP-button>
+  </div>
 </div>
