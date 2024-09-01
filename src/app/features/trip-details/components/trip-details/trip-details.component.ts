@@ -12,6 +12,7 @@ import { AuthBuySeatComponent } from '../auth-buy-seat/auth-buy-seat.component';
 import { TripDetailsResponse } from '../../models/trip-details-response.model';
 import { MatIconButton } from '@angular/material/button';
 import { CarriagesCarouselComponent } from '../carriages-carousel/carriages-carousel.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -35,6 +36,7 @@ export class TripDetailsComponent implements OnInit, AfterViewInit {
     private router: Router,
     private authFacade: AuthFacade,
     private roleService: RoleService,
+    private httpClient: HttpClient,
   ) {
     this.initializeUserRole();
   }
@@ -121,6 +123,33 @@ export class TripDetailsComponent implements OnInit, AfterViewInit {
 
   public buyTicket() {
     console.log('call api to buy ticket');
+    this.httpClient.get('route').subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+    });
+    this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 7, stationEnd: 68 }).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      /* error: ({ error }: HttpErrorResponse) => {
+        //  this.isSubmitting = false;
+        // this.clearErrorMessages();
+
+        if (error.reason === 'alreadyLoggedIn') {
+          this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
+        }
+        if (error.reason === 'userNotFound') {
+          this.signInForm.controls['email'].setErrors({ userNotFound: true });
+        }
+        if (error.reason === 'invalidEmail') {
+          this.signInForm.controls['email'].setErrors({ invalidEmail: true });
+        }
+        if (error.reason === 'invalidFields') {
+          this.signInForm.controls['email'].setErrors({ invalidFields: true });
+        }
+      }, */
+    });
   }
 
   moveLeft() {
