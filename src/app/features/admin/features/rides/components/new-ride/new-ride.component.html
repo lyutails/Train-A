@@ -1,28 +1,27 @@
 <ng-container *ngIf="rideRoute">
-  <section class="ride">
+  <section class="ride_wrapper container-xl">
     <form [formGroup]="rideForm" (ngSubmit)="onSubmit()">
       <div formArrayName="schedule">
         <div *ngFor="let sc of scheduleFormControl.controls; let i = index" [formGroupName]="i">
           <fieldset>
             <mat-card>
-              <div class="table-container">
+              <div class="ride_table-container">
                 <div class="table-header">
-                  <div class="table-cell">Stations</div>
-                  <div class="table-cell">Price</div>
-                  <div class="table-cell">Schedule</div>
+                  <div class="ride_table-cell">Stations</div>
+                  <div class="ride_table-cell">Schedule</div>
+                  <div class="ride_table-cell">Price</div>
                 </div>
                 <ng-container
                   *ngFor="let city of rideRoute.path; let j = index; let isLast = last; let isFirst = first"
                 >
                   <div class="table-row">
-                    <div class="table-cell">
-                      <div class="city-column">{{ city }}</div>
+                    <div class="ride_table-cell">
+                      <div class="ride_city-column">{{ city }}</div>
                     </div>
-
-                    <div class="table-cell">
-                      <div class="time-column">
+                    <div class="ride_table-cell">
+                      <div class="ride_time-column">
                         <ng-container *ngIf="isFirst">
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Departs</mat-label>
                             <input
                               type="datetime-local"
@@ -42,7 +41,7 @@
                         </ng-container>
 
                         <ng-container *ngIf="j >= 0 && !isFirst && !isLast">
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Arrives</mat-label>
                             <input
                               type="datetime-local"
@@ -64,7 +63,7 @@
                               Invalid Date
                             </mat-error>
                           </mat-form-field>
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Departs</mat-label>
                             <input
                               type="datetime-local"
@@ -83,9 +82,8 @@
                             </mat-error>
                           </mat-form-field>
                         </ng-container>
-
                         <ng-container *ngIf="j === rideRoute.path.length - 1">
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Arrives</mat-label>
                             <input
                               type="datetime-local"
@@ -110,13 +108,13 @@
                         </ng-container>
                       </div>
                     </div>
-                    <div class="table-cell">
-                      <div class="price-column">
+                    <div class="ride_table-cell">
+                      <div class="ride_price-column">
                         <ng-container *ngIf="sc.controls.segments.controls[j]">
                           <div
                             *ngFor="let price of sc.controls.segments.controls[j].controls.price.controls | keyvalue"
                           >
-                            <mat-form-field appearance="outline">
+                            <mat-form-field appearance="outline" class="ride_form-field">
                               <mat-label>{{ price.key }} - currency:USD</mat-label>
                               <input type="number" matInput [formControl]="price.value" />
                               <mat-error *ngIf="price.value.hasError('required')">Price is required</mat-error>
@@ -138,7 +136,7 @@
       <mat-error *ngIf="rideForm.errors?.['wrongSchedule']">
         The date schedule is not correct. Check if train arrives not before its departure or price are set!
       </mat-error>
-      <div class="button-wrapper">
+      <div class="ride_buttons-wrapper">
         <TTP-button
           [type]="'button'"
           [width]="'10vw'"

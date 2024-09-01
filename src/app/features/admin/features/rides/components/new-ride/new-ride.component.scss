@@ -1,11 +1,83 @@
 @import '../../../../../../../styles';
 
+.ride {
+  &_wrapper {
+    margin-top: 20px;
+  }
+
+  &_buttons-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+
+  &_table-cell {
+    width: 100%;
+    min-width: 70px;
+    max-width: 350px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+
+  &_form-field {
+    width: 100%;
+    min-width: 70px;
+  }
+
+  &_table-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  &_city-column {
+    width: 100%;
+    min-width: 70px;
+    max-width: 350px;
+    padding: 10px;
+
+    font-weight: 800;
+    color: $deep-blue;
+  }
+
+  &_time-column {
+    display: flex;
+    flex-direction: column-reverse;
+
+    width: 100%;
+    min-width: 70px;
+    max-width: 350px;
+    padding: 10px;
+  }
+
+  &_price-column {
+    position: relative;
+
+    width: 100%;
+    min-width: 70px;
+    max-width: 350px;
+    padding: 10px;
+  }
+
+  &_card-title {
+    margin-right: 10px;
+    font-weight: 800;
+  }
+}
+
 .table-container {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
+  gap: 10px;
 
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
 }
 
@@ -21,27 +93,60 @@
   text-align: center;
 }
 
-.time-column {
-  display: flex;
-  flex-direction: column-reverse;
-  padding: 8px;
+.mat-mdc-card {
+  padding-bottom: 10px;
+  background-color: transparent !important;
 }
 
-h2 {
-  font-size: 30px;
-  text-align: center;
-}
+@media screen and (width >= 650px) and (width <= 1000px) {
+  .ride {
+    font-size: 0.7rem;
 
-.ride {
-  margin: 10px;
+    &_table-container {
+      width: 80%;
+    }
 
-  .button-wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    &_city-column {
+      padding: 5px;
+    }
+
+    &_time-column {
+      padding: 5px;
+    }
+
+    &_price-column {
+      padding: 5px;
+    }
   }
 }
 
-.mat-mdc-card {
-  background-color: transparent !important;
+@media screen and (width >= 300px) and (width <= 649.98px) {
+  .ride {
+    font-size: 0.4rem;
+
+    &_table-container {
+      gap: 5px;
+      width: 96%;
+    }
+
+    &_city-column {
+      padding: 2px;
+    }
+
+    &_time-column {
+      padding: 2px;
+    }
+
+    &_price-column {
+      padding: 2px;
+    }
+
+    &_form-field {
+      padding-left: 5px;
+    }
+  }
+
+  ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field {
+    padding-left: 5px;
+  }
 }
