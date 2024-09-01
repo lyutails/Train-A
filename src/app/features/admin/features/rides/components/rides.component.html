@@ -34,12 +34,7 @@
                     <div class="ride_table-cell">
                       <div class="ride_time-column">
                         <ng-container *ngIf="isFirst">
-                          <mat-form-field
-                            appearance="outline"
-                            class="ride_form-field"
-                            [style.width]="'100%'"
-                            [style.min-width]="'80px'"
-                          >
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Departs</mat-label>
                             <input
                               class="ride_form-input"
@@ -79,12 +74,7 @@
                           </button>
                         </ng-container>
                         <ng-container *ngIf="j >= 0 && !isFirst && !isLast">
-                          <mat-form-field
-                            appearance="outline"
-                            class="ride_form-field"
-                            [style.width]="'100%'"
-                            [style.min-width]="'80px'"
-                          >
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Arrives</mat-label>
                             <input
                               class="ride_form-input"
@@ -107,12 +97,7 @@
                               Invalid Date
                             </mat-error>
                           </mat-form-field>
-                          <mat-form-field
-                            appearance="outline"
-                            class="ride_form-field"
-                            [style.width]="'100%'"
-                            [style.min-width]="'80px'"
-                          >
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Departs</mat-label>
                             <input
                               class="ride_form-input"
@@ -169,12 +154,7 @@
                           </button>
                         </ng-container>
                         <ng-container *ngIf="j === rideRoute.path.length - 1">
-                          <mat-form-field
-                            appearance="outline"
-                            class="ride_form-field"
-                            [style.width]="'100%'"
-                            [style.min-width]="'80px'"
-                          >
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Arrives</mat-label>
                             <input
                               class="ride_form-input"
@@ -226,12 +206,7 @@
                           <div
                             *ngFor="let price of sc.controls.segments.controls[j].controls.price.controls | keyvalue"
                           >
-                            <mat-form-field
-                              appearance="outline"
-                              class="ride_form-field"
-                              [style.width]="'100%'"
-                              [style.min-width]="'80px'"
-                            >
+                            <mat-form-field appearance="outline" class="ride_form-field">
                               <mat-label>{{ price.key }} - currency:USD</mat-label>
                               <input class="ride_form-input" type="number" matInput [formControl]="price.value" />
                               <mat-error *ngIf="price.value.hasError('required')">Price is required</mat-error>
