@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, model, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -21,7 +21,7 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
-export class TripDetailsComponent implements OnInit, AfterViewInit {
+export class TripDetailsComponent implements AfterViewInit {
   public popupAuth = signal('');
   public authValue = model('');
   public dialog = inject(MatDialog);
@@ -31,6 +31,8 @@ export class TripDetailsComponent implements OnInit, AfterViewInit {
   public uniqueCarriageNames!: string[];
   public width!: number;
   public content!: HTMLElement;
+  public rideIdResponse!: TripDetailsResponse;
+  public rideCarriages!: string[];
 
   constructor(
     private router: Router,
@@ -39,10 +41,6 @@ export class TripDetailsComponent implements OnInit, AfterViewInit {
     private httpClient: HttpClient,
   ) {
     this.initializeUserRole();
-  }
-
-  ngOnInit() {
-    this.uniqueCarriageNames = [...new Set(this.fakeTripResponse.carriages)];
   }
 
   ngAfterViewInit(): void {
@@ -60,36 +58,6 @@ export class TripDetailsComponent implements OnInit, AfterViewInit {
       });
     }
   }
-
-  fakeTripResponse: TripDetailsResponse = {
-    rideId: 234,
-    path: [23, 33, 90],
-    carriages: [
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_2',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_7',
-      'carriage_type_4',
-      'carriage_type_3',
-      'carriage_type_5',
-      'carriage_type_8',
-      'carriage_type_2',
-      'carriage_type_6',
-    ],
-    schedule: {
-      segments: [
-        {
-          time: ['2024-08-08T22:19:57.708Z', '2024-08-12T03:29:57.708Z'],
-          price: [2342, 3333, 6666, 9897],
-          occupiedSeats: [4, 28, 42, 61],
-        },
-      ],
-    },
-  };
 
   redirectToHomePage() {
     this.router.navigate(['/']);
@@ -121,14 +89,24 @@ export class TripDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
+  rideId = 1;
+
   public buyTicket() {
     console.log('call api to buy ticket');
-    this.httpClient.get('route').subscribe({
+    this.httpClient.get<TripDetailsResponse>('route').subscribe({
+      next: (data) => {
+        console.log(data);
+        this.rideCarriages = data.carriages;
+        this.uniqueCarriageNames = [...new Set(this.rideCarriages)];
+        console.log(data.carriages);
+      },
+    });
+    this.httpClient.get(`search/${this.rideId}`).subscribe({
       next: (data) => {
         console.log(data);
       },
     });
-    this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 7, stationEnd: 68 }).subscribe({
+    this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
       next: (data) => {
         console.log(data);
       },
