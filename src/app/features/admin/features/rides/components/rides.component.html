@@ -34,7 +34,7 @@
                     <div class="ride_table-cell">
                       <div class="time-column">
                         <ng-container *ngIf="isFirst">
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Departs</mat-label>
                             <input
                               type="datetime-local"
@@ -65,7 +65,7 @@
                               !sc.controls.segments.controls[j].controls.time.controls[0].valid
                             "
                           >
-                            <mat-icon>{{
+                            <mat-icon [style.color]="editIconColour">{{
                               isTimeEditButton(sc.controls.segments.controls[j].controls.time.controls[0])
                                 ? 'save'
                                 : 'edit'
@@ -73,7 +73,7 @@
                           </button>
                         </ng-container>
                         <ng-container *ngIf="j >= 0 && !isFirst && !isLast">
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Arrives</mat-label>
                             <input
                               type="datetime-local"
@@ -95,7 +95,7 @@
                               Invalid Date
                             </mat-error>
                           </mat-form-field>
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Departs</mat-label>
                             <input
                               type="datetime-local"
@@ -140,7 +140,7 @@
                                 !sc.controls.segments.controls[j - 1].controls.time.controls[1].valid)
                             "
                           >
-                            <mat-icon>{{
+                            <mat-icon [style.color]="editIconColour">{{
                               isTimeEditButton(
                                 sc.controls.segments.controls[j].controls.time.controls[0],
                                 sc.controls.segments.controls[j - 1].controls.time.controls[1]
@@ -151,7 +151,7 @@
                           </button>
                         </ng-container>
                         <ng-container *ngIf="j === rideRoute.path.length - 1">
-                          <mat-form-field appearance="outline">
+                          <mat-form-field appearance="outline" class="ride_form-field">
                             <mat-label>Arrives</mat-label>
                             <input
                               type="datetime-local"
@@ -187,7 +187,7 @@
                               !sc.controls.segments.controls[j - 1].controls.time.controls[1].valid
                             "
                           >
-                            <mat-icon>{{
+                            <mat-icon [style.color]="editIconColour">{{
                               isTimeEditButton(sc.controls.segments.controls[j - 1].controls.time.controls[1])
                                 ? 'save'
                                 : 'edit'
@@ -202,7 +202,7 @@
                           <div
                             *ngFor="let price of sc.controls.segments.controls[j].controls.price.controls | keyvalue"
                           >
-                            <mat-form-field appearance="outline">
+                            <mat-form-field appearance="outline" class="ride_form-field">
                               <mat-label>{{ price.key }} - currency:USD</mat-label>
                               <input type="number" matInput [formControl]="price.value" />
                               <mat-error *ngIf="price.value.hasError('required')">Price is required</mat-error>
@@ -218,7 +218,9 @@
                               [disabled]="!price.value.valid && isEditButton(price.value)"
                               type="button"
                             >
-                              <mat-icon>{{ isEditButton(price.value) ? 'save' : 'edit' }}</mat-icon>
+                              <mat-icon [style.color]="editIconColour">{{
+                                isEditButton(price.value) ? 'save' : 'edit'
+                              }}</mat-icon>
                             </button>
                           </div>
                         </ng-container>

@@ -28,6 +28,10 @@
     border: 1px solid #ddd;
     border-radius: 10px;
   }
+
+  &_form-field {
+    width: 100%;
+  }
 }
 
 .table-container {
@@ -68,6 +72,7 @@
 .time-column {
   display: flex;
   flex-direction: column-reverse;
+  width: 100%;
   padding: 8px;
 }
 
@@ -79,6 +84,8 @@
 .price-column {
   position: relative;
   top: 100px;
+
+  width: 100%;
   margin-top: 50px;
   padding: 8px;
 }
@@ -89,6 +96,12 @@
 }
 
 @media screen and (width >= 650px) and (width <= 1000px) {
+  .table-container {
+    width: 80%;
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 1000px) {
   .table-container {
     width: 90%;
   }
