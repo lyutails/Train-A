@@ -30,9 +30,11 @@
     </div>
     <p class="trip-details_carriages-types">Available carriage types:</p>
     <div class="trip-details_carriages-tabs">
-      @for (carriage of fakeTripResponse.carriages; track $index; let index = $index) {
+      @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
         <div class="trip-details_carriage-info">
-          <p class="trip-details_carriage-name"><span class="small-text">Carriage name: </span>{{ carriage }}</p>
+          <p class="trip-details_carriage-name">
+            <span class="small-text">Carriage name: </span><span class="coloured-text">{{ carriage }}</span>
+          </p>
           <p class="trip-details_carriage-seats"><span class="small-text">Free seats: </span>44</p>
           <p class="trip-details_carriage-price"><span class="small-text">Trip price: </span>674</p>
         </div>

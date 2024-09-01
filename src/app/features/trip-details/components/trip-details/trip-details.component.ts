@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, model, signal } from '@angular/core';
+import { Component, inject, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -18,13 +18,14 @@ import { TripDetailsResponse } from '../../models/trip-details-response.model';
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
-export class TripDetailsComponent {
+export class TripDetailsComponent implements OnInit {
   public popupAuth = signal('');
   public authValue = model('');
   public dialog = inject(MatDialog);
   public userRole = '';
   public openBookSeatPopup = signal(false);
   public seatIsSelected = signal(true);
+  public uniqueCarriageNames!: string[];
 
   constructor(
     private router: Router,
@@ -32,6 +33,10 @@ export class TripDetailsComponent {
     private roleService: RoleService,
   ) {
     this.initializeUserRole();
+  }
+
+  ngOnInit() {
+    this.uniqueCarriageNames = [...new Set(this.fakeTripResponse.carriages)];
   }
 
   fakeTripResponse: TripDetailsResponse = {
