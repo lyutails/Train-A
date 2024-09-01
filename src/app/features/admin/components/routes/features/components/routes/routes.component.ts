@@ -101,7 +101,7 @@ export class RoutesComponent implements OnInit {
 
   public showUpdateForm(route: RouteAPI): void {
     this.currentRoute = { ...route };
-    console.log(this.currentRoute.carriages[0]);
+    console.log(this.currentRoute.carriages);
     this.isFormVisible = true;
 
     const stationsArray = this.createRouteForm.get('stations') as FormArray;
@@ -113,7 +113,16 @@ export class RoutesComponent implements OnInit {
     carriagesArray.clear();
 
     this.currentRoute.carriages.forEach((carriage) => {
-      carriagesArray.push(this.createCarriageFormGroup(carriage));
+      if (typeof carriage === 'string') {
+        const carriageObj = this.carriages.find((c) => c.name === carriage);
+        if (carriageObj) {
+          carriagesArray.push(this.createCarriageFormGroup(carriageObj));
+        } else {
+          console.error(`Carriage object not found for name: ${carriage}`);
+        }
+      } else {
+        carriagesArray.push(this.createCarriageFormGroup(carriage));
+      }
     });
   }
 
@@ -184,31 +193,11 @@ export class RoutesComponent implements OnInit {
 
   public createCarriageFormGroup(carriage: Carriage): FormGroup {
     return this.fb.group({
-      code: this.fb.control({ value: carriage.code, disabled: false }),
-      name: this.fb.control(
-        { value: carriage.name, disabled: false },
-        {
-          validators: [Validators.required, Validators.minLength(2), Validators.maxLength(20)],
-        },
-      ),
-      rows: this.fb.control(
-        { value: carriage.rows, disabled: false },
-        {
-          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
-        },
-      ),
-      leftSeats: this.fb.control(
-        { value: carriage.leftSeats, disabled: false },
-        {
-          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
-        },
-      ),
-      rightSeats: this.fb.control(
-        { value: carriage.rightSeats, disabled: false },
-        {
-          validators: [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')],
-        },
-      ),
+      code: [carriage.code, Validators.required],
+      name: [carriage.name, Validators.required],
+      rows: [carriage.rows, [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')]],
+      leftSeats: [carriage.leftSeats, [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')]],
+      rightSeats: [carriage.rightSeats, [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')]],
     });
   }
 
