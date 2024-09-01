@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="trip-details_route-details">
-      <p class="trip-details_rideid">rideId</p>
+      <p class="trip-details_rideid">Ride rideId</p>
       <TTP-button
         (click)="redirectToHomePage()"
         [type]="'button'"
@@ -27,6 +27,13 @@
         [buttonText]="'Route'"
         class="trip-details_route-button"
       ></TTP-button>
+    </div>
+    <div class="trip-details_carriages-tabs">
+      <div class="trip-details_carriage-info">
+        <p class="trip-details_carriage-name">Carriage name:</p>
+        <p class="trip-details_carriage-seats">Free seats:</p>
+        <p class="trip-details_carriage-price">Trip price:</p>
+      </div>
     </div>
     <TTP-button
       (click)="redirectToHomePage()"
