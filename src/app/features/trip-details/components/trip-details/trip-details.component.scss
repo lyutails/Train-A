@@ -1,3 +1,5 @@
+@import '../../../../../styles';
+
 .trip-details {
   &_wrapper {
     display: flex;
@@ -76,6 +78,7 @@
   &_seat-indications {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
   }
 
   &_seat-info {
@@ -111,6 +114,42 @@
   &_auth-required {
     text-align: center;
   }
+
+  &_carriages-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 10px;
+    justify-content: space-between;
+  }
+
+  &_carriage-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 22%;
+    padding: 10px;
+
+    text-align: center;
+
+    transition: all 0.2s ease-in-out;
+
+    @include border-frame;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-blue;
+    }
+  }
+
+  &_carriages-types {
+    margin-bottom: 10px;
+  }
+}
+
+.small-text {
+  font-size: 0.8rem;
 }
 
 p {

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthFacade } from '../../../../core/authorization/services/auth.facade';
 import { RoleService } from '../../../../core/roles/role.service';
 import { AuthBuySeatComponent } from '../auth-buy-seat/auth-buy-seat.component';
+import { TripDetailsResponse } from '../../models/trip-details-response.model';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -32,6 +33,30 @@ export class TripDetailsComponent {
   ) {
     this.initializeUserRole();
   }
+
+  fakeTripResponse: TripDetailsResponse = {
+    rideId: 234,
+    path: [23, 33, 90],
+    carriages: [
+      'carriage_type_2',
+      'carriage_type_2',
+      'carriage_type_2',
+      'carriage_type_2',
+      'carriage_type_7',
+      'carriage_type_7',
+      'carriage_type_7',
+      'carriage_type_7',
+    ],
+    schedule: {
+      segments: [
+        {
+          time: ['2024-08-08T22:19:57.708Z', '2024-08-12T03:29:57.708Z'],
+          price: [2342, 3333, 6666, 9897],
+          occupiedSeats: [4, 28, 42, 61],
+        },
+      ],
+    },
+  };
 
   redirectToHomePage() {
     this.router.navigate(['/']);

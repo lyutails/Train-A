@@ -28,12 +28,15 @@
         class="trip-details_route-button"
       ></TTP-button>
     </div>
+    <p class="trip-details_carriages-types">Available carriage types:</p>
     <div class="trip-details_carriages-tabs">
-      <div class="trip-details_carriage-info">
-        <p class="trip-details_carriage-name">Carriage name:</p>
-        <p class="trip-details_carriage-seats">Free seats:</p>
-        <p class="trip-details_carriage-price">Trip price:</p>
-      </div>
+      @for (carriage of fakeTripResponse.carriages; track $index; let index = $index) {
+        <div class="trip-details_carriage-info">
+          <p class="trip-details_carriage-name"><span class="small-text">Carriage name: </span>{{ carriage }}</p>
+          <p class="trip-details_carriage-seats"><span class="small-text">Free seats: </span>44</p>
+          <p class="trip-details_carriage-price"><span class="small-text">Trip price: </span>674</p>
+        </div>
+      }
     </div>
     @if (seatIsSelected()) {
       @if (isAuthenticated) {
