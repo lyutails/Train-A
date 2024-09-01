@@ -23,7 +23,7 @@
   &_table-cell:not(:nth-child(3)) {
     width: 100%;
     min-width: 70px;
-    max-width: 300px;
+    max-width: 350px;
     padding-top: 5px;
     padding-bottom: 5px;
 
@@ -34,7 +34,7 @@
   &_table-cell:nth-child(3) {
     width: 100%;
     min-width: 70px;
-    max-width: 300px;
+    max-width: 350px;
     padding-top: 5px;
     padding-bottom: 5px;
   }
@@ -52,7 +52,7 @@
   &_table-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 5px;
+    gap: 10px;
 
     width: 80%;
     margin: 0 auto;
@@ -61,8 +61,10 @@
   &_city-column {
     width: 100%;
     min-width: 70px;
-    max-width: 300px;
+    max-width: 350px;
     padding: 10px;
+
+    color: $deep-blue;
   }
 
   &_time-column {
@@ -71,7 +73,7 @@
 
     width: 100%;
     min-width: 70px;
-    max-width: 300px;
+    max-width: 350px;
     padding: 10px;
   }
 
@@ -81,7 +83,7 @@
 
     width: 100%;
     min-width: 70px;
-    max-width: 300px;
+    max-width: 350px;
     margin-top: 50px;
     padding: 10px;
   }
@@ -145,6 +147,7 @@
     font-size: 0.4rem;
 
     &_table-container {
+      gap: 5px;
       width: 96%;
     }
 
@@ -159,5 +162,13 @@
     &_price-column {
       padding: 2px;
     }
+
+    &_form-field {
+      padding-left: 5px;
+    }
+  }
+
+  ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field {
+    padding-left: 5px;
   }
 }
