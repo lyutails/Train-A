@@ -69,6 +69,22 @@ ttp-trip-details {
   flex: 1 0 auto;
 }
 
+ttp-user-profile {
+  flex: 1 0 auto;
+}
+
+ttp-not-found {
+  flex: 1 0 auto;
+}
+
+ttp-sign-in {
+  flex: 1 0 auto;
+}
+
+ttp-sign-up {
+  flex: 1 0 auto;
+}
+
 @media screen and (width >= 1200px) and (width <= 2400px) {
   html {
     font-size: 18px;
