@@ -51,6 +51,7 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public areCarriages = signal(false);
   public filterSliderCarriageName!: string;
   public isCarriageTypeSelected = signal('');
+  public trainCarriageNumber!: number[];
 
   constructor(
     private router: Router,
@@ -121,10 +122,26 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
         (item) => item.code === this.filterSliderCarriageName,
       );
       console.log(this.allRideCarriages);
+      this.trainCarriageNumber = [];
+      this.allRideCarriages.forEach((element, index) => {
+        if (element.name === this.filterSliderCarriageName) {
+          this.trainCarriageNumber.push(index);
+          console.log(index);
+          console.log(this.trainCarriageNumber);
+        }
+      });
     }
     if (!this.filterSliderCarriageName) {
       console.log('no name for filter provided');
       this.allFilteredRideCarriages = this.allRideCarriages;
+      this.trainCarriageNumber = [];
+      this.allRideCarriages.forEach((element, index) => {
+        if (element.name === this.filterSliderCarriageName) {
+          this.trainCarriageNumber.push(index);
+          console.log(index);
+          console.log(this.trainCarriageNumber);
+        }
+      });
     }
   }
 

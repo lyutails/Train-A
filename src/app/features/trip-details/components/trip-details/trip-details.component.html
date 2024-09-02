@@ -53,7 +53,11 @@
         @for (carriage of allFilteredRideCarriages; track $index; let index = $index) {
           <div class="trip-details_shape-params">
             <p class="trip-details_carriage-details text-coloured">Free seats:</p>
-            <p class="trip-details_carriage-details">Carriage № in train: {{ index }}</p>
+            @if (filterSliderCarriageName) {
+              <p class="trip-details_carriage-details">Carriage № in train: {{ trainCarriageNumber[index] }}</p>
+            } @else {
+              <p class="trip-details_carriage-details">Carriage № in train: {{ index }}</p>
+            }
             <div class="trip-details_carriage-shape">
               @for (row of [].constructor(carriage.rows); track index; let index = $index) {
                 @if (carriage.name !== undefined) {
