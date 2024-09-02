@@ -61,10 +61,10 @@
             }
             <div class="trip-details_carriage-shape">
               @for (row of [].constructor(carriage.rows); track index; let index = $index) {
-                @if (carriage.name !== undefined) {
+                @if (carriage.code !== undefined) {
                   <TTP-carriage-row
                     class="trip-details_carriage-row"
-                    [carriageName]="carriage.name"
+                    [carriageName]="carriage.code"
                     [rowNumber]="index"
                     [leftSeatCount]="carriage.leftSeats"
                     [rightSeatCount]="carriage.rightSeats"
