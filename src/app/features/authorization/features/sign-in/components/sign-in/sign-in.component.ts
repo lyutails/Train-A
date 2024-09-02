@@ -37,8 +37,6 @@ export class SignInComponent {
   public signInForm: FormGroup<SignInForm>;
   public signInButtonName = 'Sign In';
   public isSubmitting = false;
-  public emailErrorMessage: string | null = null;
-  public passwordErrorMessage: string | null = null;
   public hide = signal(true);
 
   constructor(
@@ -50,8 +48,10 @@ export class SignInComponent {
   }
 
   public onSubmit(): void {
+    this.signInForm.setErrors(null);
+
     if (this.signInForm.invalid) {
-      return;
+      return this.signInForm.markAllAsTouched();
     }
 
     this.isSubmitting = true;
@@ -89,25 +89,28 @@ export class SignInComponent {
         this.isSubmitting = false;
         this.clearErrorMessages();
 
-        if (error.reason === 'alreadyLoggedIn') {
-          this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
-        }
-        if (error.reason === 'userNotFound') {
-          this.signInForm.controls['email'].setErrors({ userNotFound: true });
-        }
-        if (error.reason === 'invalidEmail') {
-          this.signInForm.controls['email'].setErrors({ invalidEmail: true });
-        }
         if (error.reason === 'invalidFields') {
           this.signInForm.controls['email'].setErrors({ invalidFields: true });
+          this.signInForm.controls['password'].setErrors({ invalidFields: true });
+        } else if (error.reason === 'invalidEmail') {
+          this.signInForm.controls['email'].setErrors({ invalidEmail: true });
+        }
+        // else if (error.reason === 'userNotFound') {
+        //     this.emailErrorMessage = 'User is not found';
+        //     this.signInForm.controls['email'].setErrors({ userNotFound: true });
+        // }
+        else if (error.reason === 'alreadyLoggedIn') {
+          this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
+        } else {
+          this.signInForm.setErrors({ formError: true });
         }
       },
     });
   }
 
   private clearErrorMessages(): void {
-    this.emailErrorMessage = null;
-    this.passwordErrorMessage = null;
+    this.signInForm.controls['email'].setErrors(null);
+    this.signInForm.controls['password'].setErrors(null);
   }
 
   public get redirectToSignUp() {
