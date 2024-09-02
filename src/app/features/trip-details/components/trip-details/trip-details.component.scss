@@ -172,7 +172,7 @@
     flex-flow: row wrap;
     gap: 20px 10px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   &_carriage-shape {
@@ -214,6 +214,11 @@ ttp-carriage-row {
 }
 
 .coloured-text {
+  color: $deep-blue;
+}
+
+.coloured-bold-text {
+  font-weight: 800;
   color: $deep-blue;
 }
 

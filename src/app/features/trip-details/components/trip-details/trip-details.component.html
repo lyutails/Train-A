@@ -9,17 +9,17 @@
     ></TTP-button>
     <div class="trip-details_details">
       <div class="trip-details_detail-stations">
-        <p class="trip-details_detail-station start">start station</p>
+        <p class="trip-details_detail-station start"><span class="coloured-bold-text">start station</span></p>
         <mat-icon class="">trending_flat</mat-icon>
-        <p class="trip-details_detail-station end">end station</p>
+        <p class="trip-details_detail-station end"><span class="coloured-bold-text">end station</span></p>
       </div>
       <div class="trip-details_detail-times">
-        <p class="trip-details_detail-time start">departure time</p>
-        <p class="trip-details_detail-time end">arrival time</p>
+        <p class="trip-details_detail-time start"><span class="coloured-text">departure time</span></p>
+        <p class="trip-details_detail-time end"><span class="coloured-text">arrival time</span></p>
       </div>
     </div>
     <div class="trip-details_route-details">
-      <p class="trip-details_rideid">Ride (rideId)</p>
+      <p class="trip-details_rideid">Ride <span class="coloured-bold-text">(rideId)</span></p>
       <TTP-button
         (click)="redirectToHomePage()"
         [type]="'button'"

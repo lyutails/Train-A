@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 
 @Component({
   selector: 'TTP-carriages-carousel',
@@ -9,4 +9,9 @@ import { Component, Input } from '@angular/core';
 })
 export class CarriagesCarouselComponent {
   @Input() carriage = '';
+  public isCarriageSliderItemChecked = signal(false);
+
+  onCarriageSliderItemClick() {
+    this.isCarriageSliderItemChecked.set(!this.isCarriageSliderItemChecked());
+  }
 }
