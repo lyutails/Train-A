@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -26,7 +26,6 @@ import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
 import { RideDatesCarouselComponent } from '../ride-dates-carousel/ride-dates-carousel.component';
 import { ArrowTopComponent } from '../../../../common/arrow-top/arrow-top.component';
-import { SearchResponse } from '../../models/search-response';
 
 export interface Trip {
   name: string;
@@ -83,7 +82,7 @@ export interface TripDates {
     },
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
@@ -98,77 +97,13 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
+  public prev!: HTMLElement;
+  public next!: HTMLElement;
   public content!: HTMLElement;
-  public dateValid = signal(false);
 
   testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
-  // currently in template from to are values from inputs
-  tripsResponse: SearchResponse[] = [
-    {
-      from: {
-        stationId: 5,
-        city: 'Paris',
-        geolocation: { latitude: 48.8575, longitude: 2.3514 },
-      },
-      to: {
-        stationId: 48,
-        city: 'London',
-        geolocation: { latitude: 48.8575, longitude: 2.3514 },
-      },
-      routes: {
-        id: 45,
-        path: [33, 5, 62, 11, 48, 34],
-        carriages: [
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-        ],
-        schedule: [
-          {
-            rideId: 24,
-            segments: {
-              time: {
-                departure_from_prev_station: '2024-08-08T22:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T03:29:57.708Z',
-              },
-              price: { type: 3523 },
-              occupiedSeats: [345, 44, 3],
-            },
-          },
-          {
-            rideId: 576,
-            segments: {
-              time: {
-                departure_from_prev_station: '2024-08-08T09:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T10:29:57.708Z',
-              },
-              price: { type: 3523 },
-              occupiedSeats: [345, 44, 3],
-            },
-          },
-          {
-            rideId: 88,
-            segments: {
-              time: {
-                departure_from_prev_station: '2024-08-08T12:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T13:29:57.708Z',
-              },
-              price: { type: 3523 },
-              occupiedSeats: [345, 44, 3],
-            },
-          },
-        ],
-      },
-    },
-  ];
-
-  // to show pic for no rides: tripsResponse: SearchResponse[] = [];
-
+  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
+  // to check pic for no rides: testTrips: Trip[] = [];
   allDaysChosenRideAvailableAt: TripDates[] = [
     { date: 'September 01', day: 'Monday' },
     { date: 'September 08', day: 'Monday' },
@@ -198,7 +133,15 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngAfterViewInit(): void {
+    this.prev = document.querySelector('#prev')!;
+    this.next = document.querySelector('#next')!;
     this.content = document.querySelector('#carousel-content')!;
+    if (!this.prev) {
+      throw new Error('no prev out there');
+    }
+    if (!this.next) {
+      throw new Error('no next out there');
+    }
     if (!this.content) {
       throw new Error('no content out there');
     }
@@ -211,15 +154,15 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.width = this.content.offsetWidth;
       });
     }
-  }
-
-  ngAfterViewChecked() {
-    if (this.searchForm.controls.date.valid) {
-      this.dateValid.set(true);
-      this.searchForm.controls.time.enable();
-    } else {
-      this.dateValid.set(false);
-      this.searchForm.controls.time.disable();
+    if (this.prev) {
+      this.prev.addEventListener('click', () => {
+        this.content.scrollBy(-(this.width + 10), 0);
+      });
+    }
+    if (this.next) {
+      this.next.addEventListener('click', () => {
+        this.content.scrollBy(this.width + 10, 0);
+      });
     }
   }
 
@@ -258,7 +201,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
           validators: [Validators.required],
         },
       ),
-      time: this.fb.control({ value: '', disabled: true }),
+      time: this.fb.control({ value: '', disabled: false }),
     });
   }
 
@@ -282,19 +225,15 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     if (this.searchForm.valid) {
       this.searchRides.set(true);
     }
-    console.log('date unix timestamp', Math.floor(new Date(this.searchForm.controls.date.value).getTime() / 1000));
+    console.log(this.searchForm.controls.time.value);
+    // api call here
+  }
+
+  public buyTicket() {
     // api call here
   }
 
   onSubmit() {
     this.searchForm.reset();
-  }
-
-  moveLeft() {
-    this.content.scrollBy(-(this.width + 10), 0);
-  }
-
-  moveRight() {
-    this.content.scrollBy(this.width + 10, 0);
   }
 }

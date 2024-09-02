@@ -72,7 +72,7 @@
     </div>
   </form>
   <div class="home_ride-date-filter-carousel" id="carousel">
-    <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+    <button id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
     <div id="carousel-content" class="home_ride-date-filter-slides">
@@ -80,7 +80,7 @@
         <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
       }
     </div>
-    <button (click)="moveRight()" id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
+    <button id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
       <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
   </div>
@@ -92,28 +92,17 @@
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
-  @if (searchRides() && tripsResponse.length > 0) {
-    @for (trip of tripsResponse; track trip.routes.id) {
-      @for (ride of trip.routes.schedule; track ride.rideId; let index = $index) {
-        <TTP-home-ride
-          [tripName]="ride.rideId"
-          [tripFrom]="inputFrom.value"
-          [tripTo]="inputTo.value"
-          [routeFrom]="trip.from.city"
-          [routeTo]="trip.to.city"
-          [timeFrom]="ride.segments.time.departure_from_prev_station"
-          [timeTo]="ride.segments.time.arrival_at_next_station"
-          [rideId]="ride.rideId"
-        ></TTP-home-ride>
-      }
+  @if (searchRides() && testTrips.length > 0) {
+    @for (trip of testTrips; track trip.name) {
+      <TTP-home-ride [tripName]="trip.name" [tripFrom]="inputFrom.value" [tripTo]="inputTo.value"></TTP-home-ride>
     }
   }
-  @if (searchRides() && tripsResponse.length === 0) {
-    <div class="home_trip-no-trains">No rides available</div>
+  @if (searchRides() && testTrips.length === 0) {
+    <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
 </div>
-@if (searchRides() && tripsResponse.length > 0) {
+@if (searchRides() && testTrips.length > 0) {
   <TTP-arrow-top
     [style.width]="'80%'"
     [style.height]="'50px'"
@@ -130,3 +119,36 @@
     [backgroundColor]="'lightgray'"
   ></TTP-arrow-top>
 }
+<!--   @if (searchCarriages() && searchForm.valid) {
+    <div class="home_carriages">
+      @for (carriage of testCarriages; track carriage.name) {
+        <div class="home_shape-params">
+          <p class="home_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
+          <p class="home_carriage-details">Rows: {{ carriage.rows }}</p>
+          <p class="home_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
+          <p class="home_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
+          <div class="home_carriage-shape">
+            @for (row of [].constructor(carriage.rows); track index; let index = $index) {
+              @if (carriage.name !== undefined) {
+                <TTP-carriage-row
+                  class="home_carriage-row"
+                  [carriageName]="carriage.name"
+                  [rowNumber]="index"
+                  [leftSeatCount]="carriage.leftSeats"
+                  [rightSeatCount]="carriage.rightSeats"
+                ></TTP-carriage-row>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <TTP-button
+      (click)="buyTicket()"
+      [type]="'submit'"
+      [width]="'10vw'"
+      [buttonText]="'Book seat' | uppercase"
+      class="home_buy-button"
+      [disabled]="!isSeatSelected()"
+    ></TTP-button>
+  } -->
