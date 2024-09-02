@@ -124,7 +124,8 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
       console.log(this.allRideCarriages);
       this.trainCarriageNumber = [];
       this.allRideCarriages.forEach((element, index) => {
-        if (element.name === this.filterSliderCarriageName) {
+        if (element.code === this.filterSliderCarriageName) {
+          console.log('lalala');
           this.trainCarriageNumber.push(index);
           console.log(index);
           console.log(this.trainCarriageNumber);
