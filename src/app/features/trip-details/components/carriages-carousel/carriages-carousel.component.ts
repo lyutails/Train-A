@@ -10,6 +10,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class CarriagesCarouselComponent {
   @Input() carriage = '';
   @Input() selected = false;
+  @Input() price = 0;
   @Output() carriageNameEvent = new EventEmitter<string>();
 
   passCarriageName() {

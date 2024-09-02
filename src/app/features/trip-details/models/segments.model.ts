@@ -1,5 +1,7 @@
+import { Price } from './price.model';
+
 export interface Segments {
   time: string[];
-  price: number[];
+  price: Price;
   occupiedSeats: number[];
 }

@@ -40,6 +40,7 @@
           <TTP-carriages-carousel
             [carriage]="carriage"
             [selected]="carriage === filterSliderCarriageName"
+            [price]="totalRidePrices[index]"
             (carriageNameEvent)="getCarriageName($event)"
           ></TTP-carriages-carousel>
         }
@@ -84,7 +85,9 @@
       <p class="trip-details_selected-details seats">
         Seat: <span class="coloured-bold-text">{{ selectedSeat }}</span>
       </p>
-      <p class="trip-details_selected-details price">Price: <span class="coloured-bold-text">№</span></p>
+      <p class="trip-details_selected-details price">
+        Price: <span class="coloured-bold-text">{{ totalRidePrice }}$</span>
+      </p>
     </div>
     @if (seatIsSelected()) {
       @if (isAuthenticated) {
@@ -93,7 +96,6 @@
           [type]="'button'"
           [width]="'10vw'"
           [buttonText]="'Book seat'"
-          [disabled]="!seatIsSelected()"
           class="trip-details_buy-button"
         ></TTP-button>
       } @else {

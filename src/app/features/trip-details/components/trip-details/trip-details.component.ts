@@ -15,6 +15,8 @@ import { CarriagesCarouselComponent } from '../carriages-carousel/carriages-caro
 import { HttpClient } from '@angular/common/http';
 import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
+import { Segments } from '../../models/segments.model';
+import { Price } from '../../models/price.model';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -54,6 +56,13 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public trainCarriageNumber!: number[];
   public selectedSeat = '';
   public selectedCarriageName = '';
+  public rideSegments: Segments[] = [];
+  public selectedTrainCarriageNumber!: number;
+  public rideAllSegmentsPrices!: Price[];
+  public rideAllSegmentsPricesNumbers!: number[];
+  public totalRidePrice!: number;
+  public totalRidePrices: number[] = [];
+  public uniqueCarriagePrices: number[] = [];
 
   constructor(
     private router: Router,
@@ -96,6 +105,34 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
             }
           }
         });
+        console.log(data.schedule.segments);
+        this.rideSegments = data.schedule.segments;
+        this.rideAllSegmentsPrices = [];
+        this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
+        console.log(this.rideAllSegmentsPrices);
+        this.rideAllSegmentsPricesNumbers = [];
+        this.uniqueCarriageNames.forEach((name) => {
+          this.rideAllSegmentsPrices.map((price) => {
+            if (price[name]) {
+              this.rideAllSegmentsPricesNumbers.push(price[name]);
+            }
+            this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
+              return acc + curr;
+            }, 0);
+          });
+          this.totalRidePrices.push(this.totalRidePrice);
+          this.rideAllSegmentsPricesNumbers = [];
+        });
+        console.log(this.totalRidePrices);
+        /* this.rideAllSegmentsPrices.map((price) => {
+          if (price[this.selectedCarriageName]) {
+            this.rideAllSegmentsPricesNumbers.push(price[name]);
+          }
+          this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
+            return acc + curr;
+          }, 0);
+          this.totalRidePrices.push(this.totalRidePrice);
+        }); */
       },
     });
   }
@@ -151,6 +188,7 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
     console.log(this.selectedSeat);
     console.log(localStorage.getItem('carriageName'));
     this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
+
     /* this.selectedSeat = new BehaviorSubject(JSON.parse(localStorage.getItem('seatNumber')));
     if (localStorage.getItem('seatNumber') && typeof localStorage.getItem('seatNumber') === 'string') {
       // this.selectedSeat = localStorage.getItem('seatNumber');
