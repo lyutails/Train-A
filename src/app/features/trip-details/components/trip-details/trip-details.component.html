@@ -30,7 +30,7 @@
     </div>
     <p class="trip-details_carriages-types">Available carriage types:</p>
     <div class="trip-details_carriages-carousel" id="carousel">
-      <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+      <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="trip-details_carousel-button left">
         <mat-icon>keyboard_arrow_left</mat-icon>
       </button>
       <div class="trip-details_carriages-tabs" id="carousel-content">
@@ -38,16 +38,35 @@
           <TTP-carriages-carousel [carriage]="carriage"></TTP-carriages-carousel>
         }
       </div>
-      <button
-        (click)="moveRight()"
-        id="next"
-        mat-icon-button
-        type="button"
-        class="home_ride-date-carousel-button right"
-      >
+      <button (click)="moveRight()" id="next" mat-icon-button type="button" class="trip-details_carousel-button right">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
     </div>
+    @if (areCarriages()) {
+      <div class="trip-details_carriages">
+        @for (carriage of rideCarriages; track carriage.name) {
+          <div class="trip-details_shape-params">
+            <p class="trip-details_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
+            <p class="trip-details_carriage-details">Rows: {{ carriage.rows }}</p>
+            <p class="trip-details_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
+            <p class="trip-details_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
+            <div class="trip-details_carriage-shape">
+              @for (row of [].constructor(carriage.rows); track index; let index = $index) {
+                @if (carriage.name !== undefined) {
+                  <TTP-carriage-row
+                    class="trip-details_carriage-row"
+                    [carriageName]="carriage.name"
+                    [rowNumber]="index"
+                    [leftSeatCount]="carriage.leftSeats"
+                    [rightSeatCount]="carriage.rightSeats"
+                  ></TTP-carriage-row>
+                }
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
     @if (seatIsSelected()) {
       @if (isAuthenticated) {
         <TTP-button
@@ -55,6 +74,7 @@
           [type]="'button'"
           [width]="'10vw'"
           [buttonText]="'Book seat'"
+          [disabled]="!seatIsSelected()"
           class="trip-details_buy-button"
         ></TTP-button>
       } @else {

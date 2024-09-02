@@ -13,11 +13,22 @@ import { TripDetailsResponse } from '../../models/trip-details-response.model';
 import { MatIconButton } from '@angular/material/button';
 import { CarriagesCarouselComponent } from '../carriages-carousel/carriages-carousel.component';
 import { HttpClient } from '@angular/common/http';
+import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
+import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 
 @Component({
   selector: 'TTP-trip-details',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, MatIcon, MatLabel, MatCheckbox, MatIconButton, CarriagesCarouselComponent],
+  imports: [
+    CommonModule,
+    ButtonComponent,
+    MatIcon,
+    MatLabel,
+    MatCheckbox,
+    MatIconButton,
+    CarriagesCarouselComponent,
+    CarriageRowComponent,
+  ],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
@@ -32,7 +43,9 @@ export class TripDetailsComponent implements AfterViewInit {
   public width!: number;
   public content!: HTMLElement;
   public rideIdResponse!: TripDetailsResponse;
-  public rideCarriages!: string[];
+  public rideCarriagesNames!: string[];
+  public rideCarriages!: Carriage[];
+  public areCarriages = signal(false);
 
   constructor(
     private router: Router,
@@ -101,9 +114,18 @@ export class TripDetailsComponent implements AfterViewInit {
     this.httpClient.get<TripDetailsResponse>(`search/${this.rideId}`).subscribe({
       next: (data) => {
         console.log(data);
-        this.rideCarriages = data.carriages;
+        this.rideCarriagesNames = data.carriages;
         console.log(data.carriages);
-        this.uniqueCarriageNames = [...new Set(this.rideCarriages)];
+        this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+        if (data.carriages.length > 0) {
+          this.areCarriages.set(true);
+        }
+      },
+    });
+    this.httpClient.get<Carriage[]>('carriage').subscribe({
+      next: (data) => {
+        console.log(data);
+        this.rideCarriages = data;
       },
     });
     this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
