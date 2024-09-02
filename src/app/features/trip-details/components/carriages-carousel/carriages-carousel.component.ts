@@ -1,4 +1,4 @@
-import { Component, Input, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 
 @Component({
   selector: 'TTP-carriages-carousel',
@@ -9,9 +9,19 @@ import { Component, Input, signal } from '@angular/core';
 })
 export class CarriagesCarouselComponent {
   @Input() carriage = '';
+  @Output() carriageNameEvent = new EventEmitter<string>();
   public isCarriageSliderItemChecked = signal(false);
 
   onCarriageSliderItemClick() {
     this.isCarriageSliderItemChecked.set(!this.isCarriageSliderItemChecked());
+  }
+
+  passCarriageName() {
+    if (this.isCarriageSliderItemChecked()) {
+      this.carriageNameEvent.emit(this.carriage);
+    }
+    if (!this.isCarriageSliderItemChecked()) {
+      this.carriageNameEvent.emit('');
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
+import { AfterContentChecked, AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -32,7 +32,7 @@ import { CarriageRowComponent } from '../../../admin/features/carriages/componen
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
-export class TripDetailsComponent implements AfterViewInit, OnInit {
+export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContentChecked {
   public popupAuth = signal('');
   public authValue = model('');
   public dialog = inject(MatDialog);
@@ -47,7 +47,9 @@ export class TripDetailsComponent implements AfterViewInit, OnInit {
   public uniqueCarriageNames!: string[];
   public filteredOnlyRideCarriagesTypes!: Carriage[];
   public allRideCarriages: Carriage[] = [];
+  public allFilteredRideCarriages: Carriage[] = [];
   public areCarriages = signal(false);
+  public filterSliderCarriageName!: string;
 
   constructor(
     private router: Router,
@@ -85,6 +87,8 @@ export class TripDetailsComponent implements AfterViewInit, OnInit {
           for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
             if (this.allAvailableAppCarriages[i].code === element) {
               this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
+              this.allFilteredRideCarriages = this.allRideCarriages;
+              console.log(this.allFilteredRideCarriages);
             }
           }
         });
@@ -105,6 +109,21 @@ export class TripDetailsComponent implements AfterViewInit, OnInit {
         }
         this.width = this.content.offsetWidth;
       });
+    }
+  }
+
+  ngAfterContentChecked() {
+    if (this.filterSliderCarriageName) {
+      console.log(this.filterSliderCarriageName);
+      this.allRideCarriages.map((item) => console.log(item.code));
+      this.allFilteredRideCarriages = this.allRideCarriages.filter(
+        (item) => item.code === this.filterSliderCarriageName,
+      );
+      console.log(this.allRideCarriages);
+    }
+    if (!this.filterSliderCarriageName) {
+      console.log('no name for filter provided');
+      this.allFilteredRideCarriages = this.allRideCarriages;
     }
   }
 
@@ -173,4 +192,18 @@ export class TripDetailsComponent implements AfterViewInit, OnInit {
   moveRight() {
     this.content.scrollBy(this.width + 10, 0);
   }
+
+  getCarriageName(item: string) {
+    this.filterSliderCarriageName = item;
+    console.log(this.filterSliderCarriageName);
+  }
+
+  /* filterBySliderTabClick() {
+    console.log('filter');
+
+    if (this.filterSliderCarriageName !== '') {
+      console.log('filter 1');
+      this.allRideCarriages.filter((item) => item.code === this.filterSliderCarriageName);
+    }
+  } */
 }

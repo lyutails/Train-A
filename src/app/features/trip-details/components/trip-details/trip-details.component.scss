@@ -170,7 +170,7 @@
   &_carriages {
     display: flex;
     flex-flow: row wrap;
-    gap: 20px 10px;
+    gap: 20px;
     align-items: center;
     justify-content: center;
   }
@@ -213,6 +213,11 @@
 
   &_selected-details {
     margin-right: 30px;
+  }
+
+  &_carousel-carriage-tab {
+    background-color: transparent;
+    border: none;
   }
 }
 

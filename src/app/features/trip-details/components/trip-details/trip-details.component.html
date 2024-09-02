@@ -35,7 +35,10 @@
       </button>
       <div class="trip-details_carriages-tabs" id="carousel-content">
         @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
-          <TTP-carriages-carousel [carriage]="carriage"></TTP-carriages-carousel>
+          <TTP-carriages-carousel
+            [carriage]="carriage"
+            (carriageNameEvent)="getCarriageName($event)"
+          ></TTP-carriages-carousel>
         }
       </div>
       <button (click)="moveRight()" id="next" mat-icon-button type="button" class="trip-details_carousel-button right">
@@ -44,7 +47,7 @@
     </div>
     @if (areCarriages()) {
       <div class="trip-details_carriages">
-        @for (carriage of allRideCarriages; track $index; let index = $index) {
+        @for (carriage of allFilteredRideCarriages; track $index; let index = $index) {
           <div class="trip-details_shape-params">
             <p class="trip-details_carriage-details text-coloured">Free seats:</p>
             <p class="trip-details_carriage-details">Carriage № in train: {{ index }}</p>
@@ -66,6 +69,7 @@
       </div>
     }
     <div class="trip-details_selected-wrapper">
+      <p class="trip-details_selected-details carriage"><span class="coloured-bold-text">Selected:</span></p>
       <p class="trip-details_selected-details carriage">Carriage №: <span class="coloured-bold-text">№</span></p>
       <p class="trip-details_selected-details seats">Seat: <span class="coloured-bold-text">№</span></p>
       <p class="trip-details_selected-details price">Price: <span class="coloured-bold-text">№</span></p>
