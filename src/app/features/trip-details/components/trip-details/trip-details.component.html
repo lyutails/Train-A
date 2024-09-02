@@ -44,10 +44,10 @@
     </div>
     @if (areCarriages()) {
       <div class="trip-details_carriages">
-        @for (carriage of rideCarriages; track carriage.name; let index = $index) {
+        @for (carriage of allRideCarriages; track carriage.name; let index = $index) {
           <div class="trip-details_shape-params">
             <p class="trip-details_carriage-details text-coloured">Free seats:</p>
-            <p class="trip-details_carriage-details">Carriage №: {{ index }}</p>
+            <p class="trip-details_carriage-details">Carriage № in train: {{ index }}</p>
             <div class="trip-details_carriage-shape">
               @for (row of [].constructor(carriage.rows); track index; let index = $index) {
                 @if (carriage.name !== undefined) {

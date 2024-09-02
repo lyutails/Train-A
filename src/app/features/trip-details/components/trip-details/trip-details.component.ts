@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, inject, model, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -32,19 +32,21 @@ import { CarriageRowComponent } from '../../../admin/features/carriages/componen
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
-export class TripDetailsComponent implements AfterViewInit {
+export class TripDetailsComponent implements AfterViewInit, OnInit {
   public popupAuth = signal('');
   public authValue = model('');
   public dialog = inject(MatDialog);
   public userRole = '';
   public openBookSeatPopup = signal(false);
   public seatIsSelected = signal(true);
-  public uniqueCarriageNames!: string[];
   public width!: number;
   public content!: HTMLElement;
   public rideIdResponse!: TripDetailsResponse;
   public rideCarriagesNames!: string[];
-  public rideCarriages!: Carriage[];
+  public allAvailableAppCarriages!: Carriage[];
+  public uniqueCarriageNames!: string[];
+  public filteredOnlyRideCarriagesTypes!: Carriage[];
+  public allRideCarriages: Carriage[] = [];
   public areCarriages = signal(false);
 
   constructor(
@@ -54,6 +56,48 @@ export class TripDetailsComponent implements AfterViewInit {
     private httpClient: HttpClient,
   ) {
     this.initializeUserRole();
+  }
+
+  ngOnInit() {
+    this.httpClient.get('route').subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+    });
+    this.httpClient.get<Carriage[]>('carriage').subscribe({
+      next: (data) => {
+        console.log(data);
+        this.allAvailableAppCarriages = data;
+      },
+    });
+    this.httpClient.get<TripDetailsResponse>(`search/${this.rideId}`).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.rideCarriagesNames = data.carriages;
+        console.log(data.carriages);
+        this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+        if (data.carriages.length > 0) {
+          this.areCarriages.set(true);
+        }
+        console.log(this.uniqueCarriageNames);
+        /* this.filteredOnlyRideCarriagesTypes = this.allAvailableAppCarriages.filter((item) => {
+          if (item.name) {
+            return this.uniqueCarriageNames.includes(item.name);
+          }
+          return;
+        });
+        console.log(this.filteredOnlyRideCarriagesTypes); */
+        console.log(this.allRideCarriages);
+        this.rideCarriagesNames.map((element) => {
+          // eslint-disable-next-line @typescript-eslint/prefer-for-of
+          for (let i = 0; i < this.allAvailableAppCarriages.length; i++) {
+            if (this.allAvailableAppCarriages[i].name === element) {
+              this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
+            }
+          }
+        });
+      },
+    });
   }
 
   ngAfterViewInit(): void {
@@ -105,29 +149,7 @@ export class TripDetailsComponent implements AfterViewInit {
   rideId = 1;
 
   public buyTicket() {
-    console.log('call api to buy ticket');
-    this.httpClient.get('route').subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-    });
-    this.httpClient.get<TripDetailsResponse>(`search/${this.rideId}`).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.rideCarriagesNames = data.carriages;
-        console.log(data.carriages);
-        this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
-        if (data.carriages.length > 0) {
-          this.areCarriages.set(true);
-        }
-      },
-    });
-    this.httpClient.get<Carriage[]>('carriage').subscribe({
-      next: (data) => {
-        console.log(data);
-        this.rideCarriages = data;
-      },
-    });
+    console.log('call api to buy ticket and /order');
     this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
       next: (data) => {
         console.log(data);
