@@ -52,6 +52,8 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public filterSliderCarriageName!: string;
   public isCarriageTypeSelected = signal('');
   public trainCarriageNumber!: number[];
+  public selectedSeat = '';
+  public selectedCarriageName = '';
 
   constructor(
     private router: Router,
@@ -144,6 +146,19 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
         }
       });
     }
+
+    this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
+    console.log(this.selectedSeat);
+    console.log(localStorage.getItem('carriageName'));
+    this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
+    /* this.selectedSeat = new BehaviorSubject(JSON.parse(localStorage.getItem('seatNumber')));
+    if (localStorage.getItem('seatNumber') && typeof localStorage.getItem('seatNumber') === 'string') {
+      // this.selectedSeat = localStorage.getItem('seatNumber');
+      this.selectedSeat = localStorage.getItem('seatNumber');
+      return +this.selectedSeat;
+    } else {
+      return 0;
+    } */
   }
 
   redirectToHomePage() {

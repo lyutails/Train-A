@@ -170,7 +170,7 @@
   &_carriages {
     display: flex;
     flex-flow: row wrap;
-    gap: 20px;
+    gap: 20px 10px;
     align-items: center;
     justify-content: center;
   }

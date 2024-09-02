@@ -26,6 +26,9 @@ export class CarriageSeatComponent implements OnInit {
 
   clickCheckbox() {
     console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
+    // localStorage.setItem('carriageName', this.carriageNameValue);
+    localStorage.setItem('seatNumber', this.seatValue);
+    localStorage.setItem('carriageName', JSON.stringify(this.carriageNameValue));
     this.check.set(!this.check());
   }
 
