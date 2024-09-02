@@ -63,6 +63,7 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public totalRidePrice!: number;
   public totalRidePrices: number[] = [];
   public uniqueCarriagePrices: number[] = [];
+  public totalSelectedRidePrice = 0;
 
   constructor(
     private router: Router,
@@ -124,15 +125,6 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
           this.rideAllSegmentsPricesNumbers = [];
         });
         console.log(this.totalRidePrices);
-        /* this.rideAllSegmentsPrices.map((price) => {
-          if (price[this.selectedCarriageName]) {
-            this.rideAllSegmentsPricesNumbers.push(price[name]);
-          }
-          this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
-            return acc + curr;
-          }, 0);
-          this.totalRidePrices.push(this.totalRidePrice);
-        }); */
       },
     });
   }
@@ -189,14 +181,10 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
     console.log(localStorage.getItem('carriageName'));
     this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
 
-    /* this.selectedSeat = new BehaviorSubject(JSON.parse(localStorage.getItem('seatNumber')));
-    if (localStorage.getItem('seatNumber') && typeof localStorage.getItem('seatNumber') === 'string') {
-      // this.selectedSeat = localStorage.getItem('seatNumber');
-      this.selectedSeat = localStorage.getItem('seatNumber');
-      return +this.selectedSeat;
-    } else {
-      return 0;
-    } */
+    if (this.selectedCarriageName) {
+      const carriageIndex = this.uniqueCarriageNames.indexOf(this.selectedCarriageName);
+      this.totalSelectedRidePrice = this.totalRidePrices[carriageIndex];
+    }
   }
 
   redirectToHomePage() {
