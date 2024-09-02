@@ -44,7 +44,7 @@
     </div>
     @if (areCarriages()) {
       <div class="trip-details_carriages">
-        @for (carriage of allRideCarriages; track carriage.name; let index = $index) {
+        @for (carriage of allRideCarriages; track $index; let index = $index) {
           <div class="trip-details_shape-params">
             <p class="trip-details_carriage-details text-coloured">Free seats:</p>
             <p class="trip-details_carriage-details">Carriage № in train: {{ index }}</p>
@@ -65,6 +65,11 @@
         }
       </div>
     }
+    <div class="trip-details_selected-wrapper">
+      <p class="trip-details_selected-details carriage">Carriage №: <span class="coloured-bold-text">№</span></p>
+      <p class="trip-details_selected-details seats">Seat: <span class="coloured-bold-text">№</span></p>
+      <p class="trip-details_selected-details price">Price: <span class="coloured-bold-text">№</span></p>
+    </div>
     @if (seatIsSelected()) {
       @if (isAuthenticated) {
         <TTP-button

@@ -80,18 +80,10 @@ export class TripDetailsComponent implements AfterViewInit, OnInit {
           this.areCarriages.set(true);
         }
         console.log(this.uniqueCarriageNames);
-        /* this.filteredOnlyRideCarriagesTypes = this.allAvailableAppCarriages.filter((item) => {
-          if (item.name) {
-            return this.uniqueCarriageNames.includes(item.name);
-          }
-          return;
-        });
-        console.log(this.filteredOnlyRideCarriagesTypes); */
         console.log(this.allRideCarriages);
         this.rideCarriagesNames.map((element) => {
-          // eslint-disable-next-line @typescript-eslint/prefer-for-of
-          for (let i = 0; i < this.allAvailableAppCarriages.length; i++) {
-            if (this.allAvailableAppCarriages[i].name === element) {
+          for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
+            if (this.allAvailableAppCarriages[i].code === element) {
               this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
             }
           }
