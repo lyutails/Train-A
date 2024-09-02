@@ -19,7 +19,9 @@
       </div>
     </div>
     <div class="trip-details_route-details">
-      <p class="trip-details_rideid">Ride <span class="coloured-bold-text">(rideId)</span></p>
+      <p class="trip-details_rideid">
+        Ride <span class="coloured-bold-text">(rideId) currently testing with rideId=1</span>
+      </p>
       <TTP-button
         (click)="redirectToHomePage()"
         [type]="'button'"
@@ -37,6 +39,7 @@
         @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
           <TTP-carriages-carousel
             [carriage]="carriage"
+            [selected]="carriage === filterSliderCarriageName"
             (carriageNameEvent)="getCarriageName($event)"
           ></TTP-carriages-carousel>
         }

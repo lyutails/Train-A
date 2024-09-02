@@ -50,6 +50,7 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public allFilteredRideCarriages: Carriage[] = [];
   public areCarriages = signal(false);
   public filterSliderCarriageName!: string;
+  public isCarriageTypeSelected = signal('');
 
   constructor(
     private router: Router,
@@ -161,14 +162,11 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
 
   public buyTicket() {
     console.log('call api to buy ticket and /order');
-    this.httpClient.post('order', { rideId: 34, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
+    this.httpClient.post('order', { rideId: 1, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
       next: (data) => {
         console.log(data);
       },
       /* error: ({ error }: HttpErrorResponse) => {
-        //  this.isSubmitting = false;
-        // this.clearErrorMessages();
-
         if (error.reason === 'alreadyLoggedIn') {
           this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
         }
@@ -197,13 +195,4 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
     this.filterSliderCarriageName = item;
     console.log(this.filterSliderCarriageName);
   }
-
-  /* filterBySliderTabClick() {
-    console.log('filter');
-
-    if (this.filterSliderCarriageName !== '') {
-      console.log('filter 1');
-      this.allRideCarriages.filter((item) => item.code === this.filterSliderCarriageName);
-    }
-  } */
 }
