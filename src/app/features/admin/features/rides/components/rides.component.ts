@@ -7,6 +7,8 @@ import { MatCardModule } from '@angular/material/card';
 import { AsyncPipe, DatePipe, KeyValuePipe, NgFor, NgIf } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RideRoute } from '../models/route';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import {
   FormArray,
   FormControl,
@@ -19,7 +21,7 @@ import {
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ButtonComponent } from '../../../../../common/button/button.component';
 import { RideFormModel } from '../models/ride-form.model';
 import { RideInfoForm } from '../models/ride-info-form-model';
@@ -28,6 +30,7 @@ import { RideSegmentsForm } from '../models/ride-segments-form.model';
 import { RouteSegments } from '../../../../../repositories/rides/services/models/route-section.model';
 import { MatInputModule } from '@angular/material/input';
 import { RidesFacade } from '../services/rides.facade';
+import { ConfirmDeleteDialogComponent } from '../../../components/routes/features/components/confirm-delete-dialog/confirm-delete-dialog.component';
 
 @Component({
   selector: 'TTP-rides',
@@ -70,7 +73,10 @@ export class RidesComponent implements OnInit, OnDestroy {
     private readonly fb: NonNullableFormBuilder,
     private readonly datePipe: DatePipe,
     private readonly rideFacade: RidesFacade,
-  ) {}
+    public readonly dialog: MatDialog,
+  ) {
+    dayjs.extend(utc);
+  }
 
   public ngOnInit(): void {
     this.rideForm = this.rideFormInstance;
@@ -207,5 +213,40 @@ export class RidesComponent implements OnInit, OnDestroy {
 
   public createNewRide() {
     this.router.navigate([`/admin/routes`, this.rideRoute.id, 'new-ride']);
+  }
+
+  public openDeleteModal(id: number): void {
+    const dialogRef = this.dialog.open(ConfirmDeleteDialogComponent, {
+      data: { id: id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.confirmDelete(id);
+      }
+    });
+  }
+
+  public confirmDelete(id: number): void {
+    this.rideFacade.deleteRide(this.rideRoute.id, id).subscribe({
+      next: () => {
+        this.rideRoute.schedule = this.rideRoute.schedule.filter((ride) => ride.rideId !== id);
+        this.updateFormWithNewSchedule(this.rideRoute.schedule);
+      },
+      error: (err) => console.error('An error occurred:', err.message),
+    });
+  }
+
+  private updateFormWithNewSchedule(newSchedule: RouteSchedule[]): void {
+    this.scheduleFormControl.clear();
+    newSchedule.forEach((schedule) => {
+      this.scheduleFormControl.push(this.createSegmentGroup(schedule));
+    });
+  }
+
+  public isPastDate(time: string): boolean {
+    const dateToCompare = dayjs(time).utc();
+    const currentDate = dayjs().utc();
+    return dateToCompare.isBefore(currentDate);
   }
 }

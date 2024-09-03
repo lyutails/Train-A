@@ -16,8 +16,16 @@
           <fieldset>
             <mat-card>
               <mat-card-header>
-                <mat-card-title class="ride_card-title">Ride {{ rideRoute.schedule[i].rideId }}</mat-card-title
-                ><button type="button" mat-icon-button><mat-icon>delete</mat-icon></button>
+                <mat-card-title class="ride_card-title">Ride {{ rideRoute.schedule[i].rideId }}</mat-card-title>
+                <ng-container *ngIf="!isPastDate(rideRoute.schedule[i].segments[0].time[0])">
+                  <button
+                    class="routes_delete-btn"
+                    mat-icon-button
+                    (click)="openDeleteModal(rideRoute.schedule[i].rideId)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
               </mat-card-header>
               <div class="ride_table-container">
                 <div class="table-header">
