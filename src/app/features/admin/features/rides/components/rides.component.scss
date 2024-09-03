@@ -74,7 +74,8 @@
 
   &_time-column {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    gap: 20px;
 
     width: 100%;
     min-width: 70px;
@@ -85,7 +86,9 @@
   &_price-column {
     position: relative;
     top: 100px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 100%;
     min-width: 70px;
     max-width: 350px;

@@ -132,7 +132,7 @@
             </button>
             <button mat-button class="routes_assign-btn">
               <mat-icon>assignment</mat-icon>
-              <span class="routes_btn-description">Assign Ride</span>
+              <a [routerLink]="['/admin/routes', route.id]" class="routes_btn-description">Assign Ride</a>
             </button>
             <button class="routes_delete-btn" mat-icon-button (click)="openDeleteModal(route.id)">
               <mat-icon>delete</mat-icon>

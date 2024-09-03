@@ -20,6 +20,7 @@ import { StationInfo } from '../../../../../features/stations/models/station-inf
 import { StationForm } from '../../models/station-form.model';
 import { ConnectedStationsApi } from '../../../../../../../repositories/stations/models/connected-stations--api.model';
 import { ChangeDetectorRef } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'TTP-routes',
@@ -36,6 +37,7 @@ import { ChangeDetectorRef } from '@angular/core';
     MatInputModule,
     MatOption,
     MatSelect,
+    RouterModule,
   ],
   templateUrl: './routes.component.html',
   styleUrl: './routes.component.scss',

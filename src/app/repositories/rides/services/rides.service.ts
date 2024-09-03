@@ -22,4 +22,8 @@ export class RidesService {
   public addRideToRoute(id: number, segments: RouteSegments[]): Observable<number> {
     return this.ridesHttpService.addRideToRoute(id, segments);
   }
+
+  public deleteRide(id: number, rideId: number): Observable<void> {
+    return this.ridesHttpService.deleteRide(id, rideId);
+  }
 }
