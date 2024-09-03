@@ -16,9 +16,6 @@
         />
         <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
-          <!-- @for (city of filteredTestCitiesFrom | async; track city) {
-              <mat-option [value]="city">{{ city }}</mat-option>
-            } -->
           @for (city of filteredOptions; track city) {
             <mat-option [value]="city">{{ city }}</mat-option>
           }
@@ -38,7 +35,7 @@
         />
         <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
-          @for (city of filteredTestCitiesTo | async; track city) {
+          @for (city of filteredCitiesTo | async; track city) {
             <mat-option [value]="city">{{ city }}</mat-option>
           }
         </mat-autocomplete></mat-form-field
