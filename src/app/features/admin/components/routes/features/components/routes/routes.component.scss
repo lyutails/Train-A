@@ -34,6 +34,12 @@
     border-radius: 5px;
   }
 
+  &_title-and-btns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &_title {
     font-size: 1.4rem;
     font-weight: 600;
@@ -43,12 +49,6 @@
   &_delete-btn {
     background: none;
     border: none;
-  }
-
-  &_buttons {
-    position: absolute;
-    left: 750px;
-    display: flex;
   }
 
   &_btn-description {
@@ -107,37 +107,27 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-}
 
-@media screen and (width >= 900px) and (width <= 1300px) {
-  .routes {
-    &_buttons {
-      left: 680px;
-    }
-  }
-}
-
-@media screen and (width >= 760px) and (width <= 899.98px) {
-  .routes {
-    &_buttons {
-      left: 400px;
-    }
+  &_buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
 }
 
 @media screen and (width >= 300px) and (width <= 759.98px) {
   .routes {
-    &_buttons {
-      left: 100px;
-      align-items: center;
+    &_title-and-btns {
+      flex-direction: column;
+      margin-bottom: 6px;
     }
 
-    &_delete-btn mat-icon {
-      font-style: 14px;
+    h4 {
+      margin-bottom: 0;
     }
 
     &_buttons button mat-icon {
-      font-size: 18px;
+      font-size: 20px;
     }
 
     &_btn-description {
@@ -146,6 +136,10 @@
 
     &_assign-btn {
       white-space: nowrap;
+    }
+
+    &_delete-btn button mat-icon {
+      font-size: 20px;
     }
 
     &_buttons button {

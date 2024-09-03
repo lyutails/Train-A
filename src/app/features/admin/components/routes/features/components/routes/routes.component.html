@@ -102,7 +102,22 @@
       <div class="routes_data">
         @for (route of routes; track route) {
           <div class="routes_data-card">
-            <h4 class="routes_title">Route {{ route.id }}</h4>
+            <div class="routes_title-and-btns">
+              <h4 class="routes_title">Route {{ route.id }}</h4>
+              <div class="routes_buttons">
+                <button mat-button class="routes_update-btn" (click)="showUpdateForm(route)">
+                  <mat-icon>edit</mat-icon>
+                  <span class="routes_btn-description">Update</span>
+                </button>
+                <button mat-button class="routes_assign-btn">
+                  <mat-icon>assignment</mat-icon>
+                  <a [routerLink]="['/admin/routes', route.id]" class="routes_btn-description">Assign Ride</a>
+                </button>
+                <button class="routes_delete-btn" mat-icon-button (click)="openDeleteModal(route.id)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
             <p>
               <strong>Cities:</strong>
               {{
@@ -117,19 +132,6 @@
                 {{ getCarriageNames(route.carriages) }}
               </p>
             }
-            <div class="routes_buttons">
-              <button mat-button class="routes_update-btn" (click)="showUpdateForm(route)">
-                <mat-icon>edit</mat-icon>
-                <span class="routes_btn-description">Update</span>
-              </button>
-              <button mat-button class="routes_assign-btn">
-                <mat-icon>assignment</mat-icon>
-                <a [routerLink]="['/admin/routes', route.id]" class="routes_btn-description">Assign Ride</a>
-              </button>
-              <button class="routes_delete-btn" mat-icon-button (click)="openDeleteModal(route.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
           </div>
         }
       </div>
