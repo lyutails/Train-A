@@ -45,23 +45,12 @@
           <div formArrayName="carriages">
             <div *ngFor="let carriage of getCarriagesControls(); let i = index" [formGroupName]="i">
               <mat-form-field appearance="outline" class="routes_control-inputs">
-                <mat-label>Name</mat-label>
-                <input matInput placeholder="Enter carriage name" formControlName="name" />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="routes_control-inputs">
-                <mat-label>Rows</mat-label>
-                <input matInput placeholder="Number of rows" formControlName="rows" type="number" />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="routes_control-inputs">
-                <mat-label>Left Seats</mat-label>
-                <input matInput placeholder="Number of left seats" formControlName="leftSeats" type="number" />
-              </mat-form-field>
-
-              <mat-form-field appearance="outline" class="routes_control-inputs">
-                <mat-label>Right Seats</mat-label>
-                <input matInput placeholder="Number of right seats" formControlName="rightSeats" type="number" />
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="name">
+                  <mat-option *ngFor="let carriage of carriages" [value]="carriage.name">
+                    {{ carriage.name }}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
 
               <TTP-button
