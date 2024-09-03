@@ -17,6 +17,8 @@ import { Carriage } from '../../../admin/features/carriages/models/carriage.mode
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 import { Segments } from '../../models/segments.model';
 import { Price } from '../../models/price.model';
+import { LoadingService } from '../../../../common/services/loading/loading.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -30,6 +32,7 @@ import { Price } from '../../models/price.model';
     MatIconButton,
     CarriagesCarouselComponent,
     CarriageRowComponent,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
@@ -64,6 +67,7 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public totalRidePrices: number[] = [];
   public uniqueCarriagePrices: number[] = [];
   public totalSelectedRidePrice = 0;
+  loadingService = inject(LoadingService);
 
   constructor(
     private router: Router,
@@ -79,11 +83,6 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   stationTo = 132;
 
   ngOnInit() {
-    this.httpClient.get('route').subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-    });
     this.httpClient.get<Carriage[]>('carriage').subscribe({
       next: (data) => {
         console.log(data);

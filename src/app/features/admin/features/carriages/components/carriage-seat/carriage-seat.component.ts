@@ -29,6 +29,8 @@ export class CarriageSeatComponent implements OnInit {
     console.log(this.check());
     if (this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path === 'carriages') {
       this.isCarriagesPage.set(true);
+    } else {
+      this.isCarriagesPage.set(false);
     }
   }
 

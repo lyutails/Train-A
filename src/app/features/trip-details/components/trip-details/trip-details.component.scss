@@ -98,6 +98,18 @@
     margin-right: 10px;
 
     border-radius: 5px;
+
+    &.occupied {
+      background-color: $selected-seat;
+    }
+
+    &.reserved {
+      background-color: gray;
+    }
+
+    &.available {
+      background-color: $deep-blue;
+    }
   }
 
   &_seat-description {

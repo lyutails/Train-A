@@ -1,5 +1,6 @@
 @if (isCarriagesPage()) {
   <mat-label
+    (click)="clickCheckbox()"
     [attr.for]="seatValue + carriageNameValue"
     class="carriages_seat-label"
     [style.background]="'grey'"
@@ -23,7 +24,7 @@
     [attr.for]="seatValue + carriageNameValue"
     class="carriages_seat-label"
     [style.background]="check() ? 'oklch(49.71% 0.165 259.85deg)' : 'oklch(71.74% 0.19 48.65deg)'"
-    [style.color]="check() ? 'white' : 'white'"
+    [style.color]="'white'"
     >{{ seatValue }}
     <mat-checkbox
       (change)="inspectCheckboxValue($event)"
