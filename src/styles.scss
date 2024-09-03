@@ -11,6 +11,7 @@ $border-frame: 1px solid rgb(0 92 187 / 50%);
 html,
 body {
   height: 100%;
+  min-height: 100vh;
   font-size: 16px;
 }
 
@@ -39,14 +40,11 @@ body::-webkit-scrollbar-thumb {
   outline: 1px solid transparent;
 }
 
-.content-area {
-  min-height: calc(100vh - 90px);
-}
-
 ttp-root {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 100vh;
 }
 
 ttp-footer {
@@ -82,6 +80,10 @@ ttp-sign-in {
 }
 
 ttp-sign-up {
+  flex: 1 0 auto;
+}
+
+ttp-carriages {
   flex: 1 0 auto;
 }
 

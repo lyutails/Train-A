@@ -1,5 +1,5 @@
 import { SELECT_OPTIONS_ROWS } from './../../models/select-options-rows.model';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,6 +20,8 @@ import { SELECT_LEFT_OPTION_ROWS } from '../../models/select-options-left-seats.
 import { SELECT_RIGHT_OPTION_ROWS } from '../../models/select-options-right-seats.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingService } from '../../../../../../common/services/loading/loading.service';
 
 @Component({
   selector: 'TTP-carriages',
@@ -36,6 +38,8 @@ import { CarriagesService } from '../../../../../../repositories/carriages/servi
     MatFormField,
     FormsModule,
     CarriageRowComponent,
+    MatProgressSpinner,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
@@ -51,6 +55,7 @@ export class CarriagesComponent implements OnInit {
   public selectOptionsRows!: CarriageCreatingParams[];
   public selectOptionsLeftSeats!: CarriageCreatingParams[];
   public selectOptionsRightSeats!: CarriageCreatingParams[];
+  loadingService = inject(LoadingService);
 
   constructor(
     private fb: NonNullableFormBuilder,

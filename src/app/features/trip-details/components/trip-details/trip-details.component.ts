@@ -74,6 +74,10 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
     this.initializeUserRole();
   }
 
+  rideId = 1;
+  stationFrom = 39;
+  stationTo = 132;
+
   ngOnInit() {
     this.httpClient.get('route').subscribe({
       next: (data) => {
@@ -86,45 +90,48 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
         this.allAvailableAppCarriages = data;
       },
     });
-    this.httpClient.get<TripDetailsResponse>(`search/${this.rideId}`).subscribe({
-      next: (data) => {
-        console.log(data);
-        this.rideCarriagesNames = data.carriages;
-        console.log(data.carriages);
-        this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
-        if (data.carriages.length > 0) {
-          this.areCarriages.set(true);
-        }
-        console.log(this.uniqueCarriageNames);
-        console.log(this.allRideCarriages);
-        this.rideCarriagesNames.map((element) => {
-          for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
-            if (this.allAvailableAppCarriages[i].code === element) {
-              this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
-              this.allFilteredRideCarriages = this.allRideCarriages;
-            }
+    this.httpClient
+      .get<TripDetailsResponse>(`search/${this.rideId}?from=${this.stationFrom}&to=${this.stationTo}`)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.rideCarriagesNames = data.carriages;
+          console.log(data.carriages);
+          this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+          if (data.carriages.length > 0) {
+            this.areCarriages.set(true);
           }
-        });
-        console.log(data.schedule.segments);
-        this.rideSegments = data.schedule.segments;
-        this.rideAllSegmentsPrices = [];
-        this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
-        console.log(this.rideAllSegmentsPrices);
-        this.rideAllSegmentsPricesNumbers = [];
-        this.uniqueCarriageNames.forEach((name) => {
-          this.rideAllSegmentsPrices.map((price) => {
-            if (price[name]) {
-              this.rideAllSegmentsPricesNumbers.push(price[name]);
+          console.log(this.uniqueCarriageNames);
+          console.log(this.allRideCarriages);
+          this.rideCarriagesNames.map((element) => {
+            for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
+              if (this.allAvailableAppCarriages[i].code === element) {
+                this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
+                this.allFilteredRideCarriages = this.allRideCarriages;
+              }
             }
-            this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
-              return acc + curr;
-            }, 0);
           });
-          this.totalRidePrices.push(this.totalRidePrice);
+          console.log(data.schedule.segments);
+          this.rideSegments = data.schedule.segments;
+          this.rideAllSegmentsPrices = [];
+          this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
+          console.log(this.rideAllSegmentsPrices);
           this.rideAllSegmentsPricesNumbers = [];
-        });
-      },
-    });
+          this.uniqueCarriageNames.forEach((name) => {
+            this.rideAllSegmentsPrices.map((price) => {
+              if (price[name]) {
+                this.rideAllSegmentsPricesNumbers.push(price[name]);
+              }
+              this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
+                return acc + curr;
+              }, 0);
+            });
+            this.totalRidePrices.push(this.totalRidePrice);
+            this.rideAllSegmentsPricesNumbers = [];
+          });
+          console.log(this.totalRidePrices);
+        },
+      });
   }
 
   ngAfterViewInit(): void {
@@ -166,14 +173,16 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
       });
     }
 
-    this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
-    console.log(this.selectedSeat);
-    console.log(localStorage.getItem('carriageName'));
-    this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
+    if (localStorage.getItem('seatNumber') && localStorage.getItem('carriageName')) {
+      this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
+      console.log(this.selectedSeat);
+      console.log(localStorage.getItem('carriageName'));
+      this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
 
-    if (this.selectedCarriageName) {
-      const carriageIndex = this.uniqueCarriageNames.indexOf(this.selectedCarriageName);
-      this.totalSelectedRidePrice = this.totalRidePrices[carriageIndex];
+      if (this.selectedCarriageName && this.uniqueCarriageNames) {
+        const carriageIndex = this.uniqueCarriageNames.indexOf(this.selectedCarriageName);
+        this.totalSelectedRidePrice = this.totalRidePrices[carriageIndex];
+      }
     }
   }
 
@@ -206,8 +215,6 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
       }
     });
   }
-
-  rideId = 1;
 
   public buyTicket() {
     console.log('call api to buy ticket and /order');

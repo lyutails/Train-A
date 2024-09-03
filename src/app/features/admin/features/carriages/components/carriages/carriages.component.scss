@@ -138,6 +138,22 @@ ttp-carriage-row {
   display: flex;
 }
 
+.spinner {
+  width: 100vw;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  min-height: 100%;
+}
+
 @media screen and (width >= 900px) and (width <= 1300px) {
   .carriages {
     &_carriage-wrapper {
