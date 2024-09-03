@@ -13,6 +13,7 @@ import { storageKeyPrefix } from './core/storage/tokens/storage-key-prefix';
 import { authorizationInterceptor } from './repositories/authorization/interceptors/authorization-interceptor';
 import { loadingInterceptor } from './common/interceptors/loading.interceptor';
 import { mapInterceptor } from './features/admin/features/map/interceptor/map-interceptor';
+import { authErrorInterceptor } from './common/interceptors/access-interceptor/error-interceptor.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,7 +30,9 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimationsAsync(),
     importProvidersFrom(MatNativeDateModule),
-    provideHttpClient(withInterceptors([authorizationInterceptor, mapInterceptor, loadingInterceptor])),
+    provideHttpClient(
+      withInterceptors([authorizationInterceptor, mapInterceptor, loadingInterceptor, authErrorInterceptor]),
+    ),
     importProvidersFrom(StorageModule.forRoot({ config: { prefix: storageKeyPrefix } })),
   ],
 };
