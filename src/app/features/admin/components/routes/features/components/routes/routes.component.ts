@@ -21,6 +21,7 @@ import { StationForm } from '../../models/station-form.model';
 import { ConnectedStationsApi } from '../../../../../../../repositories/stations/models/connected-stations--api.model';
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'TTP-routes',
@@ -38,6 +39,7 @@ import { RouterModule } from '@angular/router';
     MatOption,
     MatSelect,
     RouterModule,
+    MatSpinner,
   ],
   templateUrl: './routes.component.html',
   styleUrl: './routes.component.scss',
@@ -50,6 +52,7 @@ export class RoutesComponent implements OnInit {
   connectedStations: ConnectedStationsApi[][] = [];
   carriages: Carriage[] = [];
   stations: StationInfo[] = [];
+  public isLoading = true;
 
   constructor(
     private readonly routesService: RoutesService,
@@ -63,6 +66,7 @@ export class RoutesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.fetchRoutes();
     this.routesService.getRoutes().subscribe({
       next: (data) => {
         this.routes = (Array.isArray(data) ? data : []).map((route) => ({
@@ -87,6 +91,19 @@ export class RoutesComponent implements OnInit {
       },
       error: (error) => console.error('Error loading stations', error),
     });
+  }
+
+  private fetchRoutes(): void {
+    this.routesService.getRoutes().subscribe(
+      (routes) => {
+        this.routes = routes;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error for getting routes', error);
+        this.isLoading = false;
+      },
+    );
   }
 
   private initializeForms(): void {

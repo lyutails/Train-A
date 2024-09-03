@@ -1,134 +1,138 @@
 <div class="routes_wrapper container-xl">
-  <TTP-button
-    (click)="showCreateForm()"
-    [type]="'button'"
-    [width]="'10vw'"
-    [buttonText]="'Create'"
-    class="routes_create-button"
-  >
-  </TTP-button>
+  @if (isLoading) {
+    <mat-spinner class="routes_spinner"></mat-spinner>
+  } @else {
+    <TTP-button
+      (click)="showCreateForm()"
+      [type]="'button'"
+      [width]="'10vw'"
+      [buttonText]="'Create'"
+      class="routes_create-button"
+    >
+    </TTP-button>
 
-  @if (isFormVisible) {
-    <form [formGroup]="createRouteForm" class="routes_form">
-      <div class="routes_form-columns">
-        <div class="routes_form-section">
-          <h6>Stations</h6>
-          <div formArrayName="stations">
-            <div *ngFor="let station of getStationsControls(); let i = index" [formGroupName]="i">
-              <mat-form-field appearance="outline" class="routes_control-inputs">
-                <mat-label>Station {{ i + 1 }}</mat-label>
-                <mat-select (selectionChange)="onStationChange(i)" formControlName="station">
-                  <mat-option *ngFor="let station of filteredStations(i)" [value]="station.id">
-                    {{ station.city }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+    @if (isFormVisible) {
+      <form [formGroup]="createRouteForm" class="routes_form">
+        <div class="routes_form-columns">
+          <div class="routes_form-section">
+            <h6>Stations</h6>
+            <div formArrayName="stations">
+              <div *ngFor="let station of getStationsControls(); let i = index" [formGroupName]="i">
+                <mat-form-field appearance="outline" class="routes_control-inputs">
+                  <mat-label>Station {{ i + 1 }}</mat-label>
+                  <mat-select (selectionChange)="onStationChange(i)" formControlName="station">
+                    <mat-option *ngFor="let station of filteredStations(i)" [value]="station.id">
+                      {{ station.city }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <TTP-button
+                  (click)="removeStation(i)"
+                  [type]="'button'"
+                  [width]="'15vw'"
+                  [buttonText]="'Remove'"
+                  class="routes_remove-button"
+                ></TTP-button>
+              </div>
               <TTP-button
-                (click)="removeStation(i)"
+                (click)="addStation()"
                 [type]="'button'"
                 [width]="'15vw'"
-                [buttonText]="'Remove'"
-                class="routes_remove-button"
+                [buttonText]="'Add Station'"
+                class="routes_add-station-button"
               ></TTP-button>
             </div>
-            <TTP-button
-              (click)="addStation()"
-              [type]="'button'"
-              [width]="'15vw'"
-              [buttonText]="'Add Station'"
-              class="routes_add-station-button"
-            ></TTP-button>
           </div>
-        </div>
-        <div class="routes_form-section">
-          <h6>Carriages</h6>
-          <div formArrayName="carriages">
-            <div *ngFor="let carriage of getCarriagesControls(); let i = index" [formGroupName]="i">
-              <mat-form-field appearance="outline" class="routes_control-inputs">
-                <mat-label>Type</mat-label>
-                <mat-select formControlName="name">
-                  <mat-option *ngFor="let carriage of carriages" [value]="carriage.name">
-                    {{ carriage.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+          <div class="routes_form-section">
+            <h6>Carriages</h6>
+            <div formArrayName="carriages">
+              <div *ngFor="let carriage of getCarriagesControls(); let i = index" [formGroupName]="i">
+                <mat-form-field appearance="outline" class="routes_control-inputs">
+                  <mat-label>Type</mat-label>
+                  <mat-select formControlName="name">
+                    <mat-option *ngFor="let carriage of carriages" [value]="carriage.name">
+                      {{ carriage.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <TTP-button
+                  (click)="removeCarriage(i)"
+                  [type]="'button'"
+                  [width]="'15vw'"
+                  [buttonText]="'Remove'"
+                  class="routes_remove-button"
+                ></TTP-button>
+              </div>
 
               <TTP-button
-                (click)="removeCarriage(i)"
+                (click)="addCarriage()"
                 [type]="'button'"
                 [width]="'15vw'"
-                [buttonText]="'Remove'"
-                class="routes_remove-button"
+                [buttonText]="'Add Carriage'"
+                class="routes_add-carriage-button"
               ></TTP-button>
             </div>
-
-            <TTP-button
-              (click)="addCarriage()"
-              [type]="'button'"
-              [width]="'15vw'"
-              [buttonText]="'Add Carriage'"
-              class="routes_add-carriage-button"
-            ></TTP-button>
           </div>
         </div>
-      </div>
 
-      <div class="routes_form-buttons">
-        <TTP-button
-          (click)="handleFormSubmit()"
-          [type]="'submit'"
-          [width]="'20vw'"
-          [buttonText]="'Save'"
-          class="routes_save-button"
-          [disabled]="createRouteForm.invalid"
-        >
-        </TTP-button>
-        <TTP-button
-          (click)="handleCancel()"
-          [type]="'button'"
-          [width]="'20vw'"
-          [buttonText]="'Cancel'"
-          class="routes_cancel-button"
-        >
-        </TTP-button>
-      </div>
-    </form>
-  }
+        <div class="routes_form-buttons">
+          <TTP-button
+            (click)="handleFormSubmit()"
+            [type]="'submit'"
+            [width]="'20vw'"
+            [buttonText]="'Save'"
+            class="routes_save-button"
+            [disabled]="createRouteForm.invalid"
+          >
+          </TTP-button>
+          <TTP-button
+            (click)="handleCancel()"
+            [type]="'button'"
+            [width]="'20vw'"
+            [buttonText]="'Cancel'"
+            class="routes_cancel-button"
+          >
+          </TTP-button>
+        </div>
+      </form>
+    }
 
-  @if (routes.length > 0) {
-    <div class="routes_data">
-      @for (route of routes; track route) {
-        <div class="routes_data-card">
-          <h4 class="routes_title">Route {{ route.id }}</h4>
-          <p>
-            <strong>Cities:</strong>
-            {{
-              route.path && route.path.length > 0
-                ? route.path.join(' - ')
-                : 'Refresh this page and you will see your new route'
-            }}
-          </p>
-          @if (route.carriages && route.carriages.length > 0) {
+    @if (routes.length > 0) {
+      <div class="routes_data">
+        @for (route of routes; track route) {
+          <div class="routes_data-card">
+            <h4 class="routes_title">Route {{ route.id }}</h4>
             <p>
-              <strong>Carriage Types:</strong>
-              {{ getCarriageNames(route.carriages) }}
+              <strong>Cities:</strong>
+              {{
+                route.path && route.path.length > 0
+                  ? route.path.join(' - ')
+                  : 'Refresh this page and you will see your new route'
+              }}
             </p>
-          }
-          <div class="routes_buttons">
-            <button mat-button class="routes_update-btn" (click)="showUpdateForm(route)">
-              <mat-icon>edit</mat-icon>
-              <span class="routes_btn-description">Update</span>
-            </button>
-            <button mat-button class="routes_assign-btn">
-              <mat-icon>assignment</mat-icon>
-              <a [routerLink]="['/admin/routes', route.id]" class="routes_btn-description">Assign Ride</a>
-            </button>
-            <button class="routes_delete-btn" mat-icon-button (click)="openDeleteModal(route.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
+            @if (route.carriages && route.carriages.length > 0) {
+              <p>
+                <strong>Carriage Types:</strong>
+                {{ getCarriageNames(route.carriages) }}
+              </p>
+            }
+            <div class="routes_buttons">
+              <button mat-button class="routes_update-btn" (click)="showUpdateForm(route)">
+                <mat-icon>edit</mat-icon>
+                <span class="routes_btn-description">Update</span>
+              </button>
+              <button mat-button class="routes_assign-btn">
+                <mat-icon>assignment</mat-icon>
+                <a [routerLink]="['/admin/routes', route.id]" class="routes_btn-description">Assign Ride</a>
+              </button>
+              <button class="routes_delete-btn" mat-icon-button (click)="openDeleteModal(route.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </div>
-        </div>
-      }
-    </div>
+        }
+      </div>
+    }
   }
 </div>
