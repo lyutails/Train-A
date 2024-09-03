@@ -1,5 +1,5 @@
 import { SELECT_OPTIONS_ROWS } from './../../models/select-options-rows.model';
-import { Component, inject, OnInit, signal, AfterViewChecked } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -21,7 +21,7 @@ import { SELECT_RIGHT_OPTION_ROWS } from '../../models/select-options-right-seat
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
 import { MatDialog } from '@angular/material/dialog';
-import { DupeNamePopupComponent } from '../dupe-name-popup/dupe-name-popup.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'TTP-carriages',
@@ -42,7 +42,7 @@ import { DupeNamePopupComponent } from '../dupe-name-popup/dupe-name-popup.compo
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
 })
-export class CarriagesComponent implements OnInit, AfterViewChecked {
+export class CarriagesComponent implements OnInit {
   public carriagesData!: Carriage[];
   public carriageData!: Carriage;
   public carrigeCode = '';
@@ -55,6 +55,7 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
   public selectOptionsRightSeats!: CarriageCreatingParams[];
   public dialog = inject(MatDialog);
   public isDupeName = signal(false);
+  public snackBar = inject(MatSnackBar);
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -67,19 +68,6 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
     this.retrievedCarriagesForm = this.retrievedCarriagesFormInstance;
   }
 
-  ngAfterViewChecked() {
-    if (this.isDupeName()) {
-      const dialogRef = this.dialog.open(DupeNamePopupComponent, {
-        data: {
-          info: 'Happens carriage with such name already exists, please, choose another name and try again.',
-        },
-      });
-      dialogRef.afterClosed().subscribe(() => {
-        this.isDupeName.set(false);
-      });
-    }
-  }
-
   public getCarriagesData() {
     this.carriagesService.getCarriages().subscribe((data) => {
       console.log(data);
@@ -89,15 +77,23 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  private get isCarriageNameExist() {
+    return this.carriagesData.some((carriage) => carriage.name === this.carriageForm.controls.name?.value);
+  }
+
   public createCarriageData() {
-    const dupe = this.carriagesData.some((item) => item.name === this.carriageForm.controls.name?.value);
-    if (!dupe) {
+    if (this.isCarriageNameExist) {
+      this.snackBar.open('Happens you are trying to create carriage with already existed name.', 'close', {
+        duration: 2000,
+      });
+    } else {
       const carriageWithoutCode = {
         name: this.carriageForm.controls.name?.value,
         rows: +this.carriageForm.controls.rows.value,
         leftSeats: +this.carriageForm.controls.leftSeats.value,
         rightSeats: +this.carriageForm.controls.rightSeats.value,
       };
+
       this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
         this.carriagesData.unshift({
           code: data.code,
@@ -107,8 +103,6 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
       this.carriageForm.reset();
       this.create.set(false);
       this.update.set(false);
-    } else {
-      this.isDupeName.set(true);
     }
   }
 
@@ -133,8 +127,11 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
   }
 
   public updateExistingCarriage() {
-    const dupe = this.carriagesData.some((item) => item.name === this.carriageForm.controls.name?.value);
-    if (!dupe) {
+    if (this.isCarriageNameExist) {
+      this.snackBar.open('Happens you are trying to create carriage with already existed name.', 'close', {
+        duration: 2000,
+      });
+    } else {
       const carriageWithoutCode = {
         name: this.carriageForm.controls.name?.value,
         rows: +this.carriageForm.controls.rows.value,
@@ -154,8 +151,6 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
       this.carriageForm.reset();
       this.update.set(false);
       this.create.set(false);
-    } else {
-      this.isDupeName.set(true);
     }
   }
 
@@ -257,16 +252,5 @@ export class CarriagesComponent implements OnInit, AfterViewChecked {
     if (this.carriageForm.valid) {
       this.update.set(false);
     }
-  }
-
-  onDupeNamePopup() {
-    const dialogRef = this.dialog.open(DupeNamePopupComponent, {
-      data: {
-        info: 'Happens carriage with such name already exists, please, choose another name and try again.',
-      },
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      this.isDupeName.set(false);
-    });
   }
 }
