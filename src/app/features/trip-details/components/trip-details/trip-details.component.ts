@@ -133,8 +133,9 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
       });
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.content = document.querySelector('#carousel-content')!;
+    console.log(this.content);
     if (!this.content) {
       throw new Error('no content out there');
     }
@@ -174,7 +175,7 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
 
     if (localStorage.getItem('seatNumber') && localStorage.getItem('carriageName')) {
       this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
-      console.log(this.selectedSeat);
+      // console.log(this.selectedSeat);
       console.log(localStorage.getItem('carriageName'));
       this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
 

@@ -5,6 +5,7 @@ import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
+import { RoleService } from '../../../../../../core/roles/role.service';
 
 @Component({
   selector: 'TTP-carriage-seat',
@@ -22,7 +23,10 @@ export class CarriageSeatComponent implements OnInit {
   @Output() chosenSeat = new EventEmitter<string>();
   public isCarriagesPage = signal(false);
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private roleService: RoleService,
+  ) {}
 
   ngOnInit() {
     this.check.set(!this.checked);
@@ -37,14 +41,18 @@ export class CarriageSeatComponent implements OnInit {
   clickCheckbox() {
     console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
     // localStorage.setItem('carriageName', this.carriageNameValue);
-    localStorage.setItem('seatNumber', this.seatValue);
+    localStorage.setItem('seatNumber', JSON.stringify(this.seatValue));
     localStorage.setItem('carriageName', JSON.stringify(this.carriageNameValue));
-    this.check.set(!this.check());
     if (!this.check()) {
       localStorage.removeItem('seatNumber');
-      localStorage.removeItem('seatNumber');
+      localStorage.removeItem('carriageName');
     }
+    this.check.set(!this.check());
   }
+
+  /* selectSeat() {
+    
+  } */
 
   inspectCheckboxValue(event: MatCheckboxChange): void {
     console.log(event.checked);
@@ -54,5 +62,9 @@ export class CarriageSeatComponent implements OnInit {
     this.check.set(!this.check());
     console.log('checked');
     console.log(this.check());
+  }
+
+  public get isAdminRole(): boolean {
+    return this.roleService.isAdminRole;
   }
 }
