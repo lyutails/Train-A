@@ -4,6 +4,7 @@ import { AdminPageComponent } from '../components/features/components/admin-page
 import { provideState } from '@ngrx/store';
 import { StationsEffects } from '../features/stations/station-store/effects/stations.effects';
 import { stationReducer } from '../features/stations/station-store/reducers/stations-reducers';
+import { routeResolver } from '../features/rides/resolvers/route.resolver';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -31,6 +32,25 @@ export const ADMIN_ROUTES: Routes = [
         path: 'routes',
         loadComponent: () =>
           import('../components/routes/features/components/routes/routes.component').then((m) => m.RoutesComponent),
+        children: [
+          {
+            path: ':id',
+            loadComponent: () => import('../features/rides/components/rides.component').then((m) => m.RidesComponent),
+            resolve: { route: routeResolver },
+            providers: [
+              provideState({
+                name: 'stations',
+                reducer: stationReducer,
+              }),
+              provideEffects([StationsEffects]),
+            ],
+          },
+          {
+            path: ':id/new-ride',
+            loadComponent: () =>
+              import('../features/rides/components/new-ride/new-ride.component').then((m) => m.NewRideComponent),
+          },
+        ],
       },
       {
         path: '',

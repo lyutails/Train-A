@@ -27,6 +27,14 @@
             <span class="stations_bold-text">Related Stations:</span>
             {{ station.relations | trainConnections: (stationsFacade.stations | async) }}
           </p>
+          <div class="button-wrapper">
+            <button type="button" mat-icon-button class="icon-only" (click)="deleteStation(station.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+            <ng-container *ngIf="errorMessages()[station.id]">
+              <div class="error-message">{{ errorMessages()[station.id] }}</div>
+            </ng-container>
+          </div>
         </div>
       </ng-container>
     </section>
