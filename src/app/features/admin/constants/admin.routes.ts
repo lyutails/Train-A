@@ -5,9 +5,6 @@ import { provideState } from '@ngrx/store';
 import { StationsEffects } from '../features/stations/station-store/effects/stations.effects';
 import { stationReducer } from '../features/stations/station-store/reducers/stations-reducers';
 import { routeResolver } from '../features/rides/resolvers/route.resolver';
-import { RoutesComponent } from '../components/routes/features/components/routes/routes.component';
-import { RidesComponent } from '../features/rides/components/rides.component';
-import { NewRideComponent } from '../features/rides/components/new-ride/new-ride.component';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -36,11 +33,12 @@ export const ADMIN_ROUTES: Routes = [
         children: [
           {
             path: '',
-            component: RoutesComponent,
+            loadComponent: () =>
+              import('../components/routes/features/components/routes/routes.component').then((m) => m.RoutesComponent),
           },
           {
             path: ':id',
-            component: RidesComponent,
+            loadComponent: () => import('../features/rides/components/rides.component').then((m) => m.RidesComponent),
             resolve: { route: routeResolver },
             providers: [
               provideState({
@@ -52,7 +50,8 @@ export const ADMIN_ROUTES: Routes = [
           },
           {
             path: ':id/new-ride',
-            component: NewRideComponent,
+            loadComponent: () =>
+              import('../features/rides/components/new-ride/new-ride.component').then((m) => m.NewRideComponent),
           },
         ],
       },
