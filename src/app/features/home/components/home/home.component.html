@@ -71,8 +71,8 @@
       </mat-form-field>
     </div>
   </form>
-  <div class="home_ride-date-filter-carousel" id="carousel">
-    <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+  <div class="home_ride-date-filter-carousel">
+    <button (click)="moveLeft()" mat-icon-button type="button" class="home_ride-date-carousel-button left">
       <mat-icon>keyboard_arrow_left</mat-icon>
     </button>
     <div id="carousel-content" class="home_ride-date-filter-slides">
@@ -80,7 +80,7 @@
         <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
       }
     </div>
-    <button (click)="moveRight()" id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
+    <button (click)="moveRight()" mat-icon-button type="button" class="home_ride-date-carousel-button right">
       <mat-icon>keyboard_arrow_right</mat-icon>
     </button>
   </div>

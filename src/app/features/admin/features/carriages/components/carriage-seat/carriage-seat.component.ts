@@ -30,7 +30,6 @@ export class CarriageSeatComponent implements OnInit {
 
   ngOnInit() {
     this.check.set(!this.checked);
-    console.log(this.check());
     if (this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path === 'carriages') {
       this.isCarriagesPage.set(true);
     } else {
@@ -40,7 +39,6 @@ export class CarriageSeatComponent implements OnInit {
 
   clickCheckbox() {
     console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
-    // localStorage.setItem('carriageName', this.carriageNameValue);
     localStorage.setItem('seatNumber', JSON.stringify(this.seatValue));
     localStorage.setItem('carriageName', JSON.stringify(this.carriageNameValue));
     if (!this.check()) {
@@ -49,10 +47,6 @@ export class CarriageSeatComponent implements OnInit {
     }
     this.check.set(!this.check());
   }
-
-  /* selectSeat() {
-    
-  } */
 
   inspectCheckboxValue(event: MatCheckboxChange): void {
     console.log(event.checked);

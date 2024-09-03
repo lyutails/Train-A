@@ -37,10 +37,10 @@
       </div>
       <p class="trip-details_carriages-types">Available carriage types:</p>
       <div class="trip-details_carriages-carousel" id="carousel">
-        <button (click)="moveLeft()" id="prev" mat-icon-button type="button" class="trip-details_carousel-button left">
+        <button (click)="moveLeft()" mat-icon-button type="button" class="trip-details_carousel-button left">
           <mat-icon>keyboard_arrow_left</mat-icon>
         </button>
-        <div class="trip-details_carriages-tabs" id="carousel-content">
+        <div id="carousel-content" #carouselContent class="trip-details_carriages-tabs">
           @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
             <TTP-carriages-carousel
               [carriage]="carriage"
@@ -50,13 +50,7 @@
             ></TTP-carriages-carousel>
           }
         </div>
-        <button
-          (click)="moveRight()"
-          id="next"
-          mat-icon-button
-          type="button"
-          class="trip-details_carousel-button right"
-        >
+        <button (click)="moveRight()" mat-icon-button type="button" class="trip-details_carousel-button right">
           <mat-icon>keyboard_arrow_right</mat-icon>
         </button>
       </div>

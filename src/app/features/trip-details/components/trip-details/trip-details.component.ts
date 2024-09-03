@@ -1,5 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { AfterContentChecked, AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
+import {
+  AfterContentChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  inject,
+  model,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -37,7 +47,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',
 })
-export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContentChecked {
+export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterViewInit {
   public popupAuth = signal('');
   public authValue = model('');
   public dialog = inject(MatDialog);
@@ -68,6 +78,8 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
   public uniqueCarriagePrices: number[] = [];
   public totalSelectedRidePrice = 0;
   loadingService = inject(LoadingService);
+  viewChecked = signal(false);
+  @ViewChild('carouselContent') carouselContent!: ElementRef<HTMLElement>;
 
   constructor(
     private router: Router,
@@ -131,22 +143,29 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
           console.log(this.totalRidePrices);
         },
       });
+
+    try {
+      this.loadingService.show();
+      this.viewChecked.set(false);
+    } finally {
+      this.loadingService.hide();
+      this.viewChecked.set(true);
+    }
   }
 
-  ngAfterViewInit() {
-    this.content = document.querySelector('#carousel-content')!;
-    console.log(this.content);
-    if (!this.content) {
-      throw new Error('no content out there');
-    }
-    if (this.content) {
-      this.width = this.content.offsetWidth;
-      window.addEventListener('resize', () => {
-        if (!this.content) {
-          throw new Error('no content out there');
-        }
+  ngAfterViewInit(): void {
+    if (this.viewChecked()) {
+      this.content = document.querySelector('#carousel-content')!;
+      console.log(this.carouselContent);
+      if (this.content) {
         this.width = this.content.offsetWidth;
-      });
+        window.addEventListener('resize', () => {
+          if (!this.content) {
+            throw new Error('no content out there');
+          }
+          this.width = this.content.offsetWidth;
+        });
+      }
     }
   }
 
