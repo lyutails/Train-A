@@ -31,6 +31,7 @@ import { RouteSegments } from '../../../../../repositories/rides/services/models
 import { MatInputModule } from '@angular/material/input';
 import { RidesFacade } from '../services/rides.facade';
 import { ConfirmDeleteDialogComponent } from '../../../components/routes/features/components/confirm-delete-dialog/confirm-delete-dialog.component';
+import { UpdateRideApi } from '../../../../../repositories/rides/services/models/update-route-api';
 
 @Component({
   selector: 'TTP-rides',
@@ -150,29 +151,26 @@ export class RidesComponent implements OnInit, OnDestroy {
     Object.keys(priceObj).forEach((key) => {
       controls[key] = this.fb.control<number>({ value: priceObj[key], disabled: true }, [
         Validators.required,
-        Validators.pattern('^[1-9][0-9]*$'),
+        Validators.pattern('^[1-9][0-9]{0,7}$'),
       ]);
     });
 
     return this.fb.group(controls);
   }
 
-  public onSubmit(): void {
-    this.rideForm.controls.schedule.controls.forEach((ride, index) => {
-      if (ride.dirty) {
-        this.rideFacade
-          .updateRide({
-            id: this.rideRoute.id,
-            rideId: this.rideRoute.schedule[index].rideId,
-            segments: ride.getRawValue().segments,
-          })
-          .subscribe({
-            error: (error) => {
-              console.error('Error updating ride:', error);
-            },
-          });
-      }
-    });
+  public onSubmit(): UpdateRideApi | null {
+    const dirtyRideIndex = this.rideForm.controls.schedule.controls.findIndex((ride) => ride.dirty);
+
+    if (dirtyRideIndex !== -1) {
+      const dirtyRide = this.rideForm.controls.schedule.controls[dirtyRideIndex];
+      return {
+        id: this.rideRoute.id,
+        rideId: this.rideRoute.schedule[dirtyRideIndex].rideId,
+        segments: dirtyRide.getRawValue().segments,
+      };
+    } else {
+      return null;
+    }
   }
 
   public editPrice(priceControl: FormControl<number>) {
@@ -180,8 +178,14 @@ export class RidesComponent implements OnInit, OnDestroy {
   }
 
   public savePrice(priceControl: FormControl<number>) {
-    this.onSubmit();
-    priceControl.disable();
+    const newPrice = this.onSubmit();
+    if (newPrice) {
+      this.rideFacade.updateRide(newPrice).subscribe({
+        complete: () => {
+          priceControl.disable();
+        },
+      });
+    }
   }
 
   public isEditButton(priceControl: FormControl<number>): boolean {
@@ -203,11 +207,28 @@ export class RidesComponent implements OnInit, OnDestroy {
   }
 
   public saveTime(timeControl: FormControl<string>, timeControl2?: FormControl<string>) {
-    this.onSubmit();
-
-    timeControl.disable();
+    timeControl.setErrors(null);
     if (timeControl2) {
-      timeControl2.disable();
+      timeControl2.setErrors(null);
+    }
+
+    const newSegement = this.onSubmit();
+
+    if (newSegement) {
+      this.rideFacade.updateRide(newSegement).subscribe({
+        next: () => {
+          timeControl.disable();
+          if (timeControl2) {
+            timeControl2.disable();
+          }
+        },
+        error: () => {
+          timeControl.setErrors({ timeIrrelevant: true });
+          if (timeControl2) {
+            timeControl2.setErrors({ timeIrrelevant: true });
+          }
+        },
+      });
     }
   }
 
