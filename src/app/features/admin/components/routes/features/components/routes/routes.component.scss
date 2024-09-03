@@ -100,3 +100,48 @@
     margin-bottom: 40px;
   }
 }
+
+@media screen and (width >= 900px) and (width <= 1300px) {
+  .routes {
+    &_buttons {
+      left: 680px;
+    }
+  }
+}
+
+@media screen and (width >= 760px) and (width <= 899.98px) {
+  .routes {
+    &_buttons {
+      left: 400px;
+    }
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 759.98px) {
+  .routes {
+    &_buttons {
+      left: 100px;
+      align-items: center;
+    }
+
+    &_delete-btn mat-icon {
+      font-style: 14px;
+    }
+
+    &_buttons button mat-icon {
+      font-size: 18px;
+    }
+
+    &_btn-description {
+      font-size: 14px;
+    }
+
+    &_assign-btn {
+      white-space: nowrap;
+    }
+
+    &_buttons button {
+      padding: 4px 8px;
+    }
+  }
+}
