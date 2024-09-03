@@ -70,3 +70,27 @@
 ::ng-deep .tooltip-multiline {
   white-space: pre-line;
 }
+
+.icon-only {
+  min-width: auto;
+  margin: 0;
+  padding: 0;
+
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.icon-only mat-icon {
+  font-size: 24px;
+  color: inherit;
+}
+
+.error-message {
+  color: red;
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: row;
+}

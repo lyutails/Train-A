@@ -13,8 +13,8 @@
     margin: 20px auto;
     padding: 20px;
 
-
-    @include border-frame;
+    border: 1px solid rgb(0 92 187 / 50%);
+    border-radius: 10px;
   }
 
   &_form {

@@ -1,12 +1,6 @@
 $light-blue: oklch(92.53% 0.037 249.47deg);
-$deep-blue: oklch(50.65% 0.164 263.09deg);
-$border-frame: 1px solid rgb(0 92 187 / 50%);
+$deep-blue: oklch(49.71% 0.165 259.85deg);
 $selected-seat: oklch(71.74% 0.19 48.65deg);
-
-@mixin border-frame {
-  border: $border-frame;
-  border-radius: 10px;
-}
 
 html,
 body {

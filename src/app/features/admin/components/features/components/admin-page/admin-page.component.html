@@ -1,4 +1,4 @@
-<mat-tab-group (selectedTabChange)="onTabChange($event)">
+<mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChange($event)">
   <mat-tab class="tab">
     <ng-template mat-tab-label class="tab_description">
       <mat-icon class="tab_icon">store</mat-icon>
