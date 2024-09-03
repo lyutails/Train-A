@@ -102,7 +102,6 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
             if (this.allAvailableAppCarriages[i].code === element) {
               this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
               this.allFilteredRideCarriages = this.allRideCarriages;
-              console.log(this.allFilteredRideCarriages);
             }
           }
         });
@@ -124,7 +123,6 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
           this.totalRidePrices.push(this.totalRidePrice);
           this.rideAllSegmentsPricesNumbers = [];
         });
-        console.log(this.totalRidePrices);
       },
     });
   }
@@ -147,8 +145,6 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
 
   ngAfterContentChecked() {
     if (this.filterSliderCarriageName) {
-      console.log(this.filterSliderCarriageName);
-      this.allRideCarriages.map((item) => console.log(item.code));
       this.allFilteredRideCarriages = this.allRideCarriages.filter(
         (item) => item.code === this.filterSliderCarriageName,
       );
@@ -156,22 +152,16 @@ export class TripDetailsComponent implements AfterViewInit, OnInit, AfterContent
       this.trainCarriageNumber = [];
       this.allRideCarriages.forEach((element, index) => {
         if (element.code === this.filterSliderCarriageName) {
-          console.log('lalala');
           this.trainCarriageNumber.push(index);
-          console.log(index);
-          console.log(this.trainCarriageNumber);
         }
       });
     }
     if (!this.filterSliderCarriageName) {
-      console.log('no name for filter provided');
       this.allFilteredRideCarriages = this.allRideCarriages;
       this.trainCarriageNumber = [];
       this.allRideCarriages.forEach((element, index) => {
         if (element.name === this.filterSliderCarriageName) {
           this.trainCarriageNumber.push(index);
-          console.log(index);
-          console.log(this.trainCarriageNumber);
         }
       });
     }
