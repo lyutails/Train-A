@@ -1,11 +1,12 @@
-@if (isAdminRole) {
+@if (isAdminRole && isCarriagesPage()) {
   <mat-label
-    (click)="clickCheckbox()"
     [attr.for]="seatValue + carriageNameValue"
     class="carriages_seat-label"
     [style.background]="'grey'"
     [style.color]="'white'"
     [style.cursor]="'auto'"
+    [style.pointer-events]="'none'"
+    [style.user-select]="'none'"
     >{{ seatValue }}
     <mat-checkbox
       (change)="inspectCheckboxValue($event)"
