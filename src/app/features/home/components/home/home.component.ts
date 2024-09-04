@@ -181,13 +181,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public filterFrom() {
-    const filterValue = this.inputFrom.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.cities.filter((item) => item.toLowerCase().includes(filterValue));
+    this.filterCities(this.inputFrom, 'from');
   }
 
   public filterTo() {
-    const filterValue = this.inputTo.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.cities.filter((item) => item.toLowerCase().includes(filterValue));
+    this.filterCities(this.inputTo, 'to');
   }
 
   private _filter(value: string) {
@@ -267,5 +265,28 @@ export class HomeComponent implements OnInit, AfterViewInit {
       toLongitude: this.stationsData.find((city) => city.city === this.searchToFormControl.value)?.longitude || 0,
       ...(unixTime !== undefined && { time: unixTime }),
     };
+  }
+
+  public filterCities(inputElement: ElementRef<HTMLInputElement>, filterType: 'from' | 'to') {
+    const filterValue = inputElement.nativeElement.value.toLowerCase();
+    const localFiltered = this.cities.filter((item) => item.toLowerCase().includes(filterValue));
+
+    if (localFiltered.length > 0) {
+      this.filteredOptions = localFiltered;
+    } else {
+      this.homeFacade.getCity(filterValue).subscribe({
+        next: (result) => {
+          this.filteredOptions = result.map((city) => city.display_name);
+        },
+        error: (err) => {
+          console.error(`Error fetching city for ${filterType}:`, err);
+          this.filteredOptions = [];
+        },
+      });
+    }
+  }
+
+  public trackByCity(index: number, city: string): string {
+    return city;
   }
 }
