@@ -25,4 +25,8 @@ export class RidesHttpService {
     const { id, rideId, segments } = request;
     return this.httpClient.put<void>(`route/${id}/ride/${rideId}`, { segments: segments });
   }
+
+  public deleteRide(id: number, rideId: number): Observable<void> {
+    return this.httpClient.delete<void>(`route/${id}/ride/${rideId}`);
+  }
 }

@@ -44,7 +44,7 @@
         [width]="'10vw'"
         [buttonText]="'Save'"
         class="carriages_save-button"
-        [disabled]="!carriageForm.valid"
+        [disabled]="carriageForm.invalid"
       ></TTP-button>
       <div class="carriages_carriage-shape">
         @if (carriageForm.controls.leftSeats.value && carriageForm.controls.rightSeats.value) {
@@ -108,7 +108,7 @@
         [type]="'submit'"
         [width]="'10vw'"
         [buttonText]="'Save'"
-        [disabled]="!carriageForm.valid"
+        [disabled]="carriageForm.invalid"
         class="carriages_save-button"
       ></TTP-button>
       <div class="carriages_carriage-shape">

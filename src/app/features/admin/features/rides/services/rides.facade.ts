@@ -71,4 +71,8 @@ export class RidesFacade {
     });
     return this.ridesService.addRideToRoute(id, segments);
   }
+
+  public deleteRide(id: number, rideId: number): Observable<void> {
+    return this.ridesService.deleteRide(id, rideId);
+  }
 }

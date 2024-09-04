@@ -1,5 +1,5 @@
 import { SELECT_OPTIONS_ROWS } from './../../models/select-options-rows.model';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,6 +20,8 @@ import { SELECT_LEFT_OPTION_ROWS } from '../../models/select-options-left-seats.
 import { SELECT_RIGHT_OPTION_ROWS } from '../../models/select-options-right-seats.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'TTP-carriages',
@@ -51,6 +53,9 @@ export class CarriagesComponent implements OnInit {
   public selectOptionsRows!: CarriageCreatingParams[];
   public selectOptionsLeftSeats!: CarriageCreatingParams[];
   public selectOptionsRightSeats!: CarriageCreatingParams[];
+  public dialog = inject(MatDialog);
+  public isDupeName = signal(false);
+  public snackBar = inject(MatSnackBar);
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -65,28 +70,40 @@ export class CarriagesComponent implements OnInit {
 
   public getCarriagesData() {
     this.carriagesService.getCarriages().subscribe((data) => {
+      console.log(data);
       this.carriagesData = data.filter((item) => {
         return item.code !== '';
       });
     });
   }
 
+  private get isCarriageNameExist() {
+    return this.carriagesData.some((carriage) => carriage.name === this.carriageForm.controls.name?.value);
+  }
+
   public createCarriageData() {
-    const carriageWithoutCode = {
-      name: this.carriageForm.controls.name?.value,
-      rows: +this.carriageForm.controls.rows.value,
-      leftSeats: +this.carriageForm.controls.leftSeats.value,
-      rightSeats: +this.carriageForm.controls.rightSeats.value,
-    };
-    this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
-      this.carriagesData.unshift({
-        code: data.code,
-        ...carriageWithoutCode,
+    if (this.isCarriageNameExist) {
+      this.snackBar.open('Happens you are trying to create carriage with already existed name.', 'close', {
+        duration: 2000,
       });
-    });
-    this.carriageForm.reset();
-    this.create.set(false);
-    this.update.set(false);
+    } else {
+      const carriageWithoutCode = {
+        name: this.carriageForm.controls.name?.value,
+        rows: +this.carriageForm.controls.rows.value,
+        leftSeats: +this.carriageForm.controls.leftSeats.value,
+        rightSeats: +this.carriageForm.controls.rightSeats.value,
+      };
+
+      this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
+        this.carriagesData.unshift({
+          code: data.code,
+          ...carriageWithoutCode,
+        });
+      });
+      this.carriageForm.reset();
+      this.create.set(false);
+      this.update.set(false);
+    }
   }
 
   public showCreateCarriageView() {
@@ -110,25 +127,31 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateExistingCarriage() {
-    const carriageWithoutCode = {
-      name: this.carriageForm.controls.name?.value,
-      rows: +this.carriageForm.controls.rows.value,
-      leftSeats: +this.carriageForm.controls.leftSeats.value,
-      rightSeats: +this.carriageForm.controls.rightSeats.value,
-    };
-    if (this.carriageForm.controls.code !== undefined && this.carriageForm.controls.name !== undefined) {
-      this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe(() => {
-        const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
-        const updatedCarriage = {
-          code: this.carrigeCode,
-          ...carriageWithoutCode,
-        };
-        this.carriagesData[updatedCarriageIndex] = updatedCarriage;
+    if (this.isCarriageNameExist) {
+      this.snackBar.open('Happens you are trying to create carriage with already existed name.', 'close', {
+        duration: 2000,
       });
+    } else {
+      const carriageWithoutCode = {
+        name: this.carriageForm.controls.name?.value,
+        rows: +this.carriageForm.controls.rows.value,
+        leftSeats: +this.carriageForm.controls.leftSeats.value,
+        rightSeats: +this.carriageForm.controls.rightSeats.value,
+      };
+      if (this.carriageForm.controls.code !== undefined && this.carriageForm.controls.name !== undefined) {
+        this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe(() => {
+          const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
+          const updatedCarriage = {
+            code: this.carrigeCode,
+            ...carriageWithoutCode,
+          };
+          this.carriagesData[updatedCarriageIndex] = updatedCarriage;
+        });
+      }
+      this.carriageForm.reset();
+      this.update.set(false);
+      this.create.set(false);
     }
-    this.carriageForm.reset();
-    this.update.set(false);
-    this.create.set(false);
   }
 
   public showUpdateCarriageView() {
