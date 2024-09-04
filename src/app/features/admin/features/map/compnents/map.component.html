@@ -17,11 +17,6 @@
     <div class="overlay" *ngIf="mapFacade.mapSpinner$ | async"></div>
   </ng-template>
 </div>
-<ng-container *ngIf="stationFacade.errorMessage | async as errorMessage">
-  <mat-error class="error-message">
-    Something went wrong. The train station is not reachable or already exists.
-  </mat-error>
-</ng-container>
 <TTP-button
   class="stations-save"
   [type]="'button'"

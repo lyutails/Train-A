@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -20,13 +20,16 @@ import { SearchForm } from '../../models/search-form.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
-import { map, Observable, startWith } from 'rxjs';
+import { debounceTime, filter, map, Observable, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
 import { RideDatesCarouselComponent } from '../ride-dates-carousel/ride-dates-carousel.component';
 import { ArrowTopComponent } from '../../../../common/arrow-top/arrow-top.component';
-import { SearchResponse } from '../../models/search-response';
+import { HomeFacade } from '../../services/home.facade';
+import { StationInfo } from '../../../admin/features/stations/models/station-info';
+import { transformDateToUnixString } from './helpers/transform-date-to-unix-string';
+import { SearchApi } from '../../models/search-form-api.model';
 
 export interface Trip {
   name: string;
@@ -83,7 +86,7 @@ export interface TripDates {
     },
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
+export class HomeComponent implements OnInit, AfterViewInit {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
@@ -93,112 +96,75 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   public rightSeatCount!: number;
   public searchRides = signal(false);
   public filteredOptions!: string[];
-  public filteredTestCitiesFrom!: Observable<string[]>;
-  public filteredTestCitiesTo!: Observable<string[]>;
+  public filteredCitiesFrom!: Observable<string[]>;
+  public filteredCitiesTo!: Observable<string[]>;
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
+  public prev!: HTMLElement;
+  public next!: HTMLElement;
   public content!: HTMLElement;
-  public dateValid = signal(false);
+  public cities: string[] = [];
+  public stationsData: StationInfo[] = [];
 
-  testCities: string[] = ['London', 'Paris', 'Amsterdam', 'Kirovsk', 'SPb'];
-  // currently in template from to are values from inputs
-  tripsResponse: SearchResponse[] = [
-    {
-      from: {
-        stationId: 5,
-        city: 'Paris',
-        geolocation: { latitude: 48.8575, longitude: 2.3514 },
+  private filterFromSubject: Subject<string> = new Subject<string>();
+
+  private filterToSubject: Subject<string> = new Subject<string>();
+
+  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
+  constructor(
+    private fb: NonNullableFormBuilder,
+    public homeFacade: HomeFacade,
+  ) {
+    this.homeFacade.stations.subscribe({
+      next: (stations) => {
+        this.filteredOptions = stations.map((station) => station.city);
+        this.cities = [...this.filteredOptions];
+        this.stationsData = stations;
       },
-      to: {
-        stationId: 48,
-        city: 'London',
-        geolocation: { latitude: 48.8575, longitude: 2.3514 },
-      },
-      routes: {
-        id: 45,
-        path: [33, 5, 62, 11, 48, 34],
-        carriages: [
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-        ],
-        schedule: [
-          {
-            rideId: 24,
-            segments: {
-              time: {
-                departure_from_prev_station: '2024-08-08T22:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T03:29:57.708Z',
-              },
-              price: { type: 3523 },
-              occupiedSeats: [345, 44, 3],
-            },
-          },
-          {
-            rideId: 576,
-            segments: {
-              time: {
-                departure_from_prev_station: '2024-08-08T09:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T10:29:57.708Z',
-              },
-              price: { type: 3523 },
-              occupiedSeats: [345, 44, 3],
-            },
-          },
-          {
-            rideId: 88,
-            segments: {
-              time: {
-                departure_from_prev_station: '2024-08-08T12:19:57.708Z',
-                arrival_at_next_station: '2024-08-12T13:29:57.708Z',
-              },
-              price: { type: 3523 },
-              occupiedSeats: [345, 44, 3],
-            },
-          },
-        ],
-      },
-    },
-  ];
-
-  // to show pic for no rides: tripsResponse: SearchResponse[] = [];
-
-  allDaysChosenRideAvailableAt: TripDates[] = [
-    { date: 'September 01', day: 'Monday' },
-    { date: 'September 08', day: 'Monday' },
-    { date: 'September 16', day: 'Monday' },
-    { date: 'September 23', day: 'Monday' },
-    { date: 'September 30', day: 'Monday' },
-    { date: 'October 07', day: 'Monday' },
-    { date: 'October 14', day: 'Monday' },
-    { date: 'October 21', day: 'Monday' },
-    { date: 'October 28', day: 'Monday' },
-  ];
-
-  constructor(private fb: NonNullableFormBuilder) {
-    this.filteredOptions = this.testCities.slice();
+    });
   }
 
   ngOnInit() {
     this.searchForm = this.searchFormInstance;
-    this.filteredTestCitiesFrom = this.searchForm.controls.from.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
-    this.filteredTestCitiesTo = this.searchForm.controls.to.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
+    this.filterFromSubject
+      .pipe(
+        debounceTime(350),
+        map((value: string | null) => value?.trim().toLowerCase() ?? ''),
+        filter((value) => this.shouldEmitValue(value)),
+      )
+      .subscribe((value) => {
+        this.filterCities(value, 'from');
+      });
+
+    this.filterToSubject
+      .pipe(
+        debounceTime(350),
+        map((value: string | null) => value?.trim().toLowerCase() ?? ''),
+        filter((value) => this.shouldEmitValue(value)),
+      )
+      .subscribe((value) => {
+        this.filterCities(value, 'to');
+      });
+    this.searchDateFormControl.valueChanges.subscribe((value) => {
+      this.toggleTimeControl(value);
+    });
+  }
+
+  private shouldEmitValue(controlValue: string): boolean {
+    return Boolean(controlValue) && controlValue.length > 2;
   }
 
   ngAfterViewInit(): void {
+    this.prev = document.querySelector('#prev')!;
+    this.next = document.querySelector('#next')!;
     this.content = document.querySelector('#carousel-content')!;
+    if (!this.prev) {
+      throw new Error('no prev out there');
+    }
+    if (!this.next) {
+      throw new Error('no next out there');
+    }
     if (!this.content) {
       throw new Error('no content out there');
     }
@@ -211,31 +177,24 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
         this.width = this.content.offsetWidth;
       });
     }
-  }
-
-  ngAfterViewChecked() {
-    if (this.searchForm.controls.date.valid) {
-      this.dateValid.set(true);
-      this.searchForm.controls.time.enable();
-    } else {
-      this.dateValid.set(false);
-      this.searchForm.controls.time.disable();
+    if (this.prev) {
+      this.prev.addEventListener('click', () => {
+        this.content.scrollBy(-(this.width + 10), 0);
+      });
+    }
+    if (this.next) {
+      this.next.addEventListener('click', () => {
+        this.content.scrollBy(this.width + 10, 0);
+      });
     }
   }
 
   public filterFrom() {
-    const filterValue = this.inputFrom.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.testCities.filter((item) => item.toLowerCase().includes(filterValue));
+    this.filterFromSubject.next(this.inputFrom.nativeElement.value);
   }
 
   public filterTo() {
-    const filterValue = this.inputTo.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.testCities.filter((item) => item.toLowerCase().includes(filterValue));
-  }
-
-  private _filter(value: string) {
-    const filterValue = value.toLowerCase();
-    return this.testCities.filter((city) => city.toLowerCase().includes(filterValue));
+    this.filterToSubject.next(this.inputTo.nativeElement.value);
   }
 
   private get searchFormInstance(): FormGroup<SearchForm> {
@@ -279,22 +238,103 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   public getRides() {
-    if (this.searchForm.valid) {
-      this.searchRides.set(true);
+    if (this.searchForm.invalid) {
+      return;
     }
-    console.log('date unix timestamp', Math.floor(new Date(this.searchForm.controls.date.value).getTime() / 1000));
+    const search: SearchApi = this.createSearchApiObject();
+    this.homeFacade.searchTickets(search).subscribe({
+      error: () => {
+        this.homeFacade.trainSearchResults.next([]);
+        this.homeFacade.routesDates.next([]);
+      },
+      complete: () => {
+        this.searchRides.set(true);
+      },
+    });
+  }
+
+  public buyTicket() {
     // api call here
   }
 
   onSubmit() {
+    if (this.searchForm.invalid) {
+      return;
+    }
     this.searchForm.reset();
   }
 
-  moveLeft() {
-    this.content.scrollBy(-(this.width + 10), 0);
+  private createSearchApiObject() {
+    let unixTime: number;
+    if (this.searchTimeFormControl.value) {
+      unixTime = transformDateToUnixString(this.searchDateFormControl.value, this.searchTimeFormControl.value);
+    } else {
+      unixTime = transformDateToUnixString(this.searchDateFormControl.value, '00:00');
+    }
+    return {
+      fromLatitude: this.getCityCoordinateOrExternal(this.searchFromFormControl.value, 'latitude'),
+      fromLongitude: this.getCityCoordinateOrExternal(this.searchFromFormControl.value, 'longitude'),
+      toLatitude: this.getCityCoordinateOrExternal(this.searchToFormControl.value, 'latitude'),
+      toLongitude: this.getCityCoordinateOrExternal(this.searchToFormControl.value, 'longitude'),
+      ...(unixTime !== undefined && { time: unixTime }),
+    };
   }
 
-  moveRight() {
-    this.content.scrollBy(this.width + 10, 0);
+  private getCityCoordinateOrExternal(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    const localCoordinate = this.getCityCoordinate(cityName, coordinateType);
+    if (localCoordinate !== 0) {
+      return localCoordinate;
+    }
+    return this.getExternalCityCoordinate(cityName, coordinateType);
+  }
+
+  private getCityCoordinate(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    const city = this.stationsData.find((c) => c.city === cityName);
+    return city ? (coordinateType === 'latitude' ? city.latitude : city.longitude) : 0;
+  }
+
+  private getExternalCityCoordinate(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    let coordinate = 0;
+
+    this.homeFacade.cities$
+      .pipe(map((cities) => cities.find((city) => city.display_name === cityName)))
+      .subscribe((city) => {
+        if (city) {
+          coordinate = coordinateType === 'latitude' ? parseFloat(city.lat) : parseFloat(city.lon);
+        }
+      });
+
+    return coordinate;
+  }
+
+  public filterCities(inputString: string, filterType: 'from' | 'to') {
+    const localFiltered = this.cities.filter((item) => item.toLowerCase().includes(inputString));
+
+    if (localFiltered.length > 0) {
+      this.filteredOptions = localFiltered;
+    } else {
+      this.homeFacade.getCity(inputString).subscribe({
+        next: (result) => {
+          this.filteredOptions = result.map((city) => city.display_name);
+        },
+        error: (err) => {
+          console.error(`Error fetching city for ${filterType}:`, err);
+          this.filteredOptions = [];
+        },
+      });
+    }
+  }
+
+  public trackByCity(index: number, city: string): string {
+    return city;
+  }
+
+  private toggleTimeControl(date: string) {
+    if (date) {
+      this.searchTimeFormControl.enable();
+    } else {
+      this.searchTimeFormControl.disable();
+      this.searchTimeFormControl.setValue('');
+    }
   }
 }

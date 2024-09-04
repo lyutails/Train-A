@@ -4,13 +4,7 @@
     <form class="sign-in_form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="sign-in_field">
         <mat-label>Email</mat-label>
-        <input
-          matInput
-          formControlName="email"
-          placeholder="Email"
-          formControlName="email"
-          [value]="signInForm.controls.email.value | trim"
-        />
+        <input matInput formControlName="email" placeholder="Email" [value]="signInForm.controls.email.value | trim" />
       </mat-form-field>
       <mat-form-field appearance="outline" class="sign-in_field">
         <mat-label>Password</mat-label>
@@ -27,13 +21,18 @@
         </button>
       </mat-form-field>
       @if (
-        signInForm.controls['email'].hasError('alreadyLoggedIn') ||
-        signInForm.controls['email'].hasError('userNotFound') ||
+        signInForm.controls['email'].hasError('invalidFields') ||
         signInForm.controls['email'].hasError('invalidEmail') ||
-        signInForm.controls['email'].hasError('invalidFields')
+        signInForm.controls['email'].hasError('userNotFound') ||
+        signInForm.controls['email'].hasError('alreadyLoggedIn')
       ) {
         <mat-error class="sign-in_input-error">Incorrect email or password</mat-error>
       }
+
+      @if (signInForm.errors?.['formError']) {
+        <mat-error class="sign-in_input-error">Incorrect email or password</mat-error>
+      }
+
       <div class="sign-in_buttons">
         <TTP-button
           [type]="'submit'"

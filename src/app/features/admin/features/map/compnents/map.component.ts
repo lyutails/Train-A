@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LeafletMouseEvent, Marker, Map } from 'leaflet';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { mapDefaultoptions } from '../constants/map-default-options';
@@ -11,6 +11,7 @@ import { AsyncPipe, NgIf } from '@angular/common';
 import { StationsFacade } from '../../stations/station-store/services/stations.facade';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'TTP-map',
@@ -27,16 +28,17 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   public layers: Marker[] = [];
   public options = mapDefaultoptions;
+  private readonly destroy$$ = new Subject<void>();
 
   constructor(
     public readonly mapFacade: MapFacade,
     public readonly stationFacade: StationsFacade,
     public dialog: MatDialog,
   ) {
-    this.mapFacade.popuUpErrors$.subscribe((errorMessage) => {
+    this.mapFacade.popuUpErrors$.pipe(takeUntil(this.destroy$$)).subscribe((errorMessage) => {
       this.openDialog(errorMessage);
     });
   }
@@ -71,5 +73,10 @@ export class MapComponent implements OnInit {
 
   public saveStation(): void {
     this.mapFacade.saveStation();
+  }
+
+  public ngOnDestroy(): void {
+    this.destroy$$.next();
+    this.destroy$$.complete();
   }
 }

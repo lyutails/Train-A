@@ -22,7 +22,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": ["lodash", "miragejs", "js-sha512", "leaflet"],
+            "allowedCommonJsDependencies": ["lodash", "miragejs", "js-sha512", "leaflet", "reflect-metadata", "dayjs"],
             "outputPath": "dist/train-trips-planning",
             "index": "src/index.html",
             "browser": "src/main.ts",

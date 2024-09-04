@@ -16,12 +16,9 @@
         />
         <mat-hint>Departure station</mat-hint><mat-icon matSuffix>store</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
-          <!-- @for (city of filteredTestCitiesFrom | async; track city) {
-              <mat-option [value]="city">{{ city }}</mat-option>
-            } -->
-          @for (city of filteredOptions; track city) {
-            <mat-option [value]="city">{{ city }}</mat-option>
-          }
+          <mat-option *ngFor="let city of filteredOptions; trackBy: trackByCity" [value]="city">
+            {{ city }}
+          </mat-option>
         </mat-autocomplete>
       </mat-form-field>
       <mat-form-field appearance="outline" class="home_form-input"
@@ -38,9 +35,9 @@
         />
         <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
-          @for (city of filteredTestCitiesTo | async; track city) {
-            <mat-option [value]="city">{{ city }}</mat-option>
-          }
+          <mat-option *ngFor="let city of filteredOptions; trackBy: trackByCity" [value]="city">
+            {{ city }}
+          </mat-option>
         </mat-autocomplete></mat-form-field
       >
       <mat-form-field appearance="outline" class="home_form-input"
@@ -71,17 +68,17 @@
       </mat-form-field>
     </div>
   </form>
-  <div class="home_ride-date-filter-carousel">
-    <button (click)="moveLeft()" mat-icon-button type="button" class="home_ride-date-carousel-button left">
-      <mat-icon>keyboard_arrow_left</mat-icon>
+  <div class="home_ride-date-filter-carousel" id="carousel">
+    <button id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
+      <mat-icon *ngIf="(homeFacade.routesDates$ | async)?.length">keyboard_arrow_left</mat-icon>
     </button>
     <div id="carousel-content" class="home_ride-date-filter-slides">
-      @for (day of allDaysChosenRideAvailableAt; track day; let index = $index) {
-        <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
+      @for (day of homeFacade.routesDates$ | async; track day; let index = $index) {
+        <TTP-ride-dates-carousel [dateItem]="day"> </TTP-ride-dates-carousel>
       }
     </div>
-    <button (click)="moveRight()" mat-icon-button type="button" class="home_ride-date-carousel-button right">
-      <mat-icon>keyboard_arrow_right</mat-icon>
+    <button id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
+      <mat-icon *ngIf="(homeFacade.routesDates$ | async)?.length">keyboard_arrow_right</mat-icon>
     </button>
   </div>
   <TTP-button
@@ -92,28 +89,17 @@
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
-  @if (searchRides() && tripsResponse.length > 0) {
-    @for (trip of tripsResponse; track trip.routes.id) {
-      @for (ride of trip.routes.schedule; track ride.rideId; let index = $index) {
-        <TTP-home-ride
-          [tripName]="ride.rideId"
-          [tripFrom]="inputFrom.value"
-          [tripTo]="inputTo.value"
-          [routeFrom]="trip.from.city"
-          [routeTo]="trip.to.city"
-          [timeFrom]="ride.segments.time.departure_from_prev_station"
-          [timeTo]="ride.segments.time.arrival_at_next_station"
-          [rideId]="ride.rideId"
-        ></TTP-home-ride>
-      }
-    }
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length) {
+    <ng-container *ngIf="homeFacade.tripDetail$ | async as trips">
+      <TTP-home-ride *ngFor="let trip of trips" [tripInfo]="trip"> </TTP-home-ride>
+    </ng-container>
   }
-  @if (searchRides() && tripsResponse.length === 0) {
-    <div class="home_trip-no-trains">No rides available</div>
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length === 0) {
+    <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
 </div>
-@if (searchRides() && tripsResponse.length > 0) {
+@if (searchRides() && testTrips.length > 0) {
   <TTP-arrow-top
     [style.width]="'80%'"
     [style.height]="'50px'"

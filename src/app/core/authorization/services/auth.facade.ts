@@ -6,6 +6,7 @@ import { UserInfo } from '../../../features/authorization/models/user-info.model
 import { TokenModel } from '../../../repositories/authorization/models/token.model';
 import { map, Observable, tap } from 'rxjs';
 import { ProfileFacade } from '../../../features/profile/services/profile.facade';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class AuthFacade {
     private localStorageService: LocalStorageService,
     private roleService: RoleService,
     private profileService: ProfileFacade,
+    private router: Router,
   ) {}
 
   private saveTokenToLocalStorage(token: string): void {
@@ -71,5 +73,11 @@ export class AuthFacade {
         this.roleService.changeUserRole('anonymous');
       }),
     );
+  }
+
+  public changeStatusOnError() {
+    this.deleteTokenFromLocalStorage();
+    this.roleService.changeUserRole('anonymous');
+    this.router.navigate(['/auth/signin']);
   }
 }

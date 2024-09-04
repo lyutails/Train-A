@@ -27,7 +27,7 @@
         @if (isAdminRole) {
           <div class="admin-buttons">
             <button mat-menu-item (click)="redirectToProfile()">Profile</button>
-            <button mat-menu-item>Orders</button>
+            <button mat-menu-item (click)="redirectToOrders()">Orders</button>
             <button mat-menu-item (click)="redirectToAdmin()">Admin</button>
           </div>
         }
@@ -52,7 +52,7 @@
       @if (isAdminRole) {
         <div class="admin-buttons">
           <button mat-button (click)="redirectToProfile()">Profile</button>
-          <button mat-button>Orders</button>
+          <button mat-button (click)="redirectToOrders()">Orders</button>
           <button mat-button (click)="redirectToAdmin()">Admin</button>
         </div>
       }

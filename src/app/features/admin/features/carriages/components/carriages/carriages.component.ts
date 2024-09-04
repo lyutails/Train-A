@@ -73,6 +73,7 @@ export class CarriagesComponent implements OnInit {
 
   public getCarriagesData() {
     this.carriagesService.getCarriages().subscribe((data) => {
+      console.log(data);
       this.carriagesData = data.filter((item) => {
         return item.code !== '';
       });
