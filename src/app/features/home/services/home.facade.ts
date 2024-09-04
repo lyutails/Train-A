@@ -72,8 +72,14 @@ export class HomeFacade {
     this.routesDates.next(dates);
   }
 
-  private getTrainSchedule(data: JourneyList): void {
-    const results = getTrainSchedules(data);
-    this.trainSearchResults.next(results);
+  private async getTrainSchedule(data: JourneyList): Promise<void> {
+    try {
+      const results = await getTrainSchedules(data);
+
+      this.trainSearchResults.next(results);
+    } catch (error) {
+      console.error('Error fetching train schedules:', error);
+      this.trainSearchResults.next([]);
+    }
   }
 }

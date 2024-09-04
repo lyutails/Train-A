@@ -48,13 +48,11 @@
         class="home-ride_route-button"
         (click)="openRouteModal()"
       ></TTP-button>
-      <div class="home-ride_trip-carriages">
-        @for (carriage of testCarriages; track carriage.code) {
-          <div class="home-ride_trip-carriage-details">
-            <div class="home-ride_trip-carriage-type">{{ carriage.name }}: (number of seats here) seats</div>
-            <div class="home-ride_trip-carriage-price">500$</div>
-          </div>
-        }
+      <div class="home-ride_trip-carriages" *ngFor="let carriage of tripInfo.price | keyvalue">
+        <div class="home-ride_trip-carriage-details">
+          <div class="home-ride_trip-carriage-type">{{ carriage.key }}:</div>
+          <div class="home-ride_trip-carriage-price">total price: {{ carriage.value }}$</div>
+        </div>
       </div>
     </div>
   </div>
