@@ -118,7 +118,13 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           console.log(data);
           this.rideCarriagesNames = data.carriages;
           console.log(data.carriages);
-          this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+          // this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+          this.uniqueCarriageNames = [];
+          this.allAvailableAppCarriages.map((carriage) => {
+            if (carriage.code !== undefined) {
+              this.uniqueCarriageNames.push(carriage.code);
+            }
+          });
           if (data.carriages.length > 0) {
             this.areCarriages.set(true);
           }
@@ -138,6 +144,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
             this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
           });
           console.log(this.numberOfSeatsInCarriageType);
+          console.log(this.uniqueCarriageNames);
 
           this.ridePath = [];
           this.ridePath = data.path;
