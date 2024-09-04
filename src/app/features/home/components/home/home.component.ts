@@ -20,7 +20,7 @@ import { SearchForm } from '../../models/search-form.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
-import { map, Observable, startWith } from 'rxjs';
+import { debounceTime, filter, map, Observable, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
@@ -107,6 +107,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public cities: string[] = [];
   public stationsData: StationInfo[] = [];
 
+  private filterFromSubject: Subject<string> = new Subject<string>();
+
+  private filterToSubject: Subject<string> = new Subject<string>();
+
   testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
   // to check pic for no rides: testTrips: Trip[] = [];
   allDaysChosenRideAvailableAt: TripDates[] = [
@@ -136,14 +140,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.searchForm = this.searchFormInstance;
-    this.filteredCitiesFrom = this.searchForm.controls.from.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
-    this.filteredCitiesTo = this.searchForm.controls.to.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
+    this.filterFromSubject
+      .pipe(
+        debounceTime(350),
+        map((value: string | null) => value?.trim().toLowerCase() ?? ''),
+        filter((value) => this.shouldEmitValue(value)),
+      )
+      .subscribe((value) => {
+        this.filterCities(value, 'from');
+      });
+
+    this.filterToSubject
+      .pipe(
+        debounceTime(350),
+        map((value: string | null) => value?.trim().toLowerCase() ?? ''),
+        filter((value) => this.shouldEmitValue(value)),
+      )
+      .subscribe((value) => {
+        this.filterCities(value, 'to');
+      });
+    this.searchDateFormControl.valueChanges.subscribe((value) => {
+      this.toggleTimeControl(value);
+    });
+  }
+
+  private shouldEmitValue(controlValue: string): boolean {
+    return Boolean(controlValue) && controlValue.length > 2;
   }
 
   ngAfterViewInit(): void {
@@ -181,16 +203,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public filterFrom() {
-    this.filterCities(this.inputFrom, 'from');
+    this.filterFromSubject.next(this.inputFrom.nativeElement.value);
   }
 
   public filterTo() {
-    this.filterCities(this.inputTo, 'to');
-  }
-
-  private _filter(value: string) {
-    const filterValue = value.toLowerCase();
-    return this.cities.filter((city) => city.toLowerCase().includes(filterValue));
+    this.filterToSubject.next(this.inputTo.nativeElement.value);
   }
 
   private get searchFormInstance(): FormGroup<SearchForm> {
@@ -213,7 +230,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           validators: [Validators.required],
         },
       ),
-      time: this.fb.control({ value: '', disabled: false }),
+      time: this.fb.control({ value: '', disabled: true }),
     });
   }
 
@@ -296,14 +313,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return coordinate;
   }
 
-  public filterCities(inputElement: ElementRef<HTMLInputElement>, filterType: 'from' | 'to') {
-    const filterValue = inputElement.nativeElement.value.toLowerCase();
-    const localFiltered = this.cities.filter((item) => item.toLowerCase().includes(filterValue));
+  public filterCities(inputString: string, filterType: 'from' | 'to') {
+    const localFiltered = this.cities.filter((item) => item.toLowerCase().includes(inputString));
 
     if (localFiltered.length > 0) {
       this.filteredOptions = localFiltered;
     } else {
-      this.homeFacade.getCity(filterValue).subscribe({
+      this.homeFacade.getCity(inputString).subscribe({
         next: (result) => {
           this.filteredOptions = result.map((city) => city.display_name);
         },
@@ -317,5 +333,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   public trackByCity(index: number, city: string): string {
     return city;
+  }
+
+  private toggleTimeControl(date: string) {
+    if (date) {
+      this.searchTimeFormControl.enable();
+    } else {
+      this.searchTimeFormControl.disable();
+      this.searchTimeFormControl.setValue('');
+    }
   }
 }
