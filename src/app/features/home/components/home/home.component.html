@@ -35,9 +35,9 @@
         />
         <mat-hint>Arrival station</mat-hint><mat-icon matSuffix>castle</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" requireSelection>
-          @for (city of filteredCitiesTo | async; track city) {
-            <mat-option [value]="city">{{ city }}</mat-option>
-          }
+          <mat-option *ngFor="let city of filteredOptions; trackBy: trackByCity" [value]="city">
+            {{ city }}
+          </mat-option>
         </mat-autocomplete></mat-form-field
       >
       <mat-form-field appearance="outline" class="home_form-input"

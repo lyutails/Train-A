@@ -21,6 +21,12 @@ export class HomeFacade {
   }
 
   public getCity(value: string): Observable<CitySearchApi[]> {
-    return this.stationsService.getCity(value).pipe(tap((cities) => this.cities.next(cities)));
+    return this.stationsService.getCity(value).pipe(
+      tap((newCities) => {
+        const currentCities = this.cities.getValue();
+        const updatedCities = [...currentCities, ...newCities];
+        this.cities.next(updatedCities);
+      }),
+    );
   }
 }

@@ -254,17 +254,46 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createSearchApiObject() {
-    let unixTime: number | undefined;
+    let unixTime: number;
     if (this.searchTimeFormControl.value) {
       unixTime = transformDateToUnixString(this.searchDateFormControl.value, this.searchTimeFormControl.value);
+    } else {
+      unixTime = transformDateToUnixString(this.searchDateFormControl.value, '00:00');
     }
     return {
-      fromLatitude: this.stationsData.find((city) => city.city === this.searchFromFormControl.value)?.latitude || 0,
-      fromLongitude: this.stationsData.find((city) => city.city === this.searchFromFormControl.value)?.longitude || 0,
-      toLatitude: this.stationsData.find((city) => city.city === this.searchToFormControl.value)?.latitude || 0,
-      toLongitude: this.stationsData.find((city) => city.city === this.searchToFormControl.value)?.longitude || 0,
+      fromLatitude: this.getCityCoordinateOrExternal(this.searchFromFormControl.value, 'latitude'),
+      fromLongitude: this.getCityCoordinateOrExternal(this.searchFromFormControl.value, 'longitude'),
+      toLatitude: this.getCityCoordinateOrExternal(this.searchToFormControl.value, 'latitude'),
+      toLongitude: this.getCityCoordinateOrExternal(this.searchToFormControl.value, 'longitude'),
       ...(unixTime !== undefined && { time: unixTime }),
     };
+  }
+
+  private getCityCoordinateOrExternal(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    const localCoordinate = this.getCityCoordinate(cityName, coordinateType);
+    if (localCoordinate !== 0) {
+      return localCoordinate;
+    }
+    return this.getExternalCityCoordinate(cityName, coordinateType);
+  }
+
+  private getCityCoordinate(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    const city = this.stationsData.find((c) => c.city === cityName);
+    return city ? (coordinateType === 'latitude' ? city.latitude : city.longitude) : 0;
+  }
+
+  private getExternalCityCoordinate(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    let coordinate = 0;
+
+    this.homeFacade.cities$
+      .pipe(map((cities) => cities.find((city) => city.display_name === cityName)))
+      .subscribe((city) => {
+        if (city) {
+          coordinate = coordinateType === 'latitude' ? parseFloat(city.lat) : parseFloat(city.lon);
+        }
+      });
+
+    return coordinate;
   }
 
   public filterCities(inputElement: ElementRef<HTMLInputElement>, filterType: 'from' | 'to') {
