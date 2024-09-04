@@ -67,6 +67,11 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public totalRidePrices: number[] = [];
   public uniqueCarriagePrices: number[] = [];
   public totalSelectedRidePrice = 0;
+  public occupiedSeats: number[][] = [];
+  public freeSeats = 0;
+  public ridePath!: number[];
+  public firstStationIndex = 0;
+  public lastStationIndex = 0;
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -80,8 +85,8 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   }
 
   rideId = 1;
-  stationFrom = 39;
-  stationTo = 132;
+  stationFrom = 84;
+  stationTo = 133;
 
   ngOnInit() {
     this.httpClient.get<Carriage[]>('carriage').subscribe({
@@ -111,14 +116,23 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
               }
             }
           });
+
+          this.ridePath = [];
+          this.ridePath = data.path;
+          console.log(this.ridePath);
+          this.firstStationIndex = this.ridePath.findIndex((element) => element === this.stationFrom);
+          this.lastStationIndex = this.ridePath.findIndex((element) => element === this.stationTo);
+          console.log(this.firstStationIndex, this.lastStationIndex);
+
           console.log(data.schedule.segments);
           this.rideSegments = data.schedule.segments;
           this.rideAllSegmentsPrices = [];
           this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
           console.log(this.rideAllSegmentsPrices);
+          console.log(this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1));
           this.rideAllSegmentsPricesNumbers = [];
           this.uniqueCarriageNames.forEach((name) => {
-            this.rideAllSegmentsPrices.map((price) => {
+            this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1).map((price) => {
               if (price[name]) {
                 this.rideAllSegmentsPricesNumbers.push(price[name]);
               }
@@ -130,6 +144,11 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
             this.rideAllSegmentsPricesNumbers = [];
           });
           console.log(this.totalRidePrices);
+
+          this.occupiedSeats = [];
+          this.rideSegments.map((item) => this.occupiedSeats.push(item.occupiedSeats));
+          //this.freeSeats = amountOfSeatsInCarriage - this.occupiedSeats.length;
+          console.log(this.occupiedSeats);
         },
       });
 
@@ -182,14 +201,16 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
     if (localStorage.getItem('seatNumber') && localStorage.getItem('carriageName')) {
       this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
-      // console.log(this.selectedSeat);
-      console.log(localStorage.getItem('carriageName'));
       this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
 
       if (this.selectedCarriageName && this.uniqueCarriageNames) {
         const carriageIndex = this.uniqueCarriageNames.indexOf(this.selectedCarriageName);
         this.totalSelectedRidePrice = this.totalRidePrices[carriageIndex];
       }
+    } else {
+      this.selectedSeat = '';
+      this.selectedCarriageName = '';
+      this.totalSelectedRidePrice = 0;
     }
   }
 
@@ -225,7 +246,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
   public buyTicket() {
     console.log('call api to buy ticket and /order');
-    this.httpClient.post('order', { rideId: 1, seat: 33, stationStart: 69, stationEnd: 160 }).subscribe({
+    this.httpClient.post('order', { rideId: 1, seat: 5, stationStart: 84, stationEnd: 133 }).subscribe({
       next: (data) => {
         console.log(data);
       },

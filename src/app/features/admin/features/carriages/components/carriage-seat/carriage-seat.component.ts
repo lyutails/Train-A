@@ -39,17 +39,24 @@ export class CarriageSeatComponent implements OnInit {
     }
   }
 
+  /* ngAfterViewInit(): void {
+    console.log(this.seatCheckbox);
+  } */
+
   clickCheckbox() {
     console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
     localStorage.setItem('seatNumber', JSON.stringify(this.seatValue));
     localStorage.setItem('carriageName', JSON.stringify(this.carriageNameValue));
-    this.selectedSeat.set(JSON.parse(localStorage.getItem('seatNumber') ?? ''));
-    this.selectedCarriage.set(JSON.parse(localStorage.getItem('carriageName') ?? ''));
+    this.selectedSeat.set(JSON.parse(localStorage.getItem('seatNumber')!));
+    this.selectedCarriage.set(JSON.parse(localStorage.getItem('carriageName')!));
+    console.log(this.selectedSeat());
+    console.log(this.selectedCarriage());
     if (!this.check()) {
       localStorage.removeItem('seatNumber');
       localStorage.removeItem('carriageName');
     }
     this.check.set(!this.check());
+    console.log(this.checked);
   }
 
   inspectCheckboxValue(event: MatCheckboxChange): void {

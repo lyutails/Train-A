@@ -58,7 +58,10 @@
         <div class="trip-details_carriages">
           @for (carriage of allFilteredRideCarriages; track $index; let index = $index) {
             <div class="trip-details_shape-params">
-              <p class="trip-details_carriage-details text-coloured">Free seats:</p>
+              <p class="trip-details_carriage-details text-coloured">
+                Free seats:
+                {{ carriage.rows * (carriage.leftSeats + carriage.rightSeats) }}
+              </p>
               @if (filterSliderCarriageName) {
                 <p class="trip-details_carriage-details">Carriage № in train: {{ trainCarriageNumber[index] }}</p>
               } @else {
