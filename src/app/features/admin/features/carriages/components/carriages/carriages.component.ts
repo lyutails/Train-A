@@ -22,6 +22,7 @@ import { ButtonComponent } from '../../../../../../common/button/button.componen
 import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
 import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoadingService } from '../../../../../../common/services/loading/loading.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'TTP-carriages',
@@ -56,6 +57,8 @@ export class CarriagesComponent implements OnInit {
   public selectOptionsLeftSeats!: CarriageCreatingParams[];
   public selectOptionsRightSeats!: CarriageCreatingParams[];
   loadingService = inject(LoadingService);
+  public isDupeName = signal(false);
+  public snackBar = inject(MatSnackBar);
 
   constructor(
     private fb: NonNullableFormBuilder,
@@ -76,22 +79,33 @@ export class CarriagesComponent implements OnInit {
     });
   }
 
+  private get isCarriageNameExist() {
+    return this.carriagesData.some((carriage) => carriage.name === this.carriageForm.controls.name?.value);
+  }
+
   public createCarriageData() {
-    const carriageWithoutCode = {
-      name: this.carriageForm.controls.name?.value,
-      rows: +this.carriageForm.controls.rows.value,
-      leftSeats: +this.carriageForm.controls.leftSeats.value,
-      rightSeats: +this.carriageForm.controls.rightSeats.value,
-    };
-    this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
-      this.carriagesData.unshift({
-        code: data.code,
-        ...carriageWithoutCode,
+    if (this.isCarriageNameExist) {
+      this.snackBar.open('Carriage with this name already alrady exists.', 'close', {
+        duration: 2000,
       });
-    });
-    this.carriageForm.reset();
-    this.create.set(false);
-    this.update.set(false);
+    } else {
+      const carriageWithoutCode = {
+        name: this.carriageForm.controls.name?.value,
+        rows: +this.carriageForm.controls.rows.value,
+        leftSeats: +this.carriageForm.controls.leftSeats.value,
+        rightSeats: +this.carriageForm.controls.rightSeats.value,
+      };
+
+      this.carriagesService.postCarriage(carriageWithoutCode).subscribe((data) => {
+        this.carriagesData.unshift({
+          code: data.code,
+          ...carriageWithoutCode,
+        });
+      });
+      this.carriageForm.reset();
+      this.create.set(false);
+      this.update.set(false);
+    }
   }
 
   public showCreateCarriageView() {
@@ -115,25 +129,31 @@ export class CarriagesComponent implements OnInit {
   }
 
   public updateExistingCarriage() {
-    const carriageWithoutCode = {
-      name: this.carriageForm.controls.name?.value,
-      rows: +this.carriageForm.controls.rows.value,
-      leftSeats: +this.carriageForm.controls.leftSeats.value,
-      rightSeats: +this.carriageForm.controls.rightSeats.value,
-    };
-    if (this.carriageForm.controls.code !== undefined && this.carriageForm.controls.name !== undefined) {
-      this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe(() => {
-        const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
-        const updatedCarriage = {
-          code: this.carrigeCode,
-          ...carriageWithoutCode,
-        };
-        this.carriagesData[updatedCarriageIndex] = updatedCarriage;
+    if (this.isCarriageNameExist) {
+      this.snackBar.open('Carriage with this name already alrady exists.', 'close', {
+        duration: 2000,
       });
+    } else {
+      const carriageWithoutCode = {
+        name: this.carriageForm.controls.name?.value,
+        rows: +this.carriageForm.controls.rows.value,
+        leftSeats: +this.carriageForm.controls.leftSeats.value,
+        rightSeats: +this.carriageForm.controls.rightSeats.value,
+      };
+      if (this.carriageForm.controls.code !== undefined && this.carriageForm.controls.name !== undefined) {
+        this.carriagesService.updateCarriage(this.carrigeCode, carriageWithoutCode).subscribe(() => {
+          const updatedCarriageIndex = this.carriagesData.findIndex((item) => item.code === this.carrigeCode);
+          const updatedCarriage = {
+            code: this.carrigeCode,
+            ...carriageWithoutCode,
+          };
+          this.carriagesData[updatedCarriageIndex] = updatedCarriage;
+        });
+      }
+      this.carriageForm.reset();
+      this.update.set(false);
+      this.create.set(false);
     }
-    this.carriageForm.reset();
-    this.update.set(false);
-    this.create.set(false);
   }
 
   public showUpdateCarriageView() {

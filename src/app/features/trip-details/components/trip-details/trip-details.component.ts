@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  AfterContentChecked,
-  AfterViewInit,
-  Component,
-  ElementRef,
-  inject,
-  model,
-  OnInit,
-  signal,
-  ViewChild,
-} from '@angular/core';
+import { AfterContentChecked, AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
@@ -79,7 +69,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public totalSelectedRidePrice = 0;
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
-  @ViewChild('carouselContent') carouselContent!: ElementRef<HTMLElement>;
 
   constructor(
     private router: Router,
@@ -156,7 +145,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   ngAfterViewInit(): void {
     if (this.viewChecked()) {
       this.content = document.querySelector('#carousel-content')!;
-      console.log(this.carouselContent);
       if (this.content) {
         this.width = this.content.offsetWidth;
         window.addEventListener('resize', () => {
