@@ -27,11 +27,6 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./features/profile/constants/profile.routes').then((m) => m.PROFILE_ROUTES),
   },
   {
-    path: 'trip',
-    loadChildren: () =>
-      import('./features/trip-details/constants/trip-details.routes').then((m) => m.TRIP_DETAILS_ROUTES),
-  },
-  {
     path: 'not-found',
     loadComponent: () =>
       import('./core/not-found/components/not-found/not-found.component').then((m) => m.NotFoundComponent),
