@@ -112,22 +112,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private filterToSubject: Subject<string> = new Subject<string>();
 
   testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
-  // to check pic for no rides: testTrips: Trip[] = [];
-  allDaysChosenRideAvailableAt: TripDates[] = [
-    { date: 'September 01', day: 'Monday' },
-    { date: 'September 08', day: 'Monday' },
-    { date: 'September 16', day: 'Monday' },
-    { date: 'September 23', day: 'Monday' },
-    { date: 'September 30', day: 'Monday' },
-    { date: 'October 07', day: 'Monday' },
-    { date: 'October 14', day: 'Monday' },
-    { date: 'October 21', day: 'Monday' },
-    { date: 'October 28', day: 'Monday' },
-  ];
-
   constructor(
     private fb: NonNullableFormBuilder,
-    private readonly homeFacade: HomeFacade,
+    public homeFacade: HomeFacade,
   ) {
     this.homeFacade.stations.subscribe({
       next: (stations) => {
@@ -255,8 +242,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.searchRides.set(true);
     }
     const search: SearchApi = this.createSearchApiObject();
-    console.log(search);
-    // api call here
+    this.homeFacade.searchTickets(search).subscribe((response) => {
+      console.log('Search results:', response);
+    });
   }
 
   public buyTicket() {

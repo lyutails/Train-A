@@ -70,15 +70,15 @@
   </form>
   <div class="home_ride-date-filter-carousel" id="carousel">
     <button id="prev" mat-icon-button type="button" class="home_ride-date-carousel-button left">
-      <mat-icon>keyboard_arrow_left</mat-icon>
+      <mat-icon *ngIf="(homeFacade.routesDates$ | async)?.length">keyboard_arrow_left</mat-icon>
     </button>
     <div id="carousel-content" class="home_ride-date-filter-slides">
-      @for (day of allDaysChosenRideAvailableAt; track day; let index = $index) {
-        <TTP-ride-dates-carousel [dateItem]="day"></TTP-ride-dates-carousel>
+      @for (day of homeFacade.routesDates$ | async; track day; let index = $index) {
+        <TTP-ride-dates-carousel [dateItem]="day"> </TTP-ride-dates-carousel>
       }
     </div>
     <button id="next" mat-icon-button type="button" class="home_ride-date-carousel-button right">
-      <mat-icon>keyboard_arrow_right</mat-icon>
+      <mat-icon *ngIf="(homeFacade.routesDates$ | async)?.length">keyboard_arrow_right</mat-icon>
     </button>
   </div>
   <TTP-button

@@ -1,15 +1,15 @@
 import { Component, Input, signal } from '@angular/core';
-import { TripDates } from '../home/home.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'TTP-ride-dates-carousel',
   standalone: true,
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './ride-dates-carousel.component.html',
   styleUrl: './ride-dates-carousel.component.scss',
 })
 export class RideDatesCarouselComponent {
-  @Input() dateItem!: TripDates;
+  @Input() dateItem!: Date;
   public selectDateFilterItem = signal(false);
 
   setColour() {
