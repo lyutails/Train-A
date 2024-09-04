@@ -1,10 +1,17 @@
 $light-blue: oklch(92.53% 0.037 249.47deg);
-$deep-blue: oklch(49.71% 0.165 259.85deg);
+$deep-blue: oklch(50.65% 0.164 263.09deg);
 $selected-seat: oklch(71.74% 0.19 48.65deg);
+$border-frame: 1px solid rgb(0 92 187 / 50%);
+
+@mixin border-frame {
+  border: $border-frame;
+  border-radius: 10px;
+}
 
 html,
 body {
   height: 100%;
+  min-height: 100vh;
   font-size: 16px;
 }
 
@@ -33,10 +40,6 @@ body::-webkit-scrollbar-thumb {
   outline: 1px solid transparent;
 }
 
-.content-area {
-  min-height: calc(100vh - 90px);
-}
-
 ttp-root {
   display: flex;
   flex-direction: column;
@@ -59,6 +62,30 @@ ttp-home {
 }
 
 ttp-orders {
+  flex: 1 0 auto;
+}
+
+ttp-trip-details {
+  flex: 1 0 auto;
+}
+
+ttp-user-profile {
+  flex: 1 0 auto;
+}
+
+ttp-not-found {
+  flex: 1 0 auto;
+}
+
+ttp-sign-in {
+  flex: 1 0 auto;
+}
+
+ttp-sign-up {
+  flex: 1 0 auto;
+}
+
+ttp-carriages {
   flex: 1 0 auto;
 }
 

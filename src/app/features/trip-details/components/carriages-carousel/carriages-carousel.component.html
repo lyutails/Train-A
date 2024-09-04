@@ -1,0 +1,15 @@
+<button
+  (click)="passCarriageName()"
+  type="button"
+  class="carriages-carousel_carriage-info"
+  [style.background]="selected ? 'oklch(92.53% 0.037 249.47deg)' : 'transparent'"
+>
+  <p class="carriages-carousel_carriage-name">
+    <span class="small-text">Carriage name: </span
+    ><span class="coloured-text" [style.overflow-wrap]="'break-word'" [style.word-break]="'break-all'">{{
+      carriage
+    }}</span>
+  </p>
+  <p class="carriages-carousel_carriage-seats"><span class="small-text">Free seats: </span>44</p>
+  <p class="carriages-carousel_carriage-price"><span class="small-text">Trip price: </span>{{ price }}$</p>
+</button>

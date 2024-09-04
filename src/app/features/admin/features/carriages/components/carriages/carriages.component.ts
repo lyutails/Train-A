@@ -20,7 +20,8 @@ import { SELECT_LEFT_OPTION_ROWS } from '../../models/select-options-left-seats.
 import { SELECT_RIGHT_OPTION_ROWS } from '../../models/select-options-right-seats.model';
 import { ButtonComponent } from '../../../../../../common/button/button.component';
 import { CarriagesService } from '../../../../../../repositories/carriages/services/carriages.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingService } from '../../../../../../common/services/loading/loading.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -38,6 +39,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatFormField,
     FormsModule,
     CarriageRowComponent,
+    MatProgressSpinner,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './carriages.component.html',
   styleUrl: './carriages.component.scss',
@@ -53,7 +56,7 @@ export class CarriagesComponent implements OnInit {
   public selectOptionsRows!: CarriageCreatingParams[];
   public selectOptionsLeftSeats!: CarriageCreatingParams[];
   public selectOptionsRightSeats!: CarriageCreatingParams[];
-  public dialog = inject(MatDialog);
+  loadingService = inject(LoadingService);
   public isDupeName = signal(false);
   public snackBar = inject(MatSnackBar);
 
@@ -83,7 +86,7 @@ export class CarriagesComponent implements OnInit {
 
   public createCarriageData() {
     if (this.isCarriageNameExist) {
-      this.snackBar.open('Happens you are trying to create carriage with already existed name.', 'close', {
+      this.snackBar.open('Carriage with this name already alrady exists.', 'close', {
         duration: 2000,
       });
     } else {
@@ -128,7 +131,7 @@ export class CarriagesComponent implements OnInit {
 
   public updateExistingCarriage() {
     if (this.isCarriageNameExist) {
-      this.snackBar.open('Happens you are trying to create carriage with already existed name.', 'close', {
+      this.snackBar.open('Carriage with this name already alrady exists.', 'close', {
         duration: 2000,
       });
     } else {

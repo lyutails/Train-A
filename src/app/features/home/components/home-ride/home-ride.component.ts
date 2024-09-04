@@ -35,7 +35,7 @@ export class HomeRideComponent {
 
   public pickTripDetails() {
     this.router.navigate(['/trip', this.tripInfo.rideId], {
-      queryParams: { from: this.tripInfo.departureStation.name, to: this.tripInfo.arrivalStation.name },
+      queryParams: { from: this.tripInfo.departureStation.id, to: this.tripInfo.arrivalStation.id },
     });
   }
 

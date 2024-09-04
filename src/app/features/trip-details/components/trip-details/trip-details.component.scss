@@ -1,0 +1,282 @@
+@import '../../../../../styles';
+
+.trip-details {
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  &_back-button {
+    margin: 20px 0;
+  }
+
+  &_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 40%;
+    min-width: 280px;
+    max-width: 600px;
+  }
+
+  &_detail-stations {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &_detail-times {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &_detail-station {
+    margin-bottom: 0;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_detail-time {
+    margin-bottom: 0;
+
+    &.start {
+      align-items: flex-start;
+    }
+
+    &.end {
+      align-items: flex-end;
+    }
+  }
+
+  &_route-details {
+    display: flex;
+    align-items: center;
+  }
+
+  &_rideid {
+    margin-right: 20px;
+    margin-bottom: 0;
+  }
+
+  &_route-button {
+    margin: 20px 0;
+  }
+
+  &_seat-indications {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &_seat-info {
+    display: flex;
+    align-items: center;
+  }
+
+  &_seat-label {
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1 / 1;
+    width: 25px;
+    margin-right: 10px;
+
+    border-radius: 5px;
+
+    &.occupied {
+      background-color: $selected-seat;
+    }
+
+    &.reserved {
+      background-color: gray;
+    }
+
+    &.available {
+      background-color: $deep-blue;
+    }
+  }
+
+  &_seat-description {
+    margin-right: 30px;
+    margin-bottom: 0;
+  }
+
+  &_buy-button {
+    align-self: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  &_auth-required {
+    text-align: center;
+  }
+
+  &_carriage-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 22%;
+    height: 100px;
+    padding: 10px;
+
+    text-align: center;
+
+    transition: all 0.2s ease-in-out;
+
+    @include border-frame;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-blue;
+    }
+  }
+
+  &_carriages-types {
+    margin-bottom: 10px;
+  }
+
+  &_carriages-carousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-bottom: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  &_carriages-tabs {
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+
+    overflow: auto;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  &_carriages {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &_carriage-shape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    justify-content: space-evenly;
+
+    width: 254px;
+    height: 640px;
+    padding: 10px;
+
+    background-image: url('../../../../../../public/ticket_ttp_vertical_opacity.png');
+    background-size: contain;
+    border-radius: 5px;
+  }
+
+  &_shape-params {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+
+    height: 720px;
+    padding: 5px;
+
+    border: 1px solid $light-blue;
+    border-radius: 5px;
+  }
+
+  &_selected-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  &_selected-details {
+    margin-right: 30px;
+  }
+
+  &_carousel-carriage-tab {
+    background-color: transparent;
+    border: none;
+  }
+}
+
+ttp-carriage-row {
+  display: flex;
+}
+
+.small-text {
+  font-size: 0.8rem;
+}
+
+.coloured-text {
+  color: $deep-blue;
+}
+
+.coloured-bold-text {
+  font-weight: 800;
+  color: $deep-blue;
+}
+
+p {
+  margin-bottom: unset;
+}
+
+ttp-carriages-carousel {
+  width: 30%;
+  min-width: 110px;
+  max-width: 180px;
+}
+
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .trip-details {
+    &_seat-indications {
+      flex-direction: column;
+    }
+
+    &_seat-info {
+      margin-bottom: 20px;
+    }
+
+    &_selected-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 20px;
+    }
+  }
+}

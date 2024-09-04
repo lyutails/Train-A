@@ -1,0 +1,45 @@
+@import '../../../../../styles';
+
+.carriages-carousel {
+  &_carriage-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 5px;
+
+    text-align: center;
+
+    background-color: transparent;
+
+    transition: all 0.2s ease-in-out;
+
+    @include border-frame;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $light-blue;
+    }
+  }
+
+  &_carriage-name {
+    margin-bottom: 10px;
+  }
+
+  &_carriage-seats {
+    margin-bottom: 5px;
+  }
+
+  &_carriage-price {
+    margin-bottom: 5px;
+  }
+}
+
+.small-text {
+  font-size: 0.8rem;
+}
+
+.coloured-text {
+  color: $deep-blue;
+}

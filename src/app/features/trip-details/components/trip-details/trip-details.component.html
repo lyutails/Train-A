@@ -1,0 +1,166 @@
+@if (loadingService.spinnerCounter$ | async) {
+  <div class="d-flex justify-content-center align-items-center container h-100">
+    <mat-spinner></mat-spinner>
+  </div>
+} @else {
+  <div class="trip-details container-xl">
+    <div class="trip-details_wrapper">
+      <TTP-button
+        (click)="redirectToHomePage()"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'Back'"
+        class="trip-details_back-button"
+      ></TTP-button>
+      <div class="trip-details_details">
+        <div class="trip-details_detail-stations">
+          <p class="trip-details_detail-station start"><span class="coloured-bold-text">start station</span></p>
+          <mat-icon class="">trending_flat</mat-icon>
+          <p class="trip-details_detail-station end"><span class="coloured-bold-text">end station</span></p>
+        </div>
+        <div class="trip-details_detail-times">
+          <p class="trip-details_detail-time start"><span class="coloured-text">departure time</span></p>
+          <p class="trip-details_detail-time end"><span class="coloured-text">arrival time</span></p>
+        </div>
+      </div>
+      <div class="trip-details_route-details">
+        <p class="trip-details_rideid">
+          Ride <span class="coloured-bold-text">(rideId) currently testing with rideId=1</span>
+        </p>
+        <TTP-button
+          (click)="redirectToHomePage()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Route'"
+          class="trip-details_route-button"
+        ></TTP-button>
+      </div>
+      <p class="trip-details_carriages-types">Available carriage types:</p>
+      <div class="trip-details_carriages-carousel" id="carousel">
+        <button (click)="moveLeft()" mat-icon-button type="button" class="trip-details_carousel-button left">
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+        <div id="carousel-content" #carouselContent class="trip-details_carriages-tabs">
+          @for (carriage of uniqueCarriageNames; track $index; let index = $index) {
+            <TTP-carriages-carousel
+              [carriage]="carriage"
+              [selected]="carriage === filterSliderCarriageName"
+              [price]="totalRidePrices[index]"
+              (carriageNameEvent)="getCarriageName($event)"
+            ></TTP-carriages-carousel>
+          }
+        </div>
+        <button (click)="moveRight()" mat-icon-button type="button" class="trip-details_carousel-button right">
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+      </div>
+      @if (areCarriages()) {
+        <div class="trip-details_carriages">
+          @for (carriage of allFilteredRideCarriages; track $index; let index = $index) {
+            <div class="trip-details_shape-params">
+              <p class="trip-details_carriage-details text-coloured">
+                Free seats:
+                {{ carriage.rows * (carriage.leftSeats + carriage.rightSeats) }}
+              </p>
+              @if (filterSliderCarriageName) {
+                <p class="trip-details_carriage-details">Carriage № in train: {{ trainCarriageNumber[index] }}</p>
+              } @else {
+                <p class="trip-details_carriage-details">Carriage № in train: {{ index }}</p>
+              }
+              <div class="trip-details_carriage-shape">
+                @for (row of [].constructor(carriage.rows); track index; let index = $index) {
+                  @if (carriage.code !== undefined) {
+                    <TTP-carriage-row
+                      class="trip-details_carriage-row"
+                      [carriageName]="carriage.code"
+                      [rowNumber]="index"
+                      [leftSeatCount]="carriage.leftSeats"
+                      [rightSeatCount]="carriage.rightSeats"
+                    ></TTP-carriage-row>
+                  }
+                }
+              </div>
+            </div>
+          }
+        </div>
+      }
+      <div class="trip-details_selected-wrapper">
+        <p class="trip-details_selected-details carriage"><span class="coloured-bold-text">Selected:</span></p>
+        <p class="trip-details_selected-details carriage">Carriage №: <span class="coloured-bold-text">№</span></p>
+        <p class="trip-details_selected-details carriage">
+          Carriage name: <span class="coloured-bold-text">{{ selectedCarriageName }}</span>
+        </p>
+        <p class="trip-details_selected-details seats">
+          Seat: <span class="coloured-bold-text">{{ selectedSeat }}</span>
+        </p>
+        <p class="trip-details_selected-details price">
+          Price: <span class="coloured-bold-text">{{ totalSelectedRidePrice }}$</span>
+        </p>
+      </div>
+      <TTP-button
+        (click)="testOrder()"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'test order'"
+        class="trip-details_buy-button"
+      ></TTP-button>
+      @if (seatIsSelected()) {
+        @if (isAuthenticated) {
+          <TTP-button
+            (click)="buyTicket()"
+            [type]="'button'"
+            [width]="'10vw'"
+            [buttonText]="'Book seat'"
+            class="trip-details_buy-button"
+          ></TTP-button>
+        } @else {
+          <TTP-button
+            (click)="openAuthModal()"
+            [type]="'button'"
+            [width]="'10vw'"
+            [buttonText]="'Book seat'"
+            class="trip-details_buy-button"
+          ></TTP-button>
+        }
+      }
+      <div class="trip-details_seat-indications">
+        <div class="trip-details_seat-info">
+          <mat-label [attr.for]="'occupied'" class="trip-details_seat-label reserved" [style.color]="'white'"
+            >1
+            <mat-checkbox
+              id="occupied"
+              [hidden]="true"
+              class="trip-details_seat-checkbox"
+              [disabled]="true"
+            ></mat-checkbox>
+          </mat-label>
+          <p class="trip-details_seat-description">- Reserved seat</p>
+        </div>
+        <div class="trip-details_seat-info">
+          <mat-label [attr.for]="'available'" class="trip-details_seat-label available" [style.color]="'white'"
+            >1
+            <mat-checkbox
+              id="available"
+              [hidden]="true"
+              class="trip-details_seat-checkbox"
+              [disabled]="true"
+            ></mat-checkbox>
+          </mat-label>
+          <p class="trip-details_seat-description">- Available seat</p>
+        </div>
+        <div class="trip-details_seat-info">
+          <mat-label [attr.for]="'selected'" class="trip-details_seat-label occupied" [style.color]="'white'"
+            >1
+            <mat-checkbox
+              id="selected"
+              [hidden]="true"
+              class="trip-details_seat-checkbox"
+              [disabled]="true"
+            ></mat-checkbox>
+          </mat-label>
+          <p class="trip-details_seat-description">- Occupied seat</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}

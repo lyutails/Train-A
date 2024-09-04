@@ -225,7 +225,6 @@
                               <input class="ride_form-input price" type="number" matInput [formControl]="price.value" />
                               <mat-error *ngIf="price.value.hasError('required')">Price is required</mat-error>
                               <mat-error *ngIf="price.value.hasError('pattern')">Allowed from 1$ to million</mat-error>
-
                             </mat-form-field>
                             <button
                               mat-icon-button

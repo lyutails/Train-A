@@ -3,7 +3,6 @@
 .footer {
   flex-shrink: 0;
   width: 100%;
-  margin-top: 20px;
   background-color: $deep-blue;
 
   &_wrapper {
@@ -42,6 +41,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 180px;
   }
 
   &_github-icon {
@@ -52,24 +52,32 @@
     justify-content: space-between;
 
     aspect-ratio: 1 / 1;
-    width: 5vw;
-    min-width: 40px;
-    max-width: 70px;
+    width: 3.4vw;
+    min-width: 30px;
+    max-width: 50px;
 
     background-color: $light-blue;
-    background-image: url('../../../../../../public/github.png');
+    background-image: url('../../../../../../public/github.svg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 0 0;
 
     transition: all 0.2s ease-in-out;
 
-    mask-image: url('../../../../../../public/github.png');
+    mask-image: url('../../../../../../public/github.svg');
     mask-size: cover;
 
     &:hover {
       cursor: pointer;
       background-color: white;
+    }
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .footer {
+    &_githubs {
+      width: 150px;
     }
   }
 }
