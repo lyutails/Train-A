@@ -24,7 +24,7 @@
     (click)="clickCheckbox()"
     [attr.for]="seatValue + carriageNameValue"
     class="carriages_seat-label"
-    [style.background]="checked ? 'oklch(71.74% 0.19 48.65deg)' : 'oklch(49.71% 0.165 259.85deg)'"
+    [style.background]="check() ? 'oklch(49.71% 0.165 259.85deg)' : 'oklch(71.74% 0.19 48.65deg)'"
     [style.color]="'white'"
     >{{ seatValue }}
     <mat-checkbox
@@ -35,7 +35,9 @@
       [value]="seatValue"
       [disabled]="false"
       #seatCheckbox
-      [checked]="seatValue === selectedSeat() && carriageNameValue === selectedCarriage()"
+      [checked]="check()"
     ></mat-checkbox>
   </mat-label>
 }
+<!-- [checked]="seatValue === selectedSeat() && carriageNameValue === selectedCarriage()" -->
+<!-- [style.background]="checked ? 'oklch(71.74% 0.19 48.65deg)' : 'oklch(49.71% 0.165 259.85deg)'" -->
