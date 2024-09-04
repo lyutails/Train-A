@@ -75,6 +75,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public rideId!: string;
   public queryParamFrom!: string;
   public queryParamTo!: string;
+  public numberOfSeatsInCarriageType!: number[];
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -109,6 +110,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
         this.allAvailableAppCarriages = data;
       },
     });
+
     this.httpClient
       .get<TripDetailsResponse>(`search/${this.rideId}?from=${this.queryParamFrom}&to=${this.queryParamTo}`)
       .subscribe({
@@ -130,6 +132,12 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
               }
             }
           });
+
+          this.numberOfSeatsInCarriageType = [];
+          this.allAvailableAppCarriages.map((carriage) => {
+            this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
+          });
+          console.log(this.numberOfSeatsInCarriageType);
 
           this.ridePath = [];
           this.ridePath = data.path;

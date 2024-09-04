@@ -50,6 +50,7 @@
               [carriage]="carriage"
               [selected]="carriage === filterSliderCarriageName"
               [price]="totalRidePrices[index]"
+              [freeSeats]="numberOfSeatsInCarriageType[index]"
               (carriageNameEvent)="getCarriageName($event)"
             ></TTP-carriages-carousel>
           }
