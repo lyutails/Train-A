@@ -1,9 +1,4 @@
-<button
-  type="button"
-  class="home-date-carousel_carousel-item"
-  (click)="setColour()"
-  [style.background]="selectDateFilterItem() ? 'oklch(92.53% 0.037 249.47deg)' : 'transparent'"
->
+<button type="button" class="home-date-carousel_carousel-item" (click)="setColour()" [class.selected]="isSelected()">
   <div class="home-date-carousel_date-item">{{ dateItem | date: 'MMMM dd' }}</div>
   <div class="home-date-carousel_date-item">{{ dateItem | date: 'EEEE' }}</div>
 </button>

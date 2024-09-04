@@ -331,4 +331,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.searchTimeFormControl.setValue('');
     }
   }
+
+  public onDateSelected(date: Date) {
+    console.log(date);
+  }
 }
