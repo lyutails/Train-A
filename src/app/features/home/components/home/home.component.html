@@ -89,12 +89,12 @@
     class="home_search-button"
     [disabled]="!searchForm.valid"
   ></TTP-button>
-  @if (searchRides() && testTrips.length > 0) {
-    @for (trip of testTrips; track trip.name) {
-      <TTP-home-ride [tripName]="trip.name" [tripFrom]="inputFrom.value" [tripTo]="inputTo.value"></TTP-home-ride>
-    }
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length) {
+    <ng-container *ngIf="homeFacade.tripDetail$ | async as trips">
+      <TTP-home-ride *ngFor="let trip of trips" [tripInfo]="trip"> </TTP-home-ride>
+    </ng-container>
   }
-  @if (searchRides() && testTrips.length === 0) {
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length === 0) {
     <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
@@ -116,36 +116,3 @@
     [backgroundColor]="'lightgray'"
   ></TTP-arrow-top>
 }
-<!--   @if (searchCarriages() && searchForm.valid) {
-    <div class="home_carriages">
-      @for (carriage of testCarriages; track carriage.name) {
-        <div class="home_shape-params">
-          <p class="home_carriage-details text-coloured">Seats: {{ carriage.name }}</p>
-          <p class="home_carriage-details">Rows: {{ carriage.rows }}</p>
-          <p class="home_carriage-details">Left Seats: {{ carriage.leftSeats }}</p>
-          <p class="home_carriage-details">Right Seats: {{ carriage.rightSeats }}</p>
-          <div class="home_carriage-shape">
-            @for (row of [].constructor(carriage.rows); track index; let index = $index) {
-              @if (carriage.name !== undefined) {
-                <TTP-carriage-row
-                  class="home_carriage-row"
-                  [carriageName]="carriage.name"
-                  [rowNumber]="index"
-                  [leftSeatCount]="carriage.leftSeats"
-                  [rightSeatCount]="carriage.rightSeats"
-                ></TTP-carriage-row>
-              }
-            }
-          </div>
-        </div>
-      }
-    </div>
-    <TTP-button
-      (click)="buyTicket()"
-      [type]="'submit'"
-      [width]="'10vw'"
-      [buttonText]="'Book seat' | uppercase"
-      class="home_buy-button"
-      [disabled]="!isSeatSelected()"
-    ></TTP-button>
-  } -->

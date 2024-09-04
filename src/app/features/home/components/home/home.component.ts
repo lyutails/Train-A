@@ -238,12 +238,18 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public getRides() {
-    if (this.searchForm.valid) {
-      this.searchRides.set(true);
+    if (this.searchForm.invalid) {
+      return;
     }
     const search: SearchApi = this.createSearchApiObject();
-    this.homeFacade.searchTickets(search).subscribe((response) => {
-      console.log('Search results:', response);
+    this.homeFacade.searchTickets(search).subscribe({
+      error: () => {
+        this.homeFacade.trainSearchResults.next([]);
+        this.homeFacade.routesDates.next([]);
+      },
+      complete: () => {
+        this.searchRides.set(true);
+      },
     });
   }
 
@@ -330,9 +336,5 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.searchTimeFormControl.disable();
       this.searchTimeFormControl.setValue('');
     }
-  }
-
-  public onDateSelected(date: Date) {
-    console.log(date);
   }
 }

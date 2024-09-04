@@ -1,14 +1,18 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CarouselService {
-  private selectedDate = signal<Date | null>(null);
+  public selectedDate = new BehaviorSubject<Date | null>(null);
+  public selectedDate$ = this.selectedDate.asObservable();
 
-  getSelectedDate() {
-    return this.selectedDate;
-  }
+  selectDate(date: Date): void {
+    const currentDate = this.selectedDate.getValue();
 
-  selectDate(date: Date) {
-    this.selectedDate.set(date);
+    if (currentDate && currentDate.getTime() === date.getTime()) {
+      this.selectedDate.next(null);
+    } else {
+      this.selectedDate.next(date);
+    }
   }
 }
