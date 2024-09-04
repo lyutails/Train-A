@@ -1,23 +1,31 @@
 import { Component, inject, Input, model, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, KeyValuePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouteModalComponent } from '../route-modal/route-modal.component';
 import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { SearchRideResult } from '../../models/search-ride-result';
 
 @Component({
   selector: 'TTP-home-ride',
   standalone: true,
-  imports: [ButtonComponent, MatIcon, CommonModule, MatDialogModule, MatTooltipModule, MatTooltip],
+  imports: [
+    ButtonComponent,
+    MatIcon,
+    CommonModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatTooltip,
+    DatePipe,
+    KeyValuePipe,
+  ],
   templateUrl: './home-ride.component.html',
   styleUrl: './home-ride.component.scss',
 })
 export class HomeRideComponent {
-  @Input() tripName = '';
-  @Input() tripFrom = '';
-  @Input() tripTo = '';
+  @Input() tripInfo!: SearchRideResult;
   public searchCarriages = signal(false);
   public dialog = inject(MatDialog);
   public popupRoute = signal('');

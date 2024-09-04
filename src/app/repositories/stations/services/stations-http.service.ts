@@ -5,6 +5,7 @@ import { StationApi } from '../models/station-api.model';
 import { NewStationDetails } from '../../../features/admin/features/stations/models/station.model';
 import { NominatimAddressInfo } from '../models/nominatim-address-info';
 import { map } from 'rxjs';
+import { CitySearchApi } from '../models/city-search-api';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,15 @@ export class StationsHttpService {
       addressdetails: '1',
     }).toString();
 
-    return this.httpClient.get<NominatimAddressInfo>(`openstreetmap?${params}`);
+    return this.httpClient.get<NominatimAddressInfo>(`openstreetmap/reverse?${params}`);
+  }
+
+  public getCity(value: string): Observable<CitySearchApi[]> {
+    const params = new URLSearchParams({
+      format: 'json',
+      q: value,
+      limit: '5',
+    }).toString();
+    return this.httpClient.get<CitySearchApi[]>(`openstreetmap/search?${params}`);
   }
 }

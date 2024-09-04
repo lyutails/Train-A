@@ -20,7 +20,7 @@ import { SearchForm } from '../../models/search-form.model';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { TrimPipe } from '../../../../common/pipes/trim-pipe/trim.pipe';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
-import { map, Observable, startWith } from 'rxjs';
+import { debounceTime, filter, map, Observable, Subject } from 'rxjs';
 import { MatSelect } from '@angular/material/select';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { HomeRideComponent } from '../home-ride/home-ride.component';
@@ -107,23 +107,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public cities: string[] = [];
   public stationsData: StationInfo[] = [];
 
-  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
-  // to check pic for no rides: testTrips: Trip[] = [];
-  allDaysChosenRideAvailableAt: TripDates[] = [
-    { date: 'September 01', day: 'Monday' },
-    { date: 'September 08', day: 'Monday' },
-    { date: 'September 16', day: 'Monday' },
-    { date: 'September 23', day: 'Monday' },
-    { date: 'September 30', day: 'Monday' },
-    { date: 'October 07', day: 'Monday' },
-    { date: 'October 14', day: 'Monday' },
-    { date: 'October 21', day: 'Monday' },
-    { date: 'October 28', day: 'Monday' },
-  ];
+  private filterFromSubject: Subject<string> = new Subject<string>();
 
+  private filterToSubject: Subject<string> = new Subject<string>();
+
+  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
   constructor(
     private fb: NonNullableFormBuilder,
-    private readonly homeFacade: HomeFacade,
+    public homeFacade: HomeFacade,
   ) {
     this.homeFacade.stations.subscribe({
       next: (stations) => {
@@ -136,14 +127,32 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.searchForm = this.searchFormInstance;
-    this.filteredCitiesFrom = this.searchForm.controls.from.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
-    this.filteredCitiesTo = this.searchForm.controls.to.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '')),
-    );
+    this.filterFromSubject
+      .pipe(
+        debounceTime(350),
+        map((value: string | null) => value?.trim().toLowerCase() ?? ''),
+        filter((value) => this.shouldEmitValue(value)),
+      )
+      .subscribe((value) => {
+        this.filterCities(value, 'from');
+      });
+
+    this.filterToSubject
+      .pipe(
+        debounceTime(350),
+        map((value: string | null) => value?.trim().toLowerCase() ?? ''),
+        filter((value) => this.shouldEmitValue(value)),
+      )
+      .subscribe((value) => {
+        this.filterCities(value, 'to');
+      });
+    this.searchDateFormControl.valueChanges.subscribe((value) => {
+      this.toggleTimeControl(value);
+    });
+  }
+
+  private shouldEmitValue(controlValue: string): boolean {
+    return Boolean(controlValue) && controlValue.length > 2;
   }
 
   ngAfterViewInit(): void {
@@ -181,18 +190,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public filterFrom() {
-    const filterValue = this.inputFrom.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.cities.filter((item) => item.toLowerCase().includes(filterValue));
+    this.filterFromSubject.next(this.inputFrom.nativeElement.value);
   }
 
   public filterTo() {
-    const filterValue = this.inputTo.nativeElement.value.toLowerCase();
-    this.filteredOptions = this.cities.filter((item) => item.toLowerCase().includes(filterValue));
-  }
-
-  private _filter(value: string) {
-    const filterValue = value.toLowerCase();
-    return this.cities.filter((city) => city.toLowerCase().includes(filterValue));
+    this.filterToSubject.next(this.inputTo.nativeElement.value);
   }
 
   private get searchFormInstance(): FormGroup<SearchForm> {
@@ -215,7 +217,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
           validators: [Validators.required],
         },
       ),
-      time: this.fb.control({ value: '', disabled: false }),
+      time: this.fb.control({ value: '', disabled: true }),
     });
   }
 
@@ -236,12 +238,19 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public getRides() {
-    if (this.searchForm.valid) {
-      this.searchRides.set(true);
+    if (this.searchForm.invalid) {
+      return;
     }
     const search: SearchApi = this.createSearchApiObject();
-    console.log(search);
-    // api call here
+    this.homeFacade.searchTickets(search).subscribe({
+      error: () => {
+        this.homeFacade.trainSearchResults.next([]);
+        this.homeFacade.routesDates.next([]);
+      },
+      complete: () => {
+        this.searchRides.set(true);
+      },
+    });
   }
 
   public buyTicket() {
@@ -256,16 +265,76 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private createSearchApiObject() {
-    let unixTime: number | undefined;
+    let unixTime: number;
     if (this.searchTimeFormControl.value) {
       unixTime = transformDateToUnixString(this.searchDateFormControl.value, this.searchTimeFormControl.value);
+    } else {
+      unixTime = transformDateToUnixString(this.searchDateFormControl.value, '00:00');
     }
     return {
-      fromLatitude: this.stationsData.find((city) => city.city === this.searchFromFormControl.value)?.latitude || 0,
-      fromLongitude: this.stationsData.find((city) => city.city === this.searchFromFormControl.value)?.longitude || 0,
-      toLatitude: this.stationsData.find((city) => city.city === this.searchToFormControl.value)?.latitude || 0,
-      toLongitude: this.stationsData.find((city) => city.city === this.searchToFormControl.value)?.longitude || 0,
+      fromLatitude: this.getCityCoordinateOrExternal(this.searchFromFormControl.value, 'latitude'),
+      fromLongitude: this.getCityCoordinateOrExternal(this.searchFromFormControl.value, 'longitude'),
+      toLatitude: this.getCityCoordinateOrExternal(this.searchToFormControl.value, 'latitude'),
+      toLongitude: this.getCityCoordinateOrExternal(this.searchToFormControl.value, 'longitude'),
       ...(unixTime !== undefined && { time: unixTime }),
     };
+  }
+
+  private getCityCoordinateOrExternal(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    const localCoordinate = this.getCityCoordinate(cityName, coordinateType);
+    if (localCoordinate !== 0) {
+      return localCoordinate;
+    }
+    return this.getExternalCityCoordinate(cityName, coordinateType);
+  }
+
+  private getCityCoordinate(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    const city = this.stationsData.find((c) => c.city === cityName);
+    return city ? (coordinateType === 'latitude' ? city.latitude : city.longitude) : 0;
+  }
+
+  private getExternalCityCoordinate(cityName: string, coordinateType: 'latitude' | 'longitude'): number {
+    let coordinate = 0;
+
+    this.homeFacade.cities$
+      .pipe(map((cities) => cities.find((city) => city.display_name === cityName)))
+      .subscribe((city) => {
+        if (city) {
+          coordinate = coordinateType === 'latitude' ? parseFloat(city.lat) : parseFloat(city.lon);
+        }
+      });
+
+    return coordinate;
+  }
+
+  public filterCities(inputString: string, filterType: 'from' | 'to') {
+    const localFiltered = this.cities.filter((item) => item.toLowerCase().includes(inputString));
+
+    if (localFiltered.length > 0) {
+      this.filteredOptions = localFiltered;
+    } else {
+      this.homeFacade.getCity(inputString).subscribe({
+        next: (result) => {
+          this.filteredOptions = result.map((city) => city.display_name);
+        },
+        error: (err) => {
+          console.error(`Error fetching city for ${filterType}:`, err);
+          this.filteredOptions = [];
+        },
+      });
+    }
+  }
+
+  public trackByCity(index: number, city: string): string {
+    return city;
+  }
+
+  private toggleTimeControl(date: string) {
+    if (date) {
+      this.searchTimeFormControl.enable();
+    } else {
+      this.searchTimeFormControl.disable();
+      this.searchTimeFormControl.setValue('');
+    }
   }
 }
