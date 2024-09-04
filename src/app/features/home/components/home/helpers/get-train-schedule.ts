@@ -31,6 +31,7 @@ export const getTrainSchedules = async (data: JourneyList): Promise<SearchRideRe
             arrival: arrival,
             totalTime: totalTime,
             price: prices,
+            rideId: sch.rideId,
           };
 
           results.push(result);
