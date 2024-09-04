@@ -145,5 +145,29 @@
     &_buttons button {
       padding: 4px 8px;
     }
+
+    &_form-columns {
+      flex-direction: column;
+      width: 300px;
+    }
+
+    &_form-section {
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    &_form {
+      max-width: 90%;
+      margin: 0 auto;
+      padding: 0 10px;
+    }
+
+    &_add-station-button,
+    &_add-carriage-button,
+    &_save-button,
+    &_cancel-button {
+      width: 100%;
+      padding: 12px;
+    }
   }
 }

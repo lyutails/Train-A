@@ -94,12 +94,7 @@ export class SignInComponent {
           this.signInForm.controls['password'].setErrors({ invalidFields: true });
         } else if (error.reason === 'invalidEmail') {
           this.signInForm.controls['email'].setErrors({ invalidEmail: true });
-        }
-        // else if (error.reason === 'userNotFound') {
-        //     this.emailErrorMessage = 'User is not found';
-        //     this.signInForm.controls['email'].setErrors({ userNotFound: true });
-        // }
-        else if (error.reason === 'alreadyLoggedIn') {
+        } else if (error.reason === 'alreadyLoggedIn') {
           this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
         } else {
           this.signInForm.setErrors({ formError: true });
