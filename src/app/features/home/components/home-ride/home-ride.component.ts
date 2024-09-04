@@ -4,9 +4,9 @@ import { MatIcon } from '@angular/material/icon';
 import { CommonModule, DatePipe, KeyValuePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RouteModalComponent } from '../route-modal/route-modal.component';
-import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { SearchRideResult } from '../../models/search-ride-result';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'TTP-home-ride',
@@ -31,22 +31,12 @@ export class HomeRideComponent {
   public popupRoute = signal('');
   public routeValue = model('');
 
-  testCarriages: Carriage[] = [
-    { code: 'lalala', name: 'lalala', rows: 5, leftSeats: 2, rightSeats: 2 },
-    { code: 'justCarriage', name: 'justCarriage', rows: 10, leftSeats: 3, rightSeats: 1 },
-    { code: 'oneMore', name: 'oneMore', rows: 6, leftSeats: 2, rightSeats: 3 },
-    { code: 'carriage2A', name: 'carriage2A', rows: 16, leftSeats: 2, rightSeats: 2 },
-  ];
+  constructor(private readonly router: Router) {}
 
   public pickTripDetails() {
-    this.getCarriages();
-    // router.navigate /trip/:rideId?from=stationId&to=stationId
-  }
-
-  public getCarriages() {
-    this.searchCarriages.set(true);
-    // api call here
-    // this.carriages = data
+    this.router.navigate(['/trip', this.tripInfo.rideId], {
+      queryParams: { from: this.tripInfo.departureStation.name, to: this.tripInfo.arrivalStation.name },
+    });
   }
 
   public openRouteModal() {
