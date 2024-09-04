@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ButtonComponent } from '../../../../../../../common/button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormGroup, Validators, NonNullableFormBuilder, FormArray } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, AbstractControl, ValidatorFn } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -22,6 +22,35 @@ import { ConnectedStationsApi } from '../../../../../../../repositories/stations
 import { ChangeDetectorRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatSpinner } from '@angular/material/progress-spinner';
+
+export interface MinLengthArrayValidationResult {
+  minLengthArray: {
+    valid: boolean;
+    requiredLength: number;
+    actualLength: number;
+  };
+}
+
+export function minLengthArray(min: number): ValidatorFn {
+  return (control: AbstractControl): MinLengthArrayValidationResult | null => {
+    const value = control.value;
+
+    if (!value || !Array.isArray(value)) {
+      return null;
+    }
+
+    const isValid = value.length >= min;
+    return isValid
+      ? null
+      : {
+          minLengthArray: {
+            valid: false,
+            requiredLength: min,
+            actualLength: value.length,
+          },
+        };
+  };
+}
 
 @Component({
   selector: 'TTP-routes',
@@ -108,8 +137,20 @@ export class RoutesComponent implements OnInit {
 
   private initializeForms(): void {
     this.createRouteForm = this.fb.group({
-      carriages: this.fb.array([], [Validators.required, Validators.minLength(3)]),
-      stations: this.fb.array([], [Validators.required, Validators.minLength(3)]),
+      carriages: this.fb.array(
+        [this.createEmptyCarriage(), this.createEmptyCarriage(), this.createEmptyCarriage()],
+        [Validators.required, minLengthArray(3)],
+      ),
+      stations: this.fb.array(
+        [this.createStationFormGroup(), this.createStationFormGroup(), this.createStationFormGroup()],
+        [Validators.required, minLengthArray(3)],
+      ),
+    });
+  }
+
+  private createEmptyCarriage(): FormGroup {
+    return this.fb.group({
+      name: ['', Validators.required],
     });
   }
 
@@ -212,48 +253,36 @@ export class RoutesComponent implements OnInit {
 
   public createCarriageFormGroup(carriage: Carriage): FormGroup {
     return this.fb.group({
-      code: [carriage.code, Validators.required],
       name: [carriage.name, Validators.required],
-      rows: [carriage.rows, [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')]],
-      leftSeats: [carriage.leftSeats, [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')]],
-      rightSeats: [carriage.rightSeats, [Validators.required, Validators.pattern('^([1-9]|1[0-8])$')]],
     });
   }
 
   public addCarriage(): void {
-    const carriageControl = this.createRouteForm.get('carriages');
-    if (carriageControl instanceof FormArray) {
-      const newCarriage: Carriage = {
-        code: '',
-        name: '',
-        rows: 0,
-        leftSeats: 0,
-        rightSeats: 0,
-      };
-      carriageControl.push(this.createCarriageFormGroup(newCarriage));
-    }
+    const carriageControl = this.createRouteForm.get('carriages') as FormArray;
+    carriageControl.push(this.createEmptyCarriage());
+    carriageControl.updateValueAndValidity();
   }
 
   public removeCarriage(index: number): void {
-    const carriageControl = this.createRouteForm.get('carriages');
-    if (carriageControl instanceof FormArray) {
+    const carriageControl = this.createRouteForm.get('carriages') as FormArray;
+    if (carriageControl.length > 3) {
       carriageControl.removeAt(index);
+      carriageControl.updateValueAndValidity();
     }
   }
 
   public addStation(): void {
-    const stationsControl = this.createRouteForm.get('stations');
-    if (stationsControl instanceof FormArray) {
-      stationsControl.push(this.createStationFormGroup());
-    }
+    const stationsControl = this.createRouteForm.get('stations') as FormArray;
+    stationsControl.push(this.createStationFormGroup());
+    stationsControl.updateValueAndValidity();
   }
 
   public removeStation(index: number): void {
-    const stationsControl = this.createRouteForm.get('stations');
-    if (stationsControl instanceof FormArray) {
+    const stationsControl = this.createRouteForm.get('stations') as FormArray;
+    if (stationsControl.length > 3) {
       stationsControl.removeAt(index);
+      stationsControl.updateValueAndValidity();
     }
-    this.connectedStations.splice(index, 1);
   }
 
   public canAddStation(): boolean {
@@ -264,16 +293,14 @@ export class RoutesComponent implements OnInit {
   }
 
   public onStationChange(index: number): void {
-    const stationsControl = this.createRouteForm.get('stations');
-    if (stationsControl instanceof FormArray) {
-      if (index === stationsControl.length - 1 && stationsControl.at(index)?.valid) {
-        this.addStation();
-      }
+    const stationsControl = this.createRouteForm.get('stations') as FormArray;
 
-      stationsControl.controls.forEach((control) => {
-        control.get('station')?.updateValueAndValidity({ onlySelf: true });
-      });
-    }
+    const currentControl = stationsControl.at(index);
+    currentControl.get('station')?.updateValueAndValidity({ onlySelf: true });
+
+    stationsControl.controls.forEach((control) => {
+      control.get('station')?.updateValueAndValidity({ onlySelf: true });
+    });
   }
 
   public getStationsControls(): FormGroup[] {
