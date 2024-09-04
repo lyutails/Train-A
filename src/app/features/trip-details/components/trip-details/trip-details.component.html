@@ -97,13 +97,6 @@
           Price: <span class="coloured-bold-text">{{ totalSelectedRidePrice }}$</span>
         </p>
       </div>
-      <TTP-button
-        (click)="testOrder()"
-        [type]="'button'"
-        [width]="'10vw'"
-        [buttonText]="'test order'"
-        class="trip-details_buy-button"
-      ></TTP-button>
       @if (seatIsSelected()) {
         @if (isAuthenticated) {
           <TTP-button

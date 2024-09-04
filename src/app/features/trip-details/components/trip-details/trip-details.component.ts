@@ -244,14 +244,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     });
   }
 
-  public testOrder() {
-    this.httpClient.get('order').subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-    });
-  }
-
   public buyTicket() {
     console.log('call api to buy ticket and /order');
     this.httpClient.post('order', { rideId: 1, seat: 5, stationStart: 84, stationEnd: 133 }).subscribe({
