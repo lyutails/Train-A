@@ -5,7 +5,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatLabel } from '@angular/material/form-field';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthFacade } from '../../../../core/authorization/services/auth.facade';
 import { RoleService } from '../../../../core/roles/role.service';
 import { AuthBuySeatComponent } from '../auth-buy-seat/auth-buy-seat.component';
@@ -72,6 +72,9 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public ridePath!: number[];
   public firstStationIndex = 0;
   public lastStationIndex = 0;
+  public rideId!: string;
+  public queryParamFrom!: string;
+  public queryParamTo!: string;
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -80,15 +83,26 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     private authFacade: AuthFacade,
     private roleService: RoleService,
     private httpClient: HttpClient,
+    private route: ActivatedRoute,
   ) {
     this.initializeUserRole();
   }
 
-  rideId = 1;
-  stationFrom = 84;
-  stationTo = 133;
+  // rideId = 1651;
+  // stationFrom = 133;
+  // stationTo = 18;
 
   ngOnInit() {
+    const rideId = this.route.snapshot.paramMap.get('rideId');
+    console.log(rideId);
+    if (!rideId) {
+      this.router.navigate(['/404']);
+      return;
+    }
+    this.rideId = rideId;
+    this.queryParamFrom = this.route.snapshot.queryParamMap.get('from')!;
+    this.queryParamTo = this.route.snapshot.queryParamMap.get('to')!;
+
     this.httpClient.get<Carriage[]>('carriage').subscribe({
       next: (data) => {
         console.log(data);
@@ -96,7 +110,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       },
     });
     this.httpClient
-      .get<TripDetailsResponse>(`search/${this.rideId}?from=${this.stationFrom}&to=${this.stationTo}`)
+      .get<TripDetailsResponse>(`search/${this.rideId}?from=${this.queryParamFrom}&to=${this.queryParamTo}`)
       .subscribe({
         next: (data) => {
           console.log(data);
@@ -120,8 +134,8 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           this.ridePath = [];
           this.ridePath = data.path;
           console.log(this.ridePath);
-          this.firstStationIndex = this.ridePath.findIndex((element) => element === this.stationFrom);
-          this.lastStationIndex = this.ridePath.findIndex((element) => element === this.stationTo);
+          this.firstStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamFrom);
+          this.lastStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamTo);
           console.log(this.firstStationIndex, this.lastStationIndex);
 
           console.log(data.schedule.segments);
@@ -245,26 +259,13 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   }
 
   public buyTicket() {
-    console.log('call api to buy ticket and /order');
-    this.httpClient.post('order', { rideId: 1, seat: 5, stationStart: 84, stationEnd: 133 }).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      /* error: ({ error }: HttpErrorResponse) => {
-        if (error.reason === 'alreadyLoggedIn') {
-          this.signInForm.controls['email'].setErrors({ alreadyLoggedIn: true });
-        }
-        if (error.reason === 'userNotFound') {
-          this.signInForm.controls['email'].setErrors({ userNotFound: true });
-        }
-        if (error.reason === 'invalidEmail') {
-          this.signInForm.controls['email'].setErrors({ invalidEmail: true });
-        }
-        if (error.reason === 'invalidFields') {
-          this.signInForm.controls['email'].setErrors({ invalidFields: true });
-        }
-      }, */
-    });
+    this.httpClient
+      .post('order', { rideId: this.rideId, seat: 5, stationStart: this.queryParamFrom, stationEnd: this.queryParamTo })
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+      });
   }
 
   moveLeft() {
