@@ -18,12 +18,14 @@ export class CarriageSeatComponent implements OnInit {
   @Input() seatValue = '';
   @Input() carriageNameValue!: string;
   @Input() checked = false;
+  @Input() carriageNumberValue = 0;
   @ViewChild('seatCheckbox') seatCheckbox!: ElementRef;
   public check = signal(false);
   @Output() chosenSeat = new EventEmitter<string>();
   public isCarriagesPage = signal(false);
   public selectedSeat = signal('');
   public selectedCarriage = signal('');
+  public selectedCarriageNumber = signal('');
 
   constructor(
     private route: ActivatedRoute,
@@ -47,13 +49,16 @@ export class CarriageSeatComponent implements OnInit {
     console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
     localStorage.setItem('seatNumber', JSON.stringify(this.seatValue));
     localStorage.setItem('carriageName', JSON.stringify(this.carriageNameValue));
+    localStorage.setItem('carriageNumber', JSON.stringify(this.carriageNumberValue));
     this.selectedSeat.set(JSON.parse(localStorage.getItem('seatNumber')!));
     this.selectedCarriage.set(JSON.parse(localStorage.getItem('carriageName')!));
+    this.selectedCarriageNumber.set(JSON.parse(localStorage.getItem('carriageNumber')!));
     console.log(this.selectedSeat());
     console.log(this.selectedCarriage());
     if (!this.check()) {
       localStorage.removeItem('seatNumber');
       localStorage.removeItem('carriageName');
+      localStorage.removeItem('carriageNumber');
     }
     this.check.set(!this.check());
     console.log(this.checked);

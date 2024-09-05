@@ -13,6 +13,7 @@ export class CarriageRowComponent implements OnInit, OnChanges {
   @Input() leftSeatCount = 0;
   @Input() rightSeatCount = 0;
   @Input() carriageName!: string;
+  @Input() carriageNumber = 0;
   seatsInRow!: number[];
   seatsInRowNumber!: number;
 

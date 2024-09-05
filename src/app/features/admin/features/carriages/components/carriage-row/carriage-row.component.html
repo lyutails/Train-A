@@ -2,6 +2,7 @@
   <TTP-carriage-seat
     [carriageNameValue]="carriageName"
     [seatValue]="(seatsInRowNumber * rowNumber + index + 1).toString()"
+    [carriageNumberValue]="carriageNumber"
     class="carriage-row_with-seats"
   ></TTP-carriage-seat>
 }
@@ -10,6 +11,7 @@
   <TTP-carriage-seat
     [carriageNameValue]="carriageName"
     [seatValue]="(seatsInRowNumber * rowNumber + index + leftSeatCount + 1).toString()"
+    [carriageNumberValue]="carriageNumber"
     class="carriage-row_with-seats"
   ></TTP-carriage-seat>
 }

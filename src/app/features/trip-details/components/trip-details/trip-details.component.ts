@@ -12,13 +12,13 @@ import { AuthBuySeatComponent } from '../auth-buy-seat/auth-buy-seat.component';
 import { TripDetailsResponse } from '../../models/trip-details-response.model';
 import { MatIconButton } from '@angular/material/button';
 import { CarriagesCarouselComponent } from '../carriages-carousel/carriages-carousel.component';
-import { HttpClient } from '@angular/common/http';
 import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
 import { CarriageRowComponent } from '../../../admin/features/carriages/components/carriage-row/carriage-row.component';
 import { Segments } from '../../models/segments.model';
 import { Price } from '../../models/price.model';
 import { LoadingService } from '../../../../common/services/loading/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TripDetailsService } from '../../services/trip-details.service';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -76,6 +76,10 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public queryParamFrom!: string;
   public queryParamTo!: string;
   public numberOfSeatsInCarriageType!: number[];
+  public uniqueRideCarriages!: Carriage[];
+  public departureTime = '';
+  public arrivalTime = '';
+  public selectedCarriageNumber = '';
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -83,19 +87,14 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     private router: Router,
     private authFacade: AuthFacade,
     private roleService: RoleService,
-    private httpClient: HttpClient,
     private route: ActivatedRoute,
+    private tripDetailsService: TripDetailsService,
   ) {
     this.initializeUserRole();
   }
 
-  // rideId = 1651;
-  // stationFrom = 133;
-  // stationTo = 18;
-
   ngOnInit() {
     const rideId = this.route.snapshot.paramMap.get('rideId');
-    console.log(rideId);
     if (!rideId) {
       this.router.navigate(['/404']);
       return;
@@ -104,82 +103,67 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     this.queryParamFrom = this.route.snapshot.queryParamMap.get('from')!;
     this.queryParamTo = this.route.snapshot.queryParamMap.get('to')!;
 
-    this.httpClient.get<Carriage[]>('carriage').subscribe({
+    this.tripDetailsService.getCarriages().subscribe({
       next: (data) => {
-        console.log(data);
         this.allAvailableAppCarriages = data;
       },
     });
 
-    this.httpClient
-      .get<TripDetailsResponse>(`search/${this.rideId}?from=${this.queryParamFrom}&to=${this.queryParamTo}`)
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.rideCarriagesNames = data.carriages;
-          console.log(data.carriages);
-          // this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
-          this.uniqueCarriageNames = [];
-          this.allAvailableAppCarriages.map((carriage) => {
-            if (carriage.code !== undefined) {
-              this.uniqueCarriageNames.push(carriage.code);
+    this.tripDetailsService.getRideDetails(this.rideId).subscribe({
+      next: (data) => {
+        this.rideCarriagesNames = data.carriages;
+        if (data.carriages.length > 0) {
+          this.areCarriages.set(true);
+        }
+        this.rideCarriagesNames.map((element) => {
+          for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
+            if (this.allAvailableAppCarriages[i].code === element) {
+              this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
+              this.allFilteredRideCarriages = this.allRideCarriages;
             }
-          });
-          if (data.carriages.length > 0) {
-            this.areCarriages.set(true);
           }
-          console.log(this.uniqueCarriageNames);
-          console.log(this.allRideCarriages);
-          this.rideCarriagesNames.map((element) => {
-            for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
-              if (this.allAvailableAppCarriages[i].code === element) {
-                this.allRideCarriages.push(this.allAvailableAppCarriages[i]);
-                this.allFilteredRideCarriages = this.allRideCarriages;
-              }
+        });
+
+        this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+
+        this.numberOfSeatsInCarriageType = [];
+
+        this.uniqueRideCarriages = [...new Set(this.allRideCarriages)];
+
+        this.uniqueRideCarriages.filter((carriage) => {
+          this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
+        });
+
+        this.ridePath = [];
+        this.ridePath = data.path;
+        this.firstStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamFrom);
+        this.lastStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamTo);
+
+        this.rideSegments = data.schedule.segments;
+        this.rideAllSegmentsPrices = [];
+        this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
+        this.rideAllSegmentsPricesNumbers = [];
+        this.uniqueCarriageNames.forEach((name) => {
+          this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex).map((price) => {
+            if (price[name]) {
+              this.rideAllSegmentsPricesNumbers.push(price[name]);
             }
+            this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
+              return acc + curr;
+            }, 0);
           });
-
-          this.numberOfSeatsInCarriageType = [];
-          this.allAvailableAppCarriages.map((carriage) => {
-            this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
-          });
-          console.log(this.numberOfSeatsInCarriageType);
-          console.log(this.uniqueCarriageNames);
-
-          this.ridePath = [];
-          this.ridePath = data.path;
-          console.log(this.ridePath);
-          this.firstStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamFrom);
-          this.lastStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamTo);
-          console.log(this.firstStationIndex, this.lastStationIndex);
-
-          console.log(data.schedule.segments);
-          this.rideSegments = data.schedule.segments;
-          this.rideAllSegmentsPrices = [];
-          this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
-          console.log(this.rideAllSegmentsPrices);
-          console.log(this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1));
+          this.totalRidePrices.push(this.totalRidePrice);
           this.rideAllSegmentsPricesNumbers = [];
-          this.uniqueCarriageNames.forEach((name) => {
-            this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1).map((price) => {
-              if (price[name]) {
-                this.rideAllSegmentsPricesNumbers.push(price[name]);
-              }
-              this.totalRidePrice = this.rideAllSegmentsPricesNumbers.reduce((acc, curr) => {
-                return acc + curr;
-              }, 0);
-            });
-            this.totalRidePrices.push(this.totalRidePrice);
-            this.rideAllSegmentsPricesNumbers = [];
-          });
-          console.log(this.totalRidePrices);
+        });
 
-          this.occupiedSeats = [];
-          this.rideSegments.map((item) => this.occupiedSeats.push(item.occupiedSeats));
-          //this.freeSeats = amountOfSeatsInCarriage - this.occupiedSeats.length;
-          console.log(this.occupiedSeats);
-        },
-      });
+        this.occupiedSeats = [];
+        this.rideSegments.map((item) => this.occupiedSeats.push(item.occupiedSeats));
+        //this.freeSeats = amountOfSeatsInCarriage - this.occupiedSeats.length;
+
+        this.departureTime = this.rideSegments[this.firstStationIndex].time[0];
+        this.arrivalTime = this.rideSegments[this.lastStationIndex].time[1];
+      },
+    });
 
     try {
       this.loadingService.show();
@@ -210,7 +194,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       this.allFilteredRideCarriages = this.allRideCarriages.filter(
         (item) => item.code === this.filterSliderCarriageName,
       );
-      console.log(this.allRideCarriages);
       this.trainCarriageNumber = [];
       this.allRideCarriages.forEach((element, index) => {
         if (element.code === this.filterSliderCarriageName) {
@@ -228,9 +211,14 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       });
     }
 
-    if (localStorage.getItem('seatNumber') && localStorage.getItem('carriageName')) {
+    if (
+      localStorage.getItem('seatNumber') &&
+      localStorage.getItem('carriageName') &&
+      localStorage.getItem('carriageNumber')
+    ) {
       this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
       this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
+      this.selectedCarriageNumber = JSON.parse(localStorage.getItem('carriageNumber') ?? '');
 
       if (this.selectedCarriageName && this.uniqueCarriageNames) {
         const carriageIndex = this.uniqueCarriageNames.indexOf(this.selectedCarriageName);
@@ -239,6 +227,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     } else {
       this.selectedSeat = '';
       this.selectedCarriageName = '';
+      this.selectedCarriageNumber = '';
       this.totalSelectedRidePrice = 0;
     }
   }
@@ -273,16 +262,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     });
   }
 
-  public buyTicket() {
-    this.httpClient
-      .post('order', { rideId: this.rideId, seat: 5, stationStart: this.queryParamFrom, stationEnd: this.queryParamTo })
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-        },
-      });
-  }
-
   moveLeft() {
     this.content.scrollBy(-(this.width + 10), 0);
   }
@@ -293,6 +272,15 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
   getCarriageName(item: string) {
     this.filterSliderCarriageName = item;
-    console.log(this.filterSliderCarriageName);
+  }
+
+  public buyTicket() {
+    this.tripDetailsService
+      .buyTicket(this.rideId, this.selectedSeat, this.queryParamFrom, this.queryParamTo)
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+        },
+      });
   }
 }
