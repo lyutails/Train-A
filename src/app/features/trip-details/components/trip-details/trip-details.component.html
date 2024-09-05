@@ -26,10 +26,12 @@
         </div>
         <div class="trip-details_detail-times">
           <p class="trip-details_detail-time start">
-            <span class="coloured-text">{{ departureTime }}</span>
+            <span class="coloured-text">{{ departureTime | date: 'MMMM dd' : '+0000' }}</span
+            ><span class="coloured-text">{{ departureTime | date: 'shortTime' : '+0000' }}</span>
           </p>
           <p class="trip-details_detail-time end">
-            <span class="coloured-text">{{ arrivalTime }}</span>
+            <span class="coloured-text">{{ departureTime | date: 'MMMM dd' : '+0000' }}</span>
+            <span class="coloured-text">{{ arrivalTime | date: 'shortTime' : '+0000' }}</span>
           </p>
         </div>
       </div>
