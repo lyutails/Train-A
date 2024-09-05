@@ -77,6 +77,8 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public queryParamTo!: string;
   public numberOfSeatsInCarriageType!: number[];
   public uniqueRideCarriages!: Carriage[];
+  public departureTime = '';
+  public arrivalTime = '';
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -156,6 +158,9 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
         this.occupiedSeats = [];
         this.rideSegments.map((item) => this.occupiedSeats.push(item.occupiedSeats));
         //this.freeSeats = amountOfSeatsInCarriage - this.occupiedSeats.length;
+
+        this.departureTime = this.rideSegments[this.firstStationIndex].time[0];
+        this.arrivalTime = this.rideSegments[this.lastStationIndex].time[1];
       },
     });
 
