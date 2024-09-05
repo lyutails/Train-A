@@ -118,17 +118,9 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           console.log(data);
           this.rideCarriagesNames = data.carriages;
           console.log(data.carriages);
-          // this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
-          this.uniqueCarriageNames = [];
-          this.allAvailableAppCarriages.map((carriage) => {
-            if (carriage.code !== undefined) {
-              this.uniqueCarriageNames.push(carriage.code);
-            }
-          });
           if (data.carriages.length > 0) {
             this.areCarriages.set(true);
           }
-          console.log(this.uniqueCarriageNames);
           console.log(this.allRideCarriages);
           this.rideCarriagesNames.map((element) => {
             for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
@@ -139,12 +131,15 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
             }
           });
 
+          console.log(this.allRideCarriages);
+          this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
+          console.log(this.uniqueCarriageNames);
+
           this.numberOfSeatsInCarriageType = [];
-          this.allAvailableAppCarriages.map((carriage) => {
+          this.allRideCarriages.map((carriage) => {
             this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
           });
           console.log(this.numberOfSeatsInCarriageType);
-          console.log(this.uniqueCarriageNames);
 
           this.ridePath = [];
           this.ridePath = data.path;
@@ -275,7 +270,12 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
   public buyTicket() {
     this.httpClient
-      .post('order', { rideId: this.rideId, seat: 5, stationStart: this.queryParamFrom, stationEnd: this.queryParamTo })
+      .post('order', {
+        rideId: this.rideId,
+        seat: this.selectedSeat,
+        stationStart: this.queryParamFrom,
+        stationEnd: this.queryParamTo,
+      })
       .subscribe({
         next: (data) => {
           console.log(data);
