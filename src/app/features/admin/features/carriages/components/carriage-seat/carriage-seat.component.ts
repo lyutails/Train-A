@@ -10,7 +10,7 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -52,9 +52,6 @@ export class CarriageSeatComponent implements OnInit, AfterContentChecked {
     if (this.seatValue === this.selectedSeat) {
       this.check.set(true);
     }
-    console.log(this.checked);
-    console.log(this.selectedSeat);
-    console.log(this.selectedCarriage);
   }
 
   ngAfterContentChecked(): void {
@@ -66,9 +63,6 @@ export class CarriageSeatComponent implements OnInit, AfterContentChecked {
     } else {
       this.check.set(true);
     }
-    console.log(this.checked);
-    console.log(this.seatValue);
-    console.log(this.selectedSeat);
   }
 
   clickCheckbox() {
@@ -79,24 +73,12 @@ export class CarriageSeatComponent implements OnInit, AfterContentChecked {
     this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber')!);
     this.selectedCarriage = JSON.parse(localStorage.getItem('carriageName')!);
     this.selectedCarriageNumber = JSON.parse(localStorage.getItem('carriageNumber')!);
-    console.log(this.selectedSeat);
-    console.log(this.selectedCarriage);
     if (!this.check()) {
       localStorage.removeItem('seatNumber');
       localStorage.removeItem('carriageName');
       localStorage.removeItem('carriageNumber');
     }
     this.check.set(!this.check());
-  }
-
-  inspectCheckboxValue(event: MatCheckboxChange): void {
-    console.log(event.checked);
-    if (event.checked) {
-      console.log('checked');
-    }
-    this.check.set(!this.check());
-    console.log('checked');
-    console.log(this.check());
   }
 
   public get isAdminRole(): boolean {
