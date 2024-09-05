@@ -307,7 +307,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
             and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
             'close',
             {
-              duration: 3000,
+              duration: 4000,
             },
           );
 
@@ -322,7 +322,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
             `You already have a ticket for this ride, please cancel active one and try again`,
             'close',
             {
-              duration: 3000,
+              duration: 4000,
             },
           );
         },
