@@ -79,6 +79,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public uniqueRideCarriages!: Carriage[];
   public departureTime = '';
   public arrivalTime = '';
+  public selectedCarriageNumber = '';
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -210,9 +211,14 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       });
     }
 
-    if (localStorage.getItem('seatNumber') && localStorage.getItem('carriageName')) {
+    if (
+      localStorage.getItem('seatNumber') &&
+      localStorage.getItem('carriageName') &&
+      localStorage.getItem('carriageNumber')
+    ) {
       this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber') ?? '');
       this.selectedCarriageName = JSON.parse(localStorage.getItem('carriageName') ?? '');
+      this.selectedCarriageNumber = JSON.parse(localStorage.getItem('carriageNumber') ?? '');
 
       if (this.selectedCarriageName && this.uniqueCarriageNames) {
         const carriageIndex = this.uniqueCarriageNames.indexOf(this.selectedCarriageName);
