@@ -129,7 +129,7 @@
                       [rowNumber]="index"
                       [leftSeatCount]="carriage.leftSeats"
                       [rightSeatCount]="carriage.rightSeats"
-                      [carriageNumber]="trainCarriageNumber[i] ?? i"
+                      [carriageNumber]="trainCarriageNumber[i] || i"
                     ></TTP-carriage-row>
                   }
                 }

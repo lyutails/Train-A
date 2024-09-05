@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthFacade } from '../../../../core/authorization/services/auth.facade';
 import { RoleService } from '../../../../core/roles/role.service';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { TicketComponent } from '../ticket/ticket.component';
 import { OrderParameters } from '../../models/orders.model';
 import { TicketParameters } from '../../models/ticket.model';
+import { OrdersService } from '../../services/orders.service';
+import { UsersOrders } from '../../models/users-orders.model';
 
 @Component({
   selector: 'TTP-orders',
@@ -14,48 +16,34 @@ import { TicketParameters } from '../../models/ticket.model';
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
 })
-export class OrdersComponent {
+export class OrdersComponent implements OnInit {
   public userRole = '';
   public orders!: OrderParameters[];
   public tickets!: TicketParameters[];
+  public usersOrders!: UsersOrders[];
 
   constructor(
     private authFacade: AuthFacade,
     private roleService: RoleService,
+    private ordersService: OrdersService,
   ) {
     this.initializeUserRole();
-    this.orders = [
-      {
-        id: 88,
-        rideId: 25,
-        routeId: 68,
-        seatId: 54,
-        userId: 16,
-        status: 'active',
-        path: [33, 5, 62, 11, 48, 34],
-        carriages: [
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-        ],
-      },
-    ];
+  }
 
-    this.tickets = [
-      {
-        id: 58,
-        stationStart: 'London',
-        stationEnd: 'Paris',
-        routeId: 3,
-        seatId: 33,
-        userId: 3552,
+  ngOnInit(): void {
+    this.ordersService.getUsersOrders().subscribe({
+      next: (data) => {
+        this.usersOrders = [];
+        this.usersOrders = data;
       },
-    ];
+    });
+    this.ordersService.getActiveOrder().subscribe({
+      next: (data) => {
+        this.orders = [];
+        console.log(data);
+        this.orders = data;
+      },
+    });
   }
 
   private initializeUserRole(): void {

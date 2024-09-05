@@ -31,7 +31,7 @@ export class TripDetailsService {
     return this.httpClient.get('order');
   }
 
-  public deleteOrder(orderId: number) {
-    return this.httpClient.delete(`order/${orderId}`);
+  public getUsersOrders() {
+    return this.httpClient.get('users');
   }
 }

@@ -98,6 +98,9 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   }
 
   ngOnInit() {
+    this.tripDetailsService.getActiveOrder().subscribe((data) => console.log(data));
+    this.tripDetailsService.getUsersOrders().subscribe((data) => console.log(data));
+
     const rideId = this.route.snapshot.paramMap.get('rideId');
     if (!rideId) {
       this.router.navigate(['/404']);

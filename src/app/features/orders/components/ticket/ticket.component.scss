@@ -4,6 +4,11 @@
   &_wrapper {
     width: 80%;
     margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    border: $border-frame;
+    border-radius: 10px;
   }
 
   &_body {
@@ -13,8 +18,8 @@
     justify-content: space-between;
 
     aspect-ratio: 1/ 0.4;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 20px;
 
     //  @include border-frame;
@@ -153,6 +158,8 @@
     &_wrapper {
       width: 100%;
       margin: 0 auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
 }
