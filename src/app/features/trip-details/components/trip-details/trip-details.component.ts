@@ -19,6 +19,8 @@ import { Price } from '../../models/price.model';
 import { LoadingService } from '../../../../common/services/loading/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TripDetailsService } from '../../services/trip-details.service';
+import { HomeFacade } from '../../../home/services/home.facade';
+import { TripRouteModalComponent } from '../trip-route-modal/trip-route-modal.component';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -90,6 +92,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     private roleService: RoleService,
     private route: ActivatedRoute,
     private tripDetailsService: TripDetailsService,
+    private readonly homeFacade: HomeFacade,
   ) {
     this.initializeUserRole();
   }
@@ -273,6 +276,22 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
   getCarriageName(item: string) {
     this.filterSliderCarriageName = item;
+  }
+
+  public openTripRouteModal() {
+    const dialogRef = this.dialog.open(TripRouteModalComponent, {
+      data: {
+        rideId: this.rideId,
+        routes: [
+          { time: this.departureTime, station: this.queryParamFrom, stop: 'First Station' },
+          { time: this.arrivalTime, station: this.queryParamTo, stop: 'Last Station' },
+        ],
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      return;
+    });
   }
 
   public buyTicket() {
