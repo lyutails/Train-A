@@ -98,8 +98,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   }
 
   ngOnInit() {
-    this.tripDetailsService.getActiveOrder().subscribe({ next: (data) => console.log(data) });
-
     const rideId = this.route.snapshot.paramMap.get('rideId');
     if (!rideId) {
       this.router.navigate(['/404']);
@@ -297,11 +295,30 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   }
 
   public buyTicket() {
+    this.tripDetailsService.getActiveOrder().subscribe({ next: (data) => console.log(data) });
+
     this.tripDetailsService
       .buyTicket(this.rideId, this.selectedSeat, this.queryParamFrom, this.queryParamTo)
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.snackBar.open(
+            `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
+            and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
+            'close',
+            {
+              duration: 3000,
+            },
+          );
+        },
+        error: () => {
+          this.snackBar.open(
+            `You already have a ticket for this ride, please cancel active one and try again`,
+            'close',
+            {
+              duration: 3000,
+            },
+          );
         },
       });
 
@@ -310,14 +327,5 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       localStorage.removeItem('carriageName');
       localStorage.removeItem('carriageNumber');
     }
-
-    this.snackBar.open(
-      `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
-      and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
-      'close',
-      {
-        duration: 3000,
-      },
-    );
   }
 }
