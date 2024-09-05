@@ -14,9 +14,13 @@
       ></TTP-button>
       <div class="trip-details_details">
         <div class="trip-details_detail-stations">
-          <p class="trip-details_detail-station start"><span class="coloured-bold-text">start station</span></p>
+          <p class="trip-details_detail-station start">
+            <span class="coloured-bold-text">{{ queryParamFrom }}</span>
+          </p>
           <mat-icon class="">trending_flat</mat-icon>
-          <p class="trip-details_detail-station end"><span class="coloured-bold-text">end station</span></p>
+          <p class="trip-details_detail-station end">
+            <span class="coloured-bold-text">{{ queryParamTo }}</span>
+          </p>
         </div>
         <div class="trip-details_detail-times">
           <p class="trip-details_detail-time start"><span class="coloured-text">departure time</span></p>
@@ -25,7 +29,7 @@
       </div>
       <div class="trip-details_route-details">
         <p class="trip-details_rideid">
-          Ride <span class="coloured-bold-text">(rideId) currently testing with rideId=1</span>
+          Ride <span class="coloured-bold-text">{{ rideId }}</span>
         </p>
         <TTP-button
           (click)="redirectToHomePage()"
@@ -46,6 +50,7 @@
               [carriage]="carriage"
               [selected]="carriage === filterSliderCarriageName"
               [price]="totalRidePrices[index]"
+              [freeSeats]="numberOfSeatsInCarriageType[index]"
               (carriageNameEvent)="getCarriageName($event)"
             ></TTP-carriages-carousel>
           }
@@ -97,13 +102,6 @@
           Price: <span class="coloured-bold-text">{{ totalSelectedRidePrice }}$</span>
         </p>
       </div>
-      <TTP-button
-        (click)="testOrder()"
-        [type]="'button'"
-        [width]="'10vw'"
-        [buttonText]="'test order'"
-        class="trip-details_buy-button"
-      ></TTP-button>
       @if (seatIsSelected()) {
         @if (isAuthenticated) {
           <TTP-button

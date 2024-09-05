@@ -11,6 +11,7 @@ export class CarriagesCarouselComponent {
   @Input() carriage = '';
   @Input() selected = false;
   @Input() price = 0;
+  @Input() freeSeats = 0;
   @Output() carriageNameEvent = new EventEmitter<string>();
 
   passCarriageName() {
