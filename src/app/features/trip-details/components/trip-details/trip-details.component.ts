@@ -310,6 +310,12 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
               duration: 3000,
             },
           );
+
+          if (this.isAuthenticated) {
+            localStorage.removeItem('seatNumber');
+            localStorage.removeItem('carriageName');
+            localStorage.removeItem('carriageNumber');
+          }
         },
         error: () => {
           this.snackBar.open(
@@ -321,11 +327,5 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           );
         },
       });
-
-    if (this.isAuthenticated) {
-      localStorage.removeItem('seatNumber');
-      localStorage.removeItem('carriageName');
-      localStorage.removeItem('carriageNumber');
-    }
   }
 }
