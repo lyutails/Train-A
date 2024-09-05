@@ -1,5 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, signal, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -14,7 +24,7 @@ import { RoleService } from '../../../../../../core/roles/role.service';
   templateUrl: './carriage-seat.component.html',
   styleUrl: './carriage-seat.component.scss',
 })
-export class CarriageSeatComponent implements OnInit {
+export class CarriageSeatComponent implements OnInit, AfterContentChecked {
   @Input() seatValue = '';
   @Input() carriageNameValue!: string;
   @Input() checked = false;
@@ -23,9 +33,9 @@ export class CarriageSeatComponent implements OnInit {
   public check = signal(false);
   @Output() chosenSeat = new EventEmitter<string>();
   public isCarriagesPage = signal(false);
-  public selectedSeat = signal('');
-  public selectedCarriage = signal('');
-  public selectedCarriageNumber = signal('');
+  public selectedSeat = '';
+  public selectedCarriage = '';
+  public selectedCarriageNumber = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -39,29 +49,44 @@ export class CarriageSeatComponent implements OnInit {
     } else {
       this.isCarriagesPage.set(false);
     }
+    if (this.seatValue === this.selectedSeat) {
+      this.check.set(true);
+    }
+    console.log(this.checked);
+    console.log(this.selectedSeat);
+    console.log(this.selectedCarriage);
   }
 
-  /* ngAfterViewInit(): void {
-    console.log(this.seatCheckbox);
-  } */
+  ngAfterContentChecked(): void {
+    this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber')!);
+    this.selectedCarriage = JSON.parse(localStorage.getItem('carriageName')!);
+    this.selectedCarriageNumber = JSON.parse(localStorage.getItem('carriageNumber')!);
+    if (this.seatValue === this.selectedSeat) {
+      this.check.set(false);
+    } else {
+      this.check.set(true);
+    }
+    console.log(this.checked);
+    console.log(this.seatValue);
+    console.log(this.selectedSeat);
+  }
 
   clickCheckbox() {
     console.log('seatNumber', this.seatValue, 'carriageName', this.carriageNameValue);
     localStorage.setItem('seatNumber', JSON.stringify(this.seatValue));
     localStorage.setItem('carriageName', JSON.stringify(this.carriageNameValue));
     localStorage.setItem('carriageNumber', JSON.stringify(this.carriageNumberValue));
-    this.selectedSeat.set(JSON.parse(localStorage.getItem('seatNumber')!));
-    this.selectedCarriage.set(JSON.parse(localStorage.getItem('carriageName')!));
-    this.selectedCarriageNumber.set(JSON.parse(localStorage.getItem('carriageNumber')!));
-    console.log(this.selectedSeat());
-    console.log(this.selectedCarriage());
+    this.selectedSeat = JSON.parse(localStorage.getItem('seatNumber')!);
+    this.selectedCarriage = JSON.parse(localStorage.getItem('carriageName')!);
+    this.selectedCarriageNumber = JSON.parse(localStorage.getItem('carriageNumber')!);
+    console.log(this.selectedSeat);
+    console.log(this.selectedCarriage);
     if (!this.check()) {
       localStorage.removeItem('seatNumber');
       localStorage.removeItem('carriageName');
       localStorage.removeItem('carriageNumber');
     }
     this.check.set(!this.check());
-    console.log(this.checked);
   }
 
   inspectCheckboxValue(event: MatCheckboxChange): void {
