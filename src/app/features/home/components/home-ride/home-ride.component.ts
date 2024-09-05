@@ -95,6 +95,7 @@ export class HomeRideComponent implements OnDestroy {
         const dialogRef = this.dialog.open(RouteModalComponent, {
           data: {
             routes: transformedRoute,
+            routeId: this.tripInfo.routeId,
           },
         });
 

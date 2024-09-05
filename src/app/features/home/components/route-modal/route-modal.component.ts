@@ -22,6 +22,7 @@ export class RouteModalComponent implements OnInit {
   public dialogRef = inject(MatDialogRef<RouteModalComponent>);
   public data = inject(MAT_DIALOG_DATA);
   public popupRoutes = model(this.data.routes);
+  public routeId = this.data.routeId;
 
   public numberOfPoints = this.data.routes.length;
 
