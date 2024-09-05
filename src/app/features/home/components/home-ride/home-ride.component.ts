@@ -66,17 +66,19 @@ export class HomeRideComponent implements OnDestroy {
       availableSeatsData.map((item) => [item.carriageCode, item.availableSeats]),
     );
 
-    return carriages.map((carriage) => {
-      const price = carriage.code ? this.tripInfo.price[carriage.code] : undefined;
-      const availableSeats =
-        availableSeatsMap.get(carriage.code || '') || carriage.rows * (carriage.leftSeats + carriage.rightSeats);
+    return carriages
+      .filter((carriage) => carriage.code && this.tripInfo.price[carriage.code])
+      .map((carriage) => {
+        const price = carriage.code ? this.tripInfo.price[carriage.code] : undefined;
+        const availableSeats =
+          availableSeatsMap.get(carriage.code || '') || carriage.rows * (carriage.leftSeats + carriage.rightSeats);
 
-      return {
-        ...carriage,
-        price,
-        availableSeats,
-      };
-    });
+        return {
+          ...carriage,
+          price,
+          availableSeats,
+        };
+      });
   }
 
   public pickTripDetails() {
