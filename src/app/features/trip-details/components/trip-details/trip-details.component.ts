@@ -76,6 +76,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public queryParamFrom!: string;
   public queryParamTo!: string;
   public numberOfSeatsInCarriageType!: number[];
+  public uniqueRideCarriages!: Carriage[];
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -136,7 +137,11 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           console.log(this.uniqueCarriageNames);
 
           this.numberOfSeatsInCarriageType = [];
-          this.allRideCarriages.map((carriage) => {
+          console.log([...new Set(this.allRideCarriages)]);
+
+          this.uniqueRideCarriages = [...new Set(this.allRideCarriages)];
+
+          this.uniqueRideCarriages.filter((carriage) => {
             this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
           });
           console.log(this.numberOfSeatsInCarriageType);
@@ -156,7 +161,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           console.log(this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1));
           this.rideAllSegmentsPricesNumbers = [];
           this.uniqueCarriageNames.forEach((name) => {
-            this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1).map((price) => {
+            this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex).map((price) => {
               if (price[name]) {
                 this.rideAllSegmentsPricesNumbers.push(price[name]);
               }
