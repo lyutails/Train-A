@@ -19,7 +19,6 @@ import { Price } from '../../models/price.model';
 import { LoadingService } from '../../../../common/services/loading/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TripDetailsService } from '../../services/trip-details.service';
-import { HomeFacade } from '../../../home/services/home.facade';
 import { TripRouteModalComponent } from '../trip-route-modal/trip-route-modal.component';
 
 @Component({
@@ -92,7 +91,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     private roleService: RoleService,
     private route: ActivatedRoute,
     private tripDetailsService: TripDetailsService,
-    private readonly homeFacade: HomeFacade,
   ) {
     this.initializeUserRole();
   }
