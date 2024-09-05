@@ -1,5 +1,5 @@
 <div class="orders container-xl">
-  @if (isAuthenticated) {
+  @if (isAdminRole) {
     @for (order of orders; track order.id) {
       <TTP-ticket
         [stationStart]="order.stationStart"
@@ -9,8 +9,6 @@
         [id]="order.id"
       ></TTP-ticket>
     }
-  }
-  @if (isAdminRole) {
     <div class="orders_users-list">
       <p class="orders_users-title">List of users:</p>
       @for (usersOrder of usersOrders; track usersOrder.id) {
@@ -22,5 +20,16 @@
         </div>
       }
     </div>
+  }
+  @if (isAuthenticated && !isAdminRole) {
+    @for (order of orders; track order.id) {
+      <TTP-ticket
+        [stationStart]="order.stationStart"
+        [stationEnd]="order.stationEnd"
+        [seatId]="order.seatId"
+        [status]="order.status"
+        [id]="order.id"
+      ></TTP-ticket>
+    }
   }
 </div>

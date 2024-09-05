@@ -26,9 +26,7 @@ export class OrdersComponent implements OnInit {
     private authFacade: AuthFacade,
     private roleService: RoleService,
     private ordersService: OrdersService,
-  ) {
-    this.initializeUserRole();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.ordersService.getUsersOrders().subscribe({
@@ -44,16 +42,6 @@ export class OrdersComponent implements OnInit {
         this.orders = data;
       },
     });
-  }
-
-  private initializeUserRole(): void {
-    this.roleService.userRole$.subscribe((role) => {
-      this.userRole = role;
-    });
-
-    if (this.authFacade.isAuthenticated) {
-      this.authFacade.getUserRole();
-    }
   }
 
   public get isAuthenticated(): boolean {
