@@ -92,7 +92,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
   ngOnInit() {
     const rideId = this.route.snapshot.paramMap.get('rideId');
-    console.log(rideId);
     if (!rideId) {
       this.router.navigate(['/404']);
       return;
@@ -103,20 +102,16 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
     this.tripDetailsService.getCarriages().subscribe({
       next: (data) => {
-        console.log(data);
         this.allAvailableAppCarriages = data;
       },
     });
 
     this.tripDetailsService.getRideDetails(this.rideId).subscribe({
       next: (data) => {
-        console.log(data);
         this.rideCarriagesNames = data.carriages;
-        console.log(data.carriages);
         if (data.carriages.length > 0) {
           this.areCarriages.set(true);
         }
-        console.log(this.allRideCarriages);
         this.rideCarriagesNames.map((element) => {
           for (let i = 0; i <= this.allAvailableAppCarriages.length - 1; i++) {
             if (this.allAvailableAppCarriages[i].code === element) {
@@ -126,33 +121,24 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           }
         });
 
-        console.log(this.allRideCarriages);
         this.uniqueCarriageNames = [...new Set(this.rideCarriagesNames)];
-        console.log(this.uniqueCarriageNames);
 
         this.numberOfSeatsInCarriageType = [];
-        console.log([...new Set(this.allRideCarriages)]);
 
         this.uniqueRideCarriages = [...new Set(this.allRideCarriages)];
 
         this.uniqueRideCarriages.filter((carriage) => {
           this.numberOfSeatsInCarriageType.push(carriage.rows * (carriage.leftSeats + carriage.rightSeats));
         });
-        console.log(this.numberOfSeatsInCarriageType);
 
         this.ridePath = [];
         this.ridePath = data.path;
-        console.log(this.ridePath);
         this.firstStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamFrom);
         this.lastStationIndex = this.ridePath.findIndex((element) => element === +this.queryParamTo);
-        console.log(this.firstStationIndex, this.lastStationIndex);
 
-        console.log(data.schedule.segments);
         this.rideSegments = data.schedule.segments;
         this.rideAllSegmentsPrices = [];
         this.rideSegments.map((item) => this.rideAllSegmentsPrices.push(item.price));
-        console.log(this.rideAllSegmentsPrices);
-        console.log(this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex + 1));
         this.rideAllSegmentsPricesNumbers = [];
         this.uniqueCarriageNames.forEach((name) => {
           this.rideAllSegmentsPrices.slice(this.firstStationIndex, this.lastStationIndex).map((price) => {
@@ -166,12 +152,10 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           this.totalRidePrices.push(this.totalRidePrice);
           this.rideAllSegmentsPricesNumbers = [];
         });
-        console.log(this.totalRidePrices);
 
         this.occupiedSeats = [];
         this.rideSegments.map((item) => this.occupiedSeats.push(item.occupiedSeats));
         //this.freeSeats = amountOfSeatsInCarriage - this.occupiedSeats.length;
-        console.log(this.occupiedSeats);
       },
     });
 
@@ -204,7 +188,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       this.allFilteredRideCarriages = this.allRideCarriages.filter(
         (item) => item.code === this.filterSliderCarriageName,
       );
-      console.log(this.allRideCarriages);
       this.trainCarriageNumber = [];
       this.allRideCarriages.forEach((element, index) => {
         if (element.code === this.filterSliderCarriageName) {
@@ -277,7 +260,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
 
   getCarriageName(item: string) {
     this.filterSliderCarriageName = item;
-    console.log(this.filterSliderCarriageName);
   }
 
   public buyTicket() {
