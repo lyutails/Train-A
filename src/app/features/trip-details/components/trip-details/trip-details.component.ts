@@ -303,6 +303,10 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
         },
       });
 
+    localStorage.removeItem('seatNumber');
+    localStorage.removeItem('carriageName');
+    localStorage.removeItem('carriageNumber');
+
     this.snackBar.open(
       `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
       and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
