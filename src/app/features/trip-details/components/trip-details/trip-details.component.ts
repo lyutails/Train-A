@@ -320,6 +320,9 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
               duration: 4000,
             },
           );
+          localStorage.removeItem('seatNumber');
+          localStorage.removeItem('carriageName');
+          localStorage.removeItem('carriageNumber');
         },
       });
   }

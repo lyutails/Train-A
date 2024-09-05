@@ -219,11 +219,10 @@
   }
 
   &_selected {
-    position: sticky;
+    position: fixed;
     z-index: 200;
-    top: 50px;
+    top: 116px;
     right: 10px;
-    left: 10px;
 
     display: flex;
     flex-direction: column;
@@ -239,7 +238,7 @@
 
     text-align: center;
 
-    background-color: white;
+    background-color: rgb(255 255 255 / 90%);
     border: 1px solid $deep-blue;
     border-radius: 10px;
   }
