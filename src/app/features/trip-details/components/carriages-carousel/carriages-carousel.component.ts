@@ -15,7 +15,6 @@ export class CarriagesCarouselComponent {
   @Output() carriageNameEvent = new EventEmitter<string>();
 
   passCarriageName() {
-    console.log(this.selected);
     if (this.selected) {
       this.carriageNameEvent.emit('');
     } else {

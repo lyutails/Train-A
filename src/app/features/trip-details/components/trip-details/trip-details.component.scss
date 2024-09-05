@@ -18,7 +18,7 @@
     align-items: center;
     justify-content: space-between;
 
-    width: 40%;
+    width: 50%;
     min-width: 280px;
     max-width: 600px;
   }
@@ -52,8 +52,11 @@
   &_detail-time {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-bottom: 0;
+
+    &.end {
+      align-self: flex-end;
+    }
   }
 
   &_route-details {
