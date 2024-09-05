@@ -295,8 +295,6 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   }
 
   public buyTicket() {
-    this.tripDetailsService.getActiveOrder().subscribe({ next: (data) => console.log(data) });
-
     this.tripDetailsService
       .buyTicket(this.rideId, this.selectedSeat, this.queryParamFrom, this.queryParamTo)
       .subscribe({
