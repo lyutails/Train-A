@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, inject, model, OnInit } from '@angular/core';
 import { MatIconButton } from '@angular/material/button';
 import {
@@ -14,7 +15,16 @@ import { MatIcon } from '@angular/material/icon';
 @Component({
   selector: 'TTP-trip-route-modal',
   standalone: true,
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatIcon, MatHint, MatIconButton],
+  imports: [
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatIcon,
+    MatHint,
+    MatIconButton,
+    DatePipe,
+  ],
   templateUrl: './trip-route-modal.component.html',
   styleUrl: './trip-route-modal.component.scss',
 })

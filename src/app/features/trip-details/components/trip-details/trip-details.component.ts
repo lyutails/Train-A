@@ -19,6 +19,8 @@ import { Price } from '../../models/price.model';
 import { LoadingService } from '../../../../common/services/loading/loading.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TripDetailsService } from '../../services/trip-details.service';
+import { TripRouteModalComponent } from '../trip-route-modal/trip-route-modal.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'TTP-trip-details',
@@ -81,6 +83,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
   public departureTime = '';
   public arrivalTime = '';
   public selectedCarriageNumber = '';
+  public snackBar = inject(MatSnackBar);
   loadingService = inject(LoadingService);
   viewChecked = signal(false);
 
@@ -275,6 +278,22 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     this.filterSliderCarriageName = item;
   }
 
+  public openTripRouteModal() {
+    const dialogRef = this.dialog.open(TripRouteModalComponent, {
+      data: {
+        rideId: this.rideId,
+        routes: [
+          { time: this.departureTime, station: this.queryParamFrom, stop: 'First Station' },
+          { time: this.arrivalTime, station: this.queryParamTo, stop: 'Last Station' },
+        ],
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      return;
+    });
+  }
+
   public buyTicket() {
     this.tripDetailsService
       .buyTicket(this.rideId, this.selectedSeat, this.queryParamFrom, this.queryParamTo)
@@ -283,5 +302,14 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           console.log(data);
         },
       });
+
+    this.snackBar.open(
+      `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
+      and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
+      'close',
+      {
+        duration: 3000,
+      },
+    );
   }
 }
