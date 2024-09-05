@@ -302,18 +302,15 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
           console.log(data);
           this.snackBar.open(
             `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
-            and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
+            and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}$`,
             'close',
             {
               duration: 4000,
             },
           );
-
-          if (this.isAuthenticated) {
-            localStorage.removeItem('seatNumber');
-            localStorage.removeItem('carriageName');
-            localStorage.removeItem('carriageNumber');
-          }
+          localStorage.removeItem('seatNumber');
+          localStorage.removeItem('carriageName');
+          localStorage.removeItem('carriageNumber');
         },
         error: () => {
           this.snackBar.open(
