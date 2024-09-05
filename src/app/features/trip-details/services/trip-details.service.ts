@@ -26,4 +26,12 @@ export class TripDetailsService {
       stationEnd,
     });
   }
+
+  public getActiveOrder() {
+    return this.httpClient.get('order');
+  }
+
+  public deleteOrder(orderId: number) {
+    return this.httpClient.delete(`order/${orderId}`);
+  }
 }
