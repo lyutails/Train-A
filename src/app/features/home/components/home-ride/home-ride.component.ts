@@ -11,6 +11,9 @@ import { CarriagesService } from '../../../../repositories/carriages/services/ca
 import { map, Subject, takeUntil } from 'rxjs';
 import { CarriagesWithPrice } from '../../models/carriages-with-prices';
 import { calculateAvailableSeatsByCarriage } from '../home/helpers/calculate-availabe-seats';
+import { Carriage } from '../../../admin/features/carriages/models/carriage.model';
+import { HomeFacade } from '../../services/home.facade';
+import { transformDetailedRoute } from '../home/helpers/transform-details-route';
 
 @Component({
   selector: 'TTP-home-ride',
@@ -40,35 +43,40 @@ export class HomeRideComponent implements OnDestroy {
   constructor(
     private readonly router: Router,
     private readonly carriagesService: CarriagesService,
+    private readonly homeFacade: HomeFacade,
   ) {
+    this.loadCarriagesWithPrices();
+  }
+
+  private loadCarriagesWithPrices(): void {
     this.carriagesService
       .getCarriages()
       .pipe(
-        map((carriages) => {
-          const availableSeatsData = calculateAvailableSeatsByCarriage(carriages, this.tripInfo.occupiedSeats);
-          const availableSeatsMap = new Map<string, number>(
-            availableSeatsData.map((item) => [item.carriageCode, item.availableSeats]),
-          );
-
-          const carriagesWithPrices = carriages.map((carriage) => {
-            const price = carriage.code ? this.tripInfo.price[carriage.code] : undefined;
-            const availableSeats =
-              availableSeatsMap.get(carriage.code || '') || carriage.rows * (carriage.leftSeats + carriage.rightSeats);
-
-            return {
-              ...carriage,
-              price,
-              availableSeats,
-            };
-          });
-
-          return carriagesWithPrices;
-        }),
+        map((carriages) => this.processCarriages(carriages)),
         takeUntil(this.destroy$$),
       )
       .subscribe((carriagesWithPrices) => {
         this.carriagesWithPrices = carriagesWithPrices;
       });
+  }
+
+  private processCarriages(carriages: Carriage[]): CarriagesWithPrice[] {
+    const availableSeatsData = calculateAvailableSeatsByCarriage(carriages, this.tripInfo.occupiedSeats);
+    const availableSeatsMap = new Map<string, number>(
+      availableSeatsData.map((item) => [item.carriageCode, item.availableSeats]),
+    );
+
+    return carriages.map((carriage) => {
+      const price = carriage.code ? this.tripInfo.price[carriage.code] : undefined;
+      const availableSeats =
+        availableSeatsMap.get(carriage.code || '') || carriage.rows * (carriage.leftSeats + carriage.rightSeats);
+
+      return {
+        ...carriage,
+        price,
+        availableSeats,
+      };
+    });
   }
 
   public pickTripDetails() {
@@ -78,20 +86,20 @@ export class HomeRideComponent implements OnDestroy {
   }
 
   public openRouteModal() {
-    const dialogRef = this.dialog.open(RouteModalComponent, {
-      data: {
-        routes: [
-          { time: '18:00', station: 'startStationName', stop: 'First station' },
-          { time: '19:00', station: 'lalala1', stop: '2m' },
-          { time: '20:00', station: 'lalala2', stop: '5m' },
-          { time: '20:00', station: 'endStationName', stop: 'Last station' },
-        ],
-      },
-    });
+    this.homeFacade
+      .getRoutesForPopUp(this.tripInfo.rideId, this.tripInfo.departureStation.id, this.tripInfo.arrivalStation.id)
+      .subscribe((detailedRoute) => {
+        const transformedRoute = transformDetailedRoute(detailedRoute);
+        const dialogRef = this.dialog.open(RouteModalComponent, {
+          data: {
+            routes: transformedRoute,
+          },
+        });
 
-    dialogRef.afterClosed().subscribe(() => {
-      return;
-    });
+        dialogRef.afterClosed().subscribe(() => {
+          return;
+        });
+      });
   }
 
   public ngOnDestroy(): void {

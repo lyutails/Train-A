@@ -6,3 +6,8 @@ export interface CurrentRoute {
   carriages: string[];
   schedule: TripSchedule[];
 }
+
+export type CurrentRouteWithRideId = Omit<CurrentRoute, 'id' | 'schedule'> & {
+  rideId: number;
+  schedule: TripSchedule;
+};

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SearchApi } from '../../../features/home/models/search-form-api.model';
 import { JourneyList } from '../models/journey-list.model';
 import { Observable } from 'rxjs';
+import { CurrentRouteWithRideId } from '../models/current-route.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +22,9 @@ export class HomeHttpService {
       params = params.set('time', search.time.toString());
     }
     return this.httpClient.get<JourneyList>('search', { params });
+  }
+
+  public getRoutesForPopUp(rideId: number): Observable<CurrentRouteWithRideId> {
+    return this.httpClient.get<CurrentRouteWithRideId>(`search/${rideId}`);
   }
 }
