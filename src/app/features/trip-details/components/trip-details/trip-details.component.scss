@@ -218,17 +218,21 @@
     position: sticky;
     z-index: 200;
     top: 50px;
-    left: 20px;
+    right: 20px;
+    left: 10px;
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    width: 50%;
+    width: 80%;
+    max-width: 830px;
     margin-top: 20px;
     padding-right: 10px;
     padding-left: 10px;
+
+    text-align: center;
 
     background-color: white;
     border: 1px solid $deep-blue;
@@ -283,6 +287,33 @@ ttp-carriages-carousel {
   max-width: 180px;
 }
 
+@media screen and (width >= 640px) and (width <= 1000px) {
+  .trip-details {
+    &_selected {
+      width: 40%;
+    }
+
+    &_selected-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 20px;
+    }
+
+    &_selected-details {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: 0;
+
+      text-align: center;
+    }
+  }
+}
+
 @media screen and (width >= 300px) and (width <= 639.98px) {
   .trip-details {
     &_seat-indications {
@@ -300,6 +331,16 @@ ttp-carriages-carousel {
       justify-content: center;
 
       margin-top: 20px;
+    }
+
+    &_selected-details {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: 0;
+
+      text-align: center;
     }
   }
 }
