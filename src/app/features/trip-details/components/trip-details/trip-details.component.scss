@@ -1,6 +1,9 @@
 @import '../../../../../styles';
 
 .trip-details {
+  display: flex;
+  flex-direction: column;
+
   &_wrapper {
     display: flex;
     flex-direction: column;
@@ -76,6 +79,7 @@
   &_seat-indications {
     display: flex;
     align-items: center;
+    margin-top: 20px;
     margin-bottom: 20px;
   }
 
@@ -214,6 +218,32 @@
     border-radius: 5px;
   }
 
+  &_selected {
+    position: sticky;
+    z-index: 200;
+    top: 50px;
+    right: 10px;
+    left: 10px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: flex-end;
+    justify-content: center;
+
+    width: 80%;
+    max-width: 830px;
+    margin-top: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    text-align: center;
+
+    background-color: white;
+    border: 1px solid $deep-blue;
+    border-radius: 10px;
+  }
+
   &_selected-wrapper {
     display: flex;
     align-items: center;
@@ -262,6 +292,33 @@ ttp-carriages-carousel {
   max-width: 180px;
 }
 
+@media screen and (width >= 640px) and (width <= 1000px) {
+  .trip-details {
+    &_selected {
+      width: 40%;
+    }
+
+    &_selected-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      margin-top: 20px;
+    }
+
+    &_selected-details {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: 0;
+
+      text-align: center;
+    }
+  }
+}
+
 @media screen and (width >= 300px) and (width <= 639.98px) {
   .trip-details {
     &_seat-indications {
@@ -279,6 +336,16 @@ ttp-carriages-carousel {
       justify-content: center;
 
       margin-top: 20px;
+    }
+
+    &_selected-details {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      margin-right: 0;
+
+      text-align: center;
     }
   }
 }

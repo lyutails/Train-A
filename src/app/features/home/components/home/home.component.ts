@@ -238,6 +238,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   public getRides() {
+    localStorage.removeItem('seatNumber');
+    localStorage.removeItem('carriageName');
+    localStorage.removeItem('carriageNumber');
+
     if (this.searchForm.invalid) {
       return;
     }
@@ -251,10 +255,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.searchRides.set(true);
       },
     });
-  }
-
-  public buyTicket() {
-    // api call here
   }
 
   onSubmit() {

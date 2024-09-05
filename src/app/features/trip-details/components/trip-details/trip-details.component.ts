@@ -300,16 +300,27 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
       .subscribe({
         next: (data) => {
           console.log(data);
+          this.snackBar.open(
+            `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
+            and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}$`,
+            'close',
+            {
+              duration: 4000,
+            },
+          );
+          localStorage.removeItem('seatNumber');
+          localStorage.removeItem('carriageName');
+          localStorage.removeItem('carriageNumber');
+        },
+        error: () => {
+          this.snackBar.open(
+            `You already have a ticket for this ride, please cancel active one and try again`,
+            'close',
+            {
+              duration: 4000,
+            },
+          );
         },
       });
-
-    this.snackBar.open(
-      `You successfully bought the ticket with the seat number ${this.selectedSeat}, in the carriage of type ${this.selectedCarriageName}
-      and number ${this.selectedCarriageNumber} for ${this.totalSelectedRidePrice}`,
-      'close',
-      {
-        duration: 3000,
-      },
-    );
   }
 }
