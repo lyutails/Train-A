@@ -12,4 +12,6 @@ export interface SearchRideResult {
   totalTime: string;
   price: Record<string, number>;
   rideId: number;
+  occupiedSeats: number[];
+  routeId: number;
 }

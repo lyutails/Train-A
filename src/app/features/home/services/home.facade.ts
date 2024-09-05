@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StationInfo } from '../../admin/features/stations/models/station-info';
-import { BehaviorSubject, combineLatest, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, of, switchMap, tap } from 'rxjs';
 import { StationsService } from '../../../repositories/stations/services/stations.service';
 import { CitySearchApi } from '../../../repositories/stations/models/city-search-api';
 import { SearchApi } from '../models/search-form-api.model';
@@ -11,6 +11,8 @@ import { SearchRideResult } from '../models/search-ride-result';
 import { CarouselService } from './carousel.service';
 import { getTrainSchedules } from '../components/home/helpers/get-train-schedule';
 import { filterResultsByDates } from '../components/home/helpers/filter-results-by-date';
+import { getTrainRouteMap } from '../components/home/helpers/get-train-route-map';
+import { TrainRouteMapResultCities } from '../components/home/helpers/train-route-results';
 
 @Injectable({
   providedIn: 'root',
@@ -75,11 +77,25 @@ export class HomeFacade {
   private async getTrainSchedule(data: JourneyList): Promise<void> {
     try {
       const results = await getTrainSchedules(data);
-
       this.trainSearchResults.next(results);
     } catch (error) {
       console.error('Error fetching train schedules:', error);
       this.trainSearchResults.next([]);
     }
+  }
+
+  public getRoutesForPopUp(rideId: number, from: number, to: number): Observable<TrainRouteMapResultCities> {
+    return this.homeService.getRoutesForPopUp(rideId).pipe(
+      switchMap((data) => {
+        const { currentPath, allTimes } = getTrainRouteMap(data, from, to);
+        return this.stations.pipe(
+          map((cities) => {
+            const idToName = new Map(cities.map((city) => [city.id, city.city]));
+            const cityNames = currentPath.map((id) => idToName.get(id) || 'Unknown City');
+            return { cities: cityNames, allTimes };
+          }),
+        );
+      }),
+    );
   }
 }

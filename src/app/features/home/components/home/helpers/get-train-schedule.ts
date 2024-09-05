@@ -1,6 +1,6 @@
 import { JourneyList } from '../../../../../repositories/home/models/journey-list.model';
 import { SearchRideResult } from '../../../models/search-ride-result';
-import { calculateTotalPricesByCarriage } from './calculate-price-by-segment';
+import { calculateTotalPricesAndSeatByCarriage } from './calculate-price-by-segment';
 import { transformDateToHours } from './transform-date-diffrence-to-hours';
 
 export const getTrainSchedules = async (data: JourneyList): Promise<SearchRideResult[]> => {
@@ -22,9 +22,14 @@ export const getTrainSchedules = async (data: JourneyList): Promise<SearchRideRe
         const totalTime = transformDateToHours(departure, arrival);
 
         try {
-          const prices = await calculateTotalPricesByCarriage(sch, departureIndex, arrivalIndex - 1);
+          const { prices, takenSeats } = await calculateTotalPricesAndSeatByCarriage(
+            sch,
+            departureIndex,
+            arrivalIndex - 1,
+          );
 
           const result: SearchRideResult = {
+            routeId: route.id,
             departureStation: { id: data.from.stationId, name: data.from.city },
             arrivalStation: { id: data.to.stationId, name: data.to.city },
             departure: departure,
@@ -32,6 +37,7 @@ export const getTrainSchedules = async (data: JourneyList): Promise<SearchRideRe
             totalTime: totalTime,
             price: prices,
             rideId: sch.rideId,
+            occupiedSeats: takenSeats,
           };
 
           results.push(result);
