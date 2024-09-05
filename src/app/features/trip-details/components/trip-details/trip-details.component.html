@@ -3,6 +3,42 @@
     <mat-spinner></mat-spinner>
   </div>
 } @else {
+  @if (selectedSeat) {
+    <div class="trip-details_selected">
+      <div class="trip-details_selected-wrapper">
+        <p class="trip-details_selected-details carriage"><span class="coloured-bold-text">Selected:</span></p>
+        <p class="trip-details_selected-details carriage">
+          Carriage №: <span class="coloured-bold-text">{{ selectedCarriageNumber }}</span>
+        </p>
+        <p class="trip-details_selected-details carriage">
+          Carriage name: <span class="coloured-bold-text">{{ selectedCarriageName }}</span>
+        </p>
+        <p class="trip-details_selected-details seats">
+          Seat: <span class="coloured-bold-text">{{ selectedSeat }}</span>
+        </p>
+        <p class="trip-details_selected-details price">
+          Price: <span class="coloured-bold-text">{{ totalSelectedRidePrice }}$</span>
+        </p>
+      </div>
+      @if (isAuthenticated) {
+        <TTP-button
+          (click)="buyTicket()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Book seat'"
+          class="trip-details_buy-button"
+        ></TTP-button>
+      } @else {
+        <TTP-button
+          (click)="openAuthModal()"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Book seat'"
+          class="trip-details_buy-button"
+        ></TTP-button>
+      }
+    </div>
+  }
   <div class="trip-details container-xl">
     <div class="trip-details_wrapper">
       <TTP-button
@@ -102,44 +138,6 @@
           }
         </div>
       }
-      <div class="trip-details_selected">
-        @if (selectedSeat) {
-          <div class="trip-details_selected-wrapper">
-            <p class="trip-details_selected-details carriage"><span class="coloured-bold-text">Selected:</span></p>
-            <p class="trip-details_selected-details carriage">
-              Carriage №: <span class="coloured-bold-text">{{ selectedCarriageNumber }}</span>
-            </p>
-            <p class="trip-details_selected-details carriage">
-              Carriage name: <span class="coloured-bold-text">{{ selectedCarriageName }}</span>
-            </p>
-            <p class="trip-details_selected-details seats">
-              Seat: <span class="coloured-bold-text">{{ selectedSeat }}</span>
-            </p>
-            <p class="trip-details_selected-details price">
-              Price: <span class="coloured-bold-text">{{ totalSelectedRidePrice }}$</span>
-            </p>
-          </div>
-        }
-        @if (seatIsSelected()) {
-          @if (isAuthenticated) {
-            <TTP-button
-              (click)="buyTicket()"
-              [type]="'button'"
-              [width]="'10vw'"
-              [buttonText]="'Book seat'"
-              class="trip-details_buy-button"
-            ></TTP-button>
-          } @else {
-            <TTP-button
-              (click)="openAuthModal()"
-              [type]="'button'"
-              [width]="'10vw'"
-              [buttonText]="'Book seat'"
-              class="trip-details_buy-button"
-            ></TTP-button>
-          }
-        }
-      </div>
       <div class="trip-details_seat-indications">
         <div class="trip-details_seat-info">
           <mat-label [attr.for]="'occupied'" class="trip-details_seat-label reserved" [style.color]="'white'"
