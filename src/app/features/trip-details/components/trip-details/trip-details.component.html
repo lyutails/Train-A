@@ -124,6 +124,7 @@
             [type]="'button'"
             [width]="'10vw'"
             [buttonText]="'Book seat'"
+            [disabled]="!selectedSeat"
             class="trip-details_buy-button"
           ></TTP-button>
         } @else {
@@ -132,6 +133,7 @@
             [type]="'button'"
             [width]="'10vw'"
             [buttonText]="'Book seat'"
+            [disabled]="!selectedSeat"
             class="trip-details_buy-button"
           ></TTP-button>
         }
