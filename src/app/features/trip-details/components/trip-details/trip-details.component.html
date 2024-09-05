@@ -15,16 +15,24 @@
       <div class="trip-details_details">
         <div class="trip-details_detail-stations">
           <p class="trip-details_detail-station start">
+            From:
             <span class="coloured-bold-text">{{ queryParamFrom }}</span>
           </p>
-          <mat-icon class="">trending_flat</mat-icon>
+          <mat-icon>trending_flat</mat-icon>
           <p class="trip-details_detail-station end">
+            To:
             <span class="coloured-bold-text">{{ queryParamTo }}</span>
           </p>
         </div>
         <div class="trip-details_detail-times">
-          <p class="trip-details_detail-time start"><span class="coloured-text">departure time</span></p>
-          <p class="trip-details_detail-time end"><span class="coloured-text">arrival time</span></p>
+          <p class="trip-details_detail-time start">
+            <mat-icon>more_time</mat-icon>
+            <span class="coloured-text">departure</span>
+          </p>
+          <p class="trip-details_detail-time end">
+            <mat-icon>more_time</mat-icon>
+            <span class="coloured-text">arrival</span>
+          </p>
         </div>
       </div>
       <div class="trip-details_route-details">

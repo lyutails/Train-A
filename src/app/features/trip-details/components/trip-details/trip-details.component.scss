@@ -50,15 +50,10 @@
   }
 
   &_detail-time {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 0;
-
-    &.start {
-      align-items: flex-start;
-    }
-
-    &.end {
-      align-items: flex-end;
-    }
   }
 
   &_route-details {
