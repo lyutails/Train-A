@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AfterContentChecked, AfterViewInit, Component, inject, model, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { MatIcon } from '@angular/material/icon';
@@ -33,6 +33,7 @@ import { TripDetailsService } from '../../services/trip-details.service';
     CarriagesCarouselComponent,
     CarriageRowComponent,
     MatProgressSpinnerModule,
+    DatePipe,
   ],
   templateUrl: './trip-details.component.html',
   styleUrl: './trip-details.component.scss',

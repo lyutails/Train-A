@@ -1,0 +1,34 @@
+.route-popup {
+  &_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &_info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+  }
+
+  &_detail {
+    text-align: center;
+
+    &.time {
+      width: 20%;
+    }
+
+    &.point {
+      width: 10%;
+    }
+
+    &.station {
+      width: 35%;
+    }
+
+    &.stop {
+      width: 35%;
+    }
+  }
+}
