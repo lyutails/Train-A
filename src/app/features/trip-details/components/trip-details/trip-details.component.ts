@@ -227,6 +227,7 @@ export class TripDetailsComponent implements OnInit, AfterContentChecked, AfterV
     } else {
       this.selectedSeat = '';
       this.selectedCarriageName = '';
+      this.selectedCarriageNumber = '';
       this.totalSelectedRidePrice = 0;
     }
   }
