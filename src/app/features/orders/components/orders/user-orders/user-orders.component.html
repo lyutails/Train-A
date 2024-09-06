@@ -1,0 +1,11 @@
+<div class="orders_users-list">
+  <p class="orders_users-title">List of users:</p>
+  @for (usersOrder of usersOrders; track usersOrder.id) {
+    <div class="orders_users-details">
+      <div class="orders_user-detail">{{ usersOrder.id }}</div>
+      <div class="orders_user-detail">{{ usersOrder.name }}</div>
+      <div class="orders_user-detail">{{ usersOrder.email }}</div>
+      <div class="orders_user-detail">{{ usersOrder.role }}</div>
+    </div>
+  }
+</div>
