@@ -1,78 +1,35 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { AuthFacade } from '../../../../core/authorization/services/auth.facade';
+import { Component, OnInit } from '@angular/core';
 import { RoleService } from '../../../../core/roles/role.service';
 import { ButtonComponent } from '../../../../common/button/button.component';
 import { TicketComponent } from '../ticket/ticket.component';
 import { OrderParameters } from '../../models/orders.model';
 import { TicketParameters } from '../../models/ticket.model';
+import { OrdersService } from '../../services/orders.service';
+import { UserOrdersComponent } from './user-orders/user-orders.component';
 
 @Component({
   selector: 'TTP-orders',
   standalone: true,
-  imports: [CommonModule, ButtonComponent, TicketComponent],
+  imports: [CommonModule, ButtonComponent, TicketComponent, UserOrdersComponent],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.scss',
 })
-export class OrdersComponent {
-  public userRole = '';
+export class OrdersComponent implements OnInit {
   public orders!: OrderParameters[];
   public tickets!: TicketParameters[];
 
   constructor(
-    private authFacade: AuthFacade,
-    private roleService: RoleService,
-  ) {
-    this.initializeUserRole();
-    this.orders = [
-      {
-        id: 88,
-        rideId: 25,
-        routeId: 68,
-        seatId: 54,
-        userId: 16,
-        status: 'active',
-        path: [33, 5, 62, 11, 48, 34],
-        carriages: [
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_2',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-          'carriage_type_7',
-        ],
-      },
-    ];
+    public roleService: RoleService,
+    private ordersService: OrdersService,
+  ) {}
 
-    this.tickets = [
-      {
-        id: 58,
-        stationStart: 'London',
-        stationEnd: 'Paris',
-        routeId: 3,
-        seatId: 33,
-        userId: 3552,
+  ngOnInit(): void {
+    this.ordersService.getOrder().subscribe({
+      next: (data) => {
+        this.orders = [];
+        this.orders = data;
       },
-    ];
-  }
-
-  private initializeUserRole(): void {
-    this.roleService.userRole$.subscribe((role) => {
-      this.userRole = role;
     });
-
-    if (this.authFacade.isAuthenticated) {
-      this.authFacade.getUserRole();
-    }
-  }
-
-  public get isAuthenticated(): boolean {
-    return this.authFacade.isAuthenticated;
-  }
-
-  public get isAdminRole(): boolean {
-    return this.roleService.isAdminRole;
   }
 }

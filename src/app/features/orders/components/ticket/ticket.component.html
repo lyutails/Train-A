@@ -37,18 +37,24 @@
         <div class="ticket_ticket-price">
           <span class="text">Ticket price: </span><span class="text-coloured">500$</span>
         </div>
+        <div class="ticket_ticket-status">
+          <span class="text">Ticket staus: </span><span class="text-coloured">{{ status }}</span>
+        </div>
       </div>
       <div class="ticket_stamp">
         <span class="ticket_stamp-pic"></span>
         <p class="ticket_company-name text-coloured-bold">TTP</p>
       </div>
     </div>
-    <TTP-button
-      (click)="cancel()"
-      [type]="'button'"
-      [width]="'10vw'"
-      [buttonText]="'Cancel'"
-      [style.align-self]="'flex-end'"
-    ></TTP-button>
+    <div class="ticket_bottom">
+      <div class="ticket_id">Order id: {{ id }}</div>
+      <TTP-button
+        (click)="cancelOrder(id)"
+        [type]="'button'"
+        [width]="'10vw'"
+        [buttonText]="'Cancel'"
+        [style.align-self]="'flex-end'"
+      ></TTP-button>
+    </div>
   </div>
 </div>

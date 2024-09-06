@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ButtonComponent } from '../../../../common/button/button.component';
+import { OrdersService } from '../../services/orders.service';
+import { OrderParameters } from '../../models/orders.model';
 
 @Component({
   selector: 'TTP-ticket',
@@ -10,13 +12,20 @@ import { ButtonComponent } from '../../../../common/button/button.component';
   styleUrl: './ticket.component.scss',
 })
 export class TicketComponent {
-  @Input() stationStart!: string;
-  @Input() stationEnd!: string;
+  @Input() stationStart!: number;
+  @Input() stationEnd!: number;
   @Input() routeId!: number;
   @Input() seatId!: number;
   @Input() userId!: number;
+  @Input() departureTime!: string;
+  @Input() arrivalTime!: string;
+  @Input() status!: string;
+  @Input() id!: number;
+  public listOfOrders!: OrderParameters[];
 
-  public cancel() {
-    // cancel order
+  constructor(private ordersService: OrdersService) {}
+
+  public cancelOrder(id: number) {
+    this.ordersService.deleteOrder(id);
   }
 }

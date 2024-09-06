@@ -1,3 +1,4 @@
+import { Segments } from './../../trip-details/models/segments.model';
 export interface OrderParameters {
   id: number;
   rideId: number;
@@ -7,4 +8,7 @@ export interface OrderParameters {
   status: 'active' | 'completed' | 'rejected' | 'canceled';
   path: number[];
   carriages: string[];
+  stationEnd: number;
+  stationStart: number;
+  schedule: Segments[];
 }
