@@ -10,7 +10,7 @@ import { UsersOrders } from '../models/users-orders.model';
 export class OrdersService {
   constructor(private httpClient: HttpClient) {}
 
-  public getActiveOrder(): Observable<OrderParameters[]> {
+  public getOrder(): Observable<OrderParameters[]> {
     return this.httpClient.get<OrderParameters[]>('order');
   }
 
