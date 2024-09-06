@@ -15,6 +15,11 @@
       @if (signUpForm.controls['email'].hasError('invalidUniqueKey')) {
         <mat-error class="sign-up_input-error">Account with this email already exists</mat-error>
       }
+      @if (signUpForm.controls.email.touched && signUpForm.controls.email.invalid) {
+        @if (signUpForm.controls['email'].hasError('required')) {
+          <mat-error class="sign-up_input-error">Required</mat-error>
+        }
+      }
       @if (isEqualToLastEmail() && signUpForm.controls['email'].hasError('pattern')) {
         <mat-error class="sign-up_input-error">Incorrect email</mat-error>
       }
@@ -28,6 +33,11 @@
           [value]="signUpForm.controls.password.value | trim"
         />
       </mat-form-field>
+      @if (signUpForm.controls.password.touched && signUpForm.controls.password.invalid) {
+        @if (signUpForm.controls['password'].hasError('required')) {
+          <mat-error class="sign-up_input-error">Required</mat-error>
+        }
+      }
       <mat-form-field appearance="outline" class="sign-up_field">
         <mat-label>Repeat Password</mat-label>
         <input
@@ -42,6 +52,9 @@
         <div class="sign-up_input-error">
           @if (signUpForm.controls.repeatPassword.errors?.['passwordMismatch']) {
             <mat-error>Passwords don't match</mat-error>
+          }
+          @if (signUpForm.controls['repeatPassword'].hasError('required')) {
+            <mat-error class="sign-up_input-error">Required</mat-error>
           }
         </div>
       }
