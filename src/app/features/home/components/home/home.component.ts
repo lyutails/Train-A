@@ -111,7 +111,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private filterToSubject: Subject<string> = new Subject<string>();
 
-  testTrips: Trip[] = [{ name: 'ride1' }, { name: 'ride2' }, { name: 'ride3' }, { name: 'ride4' }];
   constructor(
     private fb: NonNullableFormBuilder,
     public homeFacade: HomeFacade,

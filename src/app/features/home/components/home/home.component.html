@@ -98,21 +98,21 @@
     <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length) {
+    <TTP-arrow-top
+      [style.width]="'100%'"
+      [style.height]="'50px'"
+      [style.display]="'block'"
+      [disabled]="false"
+      [backgroundColor]="'oklch(49.71% 0.165 259.85deg)'"
+    ></TTP-arrow-top>
+  } @else {
+    <TTP-arrow-top
+      [style.width]="'100%'"
+      [style.height]="'50px'"
+      [style.display]="'none'"
+      [disabled]="true"
+      [backgroundColor]="'lightgray'"
+    ></TTP-arrow-top>
+  }
 </div>
-@if (searchRides() && testTrips.length > 0) {
-  <TTP-arrow-top
-    [style.width]="'80%'"
-    [style.height]="'50px'"
-    [style.display]="'block'"
-    [disabled]="false"
-    [backgroundColor]="'oklch(49.71% 0.165 259.85deg)'"
-  ></TTP-arrow-top>
-} @else {
-  <TTP-arrow-top
-    [style.width]="'80%'"
-    [style.height]="'50px'"
-    [style.display]="'block'"
-    [disabled]="true"
-    [backgroundColor]="'lightgray'"
-  ></TTP-arrow-top>
-}
