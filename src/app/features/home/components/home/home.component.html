@@ -1,4 +1,4 @@
-<div class="home_wrapper container-xl">
+<div class="home_wrapper container-xl" id="home">
   <p class="home_title" [style.color]="'oklch(49.71% 0.165 259.85deg)'">Pick trip parameters</p>
   <form class="home_form" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
     <div class="home_inputs-wrapper">
@@ -98,7 +98,7 @@
     <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
-  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length) {
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length && height > windowHeight) {
     <TTP-arrow-top
       [style.width]="'100%'"
       [style.height]="'50px'"

@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule, UpperCasePipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -86,7 +86,7 @@ export interface TripDates {
     },
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild('inputFrom') inputFrom!: ElementRef<HTMLInputElement>;
   @ViewChild('inputTo') inputTo!: ElementRef<HTMLInputElement>;
   public searchForm!: FormGroup<SearchForm>;
@@ -101,6 +101,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   public isSeatSelected = signal(false);
   public minDate = new Date();
   public width!: number;
+  public height!: number;
+  public windowHeight!: number;
+  public homeContent!: HTMLElement;
   public prev!: HTMLElement;
   public next!: HTMLElement;
   public content!: HTMLElement;
@@ -186,6 +189,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.content.scrollBy(this.width + 10, 0);
       });
     }
+  }
+
+  ngAfterViewChecked(): void {
+    this.homeContent = document.getElementById('home')!;
+    this.height = this.homeContent.offsetHeight;
+    this.windowHeight = window.innerHeight;
   }
 
   public filterFrom() {
