@@ -201,6 +201,8 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
     this.windowHeight = window.innerHeight;
     if (this.height > this.windowHeight) {
       this.showArrowTop.set(true);
+    } else {
+      this.showArrowTop.set(false);
     }
   }
 
