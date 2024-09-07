@@ -109,6 +109,7 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   public content!: HTMLElement;
   public cities: string[] = [];
   public stationsData: StationInfo[] = [];
+  public showArrowTop = signal(false);
 
   private filterFromSubject: Subject<string> = new Subject<string>();
 
@@ -128,6 +129,10 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngOnInit() {
+    this.homeContent = document.getElementById('home')!;
+    this.height = this.homeContent.offsetHeight;
+    this.windowHeight = window.innerHeight;
+
     this.searchForm = this.searchFormInstance;
     this.filterFromSubject
       .pipe(
@@ -192,9 +197,11 @@ export class HomeComponent implements OnInit, AfterViewInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    this.homeContent = document.getElementById('home')!;
     this.height = this.homeContent.offsetHeight;
     this.windowHeight = window.innerHeight;
+    if (this.height > this.windowHeight) {
+      this.showArrowTop.set(true);
+    }
   }
 
   public filterFrom() {

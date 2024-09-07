@@ -98,7 +98,7 @@
     <div class="home_trip-no-trains">No direct trains found</div>
     <div class="home_trip-not-found"></div>
   }
-  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length && height > windowHeight) {
+  @if (searchRides() && (homeFacade.tripDetail$ | async)?.length && showArrowTop()) {
     <TTP-arrow-top
       [style.width]="'100%'"
       [style.height]="'50px'"
