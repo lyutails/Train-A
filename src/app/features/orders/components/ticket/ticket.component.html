@@ -48,13 +48,24 @@
     </div>
     <div class="ticket_bottom">
       <div class="ticket_id">Order id: {{ id }}</div>
-      <TTP-button
-        (click)="cancelOrder(id)"
-        [type]="'button'"
-        [width]="'10vw'"
-        [buttonText]="'Cancel'"
-        [style.align-self]="'flex-end'"
-      ></TTP-button>
+      @if (status === 'rejected') {
+        <TTP-button
+          (click)="cancelOrder(id)"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Cancel'"
+          [style.align-self]="'flex-end'"
+          [style.display]="'none'"
+        ></TTP-button>
+      } @else {
+        <TTP-button
+          (click)="cancelOrder(id)"
+          [type]="'button'"
+          [width]="'10vw'"
+          [buttonText]="'Cancel'"
+          [style.align-self]="'flex-end'"
+        ></TTP-button>
+      }
     </div>
   </div>
 </div>

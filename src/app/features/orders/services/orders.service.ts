@@ -14,8 +14,8 @@ export class OrdersService {
     return this.httpClient.get<OrderParameters[]>('order');
   }
 
-  public deleteOrder(orderId: number) {
-    return this.httpClient.delete(`order/${orderId}`);
+  public deleteOrder(orderId: number): Observable<void> {
+    return this.httpClient.delete<void>(`order/${orderId}`);
   }
 
   public getUsersOrders(): Observable<UsersOrders[]> {
