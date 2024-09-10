@@ -38,7 +38,12 @@
           <span class="text">Ticket price: </span><span class="text-coloured">500$</span>
         </div>
         <div class="ticket_ticket-status">
-          <span class="text">Ticket staus: </span><span class="text-coloured">{{ status }}</span>
+          <span class="text">Ticket status: </span>
+          @if (status === 'rejected') {
+            <span class="text-coloured red">{{ status }}</span>
+          } @else {
+            <span class="text-coloured">{{ status }}</span>
+          }
         </div>
       </div>
       <div class="ticket_stamp">
@@ -56,6 +61,7 @@
           [buttonText]="'Cancel'"
           [style.align-self]="'flex-end'"
           [style.display]="'none'"
+          [style.color]="'red'"
         ></TTP-button>
       } @else {
         <TTP-button
