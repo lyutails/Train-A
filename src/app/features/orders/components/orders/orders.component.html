@@ -1,14 +1,27 @@
 <div class="orders container-xl">
-  @for (order of orders; track order.id) {
-    <TTP-ticket
-      [stationStart]="order.stationStart"
-      [stationEnd]="order.stationEnd"
-      [seatId]="order.seatId"
-      [status]="order.status"
-      [id]="order.id"
-    ></TTP-ticket>
+  @if (!roleService.isAdminRole) {
+    @for (order of orders; track order.id) {
+      <TTP-ticket
+        [stationStart]="order.stationStart"
+        [stationEnd]="order.stationEnd"
+        [seatId]="order.seatId"
+        [status]="order.status"
+        [id]="order.id"
+        [userId]="order.userId"
+      ></TTP-ticket>
+    }
   }
   @if (roleService.isAdminRole) {
     <TTP-user-orders></TTP-user-orders>
+    @for (userOrder of usersOrders; track userOrder.id) {
+      <TTP-ticket
+        [stationStart]="userOrder.stationStart"
+        [stationEnd]="userOrder.stationEnd"
+        [seatId]="userOrder.seatId"
+        [status]="userOrder.status"
+        [id]="userOrder.id"
+        [userId]="userOrder.userId"
+      ></TTP-ticket>
+    }
   }
 </div>

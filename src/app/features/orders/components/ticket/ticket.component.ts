@@ -26,7 +26,6 @@ export class TicketComponent {
   constructor(private ordersService: OrdersService) {}
 
   public cancelOrder(id: number) {
-    console.log('del');
     this.ordersService.deleteOrder(id).subscribe((data) => console.log(data));
   }
 }

@@ -10,6 +10,7 @@
     align-items: center;
     justify-content: space-between;
 
+    margin-top: 20px;
     margin-bottom: 20px;
   }
 
@@ -23,6 +24,23 @@
   &_user-detail {
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    &.id {
+      width: 15%;
+    }
+
+    &.name {
+      width: 25%;
+    }
+
+    &.email {
+      width: 35%;
+    }
+
+    &.role {
+      width: 15%;
+    }
   }
 
   &_users-title {

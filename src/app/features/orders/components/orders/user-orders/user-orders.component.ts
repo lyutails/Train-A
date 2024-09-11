@@ -10,13 +10,13 @@ import { UsersOrders } from '../../../models/users-orders.model';
   styleUrl: './user-orders.component.scss',
 })
 export class UserOrdersComponent {
-  public usersOrders!: UsersOrders[];
+  public usersData!: UsersOrders[];
 
   constructor(private ordersService: OrdersService) {
-    this.ordersService.getUsersOrders().subscribe({
+    this.ordersService.getUsersInfo().subscribe({
       next: (data) => {
-        this.usersOrders = [];
-        this.usersOrders = data;
+        this.usersData = [];
+        this.usersData = data;
       },
     });
   }

@@ -1,11 +1,11 @@
 <div class="orders_users-list">
   <p class="orders_users-title">List of users:</p>
-  @for (usersOrder of usersOrders; track usersOrder.id) {
+  @for (userData of usersData; track userData.id) {
     <div class="orders_users-details">
-      <div class="orders_user-detail">{{ usersOrder.id }}</div>
-      <div class="orders_user-detail">{{ usersOrder.name }}</div>
-      <div class="orders_user-detail">{{ usersOrder.email }}</div>
-      <div class="orders_user-detail">{{ usersOrder.role }}</div>
+      <div class="orders_user-detail id">User id: {{ userData.id }}</div>
+      <div class="orders_user-detail name">{{ userData.name }}</div>
+      <div class="orders_user-detail email">{{ userData.email }}</div>
+      <div class="orders_user-detail role">{{ userData.role }}</div>
     </div>
   }
 </div>

@@ -18,7 +18,11 @@ export class OrdersService {
     return this.httpClient.delete<void>(`order/${orderId}`);
   }
 
-  public getUsersOrders(): Observable<UsersOrders[]> {
+  public getUsersInfo(): Observable<UsersOrders[]> {
     return this.httpClient.get<UsersOrders[]>('users');
+  }
+
+  public getAllOrders(): Observable<OrderParameters[]> {
+    return this.httpClient.get<OrderParameters[]>('order', { params: { all: true } });
   }
 }

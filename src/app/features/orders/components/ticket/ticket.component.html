@@ -39,7 +39,7 @@
         </div>
         <div class="ticket_ticket-status">
           <span class="text">Ticket status: </span>
-          @if (status === 'rejected') {
+          @if (status === 'rejected' || status === 'canceled') {
             <span class="text-coloured red">{{ status }}</span>
           } @else {
             <span class="text-coloured">{{ status }}</span>
@@ -52,8 +52,11 @@
       </div>
     </div>
     <div class="ticket_bottom">
-      <div class="ticket_id">Order id: {{ id }}</div>
-      @if (status === 'rejected') {
+      <div class="ticket_user-credentials">
+        <div class="ticket_id">Order id: {{ id }}</div>
+        <div class="ticket_customer">User id: {{ userId }}</div>
+      </div>
+      @if (status === 'rejected' || status === 'canceled') {
         <TTP-button
           (click)="cancelOrder(id)"
           [type]="'button'"
@@ -61,7 +64,6 @@
           [buttonText]="'Cancel'"
           [style.align-self]="'flex-end'"
           [style.display]="'none'"
-          [style.color]="'red'"
         ></TTP-button>
       } @else {
         <TTP-button

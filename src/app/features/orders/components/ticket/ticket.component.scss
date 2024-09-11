@@ -124,6 +124,12 @@
     justify-content: space-between;
     width: 100%;
   }
+
+  &_user-credentials {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
 }
 
 .text-coloured-bold {

@@ -18,6 +18,7 @@ import { UserOrdersComponent } from './user-orders/user-orders.component';
 export class OrdersComponent implements OnInit {
   public orders!: OrderParameters[];
   public tickets!: TicketParameters[];
+  public usersOrders!: OrderParameters[];
 
   constructor(
     public roleService: RoleService,
@@ -29,6 +30,12 @@ export class OrdersComponent implements OnInit {
       next: (data) => {
         this.orders = [];
         this.orders = data;
+      },
+    });
+    this.ordersService.getAllOrders().subscribe({
+      next: (data) => {
+        this.usersOrders = [];
+        this.usersOrders = data;
       },
     });
   }
