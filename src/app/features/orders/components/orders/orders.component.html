@@ -1,5 +1,6 @@
 <div class="orders container-xl">
   @if (!roleService.isAdminRole) {
+    <p class="orders_orders-title">List of orders:</p>
     @for (order of orders; track order.id) {
       <TTP-ticket
         [stationStart]="order.stationStart"
@@ -13,7 +14,8 @@
   }
   @if (roleService.isAdminRole) {
     <TTP-user-orders></TTP-user-orders>
-    @for (userOrder of usersOrders; track userOrder.id) {
+    <p class="orders_orders-title">List of orders:</p>
+    @for (userOrder of usersOrders; track userOrder.id; let index = $index) {
       <TTP-ticket
         [stationStart]="userOrder.stationStart"
         [stationEnd]="userOrder.stationEnd"
@@ -21,6 +23,8 @@
         [status]="userOrder.status"
         [id]="userOrder.id"
         [userId]="userOrder.userId"
+        [departureTime]="ordersStartSegments[index].time[0]"
+        [arrivalTime]="ordersStartSegments[index].time[1]"
       ></TTP-ticket>
     }
   }

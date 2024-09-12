@@ -10,5 +10,5 @@ export interface OrderParameters {
   carriages: string[];
   stationEnd: number;
   stationStart: number;
-  schedule: Segments[];
+  schedule: { segments: Omit<Segments, 'occupiedSeats'>[] };
 }

@@ -1,3 +1,5 @@
+@import '../../../../../../styles';
+
 .orders {
   display: flex;
   flex-direction: column;
@@ -11,20 +13,25 @@
     justify-content: space-between;
 
     margin-top: 20px;
-    margin-bottom: 20px;
   }
 
   &_users-details {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     width: 80%;
+
+    @include border-frame;
+
+    margin-bottom: 10px;
   }
 
   &_user-detail {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
 
     &.id {
       width: 15%;
@@ -46,5 +53,18 @@
   &_users-title {
     font-weight: 800;
     text-align: center;
+  }
+}
+
+@media screen and (width >= 300px) and (width <= 639.98px) {
+  .orders {
+    &_users-details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+
+      width: 80%;
+    }
   }
 }

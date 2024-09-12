@@ -12,10 +12,14 @@
     </div>
     <div class="ticket_time">
       <div class="ticket_trip-time start">
-        <span class="text-coloured-bold">date and time</span><span class="text">Departure time</span>
+        <span class="text-coloured-bold"
+          >{{ departureTime | date: 'MMMM dd' : '+0000' }} {{ departureTime | date: 'shortTime' : '+0000' }}</span
+        ><span class="text">Departure time</span>
       </div>
       <div class="ticket_trip-time end">
-        <span class="text-coloured-bold">date and time</span><span class="text">Arrival time</span>
+        <span class="text-coloured-bold"
+          >{{ arrivalTime | date: 'MMMM dd' : '+0000' }} {{ arrivalTime | date: 'shortTime' : '+0000' }}</span
+        ><span class="text">Arrival time</span>
       </div>
     </div>
     <div class="ticket_carriage-details">
