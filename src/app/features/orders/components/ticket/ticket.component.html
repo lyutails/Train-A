@@ -23,12 +23,12 @@
       </div>
     </div>
     <div class="ticket_carriage-details">
-      <div class="ticket_carriage-detail type">
+      <!-- <div class="ticket_carriage-detail type">
         <span class="text start">Carriage type: </span><span class="text-bold end">carriage type</span>
       </div>
       <div class="ticket_carriage-detail carriage-number">
         <span class="text start">Carriage number: </span><span class="text-bold end">carriage number</span>
-      </div>
+      </div> -->
       <div class="ticket_carriage-detail seat-number">
         <span class="text start">Seat number: </span><span class="text-bold end">{{ seatId }}</span>
       </div>
@@ -38,9 +38,9 @@
         <div class="ticket_trip-duration">
           <span class="text">Trip duration: </span><span class="text-coloured">{{ hours }}h {{ minutes }}m</span>
         </div>
-        <div class="ticket_ticket-price">
+        <!-- <div class="ticket_ticket-price">
           <span class="text">Ticket price: </span><span class="text-coloured">500$</span>
-        </div>
+        </div> -->
         <div class="ticket_ticket-status">
           <span class="text">Ticket status: </span>
           @if (status === 'rejected' || status === 'canceled') {
