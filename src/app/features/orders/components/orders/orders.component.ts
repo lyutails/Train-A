@@ -39,6 +39,9 @@ export class OrdersComponent implements OnInit {
       next: (data) => {
         this.orders = [];
         this.orders = data;
+
+        this.getStartTime(data);
+        this.getEndTime(data);
       },
     });
 
@@ -47,26 +50,31 @@ export class OrdersComponent implements OnInit {
         this.usersOrders = [];
         this.usersOrders = data;
 
-        this.startStationIndex = [];
-        this.usersOrders.map((index) =>
-          this.startStationIndex.push(index.path.findIndex((i) => i === index.stationStart)),
-        );
-        this.ordersScheduleStartSegments = [];
-        this.usersOrders.map((order) => this.ordersScheduleStartSegments.push(order.schedule.segments));
-        this.ordersStartSegments = [];
-        this.ordersScheduleStartSegments.filter((item, index) =>
-          this.ordersStartSegments.push(item[this.startStationIndex[index]]),
-        );
-
-        this.endStationIndex = [];
-        this.usersOrders.map((index) => this.endStationIndex.push(index.path.findIndex((i) => i === index.stationEnd)));
-        this.ordersScheduleEndSegments = [];
-        this.usersOrders.map((order) => this.ordersScheduleEndSegments.push(order.schedule.segments));
-        this.ordersEndSegments = [];
-        this.ordersScheduleEndSegments.filter((item, index) =>
-          this.ordersEndSegments.push(item[this.endStationIndex[index]]),
-        );
+        this.getStartTime(data);
+        this.getEndTime(data);
       },
     });
+  }
+
+  public getStartTime(data: OrderParameters[]) {
+    this.startStationIndex = [];
+    data.map((index) => this.startStationIndex.push(index.path.findIndex((i) => i === index.stationStart)));
+    this.ordersScheduleStartSegments = [];
+    data.map((order) => this.ordersScheduleStartSegments.push(order.schedule.segments));
+    this.ordersStartSegments = [];
+    this.ordersScheduleStartSegments.filter((item, index) =>
+      this.ordersStartSegments.push(item[this.startStationIndex[index]]),
+    );
+  }
+
+  public getEndTime(data: OrderParameters[]) {
+    this.endStationIndex = [];
+    data.map((index) => this.endStationIndex.push(index.path.findIndex((i) => i === index.stationEnd)));
+    this.ordersScheduleEndSegments = [];
+    data.map((order) => this.ordersScheduleEndSegments.push(order.schedule.segments));
+    this.ordersEndSegments = [];
+    this.ordersScheduleEndSegments.filter((item, index) =>
+      this.ordersEndSegments.push(item[this.endStationIndex[index]]),
+    );
   }
 }
