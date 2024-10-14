@@ -21,3 +21,7 @@ password: my-password</br>
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+<img src="./public/ttp-home_screenshot.JPG">
+
+<img src="./public/ttp-carriages_screenshot.JPG">
