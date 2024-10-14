@@ -101,18 +101,9 @@
 </div>
 @if (searchRides() && testTrips.length > 0) {
   <TTP-arrow-top
-    [style.width]="'80%'"
+    class="container-xl"
     [style.height]="'50px'"
-    [style.display]="'block'"
     [disabled]="false"
     [backgroundColor]="'oklch(49.71% 0.165 259.85deg)'"
-  ></TTP-arrow-top>
-} @else {
-  <TTP-arrow-top
-    [style.width]="'80%'"
-    [style.height]="'50px'"
-    [style.display]="'block'"
-    [disabled]="true"
-    [backgroundColor]="'lightgray'"
   ></TTP-arrow-top>
 }
