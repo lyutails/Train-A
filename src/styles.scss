@@ -89,6 +89,11 @@ ttp-carriages {
   flex: 1 0 auto;
 }
 
+ttp-arrow-top {
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media screen and (width >= 1200px) and (width <= 2400px) {
   html {
     font-size: 18px;
