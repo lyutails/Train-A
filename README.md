@@ -16,7 +16,7 @@ The manager and the root administrator can enter the system with</br>
 email: admin@admin.com</br>
 password: my-password</br>
 
-## Further help
+### Further help
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
