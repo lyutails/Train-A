@@ -1,6 +1,6 @@
 # Train Trips Planning <img src="./public/train.ico"  width="40" height="40">
 
-This awesome app is the final team [project](https://github.com/rolling-scopes-school/tasks/tree/master/tasks/train-a) of [RSSchool](https://app.rs.school/registry/student) **Angular** 2024Q3 Course.
+This awesome app is the final team [project](https://github.com/rolling-scopes-school/tasks/tree/master/tasks/train-a) of [RSSchool](https://app.rs.school/registry/student) [**Angular**](https://rs.school/) 2024Q3 Course.
 
 Deployment https://train-a-lyutails-projects.vercel.app/
 
